@@ -280,5 +280,4 @@ icons/scalable/Makefile
 gmtk/Makefile
 src/Makefile
 po/Makefile.in
-gnome-mplayer.spec
 ])
