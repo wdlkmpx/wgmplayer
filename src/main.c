@@ -992,7 +992,6 @@ int main(int argc, char *argv[])
                gm_bool_to_string(enable_global_menu));
     }
 
-    enable_nautilus_plugin = gm_pref_store_get_boolean_with_default(gm_store, ENABLE_NAUTILUS_PLUGIN, TRUE);
     if (mplayer_bin == NULL)
         mplayer_bin = gm_pref_store_get_string(gm_store, MPLAYER_BIN);
     if (mplayer_bin != NULL && !g_file_test(mplayer_bin, G_FILE_TEST_EXISTS)) {

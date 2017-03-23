@@ -953,10 +953,6 @@ msgstr ""
 msgid "Use Mouse Wheel to change volume, instead of seeking"
 msgstr ""
 
-#: src/gui.c:6369
-msgid "Enable Nautilus Plugin"
-msgstr ""
-
 #: src/gui.c:6374
 msgid "Verbose Debug Enabled"
 msgstr ""
@@ -1441,6 +1437,3 @@ msgstr ""
 msgid "_Set Subtitle"
 msgstr ""
 
-#: src/nautilus_property_page.c:70 src/nemo_property_page.c:75
-msgid "Audio/Video"
-msgstr ""

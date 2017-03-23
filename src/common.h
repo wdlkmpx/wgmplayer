@@ -126,8 +126,6 @@
 // set this to true in gconf/dconf when using with gnome global menus
 #define ENABLE_GLOBAL_MENU  "enable-global-menu"
 
-#define ENABLE_NAUTILUS_PLUGIN "enable-nautilus-plugin"
-
 // JavaScript Playstates
 #define STATE_UNDEFINED     0
 #define STATE_STOPPED       1
@@ -338,7 +336,6 @@ gboolean disable_context_menu;
 gboolean disable_fullscreen;
 gboolean disable_pause_on_click;
 gboolean enable_global_menu;
-gboolean enable_nautilus_plugin;
 gint loop;
 gint start_second;
 gint play_length;
