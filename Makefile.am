@@ -12,9 +12,7 @@ gnome_mplayerdoc_DATA = \
 	ChangeLog\
 	INSTALL\
 	NEWS \
-	DOCS/keyboard_shortcuts.txt \
-	DOCS/tech/dbus.txt \
-	DOCS/tech/plugin-interaction.txt
+	DOCS/keyboard_shortcuts.txt
 
 desktopdir = ${prefix}/share/applications
 desktop_DATA = gnome-mplayer.desktop

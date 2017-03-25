@@ -838,8 +838,6 @@ gboolean set_media_label(void *data)
     }
 
     if (idle->fromdbus == FALSE) {
-        dbus_send_rpsignal_with_string("RP_SetMediaLabel", idle->media_info);
-
 #ifdef NOTIFY_ENABLED
         if (show_notification && control_id == 0 && !gtk_window_is_active((GtkWindow *) window)) {
             notify_init("gnome-mplayer");
@@ -1000,15 +998,6 @@ gboolean set_progress_value(void *data)
 
     update_status_icon();
 
-    if (idle->fromdbus == FALSE) {
-        dbus_send_rpsignal_with_double("RP_SetPercent",
-                                       gmtk_media_player_get_attribute_double(GMTK_MEDIA_PLAYER(media),
-                                                                              ATTRIBUTE_POSITION_PERCENT));
-        dbus_send_rpsignal_with_int("RP_SetGUIState",
-                                    media_state_to_playstate(gmtk_media_player_get_media_state
-                                                             (GMTK_MEDIA_PLAYER(media))));
-    }
-
     return FALSE;
 }
 
@@ -1021,8 +1010,6 @@ gboolean set_progress_text(void *data)
     if (GTK_IS_WIDGET(tracker)) {
         gmtk_media_tracker_set_text(tracker, idle->progress_text);
     }
-    if (idle != NULL && idle->fromdbus == FALSE)
-        dbus_send_rpsignal_with_string("RP_SetProgressText", idle->progress_text);
     update_status_icon();
     return FALSE;
 }
@@ -1060,11 +1047,7 @@ gboolean set_progress_time(void *data)
         gmtk_media_tracker_set_position(tracker, idle->position);
     }
 
-    if (idle->fromdbus == FALSE && gmtk_media_player_get_media_state(GMTK_MEDIA_PLAYER(media)) != MEDIA_STATE_PAUSE)
-        dbus_send_rpsignal_with_string("RP_SetProgressText", idle->progress_text);
     update_status_icon();
-
-    dbus_send_event("TimeChanged", 0);
 
     return FALSE;
 }
@@ -1245,8 +1228,8 @@ gboolean set_gui_state(void *data)
             g_signal_connect(G_OBJECT(menuitem_play), "activate", G_CALLBACK(menuitem_pause_callback), NULL);
             gtk_menu_shell_insert(GTK_MENU_SHELL(popup_menu), GTK_WIDGET(menuitem_play), 0);
             gtk_widget_show(GTK_WIDGET(menuitem_play));
-            if (idledata->videopresent)
-                dbus_disable_screensaver();
+//            if (idledata->videopresent)
+//                dbus_disable_screensaver();
         }
 
         if (guistate == PAUSED) {
@@ -1274,7 +1257,7 @@ gboolean set_gui_state(void *data)
             g_signal_connect(G_OBJECT(menuitem_play), "activate", G_CALLBACK(menuitem_play_callback), NULL);
             gtk_menu_shell_insert(GTK_MENU_SHELL(popup_menu), GTK_WIDGET(menuitem_play), 0);
             gtk_widget_show(GTK_WIDGET(menuitem_play));
-            dbus_enable_screensaver();
+            //dbus_enable_screensaver();
             //gmtk_media_player_set_state (GMTK_MEDIA_PLAYER(media), MEDIA_STATE_PAUSE);
         }
 
@@ -1303,7 +1286,7 @@ gboolean set_gui_state(void *data)
             g_signal_connect(G_OBJECT(menuitem_play), "activate", G_CALLBACK(menuitem_play_callback), NULL);
             gtk_menu_shell_insert(GTK_MENU_SHELL(popup_menu), GTK_WIDGET(menuitem_play), 0);
             gtk_widget_show(GTK_WIDGET(menuitem_play));
-            dbus_enable_screensaver();
+//            dbus_enable_screensaver();
             //gmtk_media_player_set_state (GMTK_MEDIA_PLAYER(media), MEDIA_STATE_STOP);
         }
         lastguistate = guistate;
@@ -1502,7 +1485,7 @@ gboolean resize_window(void *data)
             gtk_widget_set_sensitive(GTK_WIDGET(menuitem_view_info), TRUE);
             gtk_widget_set_sensitive(GTK_WIDGET(menuitem_edit_set_subtitle), TRUE);
             gtk_widget_set_sensitive(GTK_WIDGET(menuitem_edit_set_audiofile), TRUE);
-            dbus_disable_screensaver();
+            //dbus_disable_screensaver();
             if (embed_window == -1) {
                 gtk_widget_show_all(window);
                 gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_view_info), FALSE);
@@ -1804,9 +1787,6 @@ gboolean popup_handler(GtkWidget * widget, GdkEvent * event, void *data)
 
         event_button = (GdkEventButton *) event;
 
-        dbus_send_event("MouseDown", event_button->button);
-        dbus_send_event("MouseClicked", 0);
-
         if (event_button->button == 3 && disable_context_menu == 0) {
             gtk_menu_popup(menu, NULL, NULL, NULL, NULL, event_button->button, event_button->time);
             return TRUE;
@@ -1861,10 +1841,7 @@ gboolean popup_handler(GtkWidget * widget, GdkEvent * event, void *data)
     }
 
     if (event->type == GDK_BUTTON_RELEASE) {
-
         event_button = (GdkEventButton *) event;
-        dbus_send_event("MouseUp", event_button->button);
-
     }
 
     return FALSE;
@@ -1898,14 +1875,6 @@ gboolean media_scroll_event_callback(GtkWidget * widget, GdkEventScroll * event,
 
 gboolean notification_handler(GtkWidget * widget, GdkEventCrossing * event, void *data)
 {
-    if (event->type == GDK_ENTER_NOTIFY) {
-        dbus_send_event("EnterWindow", 0);
-    }
-
-    if (event->type == GDK_LEAVE_NOTIFY) {
-        dbus_send_event("LeaveWindow", 0);
-    }
-
     return FALSE;
 }
 
@@ -1987,10 +1956,8 @@ gboolean delete_callback(GtkWidget * widget, GdkEvent * event, void *data)
         while (gtk_events_pending()) {
             gtk_main_iteration();
         }
-        dbus_cancel();
     }
-    dbus_enable_screensaver();
-    dbus_unhook();
+//    dbus_enable_screensaver();
 
     if (use_defaultpl && embed_window == 0)
         save_playlist_pls(default_playlist);
@@ -2660,12 +2627,6 @@ gboolean play_callback(GtkWidget * widget, GdkEventExpose * event, void *data)
         }
     }
 
-    if (idle == NULL) {
-        dbus_send_rpsignal("RP_Play");
-    }
-    dbus_send_rpsignal_with_int("RP_SetGUIState",
-                                media_state_to_playstate(gmtk_media_player_get_media_state(GMTK_MEDIA_PLAYER(media))));
-
     return FALSE;
 }
 
@@ -2728,14 +2689,6 @@ gboolean stop_callback(GtkWidget * widget, GdkEventExpose * event, void *data)
     g_strlcpy(idledata->progress_text, _("Stopped"), sizeof(idledata->progress_text));
     g_idle_add(set_progress_text, idledata);
 
-    if (idle == NULL) {
-        dbus_send_rpsignal("RP_Stop");
-    }
-
-    dbus_send_rpsignal_with_int("RP_SetGUIState",
-                                media_state_to_playstate(gmtk_media_player_get_media_state(GMTK_MEDIA_PLAYER(media))));
-    dbus_enable_screensaver();
-
     return FALSE;
 }
 
@@ -2753,10 +2706,6 @@ gboolean ff_callback(GtkWidget * widget, GdkEventExpose * event, void *data)
         }
     }
 
-    if (rpconsole != NULL && widget != NULL) {
-        dbus_send_rpsignal("RP_FastForward");
-    }
-
     return FALSE;
 }
 
@@ -2771,10 +2720,6 @@ gboolean rew_callback(GtkWidget * widget, GdkEventExpose * event, void *data)
                 idledata->position = 0;
             gmtk_media_tracker_set_percentage(tracker, idledata->position / idledata->length);
         }
-    }
-
-    if (rpconsole != NULL && widget != NULL) {
-        dbus_send_rpsignal("RP_FastReverse");
     }
 
     return FALSE;
@@ -2948,8 +2893,6 @@ void vol_slider_callback(GtkRange * range, gpointer user_data)
             gm_audio_set_volume(&audio_device, gtk_range_get_value(range));
     }
 
-    dbus_send_rpsignal_with_double("RP_Volume", gtk_range_get_value(GTK_RANGE(vol_slider)));
-    mpris_send_signal_VolumeChanged();
 }
 
 #ifdef GTK2_12_ENABLED
@@ -2976,8 +2919,6 @@ void vol_button_value_changed_callback(GtkScaleButton * volume, gdouble value, g
             gm_audio_set_volume(&audio_device, value);
     }
 
-    dbus_send_rpsignal_with_double("RP_Volume", value * 100.0);
-    mpris_send_signal_VolumeChanged();
 }
 #endif
 
@@ -4597,8 +4538,8 @@ void config_apply(GtkWidget * widget, void *data)
     g_free(filename);
 
     // don't reload plugins when running in plugin mode
-    if (embed_window == 0 && control_id == 0)
-        dbus_reload_plugins();
+//    if (embed_window == 0 && control_id == 0)
+//        dbus_reload_plugins();
 
     gmtk_media_player_restart(GMTK_MEDIA_PLAYER(media));
     gtk_widget_destroy(widget);
@@ -7089,14 +7030,12 @@ void player_attribute_changed_callback(GmtkMediaTracker * tracker, GmtkMediaPlay
         break;
 
     case ATTRIBUTE_SPEED_SET:
-        mpris_send_signal_RateChanged();
         break;
 
     default:
         gm_log(verbose, G_LOG_LEVEL_INFO, "Unhandled attribute change %i", attribute);
     }
 
-    mpris_send_signal_Updated_Metadata();
 }
 
 void player_media_state_changed_callback(GtkButton * button, GmtkMediaPlayerMediaState media_state, gpointer data)
@@ -7141,8 +7080,6 @@ void player_media_state_changed_callback(GtkButton * button, GmtkMediaPlayerMedi
                     // nothing is on the playlist and we are not looping so ask plugin for next item
                     if (embed_window != 0 || control_id != 0) {
                         js_state = STATE_MEDIAENDED;
-                        dbus_send_event("MediaComplete", 0);
-                        dbus_open_next();
                     }
                 }
 
@@ -7151,10 +7088,6 @@ void player_media_state_changed_callback(GtkButton * button, GmtkMediaPlayerMedi
                 }
             }
         } else {
-            if (embed_window != 0 || control_id != 0) {
-                dbus_send_event("MediaComplete", 0);
-                dbus_open_next();
-            }
             if (next_iter != NULL) {
                 g_idle_add(async_play_iter, next_iter);
                 next_iter = NULL;
@@ -7193,8 +7126,7 @@ void player_media_state_changed_callback(GtkButton * button, GmtkMediaPlayerMedi
         g_signal_connect(G_OBJECT(menuitem_play), "activate", G_CALLBACK(menuitem_play_callback), NULL);
         gtk_menu_shell_insert(GTK_MENU_SHELL(popup_menu), GTK_WIDGET(menuitem_play), 0);
         gtk_widget_show(GTK_WIDGET(menuitem_play));
-        dbus_enable_screensaver();
-        dbus_send_event("MediaStopped", 0);
+//        dbus_enable_screensaver();
         g_strlcpy(idledata->media_info, "", sizeof(idledata->media_info));
         gtk_widget_hide(media_hbox);
         g_strlcpy(idledata->display_name, "", sizeof(idledata->display_name));
@@ -7232,12 +7164,11 @@ void player_media_state_changed_callback(GtkButton * button, GmtkMediaPlayerMedi
         g_signal_connect(G_OBJECT(menuitem_play), "activate", G_CALLBACK(menuitem_pause_callback), NULL);
         gtk_menu_shell_insert(GTK_MENU_SHELL(popup_menu), GTK_WIDGET(menuitem_play), 0);
         gtk_widget_show(GTK_WIDGET(menuitem_play));
-        if (idledata->videopresent)
-            dbus_disable_screensaver();
+//        if (idledata->videopresent)
+//            dbus_disable_screensaver();
         gmtk_media_tracker_set_text(GMTK_MEDIA_TRACKER(tracker), _("Playing"));
         gmtk_media_player_set_attribute_boolean(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_SUB_VISIBLE,
                                                 gtk_check_menu_item_get_active(menuitem_view_subtitles));
-        dbus_send_event("MediaPlaying", 0);
         g_idle_add(set_media_label, idledata);
         if (gmtk_media_player_get_attribute_string(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_TITLE) != NULL) {
             g_strlcpy(idledata->display_name,
@@ -7283,15 +7214,13 @@ void player_media_state_changed_callback(GtkButton * button, GmtkMediaPlayerMedi
         g_signal_connect(G_OBJECT(menuitem_play), "activate", G_CALLBACK(menuitem_play_callback), NULL);
         gtk_menu_shell_insert(GTK_MENU_SHELL(popup_menu), GTK_WIDGET(menuitem_play), 0);
         gtk_widget_show(GTK_WIDGET(menuitem_play));
-        dbus_enable_screensaver();
+//        dbus_enable_screensaver();
         gmtk_media_tracker_set_text(GMTK_MEDIA_TRACKER(tracker), _("Paused"));
-        dbus_send_event("MediaPaused", 0);
         break;
     default:
         break;
     }
 
-    mpris_send_signal_PlaybackStatus();
 }
 
 void player_error_message_callback(GmtkMediaPlayer * media, gchar * message)
@@ -7351,7 +7280,6 @@ void player_position_changed_callback(GmtkMediaTracker * tracker, gdouble positi
         g_free(text);
         update_status_icon();
         g_idle_add(make_panel_and_mouse_invisible, NULL);
-        dbus_send_event("TimeChanged", 0);
     }
 }
 
@@ -7361,7 +7289,6 @@ gboolean tracker_value_changed_callback(GtkWidget * widget, gint value, gpointer
         if (!autopause) {
             if (gmtk_media_player_get_media_state(GMTK_MEDIA_PLAYER(media)) != MEDIA_STATE_STOP) {
                 gmtk_media_player_seek(GMTK_MEDIA_PLAYER(media), value * 1.0, SEEK_PERCENT);
-                mpris_send_signal_Seeked();
             }
         }
     }
@@ -7375,7 +7302,6 @@ gboolean tracker_difference_callback(GtkWidget * widget, gdouble difference, voi
         if (!autopause) {
             if (gmtk_media_player_get_media_state(GMTK_MEDIA_PLAYER(media)) != MEDIA_STATE_STOP) {
                 gmtk_media_player_seek(GMTK_MEDIA_PLAYER(media), difference, SEEK_RELATIVE);
-                mpris_send_signal_Seeked();
             }
         }
     }
@@ -7408,7 +7334,6 @@ gboolean load_href_callback(GtkWidget * widget, GdkEventExpose * event, gchar * 
         }
 
         if (event_button->button != 3) {
-            dbus_open_by_hrefid(hrefid);
             // do this in the plugin when we should
             // gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_showcontrols), TRUE);
             return TRUE;

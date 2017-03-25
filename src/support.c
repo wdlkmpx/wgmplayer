@@ -2784,7 +2784,6 @@ gpointer get_cover_art(gpointer data)
         cover_art_uri = g_strdup_printf("file://%s", cache_file);
         pixbuf = gdk_pixbuf_new_from_file(cache_file, NULL);
         g_idle_add(set_cover_art, pixbuf);
-        mpris_send_signal_Updated_Metadata();
     } else {
         pixbuf = NULL;
         g_idle_add(set_cover_art, pixbuf);

@@ -10,7 +10,11 @@ AM_CPPFLAGS = \
 	-I../pixmaps \
 	$(GTK_CFLAGS) \
     $(GIO_CFLAGS) \
+<<<<<<< HEAD
 	$(DBUS_CFLAGS) \
+=======
+	$(GCONF_CFLAGS) \
+>>>>>>> a2eb196b... remove dbus stuff
 	$(ALSA_CFLAGS) \
 	$(PULSE_CFLAGS) \
     $(NOTIFY_CFLAGS) \
@@ -47,8 +51,6 @@ gnome_mplayer_SOURCES = \
 	mntent_compat.h \
 	mntent_compat.c \
 	main.c \
-	dbus-interface.c \
-	dbus-interface.h \
 	common.h \
 	../pixmaps/gnome_mplayer.xpm \
 	../pixmaps/media-playback-pause.xpm \
@@ -60,8 +62,6 @@ gnome_mplayer_SOURCES = \
 	../pixmaps/media-skip-forward.xpm \
 	../pixmaps/view-fullscreen.xpm \
 	langlist.h \
-	mpris-interface.c \
-	mpris-interface.h \
 	database.c \
 	database.h
 
@@ -73,7 +73,6 @@ gnome_mplayer_LDADD = \
     $(X11_LIBS) \
     $(GTK_LIBS) \
     $(GIO_LIBS) \
-    $(DBUS_LIBS) \
     $(ALSA_LIBS) \
 	$(PULSE_LIBS) \
     $(NOTIFY_LIBS) \

@@ -42,8 +42,6 @@
 
 #include "common.h"
 #include "support.h"
-#include "dbus-interface.h"
-#include "mpris-interface.h"
 #include "gmtk.h"
 #include "database.h"
 
@@ -837,7 +835,7 @@ int main(int argc, char *argv[])
     start_second = 0;
     play_length = 0;
     save_loc = TRUE;
-    screensaver_disabled = FALSE;
+    //screensaver_disabled = FALSE;
     update_control_flag = FALSE;
     skip_fixed_allocation_on_show = FALSE;
     skip_fixed_allocation_on_hide = FALSE;
@@ -1342,11 +1340,6 @@ int main(int argc, char *argv[])
     gtk_range_set_value(GTK_RANGE(vol_slider), audio_device.volume);
 #endif
     use_volume_option = detect_volume_option();
-    dbus_hookup(embed_window, control_id);
-    // don't hook up MPRIS when running in embedded mode
-    if (embed_window == 0) {
-        mpris_hookup(control_id);
-    }
     show_window(embed_window);
     if (playiter)
         play_iter(&iter, 0);

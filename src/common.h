@@ -494,25 +494,7 @@ gboolean make_panel_and_mouse_invisible(gpointer data);
 gboolean idle_make_button(gpointer data);
 gboolean set_show_seek_buttons(gpointer data);
 void make_button(gchar * src, gchar * href);
-void dbus_open_by_hrefid(gchar * hrefid);
-void dbus_open_next();
-void dbus_cancel();
-void dbus_reload_plugins();
-void dbus_send_rpsignal(gchar * signal);
-void dbus_send_rpsignal_with_int(gchar * signal, int value);
-void dbus_send_rpsignal_with_double(gchar * signal, gdouble value);
-void dbus_send_rpsignal_with_string(gchar * signal, gchar * value);
-void dbus_send_event(gchar * event, gint button);
-void dbus_unhook();
-void dbus_enable_screensaver();
-void dbus_disable_screensaver();
 void menuitem_edit_random_callback(GtkMenuItem * menuitem, void *data);
-
-void mpris_send_signal_PlaybackStatus();
-void mpris_send_signal_Updated_Metadata();
-void mpris_send_signal_Seeked();
-void mpris_send_signal_VolumeChanged();
-void mpris_send_signal_RateChanged();
 
 gboolean update_audio_meter(gpointer data);
 
