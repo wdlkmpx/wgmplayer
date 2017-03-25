@@ -10,15 +10,9 @@ AM_CPPFLAGS = \
 	-I../pixmaps \
 	$(GTK_CFLAGS) \
     $(GIO_CFLAGS) \
-<<<<<<< HEAD
-	$(DBUS_CFLAGS) \
-=======
-	$(GCONF_CFLAGS) \
->>>>>>> a2eb196b... remove dbus stuff
 	$(ALSA_CFLAGS) \
 	$(PULSE_CFLAGS) \
     $(NOTIFY_CFLAGS) \
-    $(MUSICBRAINZ_CFLAGS) \
 	$(XSCRNSAVER_CFLAGS) \
     $(LIBGDA_CFLAGS)   
 
@@ -30,7 +24,6 @@ AM_CFLAGS =\
      $(GIO_DEFINES) \
 	 $(ALSA_DEFINES) \
      $(NOTIFY_DEFINES) \
-     $(MUSICBRAINZ_DEFINES) \
      $(LIBGDA_DEFINES) \
      -I../gmtk
      ## -DGTK_DISABLE_DEPRECATED 
@@ -74,7 +67,6 @@ gnome_mplayer_LDADD = \
     $(ALSA_LIBS) \
 	$(PULSE_LIBS) \
     $(NOTIFY_LIBS) \
-    $(MUSICBRAINZ_LIBS) \
     $(XSCRNSAVER_LIBS) \
     $(LIBGDA_LIBS) \
     ../gmtk/.libs/libgmlib.a \

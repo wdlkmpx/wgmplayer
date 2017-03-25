@@ -207,18 +207,6 @@ AS_IF([test "x$with_libnotify" != xno],
     ])
 
   
-AC_ARG_WITH([libmusicbrainz3],
-    [AS_HELP_STRING([--with-libmusicbrainz3],
-        [Add support for libmusicbrainz3])],
-        [],
-        [with_libmusicbrainz3=check])
-AS_IF([test "x$with_libmusicbrainz3" != xno], 
-    [PKG_CHECK_MODULES(MUSICBRAINZ,[libmusicbrainz3 libcurl],[MUSICBRAINZ_DEFINES="-DHAVE_MUSICBRAINZ" AC_DEFINE([MUSICBRAINZ_ENABLED],[1],[Define to 1 if you have musicbrainz3 support])],AC_MSG_NOTICE([Compiling without libmusicbrainz3 support]))
-    AC_SUBST(MUSICBRAINZ_DEFINES)
-    AC_SUBST(MUSICBRAINZ_CFLAGS)
-    AC_SUBST(MUSICBRAINZ_LIBS)
-    ])    
-
 AC_ARG_ENABLE(gseal,
 		AC_HELP_STRING([--enable-gseal],[Enable flag for testing]),
         [case "${enableval}" in

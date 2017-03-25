@@ -38,11 +38,6 @@
 #include <gio/gio.h>
 #endif
 
-#ifdef HAVE_MUSICBRAINZ
-#include <musicbrainz3/mb_c.h>
-#include <curl/curl.h>
-#endif
-
 #include <database.h>
 
 gint get_bitrate(gchar * name);
@@ -79,9 +74,6 @@ gchar *get_localfile_from_uri(gchar * uri);
 gboolean is_uri_dir(gchar * uri);
 gboolean uri_exists(gchar * uri);
 gchar *switch_protocol(const gchar * uri, gchar * new_protocol);
-
-gchar *get_cover_art_url(gchar * artist, gchar * title, gchar * album);
-gpointer get_cover_art(gpointer data);
 
 gboolean detect_volume_option();
 gboolean map_af_export_file(gpointer data);

@@ -429,8 +429,6 @@ gint play_iter(GtkTreeIter * playiter, gint restart_second)
             metadata->artist = g_strstrip(g_strdup(artist));
         if (album != NULL)
             metadata->album = g_strstrip(g_strdup(album));
-        gm_log(verbose, G_LOG_LEVEL_DEBUG, "starting get_cover_art(%s) thread", metadata->uri);
-        g_thread_create(get_cover_art, metadata, FALSE, NULL);
     } else {
         gtk_image_clear(GTK_IMAGE(cover_art));
     }
@@ -1078,11 +1076,6 @@ int main(int argc, char *argv[])
     gm_log(verbose, G_LOG_LEVEL_INFO, "Running with panscan enabled (mplayer svn r29565 or higher required)");
 #endif
     gm_log(verbose, G_LOG_LEVEL_INFO, "Using audio device: %s", audio_device_name);
-#ifdef HAVE_MUSICBRAINZ
-    if (curl_global_init(CURL_GLOBAL_ALL) != 0) {
-        gm_log(verbose, G_LOG_LEVEL_MESSAGE, "CURL initialization failed");
-    }
-#endif
 
     if (softvol) {
         gm_log(verbose, G_LOG_LEVEL_INFO, "Using MPlayer Software Volume control");
