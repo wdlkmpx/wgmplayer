@@ -219,10 +219,6 @@ msgstr "Ignora la preferenze singola istanza per questa instanza"
 msgid "Keep window on top"
 msgstr "Tieni la finestra in cima"
 
-#: src/main.c:166
-msgid "Load all tracks from media player using gpod"
-msgstr "Carica tutte le tracce dal lettore multimediale usando gpod"
-
 #: src/main.c:170
 msgid "Don't fetch new cover art images"
 msgstr "Non caricare nuovi immagini di copertina"

@@ -214,10 +214,6 @@ msgstr "此執行緒忽略單一執行緒的設定"
 msgid "Keep window on top"
 msgstr "視窗保持在最上層"
 
-#: src/main.c:166
-msgid "Load all tracks from media player using gpod"
-msgstr "使用 gpod 載入所有音樂"
-
 #: src/main.c:170
 msgid "Don't fetch new cover art images"
 msgstr "不要擷取新的封面圖像"

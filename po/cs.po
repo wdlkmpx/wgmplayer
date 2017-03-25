@@ -220,10 +220,6 @@ msgstr "Pro tuto instanci ignorovat volby režimu jedné instance"
 msgid "Keep window on top"
 msgstr "Držet okno na vrchu"
 
-#: src/main.c:166
-msgid "Load all tracks from media player using gpod"
-msgstr "Načíst všechny stopy z přehrávače médií pomocí gpod"
-
 #: src/main.c:170
 msgid "Don't fetch new cover art images"
 msgstr "Nestahovat nové obrázky přebalů"

@@ -217,10 +217,6 @@ msgstr "Ігнорувати єдині налаштування для цьог
 msgid "Keep window on top"
 msgstr "Поверх всіх вікон"
 
-#: src/main.c:166
-msgid "Load all tracks from media player using gpod"
-msgstr "Завантажувати всі доріжки з програвача використовуючи gpod"
-
 #: src/main.c:170
 msgid "Don't fetch new cover art images"
 msgstr "Не витягувати обкладинки альбомів"

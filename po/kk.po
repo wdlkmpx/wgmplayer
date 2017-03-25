@@ -215,10 +215,6 @@ msgstr ""
 msgid "Keep window on top"
 msgstr "Терезені алдында ұстау"
 
-#: src/main.c:166
-msgid "Load all tracks from media player using gpod"
-msgstr ""
-
 #: src/main.c:170
 msgid "Don't fetch new cover art images"
 msgstr "Жаңа мұқабаларды жүктемеу"

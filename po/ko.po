@@ -211,10 +211,6 @@ msgstr "이 인스턴스에 대해서 싱글 인스턴스 설정 무시하기"
 msgid "Keep window on top"
 msgstr "그놈 엠플레이어 창을 다른 창 위에 오도록 하기"
 
-#: src/main.c:166
-msgid "Load all tracks from media player using gpod"
-msgstr "아이팟에서 모든 트랙을 읽어 들입니다"
-
 #: src/main.c:170
 msgid "Don't fetch new cover art images"
 msgstr "새로운 커버 아트 이미지 가져오지 않기"

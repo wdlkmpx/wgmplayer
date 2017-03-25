@@ -223,10 +223,6 @@ msgstr ""
 msgid "Keep window on top"
 msgstr "Ablak mindig legfelül"
 
-#: src/main.c:166
-msgid "Load all tracks from media player using gpod"
-msgstr "Sávok importálása a médialejátszóból gpod használatával"
-
 #: src/main.c:170
 msgid "Don't fetch new cover art images"
 msgstr "Ne töltse le a borító képeket"

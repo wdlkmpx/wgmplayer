@@ -77,9 +77,6 @@ static GtkMenuItem *menuitem_file_tv;
 static GtkMenu *menu_file_tv;
 static GtkMenuItem *menuitem_file_open_atv;
 static GtkMenuItem *menuitem_file_open_dtv;
-#ifdef HAVE_GPOD
-static GtkMenuItem *menuitem_file_open_ipod;
-#endif
 static GtkMenuItem *menuitem_file_recent;
 static GtkWidget *menuitem_file_recent_items;
 static GtkMenuItem *menuitem_file_sep2;
@@ -3624,19 +3621,6 @@ void menuitem_open_dtv_callback(GtkMenuItem * menuitem, void *data)
         g_idle_add(async_play_iter, &iter);
     }
 }
-
-#ifdef HAVE_GPOD
-void menuitem_open_ipod_callback(GtkMenuItem * menuitem, void *data)
-{
-    gpod_mount_point = find_gpod_mount_point();
-    gm_log(verbose, G_LOG_LEVEL_DEBUG, "mount point is %s", gpod_mount_point);
-    if (gpod_mount_point != NULL) {
-        gpod_load_tracks(gpod_mount_point);
-    } else {
-        gm_log(verbose, G_LOG_LEVEL_MESSAGE, "Unable to find gpod mount point");
-    }
-}
-#endif
 
 void menuitem_save_callback(GtkMenuItem * menuitem, void *data)
 {
@@ -7751,13 +7735,6 @@ GtkWidget *create_window(gint windowid)
     gtk_menu_shell_append(GTK_MENU_SHELL(menu_file_tv), GTK_WIDGET(menuitem_file_open_atv));
     menuitem_file_open_dtv = GTK_MENU_ITEM(gtk_image_menu_item_new_with_mnemonic(_("Open _Digital TV")));
     gtk_menu_shell_append(GTK_MENU_SHELL(menu_file_tv), GTK_WIDGET(menuitem_file_open_dtv));
-#ifdef HAVE_GPOD
-    menuitem_file_open_ipod = GTK_MENU_ITEM(gtk_image_menu_item_new_with_mnemonic(_("Open _iPod™")));
-    gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM
-                                  (menuitem_file_open_ipod),
-                                  gtk_image_new_from_icon_name("multimedia-player", GTK_ICON_SIZE_MENU));
-    gtk_menu_shell_append(GTK_MENU_SHELL(menu_file), GTK_WIDGET(menuitem_file_open_ipod));
-#endif
 #ifdef GTK2_12_ENABLED
 #ifdef GIO_ENABLED
     recent_manager = gtk_recent_manager_get_default();
@@ -7797,9 +7774,6 @@ GtkWidget *create_window(gint windowid)
     g_signal_connect(G_OBJECT(menuitem_file_open_vcd), "activate", G_CALLBACK(menuitem_open_vcd_callback), NULL);
     g_signal_connect(G_OBJECT(menuitem_file_open_atv), "activate", G_CALLBACK(menuitem_open_atv_callback), NULL);
     g_signal_connect(G_OBJECT(menuitem_file_open_dtv), "activate", G_CALLBACK(menuitem_open_dtv_callback), NULL);
-#ifdef HAVE_GPOD
-    g_signal_connect(G_OBJECT(menuitem_file_open_ipod), "activate", G_CALLBACK(menuitem_open_ipod_callback), NULL);
-#endif
 #ifdef GTK2_12_ENABLED
 #ifdef GIO_ENABLED
     g_signal_connect(G_OBJECT(menuitem_file_recent_items),

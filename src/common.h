@@ -385,7 +385,6 @@ gboolean replace_and_play;
 gboolean bring_to_front;
 gboolean show_notification;
 gboolean show_status_icon;
-gchar *gpod_mount_point;
 gboolean disable_cover_art_fetch;
 //gboolean updating_recent;
 gboolean large_buttons;

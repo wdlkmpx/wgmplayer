@@ -55,7 +55,6 @@ static gboolean use_volume_option;
 //static gboolean restore_info;
 static gboolean new_instance;
 static gboolean use_pausing_keep_force;
-static gboolean load_tracks_from_gpod;
 // tv stuff
 static gchar *tv_device;
 static gchar *tv_driver;
@@ -159,11 +158,6 @@ static GOptionEntry entries[] = {
     {"keep_on_top", 0, 0, G_OPTION_ARG_NONE, &keep_on_top,
      N_("Keep window on top"),
      NULL},
-#ifdef HAVE_GPOD
-    {"load_tracks_from_gpod", 0, 0, G_OPTION_ARG_NONE, &load_tracks_from_gpod,
-     N_("Load all tracks from media player using gpod"),
-     NULL},
-#endif
     {"disable_cover_art_fetch", 0, 0, G_OPTION_ARG_NONE, &disable_cover_art_fetch,
      N_("Don't fetch new cover art images"),
      NULL},
@@ -818,8 +812,6 @@ int main(int argc, char *argv[])
     show_status_icon = TRUE;
     lang_group = NULL;
     audio_group = NULL;
-    gpod_mount_point = NULL;
-    load_tracks_from_gpod = FALSE;
     disable_cover_art_fetch = FALSE;
     fullscreen = 0;
     vo = NULL;
@@ -1306,17 +1298,6 @@ int main(int argc, char *argv[])
         }
 
     }
-#ifdef HAVE_GPOD
-    if (load_tracks_from_gpod) {
-        gpod_mount_point = find_gpod_mount_point();
-        gm_log(verbose, G_LOG_LEVEL_MESSAGE, "mount point is %s", gpod_mount_point);
-        if (gpod_mount_point != NULL) {
-            gpod_load_tracks(gpod_mount_point);
-        } else {
-            gm_log(verbose, G_LOG_LEVEL_MESSAGE, "Unable to find gpod mount point");
-        }
-    }
-#endif
 
     gm_audio_update_device(&audio_device);
     // disabling this line seems to help with hangs on startup when using pulseaudio

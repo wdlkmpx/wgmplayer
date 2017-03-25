@@ -219,10 +219,6 @@ msgstr "Ignoră preferință pentru o singură instanță pentru această instan
 msgid "Keep window on top"
 msgstr "Întotneauna deasupra altor feresetre"
 
-#: src/main.c:166
-msgid "Load all tracks from media player using gpod"
-msgstr "Încarcă toate piesele din media player folosind gpod"
-
 #: src/main.c:170
 msgid "Don't fetch new cover art images"
 msgstr "Nu descărca coperți de albume noi"

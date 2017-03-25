@@ -214,10 +214,6 @@ msgstr "התעלם מהעדפות קטע בודד לקטע הנוכחי"
 msgid "Keep window on top"
 msgstr "השאר את החלון עליון"
 
-#: src/main.c:166
-msgid "Load all tracks from media player using gpod"
-msgstr "טען את כל הרצועות מנגן המדיה על ידי gpod"
-
 #: src/main.c:170
 msgid "Don't fetch new cover art images"
 msgstr "אל תשיג תמונות אומנות דיסק חדשות"

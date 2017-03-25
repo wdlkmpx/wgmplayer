@@ -221,10 +221,6 @@ msgstr "Enkele instantievoorkeur voor deze instantie negeren"
 msgid "Keep window on top"
 msgstr "Houd venster bovenop"
 
-#: src/main.c:166
-msgid "Load all tracks from media player using gpod"
-msgstr "Alle tracks van mediaspeler laden met gpod"
-
 #: src/main.c:170
 msgid "Don't fetch new cover art images"
 msgstr "Geen nieuwe albumhoezen ophalen"

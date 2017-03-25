@@ -220,10 +220,6 @@ msgstr "Само сада занемари подешавања за један 
 msgid "Keep window on top"
 msgstr "Држи прозор изнад осталих"
 
-#: src/main.c:166
-msgid "Load all tracks from media player using gpod"
-msgstr "Учитај све нумере са џепне музичке справе помоћу гпода"
-
 #: src/main.c:170
 msgid "Don't fetch new cover art images"
 msgstr "Не преузимај нове омоте за албум"

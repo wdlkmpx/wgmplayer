@@ -224,10 +224,6 @@ msgstr "Αγνόηση λειτουργίας (SIM) προς το παρόν"
 msgid "Keep window on top"
 msgstr "Παράθυρο σε επικάλυψη"
 
-#: src/main.c:166
-msgid "Load all tracks from media player using gpod"
-msgstr "Φόρτωμα όλων των κομματιών από τον αναπαραγωγέα με χρήση gpod"
-
 #: src/main.c:170
 msgid "Don't fetch new cover art images"
 msgstr "Όχι μεταφόρτωση νέων εικόνων εξωφύλλων"

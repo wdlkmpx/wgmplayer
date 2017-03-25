@@ -214,10 +214,6 @@ msgstr ""
 msgid "Keep window on top"
 msgstr "Giữ cho cửa sổ ở trên cùng"
 
-#: src/main.c:166
-msgid "Load all tracks from media player using gpod"
-msgstr ""
-
 #: src/main.c:170
 msgid "Don't fetch new cover art images"
 msgstr "Không tải ảnh bìa mới"

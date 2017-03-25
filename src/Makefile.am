@@ -18,7 +18,6 @@ AM_CPPFLAGS = \
 	$(ALSA_CFLAGS) \
 	$(PULSE_CFLAGS) \
     $(NOTIFY_CFLAGS) \
-    $(GPOD_CFLAGS) \
     $(MUSICBRAINZ_CFLAGS) \
 	$(XSCRNSAVER_CFLAGS) \
     $(LIBGDA_CFLAGS)   
@@ -31,7 +30,6 @@ AM_CFLAGS =\
      $(GIO_DEFINES) \
 	 $(ALSA_DEFINES) \
      $(NOTIFY_DEFINES) \
-     $(GPOD_DEFINES) \
      $(MUSICBRAINZ_DEFINES) \
      $(LIBGDA_DEFINES) \
      -I../gmtk
@@ -76,7 +74,6 @@ gnome_mplayer_LDADD = \
     $(ALSA_LIBS) \
 	$(PULSE_LIBS) \
     $(NOTIFY_LIBS) \
-    $(GPOD_LIBS) \
     $(MUSICBRAINZ_LIBS) \
     $(XSCRNSAVER_LIBS) \
     $(LIBGDA_LIBS) \

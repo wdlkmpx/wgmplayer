@@ -206,30 +206,7 @@ AS_IF([test "x$with_libnotify" != xno],
      AC_SUBST(NOTIFY_LIBS)
     ])
 
-AC_ARG_WITH([libgpod],
-    [AS_HELP_STRING([--with-libgpod],
-        [Add support for libgpod])],
-        [],
-        [with_libgpod=check])
-AS_IF([test "x$with_libgpod" != xno], 
-    [PKG_CHECK_MODULES(GPOD06,[libgpod-1.0 <= 0.6.0],[GPOD_DEFINES="-DHAVE_GPOD -DGPOD_06" AC_DEFINE([GPOD_ENABLED],[1],[Define to 1 if you have gpod support])],AC_MSG_NOTICE([Compiling without libgpod 0.6.0 support]))
-    AC_SUBST(GPOD_DEFINES)
-    AC_SUBST(GPOD06_CFLAGS)
-    AC_SUBST(GPOD06_LIBS)
-    ])
-
-AS_IF([test "x$with_libgpod" != xno], 
-    [PKG_CHECK_MODULES(GPOD07,[libgpod-1.0 >= 0.7.0],[GPOD_DEFINES="-DHAVE_GPOD -DGPOD_07" AC_DEFINE([GPOD_ENABLED],[1],[Define to 1 if you have gpod support])],AC_MSG_NOTICE([Compiling without libgpod 0.7.0 support]))
-    AC_SUBST(GPOD_DEFINES)
-    AC_SUBST(GPOD07_CFLAGS)
-    AC_SUBST(GPOD07_LIBS)
-    ])
-    
-GPOD_CFLAGS="$GPOD06_CFLAGS $GPOD07_CFLAGS"
-GPOD_LIBS="$GPOD06_LIBS $GPOD07_LIBS"    
-AC_SUBST(GPOD_CFLAGS)
-AC_SUBST(GPOD_LIBS)    
-    
+  
 AC_ARG_WITH([libmusicbrainz3],
     [AS_HELP_STRING([--with-libmusicbrainz3],
         [Add support for libmusicbrainz3])],
