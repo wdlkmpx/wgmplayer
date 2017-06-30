@@ -63,9 +63,7 @@ libgmlib_la_SOURCES = \
 	
 libgmlib_la_CFLAGS = -fPIC \
 	$(GLIB_CFLAGS) \
-	$(GCONF_CFLAGS) \
 	$(GIO_CFLAGS) \
-	$(GCONF_DEFINES) \
 	$(GIO_DEFINES) \
 	$(GLIB2_26_DEFINES) \
 	$(ALSA_CFLAGS) \
@@ -79,7 +77,6 @@ libgmlib_la_LDFLAGS = \
 libgmlib_la_LIBADD = \
     $(LIBS) \
 	$(GLIB_LIBS) \
-	$(GCONF_LIBS) \
 	$(GIO_LIBS) \
 	$(ALSA_LIBS) \
 	$(PULSE_LIBS)	

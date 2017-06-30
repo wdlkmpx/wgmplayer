@@ -17,7 +17,7 @@ old_library='libgmtk.a'
 inherited_linker_flags=' -pthread'
 
 # Libraries that this one depends upon.
-dependency_libs=' -L.libs /mnt/sda2/git/gnome-mplayer-gitz/gmtk/libgmlib.la -lgconf-2 -lgtk-x11-2.0 -lgdk-x11-2.0 -lpangocairo-1.0 -latk-1.0 -lcairo -lgdk_pixbuf-2.0 /usr/lib/i386-linux-gnu/libgio-2.0.la /usr/lib/libgobject-2.0.la /usr/lib/libgmodule-2.0.la -ldl -lz -lresolv -lmount -lpangoft2-1.0 -lpango-1.0 /usr/lib/i386-linux-gnu/libgobject-2.0.la -lfontconfig /usr/lib/i386-linux-gnu/libfreetype.la -lffi /usr/lib/i386-linux-gnu/libgthread-2.0.la /usr/lib/libglib-2.0.la /usr/lib/i386-linux-gnu/libglib-2.0.la -lpcre -lpthread -lasound'
+dependency_libs=' -L.libs /mnt/sda2/git/gnome-mplayer-gitz/gmtk/libgmlib.la -lgtk-x11-2.0 -lgdk-x11-2.0 -lpangocairo-1.0 -latk-1.0 -lcairo -lgdk_pixbuf-2.0 /usr/lib/i386-linux-gnu/libgio-2.0.la /usr/lib/libgobject-2.0.la /usr/lib/libgmodule-2.0.la -ldl -lz -lresolv -lmount -lpangoft2-1.0 -lpango-1.0 /usr/lib/i386-linux-gnu/libgobject-2.0.la -lfontconfig /usr/lib/i386-linux-gnu/libfreetype.la -lffi /usr/lib/i386-linux-gnu/libgthread-2.0.la /usr/lib/libglib-2.0.la /usr/lib/i386-linux-gnu/libglib-2.0.la -lpcre -lpthread -lasound'
 
 # Names of additional weak libraries provided by this library
 weak_library_names=''
