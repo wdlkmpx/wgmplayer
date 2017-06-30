@@ -128,14 +128,6 @@ AS_IF([test "x$ENABLE_GTK3" != "xyes"],
 
 ])
 
-PKG_CHECK_MODULES(GMLIB, [gmlib >= 1.0.7])
-AC_SUBST(GMLIB_CFLAGS)
-AC_SUBST(GMLIB_LIBS)
-
-PKG_CHECK_MODULES(GMTK, [gmtk >= 1.0.7])
-AC_SUBST(GMTK_CFLAGS)
-AC_SUBST(GMTK_LIBS)
-
 AC_ARG_WITH([gio],
     [AS_HELP_STRING([--with-gio],
         [Use GIO for file I/O])],
@@ -344,26 +336,86 @@ if test x$ENABLE_GSEAL = "xyes"; then
 		AC_SUBST(GTK_CFLAGS)
 fi
 
-BACKEND=`pkg-config --variable=preference_backend gmlib`
 
-if test ${BACKEND} = "gsettings"; then
-    AC_MSG_NOTICE([gmlib is using ${BACKEND} for preference storage])
-    GLIB_GSETTINGS
-    AM_CONDITIONAL([GCONF_SCHEMAS_INSTALL],[false])
-    USE_GSETTINGS=1
-    AC_SUBST(USE_GSETTINGS)
-elif test ${BACKEND} = "gconf"; then
-    AC_MSG_NOTICE([gmlib is using ${BACKEND} for preference storage])
-    GSETTINGS_RULES=""
-    AC_SUBST(GSETTINGS_RULES)
-    #AM_GCONF_SOURCE_2 
-    USE_GCONF=1
-    AC_SUBST(USE_GCONF)    
-elif test ${BACKEND} = "keystore"; then
-    GSETTINGS_RULES=""
-    AC_SUBST(GSETTINGS_RULES)
-    AM_CONDITIONAL([GCONF_SCHEMAS_INSTALL],[false])
+AC_ARG_ENABLE([gsettings],
+    AC_HELP_STRING([--enable-gsettings],[compile using GSettings for preference storage]),
+    [case "${enableval}" in
+    yes) enable_gsettings=yes ;;
+    no) enable_gesttings=no ;;
+    *) AC_MSG_ERROR(bad value ${enableval} for --enable-gsettings) ;;
+    esac], 
+    [enable_gsettings=check])
+
+AC_ARG_ENABLE([gconf],
+    AC_HELP_STRING([--enable-gconf],[compile using GConf for preference storage]),
+    [case "${enableval}" in
+    yes) enable_gconf=yes ;;
+    no) enable_gconf=no ;;
+    *) AC_MSG_ERROR(bad value ${enableval} for --enable-gconf) ;;
+    esac], 
+    [enable_gconf=check])
+
+AC_ARG_ENABLE([keystore],
+    AC_HELP_STRING([--enable-keystore],[compile using KeyStore for preference storage]),
+    [case "${enableval}" in
+    yes) enable_keystore=yes ;;
+    no) enable_keystore=no ;;
+    *) AC_MSG_ERROR(bad value ${enableval} for --enable-keystore) ;;
+    esac], 
+    [enable_keystore=check])
+
+if test "$enable_keystore" = "yes" || test "$enable_gconf" = "yes" || test "$enable_gsettings" = "yes"; then
+    AC_MSG_NOTICE([Using specified backend])    
+else
+    AC_MSG_NOTICE([Determining backend])
+
+    PKG_CHECK_MODULES(GCONF, [gconf-2.0], [enable_gconf=yes], [enable_gconf=no])
+    PKG_CHECK_MODULES(GLIB2_26,[glib-2.0 >= 2.26.0],[enable_gsettings=yes], [enable_gsettings=no])
+
+    if test "$enable_gconf" = "no" && test "$enable_gsettings" = "no"; then
+        enable_keystore=yes
+    fi
 fi
+
+if test "$enable_keystore" = "yes"; then
+    AC_MSG_NOTICE([Using keystore backend])
+    use_gsettings=no
+    USE_GSETTINGS=0
+    use_gconf=no
+    USE_GCONF=0
+    AM_CONDITIONAL([GCONF_SCHEMAS_INSTALL],[false])
+    GSETTINGS_RULES=""
+    AC_SUBST(GSETTINGS_RULES)
+    BACKEND=keystore
+    AC_SUBST(BACKEND)   
+elif test "$enable_gsettings" = "yes"; then
+    AC_MSG_NOTICE([Using GSettings backend])
+    use_gsettings=yes
+    USE_GSETTINGS=1
+    use_gconf=no
+    USE_GCONF=0
+    AC_DEFINE([HAVE_GSETTINGS],[1],[Define to 1 to use GSettings to store preferences])
+    AM_CONDITIONAL([GCONF_SCHEMAS_INSTALL],[false])
+    GLIB_GSETTINGS
+    BACKEND=gsettings
+    AC_SUBST(BACKEND)   
+elif test "$enable_gconf" = "yes"; then
+    AC_MSG_NOTICE([Using GConf backend])
+    use_gsettings=no
+    USE_GSETTINGS=0
+    use_gconf=yes
+    USE_GCONF=1
+    PKG_CHECK_MODULES(GCONF, [gconf-2.0], [enable_gconf=yes], [enable_gconf=no])
+    AC_DEFINE([HAVE_GCONF],[1],[Define to 1 to use GConf to store preferences])
+    GSETTINGS_RULES=""
+    AC_SUBST(GSETTINGS_RULES)    
+    BACKEND=gconf
+    AC_SUBST(BACKEND)   
+fi
+
+AC_SUBST(USE_GCONF)
+AC_SUBST(USE_GSETTINGS)
+
 
 AC_CHECK_HEADERS([mntent.h])
 AC_CHECK_HEADERS([sys/ucred.h])
@@ -375,6 +427,7 @@ Makefile
 icons/Makefile
 icons/48x48/Makefile
 icons/scalable/Makefile
+gmtk/Makefile
 src/Makefile
 po/Makefile.in
 gnome-mplayer.spec

@@ -9,8 +9,6 @@ AM_CPPFLAGS = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
 	-I../pixmaps \
 	$(GTK_CFLAGS) \
-	$(GMLIB_CFLAGS) \
-	$(GMTK_CFLAGS) \
     $(GIO_CFLAGS) \
 	$(DBUS_CFLAGS) \
 	$(GCONF_CFLAGS) \
@@ -33,7 +31,8 @@ AM_CFLAGS =\
      $(NOTIFY_DEFINES) \
      $(GPOD_DEFINES) \
      $(MUSICBRAINZ_DEFINES) \
-     $(LIBGDA_DEFINES)
+     $(LIBGDA_DEFINES) \
+     -I../gmtk
      ## -DGTK_DISABLE_DEPRECATED 
      ## -DGSEAL_ENABLE
 
@@ -75,8 +74,6 @@ gnome_mplayer_LDADD = \
     -lm \
     $(X11_LIBS) \
     $(GTK_LIBS) \
-    $(GMLIB_LIBS) \
-    $(GMTK_LIBS) \
     $(GIO_LIBS) \
     $(DBUS_LIBS) \
     $(GCONF_LIBS) \
@@ -86,7 +83,9 @@ gnome_mplayer_LDADD = \
     $(GPOD_LIBS) \
     $(MUSICBRAINZ_LIBS) \
     $(XSCRNSAVER_LIBS) \
-    $(LIBGDA_LIBS)
+    $(LIBGDA_LIBS) \
+    ../gmtk/.libs/libgmlib.a \
+    ../gmtk/.libs/libgmtk.a
 
 if HAVE_NAUTILUS
 
@@ -111,7 +110,6 @@ libgnome_mplayer_properties_page_so_LDFLAGS = -shared
 libgnome_mplayer_properties_page_so_LDADD = \
 	$(NAUTILUS_LIBS) \
 	$(GTK_LIBS) \
-	$(GMLIB_LIBS) \
 	$(GIO_LIBS)
 
 endif #HAVE_NAUTILUS
@@ -139,7 +137,6 @@ libgnome_mplayer_nemo_properties_page_so_LDFLAGS = -shared
 libgnome_mplayer_nemo_properties_page_so_LDADD = \
 	$(NEMO_LIBS) \
 	$(GTK_LIBS) \
-	$(GMLIB_LIBS) \
 	$(GIO_LIBS)
 
 endif #HAVE_NEMO
@@ -167,7 +164,6 @@ libgnome_mplayer_caja_properties_page_so_LDFLAGS = -shared
 libgnome_mplayer_caja_properties_page_so_LDADD = \
 	$(CAJA_LIBS) \
 	$(GTK_LIBS) \
-	$(GMLIB_LIBS) \
 	$(GIO_LIBS)
 
 endif #HAVE_CAJA
