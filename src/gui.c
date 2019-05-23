@@ -1417,11 +1417,7 @@ void update_status_icon()
     }
 
     if (GTK_IS_WIDGET(status_icon)) {
-#ifdef GTK2_18_ENABLED
         gtk_status_icon_set_tooltip_text(status_icon, text);
-#else
-        gtk_status_icon_set_tooltip(status_icon, text);
-#endif
     }
     g_free(text);
 }
@@ -4041,13 +4037,8 @@ void menuitem_fs_callback(GtkMenuItem * menuitem, void *data)
                 g_signal_connect(G_OBJECT(fs_window), "key_press_event", G_CALLBACK(window_key_callback), NULL);
                 g_signal_connect(G_OBJECT(fs_window), "motion_notify_event", G_CALLBACK(motion_notify_callback), NULL);
                 gtk_widget_realize(fs_window);
-#ifdef GTK2_18_ENABLED
+
                 gdk_window_ensure_native(gtk_widget_get_window(fs_window));
-#else
-#ifdef X11_ENABLED
-                GDK_WINDOW_XID(gmtk_get_window(GTK_WIDGET(fs_window)));
-#endif
-#endif
             }
 
             screen = gtk_window_get_screen(GTK_WINDOW(window));
@@ -6441,12 +6432,7 @@ void player_subtitle_callback(GmtkMediaPlayer * player, int count, gpointer data
 void audio_track_select_callback(GtkMenuItem * menu, gpointer data)
 {
     if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menu))) {
-#ifdef GTK2_18_ENABLED
         gmtk_media_player_select_audio_track(GMTK_MEDIA_PLAYER(media), gtk_menu_item_get_label(menu));
-#else
-        gmtk_media_player_select_audio_track(GMTK_MEDIA_PLAYER(media),
-                                             gtk_label_get_text(GTK_LABEL(GTK_BIN(menu)->child)));
-#endif
     }
 }
 
@@ -6595,15 +6581,9 @@ void player_attribute_changed_callback(GmtkMediaTracker * tracker, GmtkMediaPlay
             list = gtk_container_get_children(GTK_CONTAINER(tracks));
             while (list) {
                 item = GTK_MENU_ITEM(list->data);
-#ifdef GTK2_18_ENABLED
                 if (g_ascii_strcasecmp(name, gtk_menu_item_get_label(item)) == 0) {
                     gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(item), TRUE);
                 }
-#else
-                if (g_ascii_strcasecmp(name, gtk_label_get_text(GTK_LABEL(GTK_BIN(item)->child))) == 0) {
-                    gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(item), TRUE);
-                }
-#endif
                 list = list->next;
             }
         }
@@ -6618,15 +6598,9 @@ void player_attribute_changed_callback(GmtkMediaTracker * tracker, GmtkMediaPlay
             list = gtk_container_get_children(GTK_CONTAINER(subtitles));
             while (list) {
                 item = GTK_MENU_ITEM(list->data);
-#ifdef GTK2_18_ENABLED
                 if (g_ascii_strcasecmp(name, gtk_menu_item_get_label(item)) == 0) {
                     gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(item), TRUE);
                 }
-#else
-                if (g_ascii_strcasecmp(name, gtk_label_get_text(GTK_LABEL(GTK_BIN(item)->child))) == 0) {
-                    gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(item), TRUE);
-                }
-#endif
                 list = list->next;
             }
         }

@@ -1070,12 +1070,7 @@ void create_playlist_widget()
     g_signal_connect(G_OBJECT(shuffle), "clicked", G_CALLBACK(shuffle_callback), NULL);
     gtk_widget_set_sensitive(shuffle, TRUE);
 
-
-#ifdef GTK2_18_ENABLED
     gtk_widget_set_can_default(plclose, TRUE);
-#else
-    GTK_WIDGET_SET_FLAGS(plclose, GTK_CAN_DEFAULT);
-#endif
     gtk_box_pack_end(GTK_BOX(closebox), plclose, FALSE, FALSE, 0);
 
     scrolled = gtk_scrolled_window_new(NULL, NULL);

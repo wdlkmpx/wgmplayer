@@ -73,8 +73,6 @@ AS_IF([test "x$ENABLE_GTK3" = "xyes"],
     
     PKG_CHECK_MODULES(GTK, [gtk+-3.0 glib-2.0 gthread-2.0],[AC_MSG_NOTICE([Using GTK3])]) 
     AC_DEFINE([GTK3_ENABLED],[1],[Define to 1 if you have GTK 3 or higher])
-    AC_DEFINE([GTK2_18_ENABLED],[1],[Define to 1 if you have GTK 2.18 or higher])
-    AC_SUBST(GTK2_18_DEFINES)    
     AC_DEFINE([GTK2_20_ENABLED],[1],[Define to 1 if you have GTK 2.20 or higher])
     AC_SUBST(GTK2_20_DEFINES)    
     AC_DEFINE([GTK2_22_ENABLED],[1],[Define to 1 if you have GTK 2.22 or higher])
@@ -87,16 +85,13 @@ AS_IF([test "x$ENABLE_GTK3" = "xyes"],
 AS_IF([test "x$ENABLE_GTK3" != "xyes"],   
     [
 
-    PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.14.0 glib-2.0 >= 2.24.0 gthread-2.0],[AC_MSG_NOTICE([Using GTK2])])
+    PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.18.0 glib-2.0 >= 2.24.0 gthread-2.0],[AC_MSG_NOTICE([Using GTK2])])
     AC_SUBST(GTK_CFLAGS)
     AC_SUBST(GTK_LIBS)
 
     PKG_CHECK_MODULES(GLIB, [glib-2.0])
     AC_SUBST(GLIB_CFLAGS)
     AC_SUBST(GLIB_LIBS)
-
-    PKG_CHECK_MODULES(GTK2_18,[gtk+-2.0 >= 2.18.0],[GTK2_18_DEFINES="-DGTK2_18_ENABLED -DGTK_DISABLE_DEPRECATED" AC_DEFINE([GTK2_18_ENABLED],[1],[Define to 1 if you have GTK 2.18 or higher])],AC_MSG_NOTICE([Disabling Depreciated GTK Functions]))
-    AC_SUBST(GTK2_18_DEFINES)
 
     PKG_CHECK_MODULES(GTK2_20,[gtk+-2.0 >= 2.20.0],[GTK2_20_DEFINES="-DGTK2_20_ENABLED -DGTK_DISABLE_DEPRECATED" AC_DEFINE([GTK2_20_ENABLED],[1],[Define to 1 if you have GTK 2.20 or higher])],AC_MSG_NOTICE([Disabling Depreciated GTK Functions]))
     AC_SUBST(GTK2_20_DEFINES)

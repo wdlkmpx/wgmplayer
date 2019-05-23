@@ -27,11 +27,7 @@
 
 void gmtk_get_allocation(GtkWidget * widget, GtkAllocation * allocation)
 {
-#ifdef GTK2_18_ENABLED
     gtk_widget_get_allocation(widget, allocation);
-#else
-    allocation = &(widget->allocation);
-#endif
 }
 
 GdkWindow *gmtk_get_window(GtkWidget * widget)
@@ -41,11 +37,7 @@ GdkWindow *gmtk_get_window(GtkWidget * widget)
 
 gboolean gmtk_get_visible(GtkWidget * widget)
 {
-#ifdef GTK2_18_ENABLED
     return gtk_widget_get_visible(widget);
-#else
-    return GTK_WIDGET_VISIBLE(widget);
-#endif
 }
 
 gboolean gmtk_widget_get_realized(GtkWidget * widget)
