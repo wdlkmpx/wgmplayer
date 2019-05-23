@@ -35,8 +35,6 @@ gnome_mplayer_SOURCES = \
 	playlist.h \
 	support.c \
 	support.h \
-	mntent_compat.h \
-	mntent_compat.c \
 	main.c \
 	common.h \
 	../pixmaps/gnome_mplayer.xpm \

@@ -5161,10 +5161,8 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
         gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_vo), "x11");
         gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_vo), "xv");
         gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_vo), "xvmc");
-#ifndef __OpenBSD__
         gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_vo), "vaapi");
         gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_vo), "vdpau");
-#endif
         if (vo != NULL) {
             if (strcmp(vo, "gl") == 0)
                 gtk_combo_box_set_active(GTK_COMBO_BOX(config_vo), 0);
@@ -5185,11 +5183,7 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
             if (gtk_combo_box_get_active(GTK_COMBO_BOX(config_vo))
                 == -1) {
                 gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_vo), vo);
-#ifndef __OpenBSD__
                 gtk_combo_box_set_active(GTK_COMBO_BOX(config_vo), 8);
-#else
-                gtk_combo_box_set_active(GTK_COMBO_BOX(config_vo), 6);
-#endif
             }
         }
     }
@@ -5341,18 +5335,11 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
 
     config_mplayer_dvd_device = gtk_combo_box_text_new_with_entry();
 
-#ifdef __OpenBSD__
-    gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_mplayer_dvd_device), "/dev/rcd0c");
-
-    if (mplayer_dvd_device == NULL || g_ascii_strcasecmp("/dev/rcd0c", mplayer_dvd_device) == 0) {
-        j = i;
-    }
-#else
     gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_mplayer_dvd_device), "/dev/dvd");
     if (mplayer_dvd_device == NULL || g_ascii_strcasecmp("/dev/dvd", mplayer_dvd_device) == 0) {
         j = i;
     }
-#endif
+
     i++;
 
 #ifdef GIO_ENABLED
