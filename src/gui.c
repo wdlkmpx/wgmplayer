@@ -3749,13 +3749,8 @@ void menuitem_view_info_callback(GtkMenuItem * menuitem, void *data)
 {
 
     if (GTK_IS_WIDGET(media_hbox)) {
-#ifdef GTK2_20_ENABLED
         if (!gtk_widget_get_realized(media_hbox))
             gtk_widget_realize(media_hbox);
-#else
-        if (!GTK_WIDGET_REALIZED(media_hbox))
-            gtk_widget_realize(media_hbox);
-#endif
         g_idle_add(set_adjust_layout, NULL);
         // adjust_layout();
     }
@@ -3938,13 +3933,8 @@ void menuitem_fs_callback(GtkMenuItem * menuitem, void *data)
             skip_fixed_allocation_on_show = TRUE;
             gtk_window_unfullscreen(GTK_WINDOW(window));
         } else {
-#ifdef GTK2_20_ENABLED
             if (gtk_widget_get_mapped(window))
                 gtk_widget_unmap(window);
-#else
-            if (GTK_WIDGET_MAPPED(window))
-                gtk_widget_unmap(window);
-#endif
 #ifdef GTK2_24_ENABLED
             gdk_window_reparent(gmtk_get_window(window),
                                 gdk_x11_window_lookup_for_display(gdk_display_get_default(), embed_window), 0, 0);
@@ -7345,11 +7335,7 @@ GtkWidget *create_window(gint windowid)
 #ifdef GTK3_ENABLED
         gtk_window_set_has_resize_grip(GTK_WINDOW(window), FALSE);
 #endif
-#ifdef GTK2_20_ENABLED
         gtk_widget_set_can_focus(window, TRUE);
-#else
-        GTK_WIDGET_SET_FLAGS(window, GTK_CAN_FOCUS);
-#endif
     }
     gtk_window_set_resizable(GTK_WINDOW(window), TRUE);
     gtk_widget_add_events(window, GDK_BUTTON_PRESS_MASK);
@@ -7944,11 +7930,7 @@ GtkWidget *create_window(gint windowid)
     gtk_button_set_relief(GTK_BUTTON(menu_event_box), GTK_RELIEF_NONE);
 
     gtk_widget_set_tooltip_text(menu_event_box, _("Menu"));
-#ifdef GTK2_20_ENABLED
     gtk_widget_set_can_focus(menu_event_box, FALSE);
-#else
-    GTK_WIDGET_UNSET_FLAGS(menu_event_box, GTK_CAN_FOCUS);
-#endif
     gtk_widget_set_events(menu_event_box, GDK_BUTTON_PRESS_MASK);
     g_signal_connect(G_OBJECT(menu_event_box), "button_press_event", G_CALLBACK(menu_callback), NULL);
     gtk_box_pack_start(GTK_BOX(hbox), menu_event_box, FALSE, FALSE, 0);
@@ -7959,11 +7941,7 @@ GtkWidget *create_window(gint windowid)
     gtk_button_set_image(GTK_BUTTON(prev_event_box), image_prev);
     gtk_button_set_relief(GTK_BUTTON(prev_event_box), GTK_RELIEF_NONE);
     gtk_widget_set_tooltip_text(prev_event_box, _("Previous"));
-#ifdef GTK2_20_ENABLED
     gtk_widget_set_can_focus(prev_event_box, FALSE);
-#else
-    GTK_WIDGET_UNSET_FLAGS(prev_event_box, GTK_CAN_FOCUS);
-#endif
     gtk_widget_set_events(prev_event_box, GDK_BUTTON_PRESS_MASK);
     g_signal_connect(G_OBJECT(prev_event_box), "button_press_event", G_CALLBACK(prev_callback), NULL);
     gtk_box_pack_start(GTK_BOX(hbox), prev_event_box, FALSE, FALSE, 0);
@@ -7975,11 +7953,7 @@ GtkWidget *create_window(gint windowid)
     gtk_button_set_image(GTK_BUTTON(rew_event_box), image_rew);
     gtk_button_set_relief(GTK_BUTTON(rew_event_box), GTK_RELIEF_NONE);
     gtk_widget_set_tooltip_text(rew_event_box, _("Rewind"));
-#ifdef GTK2_20_ENABLED
     gtk_widget_set_can_focus(rew_event_box, FALSE);
-#else
-    GTK_WIDGET_UNSET_FLAGS(rew_event_box, GTK_CAN_FOCUS);
-#endif
     gtk_widget_set_events(rew_event_box, GDK_BUTTON_PRESS_MASK);
     g_signal_connect(G_OBJECT(rew_event_box), "button_press_event", G_CALLBACK(rew_callback), NULL);
     gtk_box_pack_start(GTK_BOX(hbox), rew_event_box, FALSE, FALSE, 0);
@@ -7991,11 +7965,7 @@ GtkWidget *create_window(gint windowid)
     gtk_button_set_image(GTK_BUTTON(play_event_box), image_play);
     gtk_button_set_relief(GTK_BUTTON(play_event_box), GTK_RELIEF_NONE);
     gtk_widget_set_tooltip_text(play_event_box, _("Play"));
-#ifdef GTK2_20_ENABLED
     gtk_widget_set_can_focus(play_event_box, FALSE);
-#else
-    GTK_WIDGET_UNSET_FLAGS(play_event_box, GTK_CAN_FOCUS);
-#endif
     gtk_widget_set_events(play_event_box, GDK_BUTTON_PRESS_MASK);
     g_signal_connect(G_OBJECT(play_event_box), "button_press_event", G_CALLBACK(play_callback), NULL);
     gtk_box_pack_start(GTK_BOX(hbox), play_event_box, FALSE, FALSE, 0);
@@ -8006,11 +7976,7 @@ GtkWidget *create_window(gint windowid)
     gtk_button_set_image(GTK_BUTTON(stop_event_box), image_stop);
     gtk_button_set_relief(GTK_BUTTON(stop_event_box), GTK_RELIEF_NONE);
     gtk_widget_set_tooltip_text(stop_event_box, _("Stop"));
-#ifdef GTK2_20_ENABLED
     gtk_widget_set_can_focus(stop_event_box, FALSE);
-#else
-    GTK_WIDGET_UNSET_FLAGS(stop_event_box, GTK_CAN_FOCUS);
-#endif
     gtk_widget_set_events(stop_event_box, GDK_BUTTON_PRESS_MASK);
     g_signal_connect(G_OBJECT(stop_event_box), "button_press_event", G_CALLBACK(stop_callback), NULL);
     gtk_box_pack_start(GTK_BOX(hbox), stop_event_box, FALSE, FALSE, 0);
@@ -8022,11 +7988,7 @@ GtkWidget *create_window(gint windowid)
     gtk_button_set_image(GTK_BUTTON(ff_event_box), image_ff);
     gtk_button_set_relief(GTK_BUTTON(ff_event_box), GTK_RELIEF_NONE);
     gtk_widget_set_tooltip_text(ff_event_box, _("Fast Forward"));
-#ifdef GTK2_20_ENABLED
     gtk_widget_set_can_focus(ff_event_box, FALSE);
-#else
-    GTK_WIDGET_UNSET_FLAGS(ff_event_box, GTK_CAN_FOCUS);
-#endif
     gtk_widget_set_events(ff_event_box, GDK_BUTTON_PRESS_MASK);
     g_signal_connect(G_OBJECT(ff_event_box), "button_press_event", G_CALLBACK(ff_callback), NULL);
     gtk_box_pack_start(GTK_BOX(hbox), ff_event_box, FALSE, FALSE, 0);
@@ -8038,11 +8000,7 @@ GtkWidget *create_window(gint windowid)
     gtk_button_set_image(GTK_BUTTON(next_event_box), image_next);
     gtk_button_set_relief(GTK_BUTTON(next_event_box), GTK_RELIEF_NONE);
     gtk_widget_set_tooltip_text(next_event_box, _("Next"));
-#ifdef GTK2_20_ENABLED
     gtk_widget_set_can_focus(next_event_box, FALSE);
-#else
-    GTK_WIDGET_UNSET_FLAGS(next_event_box, GTK_CAN_FOCUS);
-#endif
     gtk_widget_set_events(next_event_box, GDK_BUTTON_PRESS_MASK);
     g_signal_connect(G_OBJECT(next_event_box), "button_press_event", G_CALLBACK(next_callback), NULL);
     gtk_box_pack_start(GTK_BOX(hbox), next_event_box, FALSE, FALSE, 0);
@@ -8069,11 +8027,7 @@ GtkWidget *create_window(gint windowid)
     gtk_button_set_image(GTK_BUTTON(fs_event_box), image_fs);
     gtk_button_set_relief(GTK_BUTTON(fs_event_box), GTK_RELIEF_NONE);
     gtk_widget_set_tooltip_text(fs_event_box, _("Full Screen"));
-#ifdef GTK2_20_ENABLED
     gtk_widget_set_can_focus(fs_event_box, FALSE);
-#else
-    GTK_WIDGET_UNSET_FLAGS(fs_event_box, GTK_CAN_FOCUS);
-#endif
     gtk_widget_set_events(fs_event_box, GDK_BUTTON_PRESS_MASK);
     g_signal_connect(G_OBJECT(fs_event_box), "button_press_event", G_CALLBACK(fs_callback), NULL);
     gtk_box_pack_end(GTK_BOX(hbox), fs_event_box, FALSE, FALSE, 0);
@@ -8105,11 +8059,7 @@ GtkWidget *create_window(gint windowid)
     // no tooltip on the volume_button is needed
     // gtk_widget_set_tooltip_text(vol_slider, idledata->vol_tooltip);
     gtk_box_pack_end(GTK_BOX(hbox), vol_slider, FALSE, FALSE, 0);
-#ifdef GTK2_20_ENABLED
     gtk_widget_set_can_focus(vol_slider, FALSE);
-#else
-    GTK_WIDGET_UNSET_FLAGS(vol_slider, GTK_CAN_FOCUS);
-#endif
     gtk_widget_show(vol_slider);
     gtk_widget_realize(window);
     return window;
@@ -8128,13 +8078,8 @@ void show_window(gint windowid)
 #else
         window_container = gdk_window_foreign_new(windowid);
 #endif
-#ifdef GTK2_20_ENABLED
         if (gtk_widget_get_mapped(window))
             gtk_widget_unmap(window);
-#else
-        if (GTK_WIDGET_MAPPED(window))
-            gtk_widget_unmap(window);
-#endif
         gdk_window_reparent(gmtk_get_window(window), window_container, 0, 0);
     }
 
