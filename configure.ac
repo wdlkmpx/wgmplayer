@@ -65,7 +65,7 @@ AC_ARG_ENABLE(gtk3,
 
 AS_IF([test "x$ENABLE_GTK3" = xcheck],        
         [ENABLE_GTK3=no
-        PKG_CHECK_MODULES(GTK,[gtk+-3.0 >= 3 glib-2.0 gthread-2.0],[ENABLE_GTK3=yes],[ENABLE_GTK3=no])
+        PKG_CHECK_MODULES(GTK,[gtk+-3.0 >= 3 glib-2.0 >= 2.24.0 gthread-2.0],[ENABLE_GTK3=yes],[ENABLE_GTK3=no])
         ])    
     
 AS_IF([test "x$ENABLE_GTK3" = "xyes"],   
@@ -86,15 +86,12 @@ AS_IF([test "x$ENABLE_GTK3" = "xyes"],
     AC_DEFINE([GTK2_24_ENABLED],[1],[Define to 1 if you have GTK 2.24 or higher])
     AC_SUBST(GTK2_24_DEFINES)    
     
-    PKG_CHECK_MODULES(GLIB2_24,[glib-2.0 >= 2.24.0],[GLIB2_24_DEFINES="-DGLIB2_24_ENABLED" AC_DEFINE([GLIB2_24_ENABLED],[1],[Define to 1 if you have GLIB 2.24 or higher])],AC_MSG_NOTICE([Using GLIB 2.24 features]))
-    AC_SUBST(GLIB2_24_DEFINES)
-   
     ])
 
 AS_IF([test "x$ENABLE_GTK3" != "xyes"],   
     [
 
-    PKG_CHECK_MODULES(GTK, [gtk+-2.0 glib-2.0 gthread-2.0],[AC_MSG_NOTICE([Using GTK2])])
+    PKG_CHECK_MODULES(GTK, [gtk+-2.0 glib-2.0 >= 2.24.0 gthread-2.0],[AC_MSG_NOTICE([Using GTK2])])
     AC_SUBST(GTK_CFLAGS)
     AC_SUBST(GTK_LIBS)
 
@@ -119,12 +116,6 @@ AS_IF([test "x$ENABLE_GTK3" != "xyes"],
 
     PKG_CHECK_MODULES(GTK2_24,[gtk+-2.0 >= 2.24.0],[GTK2_24_DEFINES="-DGTK2_24_ENABLED -DGTK_DISABLE_DEPRECATED" AC_DEFINE([GTK2_24_ENABLED],[1],[Define to 1 if you have GTK 2.24 or higher])],AC_MSG_NOTICE([Disabling Depreciated GTK Functions]))
     AC_SUBST(GTK2_24_DEFINES)
-
-    PKG_CHECK_MODULES(GLIB2_14,[glib-2.0 >= 2.14.0],[GLIB2_14_DEFINES="-DGLIB2_14_ENABLED" AC_DEFINE([GLIB2_14_ENABLED],[1],[Define to 1 if you have GLIB 2.14 or higher])],AC_MSG_NOTICE([Using slider for volume]))
-    AC_SUBST(GLIB2_14_DEFINES)
-
-    PKG_CHECK_MODULES(GLIB2_24,[glib-2.0 >= 2.24.0],[GLIB2_24_DEFINES="-DGLIB2_24_ENABLED" AC_DEFINE([GLIB2_24_ENABLED],[1],[Define to 1 if you have GLIB 2.24 or higher])],AC_MSG_NOTICE([Using GLIB 2.24 features]))
-    AC_SUBST(GLIB2_24_DEFINES)
 
 ])
 

@@ -2944,11 +2944,7 @@ gpointer launch_mplayer(gpointer data)
             player->watch_in_hup_id =
                 g_io_add_watch_full(player->channel_out, G_PRIORITY_LOW, G_IO_HUP, thread_complete, player, NULL);
 
-#ifdef GLIB2_14_ENABLED
             g_timeout_add_seconds(1, thread_query, player);
-#else
-            g_timeout_add(1000, thread_query, player);
-#endif
 
             // /////////////////////////////////////////////////////////////////////
             // Now this thread waits till somebody signals player->mplayer_complete_cond

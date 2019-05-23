@@ -19,8 +19,6 @@ AM_CPPFLAGS = \
 AM_CFLAGS =\
 	 -Wall\
 	 -g\
-	 $(GTK2_12_DEFINES) \
-	 $(GLIB2_14_DEFINES) \
      $(GIO_DEFINES) \
 	 $(ALSA_DEFINES) \
      $(NOTIFY_DEFINES) \
