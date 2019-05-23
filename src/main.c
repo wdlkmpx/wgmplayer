@@ -592,14 +592,12 @@ gint play_iter(GtkTreeIter * playiter, gint restart_second)
     return 0;
 }
 
-#ifndef OS_WIN32
 static void hup_handler(int signum)
 {
     gm_log(verbose, G_LOG_LEVEL_DEBUG, "handling signal %i", signum);
     delete_callback(NULL, NULL, NULL);
     g_idle_add(set_destroy, NULL);
 }
-#endif
 
 void assign_default_keys()
 {
@@ -665,9 +663,7 @@ int main(int argc, char *argv[])
 #endif
     int stat_result;
 
-#ifndef OS_WIN32
     struct sigaction sa;
-#endif
     gboolean playiter = FALSE;
 
 #ifdef GIO_ENABLED
@@ -800,7 +796,6 @@ int main(int argc, char *argv[])
     gtk_init(&argc, &argv);
     g_setenv("PULSE_PROP_media.role", "video", TRUE);
 
-#ifndef OS_WIN32
     sa.sa_handler = hup_handler;
     sigemptyset(&sa.sa_mask);
 #ifdef SA_RESTART
@@ -821,7 +816,6 @@ int main(int argc, char *argv[])
 #ifdef SIGTERM
     if (sigaction(SIGTERM, &sa, NULL) == -1)
         gm_log(verbose, G_LOG_LEVEL_MESSAGE, "SIGTERM signal handler not installed");
-#endif
 #endif
 
     uri = g_strdup_printf("%s/gnome-mplayer/cover_art", g_get_user_config_dir());

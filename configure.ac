@@ -33,24 +33,6 @@ AM_GLIB_GNU_GETTEXT
 # Windows check
 ####################################################################
 
-AC_MSG_CHECKING(for WIN32)
-AC_TRY_COMPILE(,
-	[
-	#ifndef WIN32
-	#error
-	#endif
-	],
-	native_win32=yes; AC_MSG_RESULT(yes),
-	native_win32=no; AC_MSG_RESULT(no),
-)
-
-AM_CONDITIONAL(OS_WIN32, test "$native_win32" = "yes")
-
-if test "$native_win32" = "yes" ; then
-   AC_DEFINE(OS_WIN32, 1, [Define if we are on win32])
-fi
-
-
 PKG_CHECK_MODULES([X11], [x11],[AC_DEFINE([X11_ENABLED],[1],[Define to 1 if X11 support is needed])],[AC_MSG_NOTICE([Compiling without X11 support])])
 AC_SUBST(X11_LIBS)
 
