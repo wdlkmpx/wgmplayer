@@ -3637,9 +3637,6 @@ void menuitem_about_callback(GtkMenuItem * menuitem, void *data)
     gchar *authors[] = { "Kevin DeKorte", "James Carthew", "Diogo Franco", "Icons provided by Victor Castillejo",
         NULL
     };
-#ifndef GTK2_24_ENABLED
-    gtk_about_dialog_set_url_hook(about_url_hook, NULL, NULL);
-#endif
     gtk_show_about_dialog(GTK_WINDOW(window), "name", _("GNOME MPlayer"), "authors", authors,
                           "copyright", "Copyright © 2007-2011 Kevin DeKorte", "comments",
                           _("A media player for GNOME that uses MPlayer"), "version", VERSION,
@@ -3931,12 +3928,8 @@ void menuitem_fs_callback(GtkMenuItem * menuitem, void *data)
         } else {
             if (gtk_widget_get_mapped(window))
                 gtk_widget_unmap(window);
-#ifdef GTK2_24_ENABLED
             gdk_window_reparent(gmtk_get_window(window),
                                 gdk_x11_window_lookup_for_display(gdk_display_get_default(), embed_window), 0, 0);
-#else
-            gdk_window_reparent(gmtk_get_window(window), gdk_window_lookup(embed_window), 0, 0);
-#endif
             gtk_widget_map(window);
             gtk_window_move(GTK_WINDOW(window), 0, 0);
             gdk_window_resize(gmtk_get_window(window), window_x, window_y - 1);
@@ -5053,11 +5046,7 @@ void output_combobox_changed_callback(GtkComboBox * config_ao, gpointer data)
                     continue;
                 mix = g_strdup_printf("%s,%i", snd_mixer_selem_id_get_name(sid), snd_mixer_selem_id_get_index(sid));
                 //mix = g_strdup_printf("%s", snd_mixer_selem_id_get_name(sid));
-#ifdef GTK2_24_ENABLED
                 gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_mixer), mix);
-#else
-                gtk_combo_box_append_text(GTK_COMBO_BOX(config_mixer), mix);
-#endif
                 if (audio_device.alsa_mixer != NULL && g_ascii_strcasecmp(mix, audio_device.alsa_mixer) == 0)
                     j = i;
                 if (g_ascii_strcasecmp(snd_mixer_selem_id_get_name(sid), "Master") == 0)
@@ -5212,18 +5201,13 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     conf_cancel = gtk_button_new_from_stock(GTK_STOCK_CLOSE);
     g_signal_connect_swapped(G_OBJECT(conf_cancel), "clicked", G_CALLBACK(config_apply), config_window);
 
-#ifdef GTK2_24_ENABLED
     config_vo = gtk_combo_box_text_new_with_entry();
-#else
-    config_vo = gtk_combo_box_entry_new_text();
-#endif
 
     gtk_widget_set_tooltip_text(config_vo,
                                 _
                                 ("mplayer video output device\nx11 should always work, try xv, gl or vdpau for better performance and enhanced features"));
 
     if (config_vo != NULL) {
-#ifdef GTK2_24_ENABLED
         gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_vo), "gl");
         gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_vo), "gl2");
         gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_vo), "gl3");
@@ -5234,19 +5218,6 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
         gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_vo), "vaapi");
         gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_vo), "vdpau");
 #endif
-#else
-        gtk_combo_box_append_text(GTK_COMBO_BOX(config_vo), "gl");
-        gtk_combo_box_append_text(GTK_COMBO_BOX(config_vo), "gl2");
-        gtk_combo_box_append_text(GTK_COMBO_BOX(config_vo), "gl3");
-        gtk_combo_box_append_text(GTK_COMBO_BOX(config_vo), "x11");
-        gtk_combo_box_append_text(GTK_COMBO_BOX(config_vo), "xv");
-        gtk_combo_box_append_text(GTK_COMBO_BOX(config_vo), "xvmc");
-#ifndef __OpenBSD__
-        gtk_combo_box_append_text(GTK_COMBO_BOX(config_vo), "vaapi");
-        gtk_combo_box_append_text(GTK_COMBO_BOX(config_vo), "vdpau");
-#endif
-#endif
-
         if (vo != NULL) {
             if (strcmp(vo, "gl") == 0)
                 gtk_combo_box_set_active(GTK_COMBO_BOX(config_vo), 0);
@@ -5266,11 +5237,7 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
                 gtk_combo_box_set_active(GTK_COMBO_BOX(config_vo), 7);
             if (gtk_combo_box_get_active(GTK_COMBO_BOX(config_vo))
                 == -1) {
-#ifdef GTK2_24_ENABLED
                 gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_vo), vo);
-#else
-                gtk_combo_box_append_text(GTK_COMBO_BOX(config_vo), vo);
-#endif
 #ifndef __OpenBSD__
                 gtk_combo_box_set_active(GTK_COMBO_BOX(config_vo), 8);
 #else
@@ -5283,11 +5250,7 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     config_use_hw_audio = gtk_check_button_new_with_mnemonic(_("Enable AC3/DTS pass-through to S/PDIF"));
     g_signal_connect(GTK_WIDGET(config_use_hw_audio), "toggled", G_CALLBACK(hw_audio_toggle_callback), NULL);
 
-#ifdef GTK2_24_ENABLED
     config_mixer = gtk_combo_box_text_new_with_entry();
-#else
-    config_mixer = gtk_combo_box_entry_new_text();
-#endif
 
     config_softvol = gtk_check_button_new_with_label(_("Mplayer Software Volume Control Enabled"));
     conf_volume_label = gtk_label_new("");
@@ -5321,11 +5284,7 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
         } while (gtk_tree_model_iter_next
                  (gmtk_output_combo_box_get_tree_model(GMTK_OUTPUT_COMBO_BOX(config_ao)), &ao_iter));
     }
-#ifdef GTK2_24_ENABLED
     config_alang = gtk_combo_box_text_new_with_entry();
-#else
-    config_alang = gtk_combo_box_entry_new_text();
-#endif
     if (config_alang != NULL) {
         i = 0;
         j = -1;
@@ -5336,11 +5295,7 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
             if (alang != NULL && strlen(alang) == 0
                 && g_ascii_strncasecmp("English,eng,en", langlist[i], strlen("English,eng,en")) == 0)
                 k = i;
-#ifdef GTK2_24_ENABLED
             gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_alang), langlist[i++]);
-#else
-            gtk_combo_box_append_text(GTK_COMBO_BOX(config_alang), langlist[i++]);
-#endif
             if (j != -1) {
                 gtk_combo_box_set_active(GTK_COMBO_BOX(config_alang), j);
             }
@@ -5349,21 +5304,13 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
             }
         }
         if (alang != NULL && strlen(alang) > 0 && j == -1) {
-#ifdef GTK2_24_ENABLED
             gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_alang), alang);
-#else
-            gtk_combo_box_append_text(GTK_COMBO_BOX(config_alang), alang);
-#endif
             gtk_combo_box_set_active(GTK_COMBO_BOX(config_alang), i);
         }
         gtk_widget_set_tooltip_text(config_alang,
                                     _("Choose one of the languages or type in your own comma-separated selection"));
     }
-#ifdef GTK2_24_ENABLED
     config_slang = gtk_combo_box_text_new_with_entry();
-#else
-    config_slang = gtk_combo_box_entry_new_text();
-#endif
     if (config_slang != NULL) {
         i = 0;
         j = -1;
@@ -5374,11 +5321,7 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
             if (slang != NULL && strlen(slang) == 0
                 && g_ascii_strncasecmp("English,eng,en", langlist[i], strlen("English,eng,en")) == 0)
                 k = i;
-#ifdef GTK2_24_ENABLED
             gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_slang), langlist[i++]);
-#else
-            gtk_combo_box_append_text(GTK_COMBO_BOX(config_slang), langlist[i++]);
-#endif
             if (j != -1) {
                 gtk_combo_box_set_active(GTK_COMBO_BOX(config_slang), j);
             }
@@ -5387,21 +5330,13 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
             }
         }
         if (slang != NULL && strlen(slang) > 0 && j == -1) {
-#ifdef GTK2_24_ENABLED
             gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_slang), slang);
-#else
-            gtk_combo_box_append_text(GTK_COMBO_BOX(config_slang), slang);
-#endif
             gtk_combo_box_set_active(GTK_COMBO_BOX(config_slang), i);
         }
         gtk_widget_set_tooltip_text(config_slang,
                                     _("Choose one of the languages or type in your own comma-separated selection"));
     }
-#ifdef GTK2_24_ENABLED
     config_metadata_codepage = gtk_combo_box_text_new_with_entry();
-#else
-    config_metadata_codepage = gtk_combo_box_entry_new_text();
-#endif
     if (config_metadata_codepage != NULL) {
         i = 0;
         j = -1;
@@ -5409,28 +5344,16 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
             if (metadata_codepage != NULL && strlen(metadata_codepage) > 1
                 && g_ascii_strncasecmp(metadata_codepage, codepagelist[i], strlen(metadata_codepage)) == 0)
                 j = i;
-#ifdef GTK2_24_ENABLED
             gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_metadata_codepage), codepagelist[i++]);
-#else
-            gtk_combo_box_append_text(GTK_COMBO_BOX(config_metadata_codepage), codepagelist[i++]);
-#endif
             if (j != -1)
                 gtk_combo_box_set_active(GTK_COMBO_BOX(config_metadata_codepage), j);
         }
         if (metadata_codepage != NULL && j == -1) {
-#ifdef GTK2_24_ENABLED
             gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_metadata_codepage), metadata_codepage);
-#else
-            gtk_combo_box_append_text(GTK_COMBO_BOX(config_metadata_codepage), metadata_codepage);
-#endif
             gtk_combo_box_set_active(GTK_COMBO_BOX(config_metadata_codepage), i);
         }
     }
-#ifdef GTK2_24_ENABLED
     config_subtitle_codepage = gtk_combo_box_text_new_with_entry();
-#else
-    config_subtitle_codepage = gtk_combo_box_entry_new_text();
-#endif
     if (config_subtitle_codepage != NULL) {
         i = 0;
         j = -1;
@@ -5438,90 +5361,47 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
             if (subtitle_codepage != NULL && strlen(subtitle_codepage) > 1
                 && g_ascii_strncasecmp(subtitle_codepage, codepagelist[i], strlen(subtitle_codepage)) == 0)
                 j = i;
-#ifdef GTK2_24_ENABLED
             gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_subtitle_codepage), codepagelist[i++]);
-#else
-            gtk_combo_box_append_text(GTK_COMBO_BOX(config_subtitle_codepage), codepagelist[i++]);
-#endif
 
             if (j != -1)
                 gtk_combo_box_set_active(GTK_COMBO_BOX(config_subtitle_codepage), j);
         }
         if (subtitle_codepage != NULL && j == -1) {
-#ifdef GTK2_24_ENABLED
             gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_subtitle_codepage), subtitle_codepage);
-#else
-            gtk_combo_box_append_text(GTK_COMBO_BOX(config_subtitle_codepage), subtitle_codepage);
-#endif
             gtk_combo_box_set_active(GTK_COMBO_BOX(config_subtitle_codepage), i);
         }
     }
-#ifdef GTK2_24_ENABLED
     config_audio_channels = gtk_combo_box_text_new_with_entry();
-#else
-    config_audio_channels = gtk_combo_box_entry_new_text();
-#endif
     if (config_audio_channels != NULL) {
-#ifdef GTK2_24_ENABLED
-
         gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_audio_channels), "Stereo");
         gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_audio_channels), "Surround");
         gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_audio_channels), "5.1 Surround");
         gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_audio_channels), "7.1 Surround");
-#else
 
-        gtk_combo_box_append_text(GTK_COMBO_BOX(config_audio_channels), "Stereo");
-        gtk_combo_box_append_text(GTK_COMBO_BOX(config_audio_channels), "Surround");
-        gtk_combo_box_append_text(GTK_COMBO_BOX(config_audio_channels), "5.1 Surround");
-        gtk_combo_box_append_text(GTK_COMBO_BOX(config_audio_channels), "7.1 Surround");
-#endif
         gtk_combo_box_set_active(GTK_COMBO_BOX(config_audio_channels), audio_channels);
     }
-#ifdef GTK2_24_ENABLED
     config_resume_mode = gtk_combo_box_text_new_with_entry();
-#else
-    config_resume_mode = gtk_combo_box_new_text();
-#endif
     if (config_resume_mode != NULL) {
-#ifdef GTK2_24_ENABLED
-
         gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_resume_mode), _("Always ask"));
         gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_resume_mode), _("Always resume without asking"));
         gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_resume_mode), _("Never resume"));
-#else
 
-        gtk_combo_box_append_text(GTK_COMBO_BOX(config_resume_mode), _("Always ask"));
-        gtk_combo_box_append_text(GTK_COMBO_BOX(config_resume_mode), _("Always resume without asking"));
-        gtk_combo_box_append_text(GTK_COMBO_BOX(config_resume_mode), _("Never resume"));
-#endif
         gtk_combo_box_set_active(GTK_COMBO_BOX(config_resume_mode), resume_mode);
     }
 
     i = 0;
     j = -1;
 
-#ifdef GTK2_24_ENABLED
     config_mplayer_dvd_device = gtk_combo_box_text_new_with_entry();
-#else
-    config_mplayer_dvd_device = gtk_combo_box_entry_new_text();
-#endif
 
 #ifdef __OpenBSD__
-#ifdef GTK2_24_ENABLED
     gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_mplayer_dvd_device), "/dev/rcd0c");
-#else
-    gtk_combo_box_append_text(GTK_COMBO_BOX(config_mplayer_dvd_device), "/dev/rcd0c");
-#endif
 
     if (mplayer_dvd_device == NULL || g_ascii_strcasecmp("/dev/rcd0c", mplayer_dvd_device) == 0) {
         j = i;
     }
 #else
-#ifdef GTK2_24_ENABLED
     gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_mplayer_dvd_device), "/dev/dvd");
-#else
-    gtk_combo_box_append_text(GTK_COMBO_BOX(config_mplayer_dvd_device), "/dev/dvd");
-#endif
     if (mplayer_dvd_device == NULL || g_ascii_strcasecmp("/dev/dvd", mplayer_dvd_device) == 0) {
         j = i;
     }
@@ -5544,11 +5424,7 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
             if (g_drive_can_poll_for_media(drive)) {
                 unix_device = g_drive_get_identifier(drive, "unix-device");
                 if (unix_device != NULL) {
-#ifdef GTK2_24_ENABLED
                     gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_mplayer_dvd_device), unix_device);
-#else
-                    gtk_combo_box_append_text(GTK_COMBO_BOX(config_mplayer_dvd_device), unix_device);
-#endif
 
                     if (mplayer_dvd_device != NULL && g_ascii_strcasecmp(unix_device, mplayer_dvd_device) == 0) {
                         j = i;
@@ -5564,11 +5440,7 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     if (j != -1) {
         gtk_combo_box_set_active(GTK_COMBO_BOX(config_mplayer_dvd_device), j);
     } else {
-#ifdef GTK2_24_ENABLED
         gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_mplayer_dvd_device), mplayer_dvd_device);
-#else
-        gtk_combo_box_append_text(GTK_COMBO_BOX(config_mplayer_dvd_device), mplayer_dvd_device);
-#endif
         gtk_combo_box_set_active(GTK_COMBO_BOX(config_mplayer_dvd_device), i);
     }
 
@@ -5785,9 +5657,6 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     //gtk_range_set_value(GTK_RANGE(config_cachesize), cache_size);
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(config_plugin_audio_cache_size), plugin_audio_cache_size);
     gtk_entry_set_width_chars(GTK_ENTRY(config_plugin_audio_cache_size), 6);
-#ifndef GTK2_24_ENABLED
-    gtk_entry_set_editable(GTK_ENTRY(config_plugin_audio_cache_size), FALSE);
-#endif
     gtk_entry_set_alignment(GTK_ENTRY(config_plugin_audio_cache_size), 1);
     gtk_widget_show(config_plugin_audio_cache_size);
     i++;
@@ -5802,9 +5671,6 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
                      GTK_FILL | GTK_EXPAND, GTK_SHRINK, 0, 0);
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(config_plugin_video_cache_size), plugin_video_cache_size);
     gtk_entry_set_width_chars(GTK_ENTRY(config_plugin_video_cache_size), 6);
-#ifndef GTK2_24_ENABLED
-    gtk_entry_set_editable(GTK_ENTRY(config_plugin_video_cache_size), FALSE);
-#endif
     gtk_entry_set_alignment(GTK_ENTRY(config_plugin_video_cache_size), 1);
     gtk_widget_show(config_plugin_video_cache_size);
     i++;
@@ -6206,9 +6072,6 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     //gtk_range_set_value(GTK_RANGE(config_cachesize), cache_size);
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(config_cachesize), cache_size);
     gtk_entry_set_width_chars(GTK_ENTRY(config_cachesize), 6);
-#ifndef GTK2_24_ENABLED
-    gtk_entry_set_editable(GTK_ENTRY(config_cachesize), FALSE);
-#endif
     gtk_entry_set_alignment(GTK_ENTRY(config_cachesize), 1);
     gtk_widget_show(config_cachesize);
     gtk_widget_set_sensitive(config_cachesize, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(config_forcecache)));
@@ -8069,11 +7932,7 @@ void show_window(gint windowid)
         gm_log(verbose, G_LOG_LEVEL_DEBUG, "waiting for all events to drain");
         while (gtk_events_pending())
             gtk_main_iteration();
-#ifdef GTK2_24_ENABLED
         window_container = gdk_x11_window_foreign_new_for_display(gdk_display_get_default(), windowid);
-#else
-        window_container = gdk_window_foreign_new(windowid);
-#endif
         if (gtk_widget_get_mapped(window))
             gtk_widget_unmap(window);
         gdk_window_reparent(gmtk_get_window(window), window_container, 0, 0);
