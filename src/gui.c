@@ -3114,11 +3114,7 @@ void menuitem_open_location_callback(GtkMenuItem * menuitem, void *data)
 #endif
     cancel_button = gtk_button_new_from_stock(GTK_STOCK_CANCEL);
     open_button = gtk_button_new_from_stock(GTK_STOCK_OPEN);
-#ifdef GTK2_22_ENABLED
     gtk_widget_set_can_default(open_button, TRUE);
-#else
-    GTK_WIDGET_SET_FLAGS(open_button, GTK_CAN_DEFAULT);
-#endif
     gtk_box_pack_end(GTK_BOX(button_box), open_button, FALSE, FALSE, 0);
     gtk_box_pack_end(GTK_BOX(button_box), cancel_button, FALSE, FALSE, 0);
 
