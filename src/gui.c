@@ -46,10 +46,6 @@
 #include <libnotify/notification.h>
 #endif
 
-#ifdef LIBGDA_ENABLED
-#include "database.h"
-#endif
-
 static GdkWindow *window_container;
 static GtkWidget *fs_window;
 static GtkWidget *fs_controls;
@@ -1859,20 +1855,6 @@ gboolean delete_callback(GtkWidget * widget, GdkEvent * event, void *data)
         //}
         gm_pref_store_free(gm_store);
     }
-#ifdef LIBGDA_ENABLED
-    if (gmtk_media_player_get_media_state(GMTK_MEDIA_PLAYER(media)) == MEDIA_STATE_PLAY
-        || gmtk_media_player_get_media_state(GMTK_MEDIA_PLAYER(media)) == MEDIA_STATE_PAUSE) {
-
-        mark_uri_in_db_as_resumable(db_connection, gmtk_media_player_get_uri(GMTK_MEDIA_PLAYER(media)), TRUE,
-                                    gmtk_media_player_get_attribute_double(GMTK_MEDIA_PLAYER(media),
-                                                                           ATTRIBUTE_POSITION));
-    } else {
-
-        if (gmtk_media_player_get_uri(GMTK_MEDIA_PLAYER(media)) != NULL) {
-            mark_uri_in_db_as_resumable(db_connection, gmtk_media_player_get_uri(GMTK_MEDIA_PLAYER(media)), FALSE, 0.0);
-        }
-    }
-#endif
 
     gmtk_media_player_set_state(GMTK_MEDIA_PLAYER(media), MEDIA_STATE_QUIT);
     gm_log(verbose, G_LOG_LEVEL_DEBUG,
@@ -1901,10 +1883,6 @@ gboolean delete_callback(GtkWidget * widget, GdkEvent * event, void *data)
 
     if (use_defaultpl && embed_window == 0)
         save_playlist_pls(default_playlist);
-
-#ifdef LIBGDA_ENABLED
-    close_db_connection(db_connection);
-#endif
 
     //gtk_main_quit();
     return FALSE;
@@ -2990,22 +2968,6 @@ void menuitem_open_callback(GtkMenuItem * menuitem, void *data)
             gm_pref_store_free(gm_store);
             g_free(last_dir);
         }
-#ifdef LIBGDA_ENABLED
-        if (gmtk_media_player_get_media_state(GMTK_MEDIA_PLAYER(media)) == MEDIA_STATE_PLAY
-            || gmtk_media_player_get_media_state(GMTK_MEDIA_PLAYER(media)) == MEDIA_STATE_PAUSE) {
-
-            mark_uri_in_db_as_resumable(db_connection, gmtk_media_player_get_uri(GMTK_MEDIA_PLAYER(media)), TRUE,
-                                        gmtk_media_player_get_attribute_double(GMTK_MEDIA_PLAYER(media),
-                                                                               ATTRIBUTE_POSITION));
-        } else {
-
-            if (gmtk_media_player_get_uri(GMTK_MEDIA_PLAYER(media)) != NULL) {
-                mark_uri_in_db_as_resumable(db_connection, gmtk_media_player_get_uri(GMTK_MEDIA_PLAYER(media)), FALSE,
-                                            0.0);
-            }
-        }
-#endif
-
         if (gmtk_media_player_get_media_state(GMTK_MEDIA_PLAYER(media)) != MEDIA_STATE_UNKNOWN)
             dontplaynext = TRUE;
         gmtk_media_player_set_state(GMTK_MEDIA_PLAYER(media), MEDIA_STATE_QUIT);
@@ -3380,21 +3342,6 @@ void menuitem_open_recent_callback(GtkRecentChooser * chooser, gpointer data)
     gint count;
     GtkTreeViewColumn *column;
     gchar *coltitle;
-
-#ifdef LIBGDA_ENABLED
-    if (gmtk_media_player_get_media_state(GMTK_MEDIA_PLAYER(media)) == MEDIA_STATE_PLAY
-        || gmtk_media_player_get_media_state(GMTK_MEDIA_PLAYER(media)) == MEDIA_STATE_PAUSE) {
-
-        mark_uri_in_db_as_resumable(db_connection, gmtk_media_player_get_uri(GMTK_MEDIA_PLAYER(media)), TRUE,
-                                    gmtk_media_player_get_attribute_double(GMTK_MEDIA_PLAYER(media),
-                                                                           ATTRIBUTE_POSITION));
-    } else {
-
-        if (gmtk_media_player_get_uri(GMTK_MEDIA_PLAYER(media)) != NULL) {
-            mark_uri_in_db_as_resumable(db_connection, gmtk_media_player_get_uri(GMTK_MEDIA_PLAYER(media)), FALSE, 0.0);
-        }
-    }
-#endif
 
     if (gmtk_media_player_get_media_state(GMTK_MEDIA_PLAYER(media)) != MEDIA_STATE_UNKNOWN)
         dontplaynext = TRUE;
@@ -6332,21 +6279,14 @@ void player_attribute_changed_callback(GmtkMediaTracker * tracker, GmtkMediaPlay
             gmtk_media_tracker_set_length(GMTK_MEDIA_TRACKER(tracker),
                                           gmtk_media_player_get_attribute_double(GMTK_MEDIA_PLAYER(media), attribute));
         }
-#ifdef LIBGDA_ENABLED
-        metadata = get_db_metadata(db_connection, gmtk_media_player_get_uri(GMTK_MEDIA_PLAYER(media)));
-#else
         metadata = g_new0(MetaData, 1);
         metadata->uri = g_strdup(gmtk_media_player_get_uri(GMTK_MEDIA_PLAYER(media)));
-#endif
+
         metadata->length_value = gmtk_media_player_get_attribute_double(GMTK_MEDIA_PLAYER(media), attribute);
         if (metadata->length)
             g_free(metadata->length);
         metadata->length =
             seconds_to_string(gmtk_media_player_get_attribute_double(GMTK_MEDIA_PLAYER(media), attribute));
-#ifdef LIBGDA_ENABLED
-        if (metadata->valid)
-            insert_update_db_metadata(db_connection, metadata->uri, metadata);
-#endif
 
         free_metadata(metadata);
 
@@ -6558,12 +6498,8 @@ void player_attribute_changed_callback(GmtkMediaTracker * tracker, GmtkMediaPlay
     case ATTRIBUTE_TITLE:
     case ATTRIBUTE_ARTIST:
     case ATTRIBUTE_ALBUM:
-#ifdef LIBGDA_ENABLED
-        metadata = get_db_metadata(db_connection, gmtk_media_player_get_uri(GMTK_MEDIA_PLAYER(media)));
-#else
         metadata = g_new0(MetaData, 1);
         metadata->uri = g_strdup(gmtk_media_player_get_uri(GMTK_MEDIA_PLAYER(media)));
-#endif
 
         text = g_strdup_printf("<small>\n");
         if (gmtk_media_player_get_attribute_string(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_TITLE)) {
@@ -6610,10 +6546,6 @@ void player_attribute_changed_callback(GmtkMediaTracker * tracker, GmtkMediaPlay
             metadata->album =
                 g_strstrip(g_strdup(gmtk_media_player_get_attribute_string(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_ALBUM)));
         }
-#ifdef LIBGDA_ENABLED
-        if (metadata->valid)
-            insert_update_db_metadata(db_connection, metadata->uri, metadata);
-#endif
 
         free_metadata(metadata);
 

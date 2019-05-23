@@ -38,8 +38,6 @@
 #include <gio/gio.h>
 #endif
 
-#include <database.h>
-
 gint get_bitrate(gchar * name);
 void free_metadata(MetaData * data);
 MetaData *get_metadata(gchar * uri);

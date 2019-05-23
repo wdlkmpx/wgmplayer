@@ -105,30 +105,6 @@ PKG_CHECK_MODULES(XSCRNSAVER,[xscrnsaver],[AC_DEFINE([XSCRNSAVER_ENABLED],[1],[W
 AC_SUBST(XSCRNSAVER_CFLAGS)
 AC_SUBST(XSCRNSAVER_LIBS)
 
-AC_ARG_WITH([libgda],
-    [AS_HELP_STRING([--with-libgda],
-        [Add support for libgda])],
-        [],
-        [with_libgda=check])
-AS_IF([test "x$with_libgda" != xno], 
-    [PKG_CHECK_MODULES(LIBGDA_04,[libgda-4.0],[LIBGDA_DEFINES="-DLIBGDA_04" AC_DEFINE([LIBGDA_ENABLED],[1],[When defined database access is enabled])],AC_MSG_NOTICE([Compiling without libgda 4.0 support]))
-    AC_SUBST(LIBGDA_DEFINES)
-    AC_SUBST(LIBGDA_04_CFLAGS)
-    AC_SUBST(LIBGDA_04_LIBS)
-    ])
-
-AS_IF([test "x$with_libgda" != xno], 
-    [PKG_CHECK_MODULES(LIBGDA_05,[libgda-5.0],[LIBGDA_DEFINES="-DLIBGDA_05" AC_DEFINE([LIBGDA_ENABLED],[1],[When defined database access is enabled])],AC_MSG_NOTICE([Compiling without libgda 5.0 support]))
-    AC_SUBST(LIBGDA_DEFINES)
-    AC_SUBST(LIBGDA_05_CFLAGS)
-    AC_SUBST(LIBGDA_05_LIBS)
-    ])
-    
-LIBGDA_CFLAGS="$LIBGDA_04_CFLAGS $LIBGDA_05_CFLAGS"
-LIBGDA_LIBS="$LIBGDA_04_LIBS $LIBGDA_05_LIBS"    
-AC_SUBST(LIBGDA_CFLAGS)
-AC_SUBST(LIBGDA_LIBS) 
-
 AC_ARG_WITH([alsa],
     [AS_HELP_STRING([--with-alsa],
         [Read volume from alsa devices])],

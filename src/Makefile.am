@@ -13,8 +13,7 @@ AM_CPPFLAGS = \
 	$(ALSA_CFLAGS) \
 	$(PULSE_CFLAGS) \
     $(NOTIFY_CFLAGS) \
-	$(XSCRNSAVER_CFLAGS) \
-    $(LIBGDA_CFLAGS)   
+	$(XSCRNSAVER_CFLAGS)
 
 AM_CFLAGS =\
 	 -Wall\
@@ -22,7 +21,6 @@ AM_CFLAGS =\
      $(GIO_DEFINES) \
 	 $(ALSA_DEFINES) \
      $(NOTIFY_DEFINES) \
-     $(LIBGDA_DEFINES) \
      -I../gmtk
      ## -DGTK_DISABLE_DEPRECATED 
      ## -DGSEAL_ENABLE
@@ -50,10 +48,7 @@ gnome_mplayer_SOURCES = \
 	../pixmaps/media-skip-backward.xpm \
 	../pixmaps/media-skip-forward.xpm \
 	../pixmaps/view-fullscreen.xpm \
-	langlist.h \
-	database.c \
-	database.h
-
+	langlist.h
 
 gnome_mplayer_LDFLAGS = 
 
@@ -66,7 +61,6 @@ gnome_mplayer_LDADD = \
 	$(PULSE_LIBS) \
     $(NOTIFY_LIBS) \
     $(XSCRNSAVER_LIBS) \
-    $(LIBGDA_LIBS) \
     ../gmtk/.libs/libgmlib.a \
     ../gmtk/.libs/libgmtk.a
 

@@ -43,7 +43,6 @@
 #include "common.h"
 #include "support.h"
 #include "gmtk.h"
-#include "database.h"
 
 static gint reallyverbose;
 static gint last_x, last_y;
@@ -273,19 +272,6 @@ gint play_iter(GtkTreeIter * playiter, gint restart_second)
     GFile *file;
     GFileInfo *file_info;
 #endif
-
-#ifdef LIBGDA_ENABLED
-    gchar *position_text;
-#endif
-
-    /*
-       if (!(gmtk_media_player_get_media_state(GMTK_MEDIA_PLAYER(media)) == MEDIA_STATE_UNKNOWN ||
-       gmtk_media_player_get_media_state(GMTK_MEDIA_PLAYER(media)) == MEDIA_STATE_QUIT)) {
-       while (gmtk_media_player_get_media_state(GMTK_MEDIA_PLAYER(media)) != MEDIA_STATE_UNKNOWN) {
-       gtk_main_iteration();
-       }
-       }
-     */
 
     if (gtk_list_store_iter_is_valid(playliststore, playiter)) {
         gtk_tree_model_get(GTK_TREE_MODEL(playliststore), playiter, ITEM_COLUMN, &uri,
@@ -599,37 +585,6 @@ gint play_iter(GtkTreeIter * playiter, gint restart_second)
 
         gmtk_media_player_set_attribute_boolean(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_PLAYLIST, playlist);
         gmtk_media_player_set_uri(GMTK_MEDIA_PLAYER(media), uri);
-#ifdef LIBGDA_ENABLED
-        metadata = get_db_metadata(db_connection, uri);
-
-        if (gtk_tree_model_iter_n_children(GTK_TREE_MODEL(playliststore), NULL) == 1 && metadata->resumable
-            && (int) (metadata->position) > 0) {
-            position_text = seconds_to_string(metadata->position);
-            if (resume_mode == RESUME_ALWAYS_ASK) {
-                GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(window),
-                                                           GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-                                                           GTK_MESSAGE_QUESTION,
-                                                           GTK_BUTTONS_YES_NO,
-                                                           _("Resume Playback of %s at %s"),
-                                                           metadata->title, position_text);
-                if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_YES) {
-                    gmtk_media_tracker_set_length(tracker, metadata->length_value);
-                    gmtk_media_tracker_set_position(tracker, metadata->position);
-                    gmtk_media_player_set_attribute_double(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_START_TIME,
-                                                           metadata->position);
-                }
-                gtk_widget_destroy(dialog);
-                g_free(position_text);
-            }
-            if (resume_mode == RESUME_BUT_NEVER_ASK) {
-                gmtk_media_tracker_set_length(tracker, metadata->length_value);
-                gmtk_media_tracker_set_position(tracker, metadata->position);
-                gmtk_media_player_set_attribute_double(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_START_TIME,
-                                                       metadata->position);
-            }
-        }
-        free_metadata(metadata);
-#endif
         gmtk_media_player_set_state(GMTK_MEDIA_PLAYER(media), MEDIA_STATE_PLAY);
 
     }
@@ -1104,9 +1059,6 @@ int main(int argc, char *argv[])
                            G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING,
                            G_TYPE_STRING, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT,
                            G_TYPE_FLOAT, G_TYPE_FLOAT, G_TYPE_BOOLEAN);
-#ifdef LIBGDA_ENABLED
-    db_connection = open_db_connection();
-#endif
     // only use dark theme if not embedded, otherwise use the default theme  
 #ifdef GTK3_ENABLED
     if (embed_window <= 0) {
