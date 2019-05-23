@@ -83,11 +83,6 @@ GtkWidget *vol_slider;
 
 GtkWidget *conf_volume_label;
 
-#ifdef GTK2_12_ENABLED
-#else
-GtkTooltips *tooltip;
-#endif
-
 // Playlist container
 GtkWidget *plvbox;
 GSList *lang_group;

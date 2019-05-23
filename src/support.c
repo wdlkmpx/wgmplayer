@@ -264,12 +264,11 @@ gboolean parse_playlist(gchar * uri)
         }
     }
 
-#ifdef GTK2_12_ENABLED
     // don't put it on the recent list, if it is running in plugin mode
     if (control_id == 0 && ret) {
         gtk_recent_manager_add_item(recent_manager, uri);
     }
-#endif
+
     gm_log(verbose, G_LOG_LEVEL_INFO, "parse playlist = %s", gm_bool_to_string(ret));
     return ret;
 }

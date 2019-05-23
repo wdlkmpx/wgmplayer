@@ -268,13 +268,12 @@ gint play_iter(GtkTreeIter * playiter, gint restart_second)
     gchar *buffer = NULL;
     gchar *message = NULL;
     MetaData *metadata;
-#ifdef GTK2_12_ENABLED
     GtkRecentData *recent_data;
 #ifdef GIO_ENABLED
     GFile *file;
     GFileInfo *file_info;
 #endif
-#endif
+
 #ifdef LIBGDA_ENABLED
     gchar *position_text;
 #endif
@@ -505,7 +504,6 @@ gint play_iter(GtkTreeIter * playiter, gint restart_second)
        }
        }
      */
-#ifdef GTK2_12_ENABLED
 #ifdef GIO_ENABLED
     // don't put it on the recent list, if it is running in plugin mode
     if (control_id == 0 && !streaming_media(uri)) {
@@ -540,7 +538,6 @@ gint play_iter(GtkTreeIter * playiter, gint restart_second)
         g_free(recent_data);
 
     }
-#endif
 #endif
     g_free(title);
     g_free(artist);
@@ -1026,10 +1023,10 @@ int main(int argc, char *argv[])
     audio_device_name = gm_pref_store_get_string(gm_store, AUDIO_DEVICE_NAME);
     audio_device.description = g_strdup(audio_device_name);
     context = g_option_context_new(_("[FILES...] - GNOME Media player based on MPlayer"));
-#ifdef GTK2_12_ENABLED
+
     g_option_context_set_translation_domain(context, "UTF-8");
     g_option_context_set_translate_func(context, (GTranslateFunc) gettext, NULL, NULL);
-#endif
+
     g_option_context_add_main_entries(context, entries, GETTEXT_PACKAGE);
     g_option_context_add_group(context, gtk_get_option_group(TRUE));
     g_option_context_parse(context, &argc, &argv, &error);
@@ -1308,11 +1305,7 @@ int main(int argc, char *argv[])
     }
     gm_log(verbose, G_LOG_LEVEL_DEBUG, "Volume is %lf Audio Device Volume = %f", volume, audio_device.volume);
 
-#ifdef GTK2_12_ENABLED
     gtk_scale_button_set_value(GTK_SCALE_BUTTON(vol_slider), audio_device.volume);
-#else
-    gtk_range_set_value(GTK_RANGE(vol_slider), audio_device.volume);
-#endif
     use_volume_option = detect_volume_option();
     show_window(embed_window);
     if (playiter)

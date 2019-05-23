@@ -197,12 +197,8 @@ static GtkWidget *image_menu;
 static GtkWidget *image_fs;
 //static GtkWidget *image_icon;
 
-#ifdef GTK2_12_ENABLED
 static GtkStatusIcon *status_icon;
 static GtkWidget *config_show_status_icon;
-#else
-static GtkTooltips *volume_tip;
-#endif
 
 //static GtkWidget *config_window;
 
@@ -843,11 +839,9 @@ gboolean set_media_label(void *data)
 #else
             notification = notify_notification_new(idle->display_name, idle->media_notification, "gnome-mplayer", NULL);
 #endif
-#ifdef GTK2_12_ENABLED
 #if !NOTIFY0_7_ENABLED
             if (show_status_icon)
                 notify_notification_attach_to_status_icon(notification, status_icon);
-#endif
 #endif
             notify_notification_show(notification, NULL);
             notify_uninit();
@@ -1053,11 +1047,7 @@ gboolean set_volume_from_slider(gpointer data)
 {
     gdouble vol;
 
-#ifdef GTK2_12_ENABLED
     vol = gtk_scale_button_get_value(GTK_SCALE_BUTTON(vol_slider));
-#else
-    vol = gtk_range_get_value(GTK_RANGE(vol_slider));
-#endif
     if (!gmtk_media_player_get_attribute_boolean(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_MUTED)) {
         gmtk_media_player_set_volume(GMTK_MEDIA_PLAYER(media), vol);
         if (remember_softvol) {
@@ -1071,13 +1061,7 @@ gboolean set_volume_from_slider(gpointer data)
 
 gboolean set_volume_tip(void *data)
 {
-#ifndef GTK2_12_ENABLED
-    gchar *tip_text = NULL;
-    IdleData *idle = (IdleData *) data;
-#endif
-
     if (GTK_IS_WIDGET(vol_slider)) {
-#ifdef GTK2_12_ENABLED
         // should be automatic
         /*
            tip_text = gtk_widget_get_tooltip_text(vol_slider);
@@ -1085,9 +1069,6 @@ gboolean set_volume_tip(void *data)
            gtk_widget_set_tooltip_text(vol_slider, idle->vol_tooltip);
            g_free(tip_text);
          */
-#else
-        gtk_tooltips_set_tip(volume_tip, vol_slider, idle->vol_tooltip, NULL);
-#endif
     }
     return FALSE;
 }
@@ -1210,14 +1191,10 @@ gboolean set_gui_state(void *data)
             gtk_image_set_from_stock(GTK_IMAGE(image_play), GTK_STOCK_MEDIA_PAUSE, button_size);
 #endif
 
-#ifdef GTK2_12_ENABLED
             tip_text = gtk_widget_get_tooltip_text(play_event_box);
             if (tip_text == NULL || g_ascii_strcasecmp(tip_text, _("Pause")) != 0)
                 gtk_widget_set_tooltip_text(play_event_box, _("Pause"));
             g_free(tip_text);
-#else
-            gtk_tooltips_set_tip(tooltip, play_event_box, _("Pause"), NULL);
-#endif
             gtk_widget_set_sensitive(ff_event_box, TRUE);
             gtk_widget_set_sensitive(rew_event_box, TRUE);
             gtk_container_remove(GTK_CONTAINER(popup_menu), GTK_WIDGET(menuitem_play));
@@ -1239,14 +1216,10 @@ gboolean set_gui_state(void *data)
 #else
             gtk_image_set_from_stock(GTK_IMAGE(image_play), GTK_STOCK_MEDIA_PLAY, button_size);
 #endif
-#ifdef GTK2_12_ENABLED
             tip_text = gtk_widget_get_tooltip_text(play_event_box);
             if (tip_text == NULL || g_ascii_strcasecmp(tip_text, _("Play")) != 0)
                 gtk_widget_set_tooltip_text(play_event_box, _("Play"));
             g_free(tip_text);
-#else
-            gtk_tooltips_set_tip(tooltip, play_event_box, _("Play"), NULL);
-#endif
             gtk_widget_set_sensitive(ff_event_box, FALSE);
             gtk_widget_set_sensitive(rew_event_box, FALSE);
             gtk_container_remove(GTK_CONTAINER(popup_menu), GTK_WIDGET(menuitem_play));
@@ -1268,14 +1241,10 @@ gboolean set_gui_state(void *data)
 #else
             gtk_image_set_from_stock(GTK_IMAGE(image_play), GTK_STOCK_MEDIA_PLAY, button_size);
 #endif
-#ifdef GTK2_12_ENABLED
             tip_text = gtk_widget_get_tooltip_text(play_event_box);
             if (tip_text == NULL || g_ascii_strcasecmp(tip_text, _("Play")) != 0)
                 gtk_widget_set_tooltip_text(play_event_box, _("Play"));
             g_free(tip_text);
-#else
-            gtk_tooltips_set_tip(tooltip, play_event_box, _("Play"), NULL);
-#endif
             gtk_widget_set_sensitive(ff_event_box, FALSE);
             gtk_widget_set_sensitive(rew_event_box, FALSE);
             gtk_container_remove(GTK_CONTAINER(popup_menu), GTK_WIDGET(menuitem_play));
@@ -1437,7 +1406,6 @@ void remove_langs(GtkWidget * item, gpointer data)
 
 void update_status_icon()
 {
-#ifdef GTK2_12_ENABLED
     gchar *text;
 
     if (gmtk_media_player_get_media_state(GMTK_MEDIA_PLAYER(media)) == MEDIA_STATE_PLAY) {
@@ -1455,9 +1423,7 @@ void update_status_icon()
         gtk_status_icon_set_tooltip(status_icon, text);
 #endif
     }
-
     g_free(text);
-#endif
 }
 
 gboolean resize_window(void *data)
@@ -1693,11 +1659,7 @@ gboolean set_volume(void *data)
             pref_volume = -1;
         }
         gm_log(verbose, G_LOG_LEVEL_DEBUG, "data is null new volume is %f", audio_device.volume);
-#ifdef GTK2_12_ENABLED
         gtk_scale_button_set_value(GTK_SCALE_BUTTON(vol_slider), audio_device.volume);
-#else
-        gtk_range_set_value(GTK_RANGE(vol_slider), audio_device.volume);
-#endif
         return FALSE;
     }
 
@@ -1707,7 +1669,6 @@ gboolean set_volume(void *data)
             volume_softvol = audio_device.volume;
             set_software_volume(&volume_softvol);
         }
-#ifdef GTK2_12_ENABLED
         if (rpcontrols != NULL && g_ascii_strcasecmp(rpcontrols, "volumeslider") == 0) {
             gtk_range_set_value(GTK_RANGE(vol_slider), audio_device.volume);
             buf = g_strdup_printf(_("Volume %i%%"), (gint) (audio_device.volume * 100.0));
@@ -1717,12 +1678,6 @@ gboolean set_volume(void *data)
             gtk_scale_button_set_value(GTK_SCALE_BUTTON(vol_slider), audio_device.volume);
         }
 
-#else
-        gtk_range_set_value(GTK_RANGE(vol_slider), audio_device.volume);
-        buf = g_strdup_printf(_("Volume %i%%"), (gint) (audio_device.volume * 100.0));
-        g_strlcpy(idledata->vol_tooltip, buf, sizeof(idledata->vol_tooltip));
-        g_free(buf);
-#endif
         g_idle_add(set_volume_tip, idle);
     }
 
@@ -1792,19 +1747,11 @@ gboolean popup_handler(GtkWidget * widget, GdkEvent * event, void *data)
         if (event_button->button == 2) {
 
             // mute on button 2
-#ifdef GTK2_12_ENABLED
             if (gmtk_media_player_get_attribute_boolean(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_MUTED)) {
                 gtk_scale_button_set_value(GTK_SCALE_BUTTON(vol_slider), audio_device.volume);
             } else {
                 gtk_scale_button_set_value(GTK_SCALE_BUTTON(vol_slider), 0.0);
             }
-#else
-            if (gmtk_media_player_get_attribute_boolean(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_MUTED)) {
-                gtk_range_set_value(GTK_RANGE(vol_slider), audio_device.volume);
-            } else {
-                gtk_range_set_value(GTK_RANGE(vol_slider), 0.0);
-            }
-#endif
         }
 
         if (event_button->button == 1 && idledata->videopresent == TRUE && !disable_pause_on_click &&
@@ -1967,7 +1914,6 @@ gboolean delete_callback(GtkWidget * widget, GdkEvent * event, void *data)
     return FALSE;
 }
 
-#ifdef GTK2_12_ENABLED
 gboolean status_icon_callback(GtkStatusIcon * icon, gpointer data)
 {
 
@@ -1988,8 +1934,6 @@ void status_icon_context_callback(GtkStatusIcon * status_icon, guint button, gui
 {
     gtk_menu_popup(GTK_MENU(popup_menu), NULL, NULL, gtk_status_icon_position_menu, status_icon, button, activate_time);
 }
-
-#endif
 
 gboolean motion_notify_callback(GtkWidget * widget, GdkEventMotion * event, gpointer data)
 {
@@ -2269,7 +2213,6 @@ gboolean window_key_callback(GtkWidget * widget, GdkEventKey * event, gpointer u
             return play_callback(NULL, NULL, NULL);
             break;
         case GDK_m:
-#ifdef GTK2_12_ENABLED
             if (gmtk_media_player_get_attribute_boolean(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_MUTED)) {
                 gmtk_media_player_set_attribute_boolean(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_MUTED, FALSE);
                 gtk_scale_button_set_value(GTK_SCALE_BUTTON(vol_slider), audio_device.volume);
@@ -2277,15 +2220,6 @@ gboolean window_key_callback(GtkWidget * widget, GdkEventKey * event, gpointer u
                 gmtk_media_player_set_attribute_boolean(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_MUTED, TRUE);
                 gtk_scale_button_set_value(GTK_SCALE_BUTTON(vol_slider), 0.0);
             }
-#else
-            if (gmtk_media_player_get_attribute_boolean(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_MUTED)) {
-                gmtk_media_player_set_attribute_boolean(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_MUTED, FALSE);
-                gtk_range_set_value(GTK_RANGE(vol_slider), audio_device.volume);
-            } else {
-                gmtk_media_player_set_attribute_boolean(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_MUTED, TRUE);
-                gtk_range_set_value(GTK_RANGE(vol_slider), 0.0);
-            }
-#endif
             return FALSE;
 
         case GDK_1:
@@ -2322,20 +2256,12 @@ gboolean window_key_callback(GtkWidget * widget, GdkEventKey * event, gpointer u
             gmtk_media_player_set_attribute_double(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_SPEED_SET, 1.0);
             return FALSE;
         case GDK_9:
-#ifdef GTK2_12_ENABLED
             gtk_scale_button_set_value(GTK_SCALE_BUTTON(vol_slider),
                                        gtk_scale_button_get_value(GTK_SCALE_BUTTON(vol_slider)) - 0.01);
-#else
-            gtk_range_set_value(GTK_RANGE(vol_slider), gtk_range_get_value(GTK_RANGE(vol_slider)) - 0.01);
-#endif
             return FALSE;
         case GDK_0:
-#ifdef GTK2_12_ENABLED
             gtk_scale_button_set_value(GTK_SCALE_BUTTON(vol_slider),
                                        gtk_scale_button_get_value(GTK_SCALE_BUTTON(vol_slider)) + 0.01);
-#else
-            gtk_range_set_value(GTK_RANGE(vol_slider), gtk_range_get_value(GTK_RANGE(vol_slider)) + 0.01);
-#endif
             return FALSE;
         case GDK_period:
             if (gmtk_media_player_get_media_state(GMTK_MEDIA_PLAYER(media)) == MEDIA_STATE_PAUSE)
@@ -2657,11 +2583,7 @@ gboolean stop_callback(GtkWidget * widget, GdkEventExpose * event, void *data)
 #else
         gtk_image_set_from_stock(GTK_IMAGE(image_play), GTK_STOCK_MEDIA_PLAY, button_size);
 #endif
-#ifdef GTK2_12_ENABLED
         gtk_widget_set_tooltip_text(play_event_box, _("Play"));
-#else
-        gtk_tooltips_set_tip(tooltip, play_event_box, _("Play"), NULL);
-#endif
     }
 
     if (gmtk_media_player_get_media_state(GMTK_MEDIA_PLAYER(media)) == MEDIA_STATE_QUIT) {
@@ -2675,11 +2597,7 @@ gboolean stop_callback(GtkWidget * widget, GdkEventExpose * event, void *data)
 #else
         gtk_image_set_from_stock(GTK_IMAGE(image_play), GTK_STOCK_MEDIA_PLAY, button_size);
 #endif
-#ifdef GTK2_12_ENABLED
         gtk_widget_set_tooltip_text(play_event_box, _("Play"));
-#else
-        gtk_tooltips_set_tip(tooltip, play_event_box, _("Play"), NULL);
-#endif
     }
 
     g_idle_add(set_progress_value, idledata);
@@ -2892,7 +2810,6 @@ void vol_slider_callback(GtkRange * range, gpointer user_data)
 
 }
 
-#ifdef GTK2_12_ENABLED
 void vol_button_value_changed_callback(GtkScaleButton * volume, gdouble value, gpointer data)
 {
 
@@ -2917,7 +2834,6 @@ void vol_button_value_changed_callback(GtkScaleButton * volume, gdouble value, g
     }
 
 }
-#endif
 
 gboolean make_panel_and_mouse_invisible(gpointer data)
 {
@@ -3534,7 +3450,6 @@ void menuitem_open_recent_callback(GtkRecentChooser * chooser, gpointer data)
     }
 }
 
-#ifdef GTK2_12_ENABLED
 void recent_manager_changed_callback(GtkRecentManager * recent_manager, gpointer data)
 {
     GtkRecentFilter *recent_filter;
@@ -3554,7 +3469,6 @@ void recent_manager_changed_callback(GtkRecentManager * recent_manager, gpointer
     gtk_recent_chooser_set_local_only(GTK_RECENT_CHOOSER(menuitem_file_recent_items), FALSE);
 #endif
 }
-#endif
 
 void parseChannels(FILE * f)
 {
@@ -4360,7 +4274,6 @@ void config_apply(GtkWidget * widget, void *data)
 #ifdef NOTIFY_ENABLED
     show_notification = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(config_show_notification));
 #endif
-#ifdef GTK2_12_ENABLED
     show_status_icon = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(config_show_status_icon));
     if (GTK_IS_STATUS_ICON(status_icon)) {
         gtk_status_icon_set_visible(status_icon, show_status_icon);
@@ -4383,7 +4296,6 @@ void config_apply(GtkWidget * widget, void *data)
         }
     }
 
-#endif
     forcecache = (gboolean) gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(config_forcecache));
     remember_loc = (gboolean) gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(config_remember_loc));
     disable_cover_art_fetch =
@@ -5344,18 +5256,10 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     config_vo = gtk_combo_box_entry_new_text();
 #endif
 
-#ifdef GTK2_12_ENABLED
     gtk_widget_set_tooltip_text(config_vo,
                                 _
                                 ("mplayer video output device\nx11 should always work, try xv, gl or vdpau for better performance and enhanced features"));
 
-#else
-    tooltip = gtk_tooltips_new();
-    gtk_tooltips_set_tip(tooltip, config_vo,
-                         _
-                         ("mplayer video output device\nx11 should always work, try xv, gl or vdpau for better performance and enhanced features"),
-                         NULL);
-#endif
     if (config_vo != NULL) {
 #ifdef GTK2_24_ENABLED
         gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_vo), "gl");
@@ -5725,17 +5629,9 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
 
     config_hardware_codecs = gtk_check_button_new_with_label(_("Enable Video Hardware Support"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_hardware_codecs), use_hardware_codecs);
-#ifdef GTK2_12_ENABLED
     gtk_widget_set_tooltip_text(config_hardware_codecs,
                                 _
                                 ("When this option is enabled, codecs or options will be enabled to accelerate video processing. These options may cause playback to fail in some cases."));
-#else
-    tooltip = gtk_tooltips_new();
-    gtk_tooltips_set_tip(tooltip, config_hardware_codecs,
-                         _
-                         ("When this option is enabled, codecs or options will be enabled to accelerate video processing. These options may cause playback to fail in some cases."),
-                         NULL);
-#endif
     gtk_widget_set_size_request(GTK_WIDGET(config_hardware_codecs), 200, -1);
     gtk_table_attach(GTK_TABLE(conf_table), config_hardware_codecs, 1, 2, i, i + 1, GTK_FILL | GTK_EXPAND, GTK_SHRINK,
                      0, 0);
@@ -5822,12 +5718,7 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     gtk_table_attach(GTK_TABLE(conf_table), conf_label, 0, 1, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
     gtk_widget_show(conf_label);
     config_volume = gtk_spin_button_new_with_range(0, 100, 1);
-#ifdef GTK2_12_ENABLED
     gtk_widget_set_tooltip_text(config_volume, _("Default volume for playback"));
-#else
-    tooltip = gtk_tooltips_new();
-    gtk_tooltips_set_tip(tooltip, config_volume, _("Default volume for playback"), NULL);
-#endif
     gtk_widget_set_size_request(config_volume, 100, -1);
     gtk_table_attach(GTK_TABLE(conf_table), config_volume, 1, 2, i, i + 1, GTK_FILL | GTK_EXPAND, GTK_SHRINK, 0, 0);
     gm_store = gm_pref_store_new("gnome-mplayer");
@@ -5919,7 +5810,6 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     gtk_widget_show(conf_label);
     config_plugin_audio_cache_size = gtk_spin_button_new_with_range(64, 256 * 1024, 64);
     config_plugin_video_cache_size = gtk_spin_button_new_with_range(256, 256 * 1024, 256);
-#ifdef GTK2_12_ENABLED
     gtk_widget_set_tooltip_text(config_plugin_audio_cache_size,
                                 _
                                 ("Amount of data to cache when playing media from network, use higher values for slow networks."));
@@ -5927,18 +5817,6 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
                                 _
                                 ("Amount of data to cache when playing media from network, use higher values for slow networks."));
 
-#else
-    tooltip = gtk_tooltips_new();
-    gtk_tooltips_set_tip(tooltip, config_plugin_audio_cache_size,
-                         _
-                         ("Amount of data to cache when playing media from network, use higher values for slow networks."),
-                         NULL);
-    tooltip = gtk_tooltips_new();
-    gtk_tooltips_set_tip(tooltip, config_plugin_video_cache_size,
-                         _
-                         ("Amount of data to cache when playing media from network, use higher values for slow networks."),
-                         NULL);
-#endif
     //gtk_widget_set_size_request(config_plugin_cache_size, 200, -1);
     gtk_table_attach(GTK_TABLE(conf_table), config_plugin_audio_cache_size, 1, 2, i, i + 1,
                      GTK_FILL | GTK_EXPAND, GTK_SHRINK, 0, 0);
@@ -6214,12 +6092,10 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     i++;
 #endif
 
-#ifdef GTK2_12_ENABLED
     config_show_status_icon = gtk_check_button_new_with_label(_("Show status icon"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_show_status_icon), show_status_icon);
     gtk_table_attach(GTK_TABLE(conf_table), config_show_status_icon, 0, 2, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
     i++;
-#endif
 
     config_vertical_layout =
         gtk_check_button_new_with_label(_("Place playlist below media (requires application restart)"));
@@ -6289,17 +6165,9 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     i++;
 
     config_verbose = gtk_check_button_new_with_label(_("Verbose Debug Enabled"));
-#ifdef GTK2_12_ENABLED
     gtk_widget_set_tooltip_text(config_verbose,
                                 _
                                 ("When this option is set, extra debug information is sent to the terminal or into ~/.xsession-errors"));
-#else
-    tooltip = gtk_tooltips_new();
-    gtk_tooltips_set_tip(tooltip, config_verbose,
-                         _
-                         ("When this option is set, extra debug information is sent to the terminal or into ~/.xsession-errors"),
-                         NULL);
-#endif
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_verbose), verbose);
     gtk_table_attach(GTK_TABLE(conf_table), config_verbose, 0, 2, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
     i++;
@@ -6315,14 +6183,8 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     gtk_table_attach(GTK_TABLE(conf_table), conf_label, 0, 3, i, i + 1, GTK_FILL | GTK_EXPAND, GTK_SHRINK, 0, 0);
     i++;
 
-#ifdef GTK2_12_ENABLED
     gtk_widget_set_tooltip_text(config_softvol,
                                 _("Set this option if changing the volume in Gnome MPlayer changes the master volume"));
-#else
-    tooltip = gtk_tooltips_new();
-    gtk_tooltips_set_tip(tooltip, config_softvol,
-                         _("Set this option if changing the volume in Gnome MPlayer changes the master volume"), NULL);
-#endif
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_softvol), softvol);
     gtk_table_attach(GTK_TABLE(conf_table), config_softvol, 0, 2, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
     g_signal_connect(G_OBJECT(config_softvol), "toggled", G_CALLBACK(config_softvol_callback), NULL);
@@ -6332,14 +6194,8 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     gtk_label_set_width_chars(GTK_LABEL(conf_label), 3);
     gtk_table_attach(GTK_TABLE(conf_table), conf_label, 1, 2, i, i + 1, GTK_SHRINK, GTK_SHRINK, 0, 0);
     config_remember_softvol = gtk_check_button_new_with_label(_("Remember last software volume level"));
-#ifdef GTK2_12_ENABLED
     gtk_widget_set_tooltip_text(config_remember_softvol,
                                 _("Set this option if you want the software volume level to be remembered"));
-#else
-    tooltip = gtk_tooltips_new();
-    gtk_tooltips_set_tip(tooltip, config_remember_softvol,
-                         _("Set this option if you want the software volume level to be remembered"), NULL);
-#endif
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_remember_softvol), remember_softvol);
     gtk_table_attach(GTK_TABLE(conf_table), config_remember_softvol, 1, 2, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
     gtk_widget_set_sensitive(config_remember_softvol, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(config_softvol)));
@@ -6358,23 +6214,13 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     i++;
 
     config_deinterlace = gtk_check_button_new_with_mnemonic(_("De_interlace Video"));
-#ifdef GTK2_12_ENABLED
     gtk_widget_set_tooltip_text(config_deinterlace, _("Set this option if video looks striped"));
-#else
-    tooltip = gtk_tooltips_new();
-    gtk_tooltips_set_tip(tooltip, config_deinterlace, _("Set this option if video looks striped"), NULL);
-#endif
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_deinterlace), !disable_deinterlace);
     gtk_table_attach(GTK_TABLE(conf_table), config_deinterlace, 0, 3, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
     i++;
 
     config_framedrop = gtk_check_button_new_with_mnemonic(_("_Drop frames"));
-#ifdef GTK2_12_ENABLED
     gtk_widget_set_tooltip_text(config_framedrop, _("Set this option if video is well behind the audio"));
-#else
-    tooltip = gtk_tooltips_new();
-    gtk_tooltips_set_tip(tooltip, config_framedrop, _("Set this option if video is well behind the audio"), NULL);
-#endif
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_framedrop), !disable_framedrop);
     gtk_table_attach(GTK_TABLE(conf_table), config_framedrop, 0, 3, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
     i++;
@@ -6391,15 +6237,8 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     gtk_table_attach(GTK_TABLE(conf_table), conf_label, 0, 2, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
     gtk_widget_show(conf_label);
     config_cachesize = gtk_spin_button_new_with_range(32, 256 * 1024, 512);
-#ifdef GTK2_12_ENABLED
     gtk_widget_set_tooltip_text(config_cachesize, _
                                 ("Amount of data to cache when playing media, use higher values for slow devices and sites."));
-#else
-    tooltip = gtk_tooltips_new();
-    gtk_tooltips_set_tip(tooltip, config_cachesize, _
-                         ("Amount of data to cache when playing media, use higher values for slow devices and sites."),
-                         NULL);
-#endif
     gtk_widget_set_size_request(config_cachesize, 100, -1);
     gtk_table_attach(GTK_TABLE(conf_table), config_cachesize, 2, 3, i, i + 1, GTK_FILL | GTK_EXPAND, GTK_SHRINK, 0, 0);
     //gtk_range_set_value(GTK_RANGE(config_cachesize), cache_size);
@@ -6419,14 +6258,8 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
 
     conf_label = gtk_label_new(_("MPlayer Executable:"));
     config_mplayer_bin = gtk_file_chooser_button_new("Select", GTK_FILE_CHOOSER_ACTION_OPEN);
-#ifdef GTK2_12_ENABLED
     gtk_widget_set_tooltip_text(config_mplayer_bin, _
                                 ("Use this option to specify a mplayer application that is not in the path"));
-#else
-    tooltip = gtk_tooltips_new();
-    gtk_tooltips_set_tip(tooltip, config_mplayer_bin, _
-                         ("Use this option to specify a mplayer application that is not in the path"), NULL);
-#endif
     if (mplayer_bin != NULL)
         gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(config_mplayer_bin), mplayer_bin);
     gtk_misc_set_alignment(GTK_MISC(conf_label), 0.0, 0.5);
@@ -6443,12 +6276,7 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
 
     conf_label = gtk_label_new(_("Extra Options to MPlayer:"));
     config_extraopts = gtk_entry_new();
-#ifdef GTK2_12_ENABLED
     gtk_widget_set_tooltip_text(config_extraopts, _("Add any extra mplayer options here (filters etc)"));
-#else
-    tooltip = gtk_tooltips_new();
-    gtk_tooltips_set_tip(tooltip, config_extraopts, _("Add any extra mplayer options here (filters etc)"), NULL);
-#endif
     gtk_entry_set_text(GTK_ENTRY(config_extraopts), ((extraopts) ? extraopts : ""));
     gtk_misc_set_alignment(GTK_MISC(conf_label), 0.0, 0.5);
     gtk_misc_set_padding(GTK_MISC(conf_label), 12, 0);
@@ -7024,9 +6852,7 @@ void player_attribute_changed_callback(GmtkMediaTracker * tracker, GmtkMediaPlay
 
 void player_media_state_changed_callback(GtkButton * button, GmtkMediaPlayerMediaState media_state, gpointer data)
 {
-#ifdef GTK2_12_ENABLED
     gchar *tip_text = NULL;
-#endif
     gchar *short_filename = NULL;
 #ifdef GTK3_ENABLED
     GtkIconTheme *icon_theme = gtk_icon_theme_get_default();
@@ -7090,14 +6916,10 @@ void player_media_state_changed_callback(GtkButton * button, GmtkMediaPlayerMedi
         gtk_image_set_from_stock(GTK_IMAGE(image_play), GTK_STOCK_MEDIA_PLAY, button_size);
 #endif
         gmtk_media_tracker_set_position(GMTK_MEDIA_TRACKER(tracker), 0.0);
-#ifdef GTK2_12_ENABLED
         tip_text = gtk_widget_get_tooltip_text(play_event_box);
         if (tip_text == NULL || g_ascii_strcasecmp(tip_text, _("Play")) != 0)
             gtk_widget_set_tooltip_text(play_event_box, _("Play"));
         g_free(tip_text);
-#else
-        gtk_tooltips_set_tip(tooltip, play_event_box, _("Play"), NULL);
-#endif
         gtk_widget_set_sensitive(ff_event_box, FALSE);
         gtk_widget_set_sensitive(rew_event_box, FALSE);
         gtk_widget_set_sensitive(prev_event_box, FALSE);
@@ -7128,14 +6950,10 @@ void player_media_state_changed_callback(GtkButton * button, GmtkMediaPlayerMedi
 #else
         gtk_image_set_from_stock(GTK_IMAGE(image_play), GTK_STOCK_MEDIA_PAUSE, button_size);
 #endif
-#ifdef GTK2_12_ENABLED
         tip_text = gtk_widget_get_tooltip_text(play_event_box);
         if (tip_text == NULL || g_ascii_strcasecmp(tip_text, _("Pause")) != 0)
             gtk_widget_set_tooltip_text(play_event_box, _("Pause"));
         g_free(tip_text);
-#else
-        gtk_tooltips_set_tip(tooltip, play_event_box, _("Pause"), NULL);
-#endif
         gtk_widget_set_sensitive(ff_event_box, TRUE);
         gtk_widget_set_sensitive(rew_event_box, TRUE);
         gtk_widget_set_sensitive(prev_event_box, TRUE);
@@ -7178,14 +6996,10 @@ void player_media_state_changed_callback(GtkButton * button, GmtkMediaPlayerMedi
 #else
         gtk_image_set_from_stock(GTK_IMAGE(image_play), GTK_STOCK_MEDIA_PLAY, button_size);
 #endif
-#ifdef GTK2_12_ENABLED
         tip_text = gtk_widget_get_tooltip_text(play_event_box);
         if (tip_text == NULL || g_ascii_strcasecmp(tip_text, _("Play")) != 0)
             gtk_widget_set_tooltip_text(play_event_box, _("Play"));
         g_free(tip_text);
-#else
-        gtk_tooltips_set_tip(tooltip, play_event_box, _("Play"), NULL);
-#endif
         gtk_widget_set_sensitive(ff_event_box, FALSE);
         gtk_widget_set_sensitive(rew_event_box, FALSE);
         gtk_widget_set_sensitive(prev_event_box, FALSE);
@@ -7542,10 +7356,8 @@ GtkWidget *create_window(gint windowid)
     GtkIconTheme *icon_theme;
     GtkTargetEntry target_entry[3];
     gint i = 0;
-#ifdef GTK2_12_ENABLED
     GtkRecentFilter *recent_filter;
     GtkAdjustment *adj;
-#endif
 #ifdef GTK3_ENABLED
     const char *icon_start, *icon_seek_forward, *icon_seek_backward, *icon_skip_forward, *icon_skip_backward;
 
@@ -7735,7 +7547,7 @@ GtkWidget *create_window(gint windowid)
     gtk_menu_shell_append(GTK_MENU_SHELL(menu_file_tv), GTK_WIDGET(menuitem_file_open_atv));
     menuitem_file_open_dtv = GTK_MENU_ITEM(gtk_image_menu_item_new_with_mnemonic(_("Open _Digital TV")));
     gtk_menu_shell_append(GTK_MENU_SHELL(menu_file_tv), GTK_WIDGET(menuitem_file_open_dtv));
-#ifdef GTK2_12_ENABLED
+
 #ifdef GIO_ENABLED
     recent_manager = gtk_recent_manager_get_default();
     menuitem_file_recent = GTK_MENU_ITEM(gtk_menu_item_new_with_mnemonic(_("Open _Recent")));
@@ -7750,7 +7562,7 @@ GtkWidget *create_window(gint windowid)
     gtk_menu_item_set_submenu(menuitem_file_recent, menuitem_file_recent_items);
     gtk_recent_chooser_set_local_only(GTK_RECENT_CHOOSER(menuitem_file_recent_items), FALSE);
 #endif
-#endif
+
     menuitem_file_sep2 = GTK_MENU_ITEM(gtk_separator_menu_item_new());
     gtk_menu_shell_append(GTK_MENU_SHELL(menu_file), GTK_WIDGET(menuitem_file_sep2));
     menuitem_file_quit = GTK_MENU_ITEM(gtk_image_menu_item_new_from_stock(GTK_STOCK_QUIT, accel_group));
@@ -7774,12 +7586,12 @@ GtkWidget *create_window(gint windowid)
     g_signal_connect(G_OBJECT(menuitem_file_open_vcd), "activate", G_CALLBACK(menuitem_open_vcd_callback), NULL);
     g_signal_connect(G_OBJECT(menuitem_file_open_atv), "activate", G_CALLBACK(menuitem_open_atv_callback), NULL);
     g_signal_connect(G_OBJECT(menuitem_file_open_dtv), "activate", G_CALLBACK(menuitem_open_dtv_callback), NULL);
-#ifdef GTK2_12_ENABLED
+
 #ifdef GIO_ENABLED
     g_signal_connect(G_OBJECT(menuitem_file_recent_items),
                      "item-activated", G_CALLBACK(menuitem_open_recent_callback), NULL);
 #endif
-#endif
+
     g_signal_connect(G_OBJECT(menuitem_file_quit), "activate", G_CALLBACK(menuitem_quit_callback), NULL);
     // Edit Menu
     menuitem_edit = GTK_MENU_ITEM(gtk_menu_item_new_with_mnemonic(_("_Edit")));
@@ -7816,16 +7628,10 @@ GtkWidget *create_window(gint windowid)
     menuitem_edit_take_screenshot = GTK_MENU_ITEM(gtk_menu_item_new_with_mnemonic(_("_Take Screenshot")));
     gtk_menu_item_set_accel_path(menuitem_edit_take_screenshot, ACCEL_PATH_EDIT_SCREENSHOT);
     gtk_menu_shell_append(GTK_MENU_SHELL(menu_edit), GTK_WIDGET(menuitem_edit_take_screenshot));
-#ifdef GTK2_12_ENABLED
+
     gtk_widget_set_tooltip_text(GTK_WIDGET
                                 (menuitem_edit_take_screenshot),
                                 _("Files named ’shotNNNN.png’ will be saved in the working directory"));
-#else
-    tooltip = gtk_tooltips_new();
-    gtk_tooltips_set_tip(tooltip,
-                         GTK_WIDGET(menuitem_edit_take_screenshot),
-                         _("Files named ’shotNNNN.png’ will be saved in the working directory"), NULL);
-#endif
     menuitem_edit_sep1 = GTK_MENU_ITEM(gtk_separator_menu_item_new());
     gtk_menu_shell_append(GTK_MENU_SHELL(menu_edit), GTK_WIDGET(menuitem_edit_sep1));
     menuitem_edit_config = GTK_MENU_ITEM(gtk_image_menu_item_new_from_stock(GTK_STOCK_PREFERENCES, NULL));
@@ -8156,7 +7962,7 @@ GtkWidget *create_window(gint windowid)
     }
     gtk_window_set_default_icon_list(icon_list);
     gtk_window_set_icon_list(GTK_WINDOW(window), icon_list);
-#ifdef GTK2_12_ENABLED
+
     if (control_id == 0 && show_status_icon) {
         if (gtk_icon_theme_has_icon(icon_theme, "gnome-mplayer-panel")) {
             status_icon = gtk_status_icon_new_from_icon_name("gnome-mplayer-panel");
@@ -8173,17 +7979,12 @@ GtkWidget *create_window(gint windowid)
         g_signal_connect(status_icon, "activate", G_CALLBACK(status_icon_callback), NULL);
         g_signal_connect(status_icon, "popup_menu", G_CALLBACK(status_icon_context_callback), NULL);
     }
-#endif
 
     menu_event_box = gtk_button_new();
     gtk_button_set_image(GTK_BUTTON(menu_event_box), image_menu);
     gtk_button_set_relief(GTK_BUTTON(menu_event_box), GTK_RELIEF_NONE);
-#ifdef GTK2_12_ENABLED
+
     gtk_widget_set_tooltip_text(menu_event_box, _("Menu"));
-#else
-    tooltip = gtk_tooltips_new();
-    gtk_tooltips_set_tip(tooltip, menu_event_box, _("Menu"), NULL);
-#endif
 #ifdef GTK2_20_ENABLED
     gtk_widget_set_can_focus(menu_event_box, FALSE);
 #else
@@ -8198,12 +7999,7 @@ GtkWidget *create_window(gint windowid)
     prev_event_box = gtk_button_new();
     gtk_button_set_image(GTK_BUTTON(prev_event_box), image_prev);
     gtk_button_set_relief(GTK_BUTTON(prev_event_box), GTK_RELIEF_NONE);
-#ifdef GTK2_12_ENABLED
     gtk_widget_set_tooltip_text(prev_event_box, _("Previous"));
-#else
-    tooltip = gtk_tooltips_new();
-    gtk_tooltips_set_tip(tooltip, prev_event_box, _("Previous"), NULL);
-#endif
 #ifdef GTK2_20_ENABLED
     gtk_widget_set_can_focus(prev_event_box, FALSE);
 #else
@@ -8219,12 +8015,7 @@ GtkWidget *create_window(gint windowid)
     rew_event_box = gtk_button_new();
     gtk_button_set_image(GTK_BUTTON(rew_event_box), image_rew);
     gtk_button_set_relief(GTK_BUTTON(rew_event_box), GTK_RELIEF_NONE);
-#ifdef GTK2_12_ENABLED
     gtk_widget_set_tooltip_text(rew_event_box, _("Rewind"));
-#else
-    tooltip = gtk_tooltips_new();
-    gtk_tooltips_set_tip(tooltip, rew_event_box, _("Rewind"), NULL);
-#endif
 #ifdef GTK2_20_ENABLED
     gtk_widget_set_can_focus(rew_event_box, FALSE);
 #else
@@ -8240,12 +8031,7 @@ GtkWidget *create_window(gint windowid)
     play_event_box = gtk_button_new();
     gtk_button_set_image(GTK_BUTTON(play_event_box), image_play);
     gtk_button_set_relief(GTK_BUTTON(play_event_box), GTK_RELIEF_NONE);
-#ifdef GTK2_12_ENABLED
     gtk_widget_set_tooltip_text(play_event_box, _("Play"));
-#else
-    tooltip = gtk_tooltips_new();
-    gtk_tooltips_set_tip(tooltip, play_event_box, _("Play"), NULL);
-#endif
 #ifdef GTK2_20_ENABLED
     gtk_widget_set_can_focus(play_event_box, FALSE);
 #else
@@ -8260,12 +8046,7 @@ GtkWidget *create_window(gint windowid)
     stop_event_box = gtk_button_new();
     gtk_button_set_image(GTK_BUTTON(stop_event_box), image_stop);
     gtk_button_set_relief(GTK_BUTTON(stop_event_box), GTK_RELIEF_NONE);
-#ifdef GTK2_12_ENABLED
     gtk_widget_set_tooltip_text(stop_event_box, _("Stop"));
-#else
-    tooltip = gtk_tooltips_new();
-    gtk_tooltips_set_tip(tooltip, stop_event_box, _("Stop"), NULL);
-#endif
 #ifdef GTK2_20_ENABLED
     gtk_widget_set_can_focus(stop_event_box, FALSE);
 #else
@@ -8281,12 +8062,7 @@ GtkWidget *create_window(gint windowid)
     ff_event_box = gtk_button_new();
     gtk_button_set_image(GTK_BUTTON(ff_event_box), image_ff);
     gtk_button_set_relief(GTK_BUTTON(ff_event_box), GTK_RELIEF_NONE);
-#ifdef GTK2_12_ENABLED
     gtk_widget_set_tooltip_text(ff_event_box, _("Fast Forward"));
-#else
-    tooltip = gtk_tooltips_new();
-    gtk_tooltips_set_tip(tooltip, ff_event_box, _("Fast Forward"), NULL);
-#endif
 #ifdef GTK2_20_ENABLED
     gtk_widget_set_can_focus(ff_event_box, FALSE);
 #else
@@ -8302,12 +8078,7 @@ GtkWidget *create_window(gint windowid)
     next_event_box = gtk_button_new();
     gtk_button_set_image(GTK_BUTTON(next_event_box), image_next);
     gtk_button_set_relief(GTK_BUTTON(next_event_box), GTK_RELIEF_NONE);
-#ifdef GTK2_12_ENABLED
     gtk_widget_set_tooltip_text(next_event_box, _("Next"));
-#else
-    tooltip = gtk_tooltips_new();
-    gtk_tooltips_set_tip(tooltip, next_event_box, _("Next"), NULL);
-#endif
 #ifdef GTK2_20_ENABLED
     gtk_widget_set_can_focus(next_event_box, FALSE);
 #else
@@ -8338,12 +8109,7 @@ GtkWidget *create_window(gint windowid)
     fs_event_box = gtk_button_new();
     gtk_button_set_image(GTK_BUTTON(fs_event_box), image_fs);
     gtk_button_set_relief(GTK_BUTTON(fs_event_box), GTK_RELIEF_NONE);
-#ifdef GTK2_12_ENABLED
     gtk_widget_set_tooltip_text(fs_event_box, _("Full Screen"));
-#else
-    tooltip = gtk_tooltips_new();
-    gtk_tooltips_set_tip(tooltip, fs_event_box, _("Full Screen"), NULL);
-#endif
 #ifdef GTK2_20_ENABLED
     gtk_widget_set_can_focus(fs_event_box, FALSE);
 #else
@@ -8362,7 +8128,6 @@ GtkWidget *create_window(gint windowid)
         gtk_widget_set_size_request(vol_slider, -1, window_y);
         gtk_range_set_inverted(GTK_RANGE(vol_slider), TRUE);
     } else {
-#ifdef GTK2_12_ENABLED
         vol_slider = gtk_volume_button_new();
 #ifdef GTK3_ENABLED
         g_object_set(G_OBJECT(vol_slider), "use-symbolic", TRUE, NULL);
@@ -8377,21 +8142,9 @@ GtkWidget *create_window(gint windowid)
         g_signal_connect(G_OBJECT(vol_slider), "value_changed",
                          G_CALLBACK(vol_button_value_changed_callback), idledata);
         gtk_button_set_relief(GTK_BUTTON(vol_slider), GTK_RELIEF_NONE);
-#else
-        vol_slider = gtk_hscale_new_with_range(0.0, 1.0, 0.2);
-        gtk_widget_set_size_request(vol_slider, 44, button_size);
-        gtk_scale_set_draw_value(GTK_SCALE(vol_slider), FALSE);
-        gtk_range_set_value(GTK_RANGE(vol_slider), audio_device.volume);
-        g_signal_connect(G_OBJECT(vol_slider), "value_changed", G_CALLBACK(vol_slider_callback), idledata);
-#endif
     }
-#ifdef GTK2_12_ENABLED
     // no tooltip on the volume_button is needed
     // gtk_widget_set_tooltip_text(vol_slider, idledata->vol_tooltip);
-#else
-    volume_tip = gtk_tooltips_new();
-    gtk_tooltips_set_tip(volume_tip, vol_slider, _("Volume 100%"), NULL);
-#endif
     gtk_box_pack_end(GTK_BOX(hbox), vol_slider, FALSE, FALSE, 0);
 #ifdef GTK2_20_ENABLED
     gtk_widget_set_can_focus(vol_slider, FALSE);
@@ -8810,9 +8563,7 @@ void show_fs_controls()
 #ifdef GTK3_ENABLED
         gtk_widget_set_opacity(GTK_WIDGET(fs_controls), 0.75);
 #else
-#ifdef GTK2_12_ENABLED
         gtk_window_set_opacity(GTK_WINDOW(fs_controls), 0.75);
-#endif
 #endif
 
         screen = gtk_window_get_screen(GTK_WINDOW(window));

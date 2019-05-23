@@ -506,10 +506,8 @@ gboolean safe_to_save_default_playlist;
 
 gboolean async_play_iter(void *data);
 
-#ifdef GTK2_12_ENABLED
 GtkRecentManager *recent_manager;
 void recent_manager_changed_callback(GtkRecentManager * recent_manager, gpointer data);
-#endif
 
 #ifdef LIBGDA_ENABLED
 GdaConnection *db_connection;
