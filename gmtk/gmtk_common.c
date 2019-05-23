@@ -36,11 +36,7 @@ void gmtk_get_allocation(GtkWidget * widget, GtkAllocation * allocation)
 
 GdkWindow *gmtk_get_window(GtkWidget * widget)
 {
-#ifdef GTK2_14_ENABLED
     return gtk_widget_get_window(widget);
-#else
-    return widget->window;
-#endif
 }
 
 gboolean gmtk_get_visible(GtkWidget * widget)

@@ -2440,20 +2440,12 @@ gboolean drop_callback(GtkWidget * widget, GdkDragContext * dc,
      */
     if (selection_data == NULL)
         return FALSE;
-#ifdef GTK2_14_ENABLED
     if (gtk_selection_data_get_length(selection_data) < 0)
         return FALSE;
-#else
-    if (selection_data->length < 0)
-        return FALSE;
-#endif
 
     if ((info == DRAG_INFO_0) || (info == DRAG_INFO_1) || (info == DRAG_INFO_2)) {
-#ifdef GTK2_14_ENABLED
+
         list = g_uri_list_extract_uris((const gchar *) gtk_selection_data_get_data(selection_data));
-#else
-        list = g_uri_list_extract_uris((const gchar *) selection_data->data);
-#endif
         itemcount = gtk_tree_model_iter_n_children(GTK_TREE_MODEL(playliststore), NULL);
 
         while (list[i] != NULL) {
@@ -3642,13 +3634,10 @@ void menuitem_next_callback(GtkMenuItem * menuitem, void *data)
 
 void about_url_hook(GtkAboutDialog * about, const char *link, gpointer data)
 {
-#ifdef GTK2_14_ENABLED
     GError *error = NULL;
-
     if (!gtk_show_uri(gtk_widget_get_screen(GTK_WIDGET(about)), link, gtk_get_current_event_time(), &error)) {
         g_error_free(error);
     }
-#endif
 }
 
 void menuitem_about_callback(GtkMenuItem * menuitem, void *data)
@@ -3656,10 +3645,8 @@ void menuitem_about_callback(GtkMenuItem * menuitem, void *data)
     gchar *authors[] = { "Kevin DeKorte", "James Carthew", "Diogo Franco", "Icons provided by Victor Castillejo",
         NULL
     };
-#ifdef GTK2_14_ENABLED
 #ifndef GTK2_24_ENABLED
     gtk_about_dialog_set_url_hook(about_url_hook, NULL, NULL);
-#endif
 #endif
     gtk_show_about_dialog(GTK_WINDOW(window), "name", _("GNOME MPlayer"), "authors", authors,
                           "copyright", "Copyright © 2007-2011 Kevin DeKorte", "comments",
@@ -4057,10 +4044,8 @@ void menuitem_fs_callback(GtkMenuItem * menuitem, void *data)
 #ifdef GTK2_18_ENABLED
                 gdk_window_ensure_native(gtk_widget_get_window(fs_window));
 #else
-#ifdef GTK2_14_ENABLED
 #ifdef X11_ENABLED
                 GDK_WINDOW_XID(gmtk_get_window(GTK_WIDGET(fs_window)));
-#endif
 #endif
 #endif
             }
