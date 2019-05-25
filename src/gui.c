@@ -30,16 +30,6 @@
 #include "support.h"
 #include "common.h"
 #include "../pixmaps/gnome_mplayer.xpm"
-/*
-#include "../pixmaps/media-playback-pause.xpm"
-#include "../pixmaps/media-playback-start.xpm"
-#include "../pixmaps/media-playback-stop.xpm"
-#include "../pixmaps/media-seek-backward.xpm"
-#include "../pixmaps/media-seek-forward.xpm"
-#include "../pixmaps/media-skip-backward.xpm"
-#include "../pixmaps/media-skip-forward.xpm"
-#include "../pixmaps/view-fullscreen.xpm"
-*/
 #include "langlist.h"
 #ifdef NOTIFY_ENABLED
 #include <libnotify/notify.h>
@@ -60,11 +50,8 @@ static GtkMenuItem *menuitem_file_disc;
 static GtkMenu *menu_file_disc;
 static GtkMenuItem *menuitem_file_open_acd;
 static GtkMenuItem *menuitem_file_open_sep1;
-//static GtkMenuItem *menuitem_file_open_dvd;
 static GtkMenuItem *menuitem_file_open_dvdnav;
-//static GtkMenuItem *menuitem_file_open_dvd_folder;
 static GtkMenuItem *menuitem_file_open_dvdnav_folder;
-//static GtkMenuItem *menuitem_file_open_dvd_iso;
 static GtkMenuItem *menuitem_file_open_dvdnav_iso;
 static GtkMenuItem *menuitem_file_open_sep2;
 static GtkMenuItem *menuitem_file_open_vcd;
@@ -83,8 +70,6 @@ static GtkMenu *menu_edit;
 static GtkMenuItem *menuitem_edit_switch_audio;
 static GtkMenuItem *menuitem_edit_set_audiofile;
 static GtkMenuItem *menuitem_edit_set_subtitle;
-//static GtkMenuItem *menuitem_lang;
-
 static GtkMenuItem *menuitem_edit_take_screenshot;
 static GtkMenuItem *menuitem_edit_sep1;
 static GtkMenuItem *menuitem_edit_config;
@@ -100,7 +85,6 @@ static GtkMenuItem *menuitem_view_onetoone;
 static GtkMenuItem *menuitem_view_twotoone;
 static GtkMenuItem *menuitem_view_onetotwo;
 static GtkMenuItem *menuitem_view_onetoonepointfive;
-//static GtkMenuItem *menuitem_view_sep4;
 static GtkMenuItem *menuitem_view_aspect;
 static GtkMenu *menu_view_aspect;
 static GtkMenuItem *menuitem_view_aspect_default;
@@ -167,18 +151,9 @@ static GList *icon_list;
 static GtkWidget *button_event_box;
 static GtkWidget *image_button;
 
-//static GtkWidget *play_button;
-//static GtkWidget *stop_button;
-//static GtkWidget *pause_button;
-//static GtkWidget *ff_button;
-//static GtkWidget *rew_button;
-
-//static GtkWidget *pause_event_box;
 static GtkWidget *stop_event_box;
 static GtkWidget *ff_event_box;
 static GtkWidget *rew_event_box;
-
-//static GtkProgressBar *progress;
 
 static gboolean in_button;
 
@@ -191,12 +166,9 @@ static GtkWidget *image_next;
 static GtkWidget *image_prev;
 static GtkWidget *image_menu;
 static GtkWidget *image_fs;
-//static GtkWidget *image_icon;
 
 static GtkStatusIcon *status_icon;
 static GtkWidget *config_show_status_icon;
-
-//static GtkWidget *config_window;
 
 static GtkWidget *config_vo;
 static GtkWidget *config_hardware_codecs;
@@ -459,13 +431,8 @@ void view_option_hide_callback(GtkWidget * widget, gpointer data)
 
 void view_option_size_allocate_callback(GtkWidget * widget, GtkAllocation * allocation, gpointer data)
 {
-
-    //if (widget == plvbox)
     gm_log(verbose, G_LOG_LEVEL_DEBUG, "plvbox size_allocate_callback");
-    //else
     gm_log(verbose, G_LOG_LEVEL_DEBUG, "size_allocate_callback");
-
-
     g_idle_add(set_adjust_layout, NULL);
 }
 
@@ -535,8 +502,7 @@ void adjust_layout()
         if (gmtk_get_visible(media_hbox) == 0) {
             gtk_widget_show_all(media_hbox);
             //gm_log(verbose, G_LOG_LEVEL_DEBUG, "waiting for all events to drain");
-            //while (gtk_events_pending())
-            //    gtk_main_iteration();
+            //while (gtk_events_pending()) gtk_main_iteration();
         }
         gmtk_get_allocation(media_hbox, &alloc);
         gm_log(verbose, G_LOG_LEVEL_DEBUG, "media height = %i", alloc.height);
@@ -709,16 +675,13 @@ gboolean hide_buttons(void *data)
 gboolean show_copyurl(void *data)
 {
     gchar *buf;
-
     gtk_widget_show(GTK_WIDGET(menuitem_copyurl));
     if (control_id == 0) {
         buf = g_strdup_printf(_("%s - GNOME MPlayer"), gmtk_media_player_get_uri(GMTK_MEDIA_PLAYER(media)));
         gtk_window_set_title(GTK_WINDOW(window), buf);
         g_free(buf);
     }
-
     return FALSE;
-
 }
 
 
@@ -863,11 +826,6 @@ gboolean set_cover_art(gpointer pixbuf)
     if (pixbuf == NULL) {
         if (GTK_IS_IMAGE(cover_art))
             gtk_image_clear(GTK_IMAGE(cover_art));
-        if (strlen(idledata->media_info) > 0) {
-            //gtk_widget_show_all(media_hbox);
-        } else {
-            // gtk_widget_hide(media_hbox);
-        }
     } else {
         width = gdk_pixbuf_get_width(GDK_PIXBUF(pixbuf));
         height = gdk_pixbuf_get_height(GDK_PIXBUF(pixbuf));
@@ -879,8 +837,6 @@ gboolean set_cover_art(gpointer pixbuf)
     }
 
     g_idle_add(set_adjust_layout, NULL);
-
-    //adjust_layout();
     return FALSE;
 }
 
@@ -914,8 +870,6 @@ gboolean set_progress_value(void *data)
             text = g_strdup_printf(_("Paused | %2i%% \342\226\274"), (gint) (idle->cachepercent * 100));
             gmtk_media_tracker_set_text(tracker, text);
             g_free(text);
-        } else {
-            //gmtk_media_tracker_set_text(tracker, idle->progress_text);
         }
         gmtk_media_tracker_set_cache_percentage(tracker, idle->cachepercent);
     }
@@ -1059,19 +1013,12 @@ gboolean set_volume_tip(void *data)
 {
     if (GTK_IS_WIDGET(vol_slider)) {
         // should be automatic
-        /*
-           tip_text = gtk_widget_get_tooltip_text(vol_slider);
-           if (tip_text == NULL || g_ascii_strcasecmp(tip_text, idle->vol_tooltip) != 0)
-           gtk_widget_set_tooltip_text(vol_slider, idle->vol_tooltip);
-           g_free(tip_text);
-         */
     }
     return FALSE;
 }
 
 gboolean set_window_visible(void *data)
 {
-    //gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_view_playlist),FALSE);
     if (GTK_IS_WIDGET(media)) {
         if (vertical_layout) {
             gtk_widget_show(media);
@@ -1147,16 +1094,11 @@ gboolean set_update_gui(void *data)
 static const gchar *PLAYSTATE_to_string(const PLAYSTATE pstate)
 {
     switch (pstate) {
-    case PLAYING:
-        return "playing";
-    case PAUSED:
-        return "paused";
-    case STOPPED:
-        return "stopped";
-    case QUIT:
-        return "quit";
-    default:
-        return "???";
+    case PLAYING: return "playing";
+    case PAUSED:  return "paused";
+    case STOPPED: return "stopped";
+    case QUIT:    return "quit";
+    default:      return "???";
     }
 }
 
@@ -1198,8 +1140,6 @@ gboolean set_gui_state(void *data)
             g_signal_connect(G_OBJECT(menuitem_play), "activate", G_CALLBACK(menuitem_pause_callback), NULL);
             gtk_menu_shell_insert(GTK_MENU_SHELL(popup_menu), GTK_WIDGET(menuitem_play), 0);
             gtk_widget_show(GTK_WIDGET(menuitem_play));
-//            if (idledata->videopresent)
-//                dbus_disable_screensaver();
         }
 
         if (guistate == PAUSED) {
@@ -1223,8 +1163,6 @@ gboolean set_gui_state(void *data)
             g_signal_connect(G_OBJECT(menuitem_play), "activate", G_CALLBACK(menuitem_play_callback), NULL);
             gtk_menu_shell_insert(GTK_MENU_SHELL(popup_menu), GTK_WIDGET(menuitem_play), 0);
             gtk_widget_show(GTK_WIDGET(menuitem_play));
-            //dbus_enable_screensaver();
-            //gmtk_media_player_set_state (GMTK_MEDIA_PLAYER(media), MEDIA_STATE_PAUSE);
         }
 
         if (guistate == STOPPED) {
@@ -1248,8 +1186,6 @@ gboolean set_gui_state(void *data)
             g_signal_connect(G_OBJECT(menuitem_play), "activate", G_CALLBACK(menuitem_play_callback), NULL);
             gtk_menu_shell_insert(GTK_MENU_SHELL(popup_menu), GTK_WIDGET(menuitem_play), 0);
             gtk_widget_show(GTK_WIDGET(menuitem_play));
-//            dbus_enable_screensaver();
-            //gmtk_media_player_set_state (GMTK_MEDIA_PLAYER(media), MEDIA_STATE_STOP);
         }
         lastguistate = guistate;
     }
@@ -1387,8 +1323,7 @@ gboolean set_item_add_info(void *data)
         gtk_progress_bar_pulse(GTK_PROGRESS_BAR(folder_progress_bar));
         g_free(message);
         //gm_log(verbose, G_LOG_LEVEL_DEBUG, "waiting for all events to drain");
-        //while (gtk_events_pending())
-        //    gtk_main_iteration();
+        //while (gtk_events_pending()) gtk_main_iteration();
     }
 
     return FALSE;
@@ -1440,7 +1375,6 @@ gboolean resize_window(void *data)
             gtk_widget_set_sensitive(GTK_WIDGET(menuitem_view_info), TRUE);
             gtk_widget_set_sensitive(GTK_WIDGET(menuitem_edit_set_subtitle), TRUE);
             gtk_widget_set_sensitive(GTK_WIDGET(menuitem_edit_set_audiofile), TRUE);
-            //dbus_disable_screensaver();
             if (embed_window == -1) {
                 gtk_widget_show_all(window);
                 gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_view_info), FALSE);
@@ -1846,13 +1780,11 @@ gboolean delete_callback(GtkWidget * widget, GdkEvent * event, void *data)
         if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menuitem_view_playlist))) {
 
         }
-        //if (save_loc) {
         gm_pref_store_set_int(gm_store, WINDOW_X, loc_window_x);
         gm_pref_store_set_int(gm_store, WINDOW_Y, loc_window_y);
         gm_pref_store_set_int(gm_store, WINDOW_HEIGHT, loc_window_height);
         gm_pref_store_set_int(gm_store, WINDOW_WIDTH, loc_window_width);
         gm_pref_store_set_int(gm_store, PANEL_POSITION, loc_panel_position);
-        //}
         gm_pref_store_free(gm_store);
     }
 
@@ -1879,12 +1811,8 @@ gboolean delete_callback(GtkWidget * widget, GdkEvent * event, void *data)
             gtk_main_iteration();
         }
     }
-//    dbus_enable_screensaver();
-
     if (use_defaultpl && embed_window == 0)
         save_playlist_pls(default_playlist);
-
-    //gtk_main_quit();
     return FALSE;
 }
 
@@ -1943,8 +1871,6 @@ gboolean window_state_callback(GtkWidget * widget, GdkEventWindowState * event, 
            gm_bool_to_string((event->new_window_state == GDK_WINDOW_STATE_FULLSCREEN)));
     gm_log(verbose, G_LOG_LEVEL_DEBUG, "State = %i mask = %i flag = %i", event->new_window_state, event->changed_mask,
            GDK_WINDOW_STATE_FULLSCREEN);
-    //if (embed_window == 0) {
-    //update_control_flag = TRUE;
     gm_log(verbose, G_LOG_LEVEL_DEBUG, "restore controls = %s showcontrols = %s", gm_bool_to_string(restore_controls),
            gm_bool_to_string(showcontrols));
     if (fullscreen == 1 && (event->new_window_state & GDK_WINDOW_STATE_ICONIFIED)) {
@@ -1970,8 +1896,6 @@ gboolean window_state_callback(GtkWidget * widget, GdkEventWindowState * event, 
         idledata->showcontrols = restore_controls;
         set_show_controls(idledata);
     }
-    //}
-
     return FALSE;
 }
 
@@ -2368,7 +2292,6 @@ gboolean window_key_callback(GtkWidget * widget, GdkEventKey * event, gpointer u
             gmtk_media_player_set_attribute_double(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_AUDIO_DELAY,
                                                    gmtk_media_player_get_attribute_double(GMTK_MEDIA_PLAYER(media),
                                                                                           ATTRIBUTE_AUDIO_DELAY) + 0.1);
-
             return FALSE;
         case GDK_braceleft:
             gmtk_media_player_set_attribute_double(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_SPEED_MULTIPLIER, 0.50);
@@ -2866,10 +2789,7 @@ gboolean make_panel_and_mouse_visible(gpointer data)
 {
 
     if (showcontrols && GTK_IS_WIDGET(controls_box)) {
-        //gtk_widget_set_size_request(controls_box, -1, -1);
-        //gtk_widget_show(controls_box);
         show_fs_controls();
-
     }
     gdk_window_set_cursor(gmtk_get_window(window), NULL);
 
@@ -3091,98 +3011,6 @@ void menuitem_open_location_callback(GtkMenuItem * menuitem, void *data)
 
 }
 
-
-void menuitem_open_dvd_callback(GtkMenuItem * menuitem, void *data)
-{
-    gtk_list_store_clear(playliststore);
-    if (idledata->device != NULL) {
-        g_free(idledata->device);
-        idledata->device = NULL;
-    }
-    gmtk_media_player_set_state(GMTK_MEDIA_PLAYER(media), MEDIA_STATE_QUIT);
-    parse_dvd("dvd://");
-
-    if (gtk_tree_model_get_iter_first(GTK_TREE_MODEL(playliststore), &iter)) {
-        play_iter(&iter, 0);
-    }
-}
-
-void menuitem_open_dvd_folder_callback(GtkMenuItem * menuitem, void *data)
-{
-    GtkWidget *dialog;
-    gchar *last_dir;
-
-    dialog = gtk_file_chooser_dialog_new(_("Choose Disk Directory"),
-                                         GTK_WINDOW(window),
-                                         GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,
-                                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                         GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT, NULL);
-    gtk_widget_show(dialog);
-    gm_store = gm_pref_store_new("gnome-mplayer");
-    last_dir = gm_pref_store_get_string(gm_store, LAST_DIR);
-    if (last_dir != NULL && is_uri_dir(last_dir)) {
-        gtk_file_chooser_set_current_folder_uri(GTK_FILE_CHOOSER(dialog), last_dir);
-        g_free(last_dir);
-    }
-    gm_pref_store_free(gm_store);
-
-    if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
-
-        gtk_list_store_clear(playliststore);
-        idledata->device = g_strdup(gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog)));
-
-        parse_dvd("dvd://");
-
-        if (gtk_tree_model_get_iter_first(GTK_TREE_MODEL(playliststore), &iter)) {
-            play_iter(&iter, 0);
-        }
-    }
-    if (GTK_IS_WIDGET(dialog))
-        gtk_widget_destroy(dialog);
-
-}
-
-void menuitem_open_dvd_iso_callback(GtkMenuItem * menuitem, void *data)
-{
-    GtkWidget *dialog;
-    gchar *last_dir;
-    GtkFileFilter *filter;
-
-    dialog = gtk_file_chooser_dialog_new(_("Choose Disk Image"),
-                                         GTK_WINDOW(window),
-                                         GTK_FILE_CHOOSER_ACTION_OPEN,
-                                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                         GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT, NULL);
-    gtk_widget_show(dialog);
-    gm_store = gm_pref_store_new("gnome-mplayer");
-    last_dir = gm_pref_store_get_string(gm_store, LAST_DIR);
-    if (last_dir != NULL && is_uri_dir(last_dir)) {
-        gtk_file_chooser_set_current_folder_uri(GTK_FILE_CHOOSER(dialog), last_dir);
-        g_free(last_dir);
-    }
-    gm_pref_store_free(gm_store);
-    filter = gtk_file_filter_new();
-    gtk_file_filter_set_name(filter, _("Disk Image (*.iso)"));
-    gtk_file_filter_add_pattern(filter, "*.iso");
-    gtk_file_filter_add_pattern(filter, "*.ISO");
-    gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(dialog), filter);
-
-    if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
-
-        gtk_list_store_clear(playliststore);
-        idledata->device = g_strdup(gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog)));
-
-        parse_dvd("dvd://");
-
-        if (gtk_tree_model_get_iter_first(GTK_TREE_MODEL(playliststore), &iter)) {
-            play_iter(&iter, 0);
-        }
-    }
-    if (GTK_IS_WIDGET(dialog))
-        gtk_widget_destroy(dialog);
-
-}
-
 void menuitem_open_dvdnav_callback(GtkMenuItem * menuitem, void *data)
 {
     gtk_list_store_clear(playliststore);
@@ -3376,26 +3204,6 @@ void menuitem_open_recent_callback(GtkRecentChooser * chooser, gpointer data)
         gtk_tree_view_column_set_title(column, coltitle);
         g_free(coltitle);
     }
-}
-
-void recent_manager_changed_callback(GtkRecentManager * recent_manager, gpointer data)
-{
-    GtkRecentFilter *recent_filter;
-
-    if (GTK_IS_WIDGET(menuitem_file_recent_items))
-        gtk_widget_destroy(menuitem_file_recent_items);
-    menuitem_file_recent_items = gtk_recent_chooser_menu_new();
-    recent_filter = gtk_recent_filter_new();
-    gtk_recent_filter_add_application(recent_filter, "gnome-mplayer");
-    gtk_recent_chooser_add_filter(GTK_RECENT_CHOOSER(menuitem_file_recent_items), recent_filter);
-    gtk_recent_chooser_set_show_tips(GTK_RECENT_CHOOSER(menuitem_file_recent_items), TRUE);
-    gtk_recent_chooser_set_sort_type(GTK_RECENT_CHOOSER(menuitem_file_recent_items), GTK_RECENT_SORT_MRU);
-    gtk_menu_item_set_submenu(menuitem_file_recent, menuitem_file_recent_items);
-    g_signal_connect(G_OBJECT(menuitem_file_recent_items), "item-activated",
-                     G_CALLBACK(menuitem_open_recent_callback), NULL);
-#ifdef GIO_ENABLED
-    gtk_recent_chooser_set_local_only(GTK_RECENT_CHOOSER(menuitem_file_recent_items), FALSE);
-#endif
 }
 
 void parseChannels(FILE * f)
@@ -3755,10 +3563,6 @@ void menuitem_view_subtitles_callback(GtkMenuItem * menuitem, void *data)
     gmtk_media_player_set_attribute_boolean(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_SUB_VISIBLE,
                                             gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM
                                                                            (menuitem_view_subtitles)));
-
-    //    g_strdup_printf("set_property sub_forced_only %i\n",
-    //                    !gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menuitem_view_subtitles)));
-
 }
 
 //      Switch Audio Streams
@@ -4332,10 +4136,6 @@ void config_apply(GtkWidget * widget, void *data)
     g_remove(filename);
     g_free(filename);
 
-    // don't reload plugins when running in plugin mode
-//    if (embed_window == 0 && control_id == 0)
-//        dbus_reload_plugins();
-
     gmtk_media_player_restart(GMTK_MEDIA_PLAYER(media));
     gtk_widget_destroy(widget);
 }
@@ -4905,13 +4705,6 @@ void ass_toggle_callback(GtkToggleButton * source, gpointer user_data)
     gtk_widget_set_sensitive(config_embeddedfonts, gtk_toggle_button_get_active(source));
 }
 
-void embedded_fonts_toggle_callback(GtkToggleButton * source, gpointer user_data)
-{
-    gtk_widget_set_sensitive(config_subtitle_font, !gtk_toggle_button_get_active(source));
-    gtk_widget_set_sensitive(config_subtitle_shadow, !gtk_toggle_button_get_active(source));
-    gtk_widget_set_sensitive(config_subtitle_outline, !gtk_toggle_button_get_active(source));
-}
-
 void hw_audio_toggle_callback(GtkToggleButton * source, gpointer user_data)
 {
     if (gtk_toggle_button_get_active(source)) {
@@ -4949,10 +4742,6 @@ void output_combobox_changed_callback(GtkComboBox * config_ao, gpointer data)
             device = g_strdup_printf("hw:%i", card);
         }
 
-        // this might be wrong, so commenting out
-        //softvol = FALSE;
-        //gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_softvol), softvol);
-
         gtk_list_store_clear(GTK_LIST_STORE(gtk_combo_box_get_model(config_mixer)));
         gtk_combo_box_set_active(config_mixer, -1);
 
@@ -4978,7 +4767,6 @@ void output_combobox_changed_callback(GtkComboBox * config_ao, gpointer data)
             master = -1;
             pcm = -1;
             snd_mixer_selem_id_alloca(&sid);
-            //gtk_combo_box_append_text(GTK_COMBO_BOX(config_mixer), "");
             for (elem = snd_mixer_first_elem(mhandle); elem; elem = snd_mixer_elem_next(elem)) {
                 snd_mixer_selem_get_id(elem, sid);
                 if (!snd_mixer_selem_is_active(elem))
@@ -4989,7 +4777,6 @@ void output_combobox_changed_callback(GtkComboBox * config_ao, gpointer data)
                 if (!snd_mixer_selem_has_playback_volume(elem))
                     continue;
                 mix = g_strdup_printf("%s,%i", snd_mixer_selem_id_get_name(sid), snd_mixer_selem_id_get_index(sid));
-                //mix = g_strdup_printf("%s", snd_mixer_selem_id_get_name(sid));
                 gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_mixer), mix);
                 if (audio_device.alsa_mixer != NULL && g_ascii_strcasecmp(mix, audio_device.alsa_mixer) == 0)
                     j = i;
@@ -5002,10 +4789,6 @@ void output_combobox_changed_callback(GtkComboBox * config_ao, gpointer data)
             }
             if (j != -1)
                 gtk_combo_box_set_active(GTK_COMBO_BOX(config_mixer), j);
-            //if (mixer != NULL && strlen(mixer) > 0 && j == -1) {
-            //    gtk_combo_box_append_text(GTK_COMBO_BOX(config_mixer), mixer);
-            //    gtk_combo_box_set_active(GTK_COMBO_BOX(config_mixer), i);
-            //}
             if (j == -1 && pcm != -1)
                 gtk_combo_box_set_active(GTK_COMBO_BOX(config_mixer), pcm);
             if (j == -1 && master != -1)
@@ -5466,9 +5249,6 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
 
     gtk_container_add(GTK_CONTAINER(conf_page1), conf_table);
 
-    //conf_table = gtk_table_new(20, 2, FALSE);
-    //gtk_container_add(GTK_CONTAINER(conf_page1), conf_table);
-    //i = 0;
     conf_label = gtk_label_new(_("<span weight=\"bold\">Adjust Configuration Settings</span>"));
     gtk_label_set_use_markup(GTK_LABEL(conf_label), TRUE);
     gtk_misc_set_alignment(GTK_MISC(conf_label), 0.0, 0.0);
@@ -5582,10 +5362,8 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
                                 _
                                 ("Amount of data to cache when playing media from network, use higher values for slow networks."));
 
-    //gtk_widget_set_size_request(config_plugin_cache_size, 200, -1);
     gtk_table_attach(GTK_TABLE(conf_table), config_plugin_audio_cache_size, 1, 2, i, i + 1,
                      GTK_FILL | GTK_EXPAND, GTK_SHRINK, 0, 0);
-    //gtk_range_set_value(GTK_RANGE(config_cachesize), cache_size);
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(config_plugin_audio_cache_size), plugin_audio_cache_size);
     gtk_entry_set_width_chars(GTK_ENTRY(config_plugin_audio_cache_size), 6);
     gtk_entry_set_alignment(GTK_ENTRY(config_plugin_audio_cache_size), 1);
@@ -5674,8 +5452,6 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     config_embeddedfonts = gtk_check_button_new_with_mnemonic(_("Use _Embedded Fonts (MKV only)"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_embeddedfonts), !disable_embeddedfonts);
     gtk_widget_set_sensitive(config_embeddedfonts, !disable_ass);
-//    g_signal_connect(G_OBJECT(config_embeddedfonts), "toggled",
-//                     G_CALLBACK(embedded_fonts_toggle_callback), NULL);
     gtk_table_attach(GTK_TABLE(conf_table), config_embeddedfonts, 0, 2, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
     gtk_widget_show(config_embeddedfonts);
     i++;
@@ -5691,7 +5467,6 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     if (subtitlefont != NULL) {
         gtk_font_button_set_font_name(GTK_FONT_BUTTON(config_subtitle_font), subtitlefont);
     }
-//    gtk_widget_set_sensitive(config_subtitle_font, disable_embeddedfonts);
     gtk_font_button_set_show_size(GTK_FONT_BUTTON(config_subtitle_font), TRUE);
     gtk_font_button_set_show_style(GTK_FONT_BUTTON(config_subtitle_font), TRUE);
 
@@ -5734,13 +5509,11 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     i++;
 
     config_subtitle_outline = gtk_check_button_new_with_label(_("Outline Subtitle Font"));
-//    gtk_widget_set_sensitive(config_subtitle_outline, disable_embeddedfonts);
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_subtitle_outline), subtitle_outline);
     gtk_table_attach(GTK_TABLE(conf_table), config_subtitle_outline, 0, 2, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
     i++;
 
     config_subtitle_shadow = gtk_check_button_new_with_label(_("Shadow Subtitle Font"));
-//    gtk_widget_set_sensitive(config_subtitle_shadow, disable_embeddedfonts);
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_subtitle_shadow), subtitle_shadow);
     gtk_table_attach(GTK_TABLE(conf_table), config_subtitle_shadow, 0, 2, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
     i++;
@@ -6000,7 +5773,6 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
                                 ("Amount of data to cache when playing media, use higher values for slow devices and sites."));
     gtk_widget_set_size_request(config_cachesize, 100, -1);
     gtk_table_attach(GTK_TABLE(conf_table), config_cachesize, 2, 3, i, i + 1, GTK_FILL | GTK_EXPAND, GTK_SHRINK, 0, 0);
-    //gtk_range_set_value(GTK_RANGE(config_cachesize), cache_size);
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(config_cachesize), cache_size);
     gtk_entry_set_width_chars(GTK_ENTRY(config_cachesize), 6);
     gtk_entry_set_alignment(GTK_ENTRY(config_cachesize), 1);
@@ -6051,7 +5823,6 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     gtk_table_attach(GTK_TABLE(conf_table), config_mplayer_dvd_device, 2, 3, i, i + 1,
                      GTK_FILL | GTK_EXPAND, GTK_SHRINK, 0, 0);
     i++;
-
 
     // Page 7 - Keyboard Shortcuts
     conf_table = gtk_table_new(KEY_COUNT + 5, 3, FALSE);
@@ -6175,8 +5946,6 @@ void subtitle_select_callback(GtkMenuItem * menu, gpointer data)
 {
     if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menu)))
         gmtk_media_player_select_subtitle_by_id(GMTK_MEDIA_PLAYER(media), GPOINTER_TO_INT(data));
-    // use the id instead of the name
-    //gmtk_media_player_select_subtitle(GMTK_MEDIA_PLAYER(media), gtk_menu_item_get_label(menu));
 }
 
 void player_subtitle_callback(GmtkMediaPlayer * player, int count, gpointer data)
@@ -6600,7 +6369,6 @@ void player_media_state_changed_callback(GtkButton * button, GmtkMediaPlayerMedi
             && gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menuitem_edit_play_single)) == FALSE) {
             if (next_item_in_playlist(&iter)) {
                 g_idle_add(async_play_iter, &iter);
-                //play_iter(&iter, 0);
             } else {
                 gm_log(verbose, G_LOG_LEVEL_DEBUG, "end of thread playlist is empty");
                 if (loop) {
@@ -6656,7 +6424,6 @@ void player_media_state_changed_callback(GtkButton * button, GmtkMediaPlayerMedi
         g_signal_connect(G_OBJECT(menuitem_play), "activate", G_CALLBACK(menuitem_play_callback), NULL);
         gtk_menu_shell_insert(GTK_MENU_SHELL(popup_menu), GTK_WIDGET(menuitem_play), 0);
         gtk_widget_show(GTK_WIDGET(menuitem_play));
-//        dbus_enable_screensaver();
         g_strlcpy(idledata->media_info, "", sizeof(idledata->media_info));
         gtk_widget_hide(media_hbox);
         g_strlcpy(idledata->display_name, "", sizeof(idledata->display_name));
@@ -6690,8 +6457,6 @@ void player_media_state_changed_callback(GtkButton * button, GmtkMediaPlayerMedi
         g_signal_connect(G_OBJECT(menuitem_play), "activate", G_CALLBACK(menuitem_pause_callback), NULL);
         gtk_menu_shell_insert(GTK_MENU_SHELL(popup_menu), GTK_WIDGET(menuitem_play), 0);
         gtk_widget_show(GTK_WIDGET(menuitem_play));
-//        if (idledata->videopresent)
-//            dbus_disable_screensaver();
         gmtk_media_tracker_set_text(GMTK_MEDIA_TRACKER(tracker), _("Playing"));
         gmtk_media_player_set_attribute_boolean(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_SUB_VISIBLE,
                                                 gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menuitem_view_subtitles)));
@@ -6736,7 +6501,6 @@ void player_media_state_changed_callback(GtkButton * button, GmtkMediaPlayerMedi
         g_signal_connect(G_OBJECT(menuitem_play), "activate", G_CALLBACK(menuitem_play_callback), NULL);
         gtk_menu_shell_insert(GTK_MENU_SHELL(popup_menu), GTK_WIDGET(menuitem_play), 0);
         gtk_widget_show(GTK_WIDGET(menuitem_play));
-//        dbus_enable_screensaver();
         gmtk_media_tracker_set_text(GMTK_MEDIA_TRACKER(tracker), _("Paused"));
         break;
     default:
@@ -7204,8 +6968,6 @@ GtkWidget *create_window(gint windowid)
     g_signal_connect(G_OBJECT(menuitem_save), "activate", G_CALLBACK(menuitem_save_callback), NULL);
     g_signal_connect(G_OBJECT(menuitem_quit), "activate", G_CALLBACK(menuitem_quit_callback), NULL);
     g_signal_connect_swapped(G_OBJECT(window), "button_release_event", G_CALLBACK(popup_handler), G_OBJECT(popup_menu));
-    //g_signal_connect_swapped(G_OBJECT(window),
-    //                         "scroll_event", G_CALLBACK(drawing_area_scroll_event_callback), G_OBJECT(drawing_area));
     g_signal_connect_swapped(G_OBJECT(window), "enter_notify_event", G_CALLBACK(notification_handler), NULL);
     g_signal_connect_swapped(G_OBJECT(window), "leave_notify_event", G_CALLBACK(notification_handler), NULL);
     // File Menu
@@ -7240,17 +7002,11 @@ GtkWidget *create_window(gint windowid)
     gtk_menu_shell_append(GTK_MENU_SHELL(menu_file_disc), GTK_WIDGET(menuitem_file_open_acd));
     menuitem_file_open_sep1 = GTK_MENU_ITEM(gtk_separator_menu_item_new());
     gtk_menu_shell_append(GTK_MENU_SHELL(menu_file_disc), GTK_WIDGET(menuitem_file_open_sep1));
-    //menuitem_file_open_dvd = GTK_MENU_ITEM(gtk_image_menu_item_new_with_mnemonic(_("Open _DVD")));
-    //gtk_menu_shell_append(GTK_MENU_SHELL(menu_file_disc), GTK_WIDGET(menuitem_file_open_dvd));
     menuitem_file_open_dvdnav = GTK_MENU_ITEM(gtk_image_menu_item_new_with_mnemonic(_("Open DVD with _Menus")));
     gtk_menu_shell_append(GTK_MENU_SHELL(menu_file_disc), GTK_WIDGET(menuitem_file_open_dvdnav));
-    //menuitem_file_open_dvd_folder = GTK_MENU_ITEM(gtk_image_menu_item_new_with_mnemonic(_("Open DVD from _Folder")));
-    //gtk_menu_shell_append(GTK_MENU_SHELL(menu_file_disc), GTK_WIDGET(menuitem_file_open_dvd_folder));
     menuitem_file_open_dvdnav_folder =
         GTK_MENU_ITEM(gtk_image_menu_item_new_with_mnemonic(_("Open DVD from Folder with M_enus")));
     gtk_menu_shell_append(GTK_MENU_SHELL(menu_file_disc), GTK_WIDGET(menuitem_file_open_dvdnav_folder));
-    //menuitem_file_open_dvd_iso = GTK_MENU_ITEM(gtk_image_menu_item_new_with_mnemonic(_("Open DVD from _ISO")));
-    //gtk_menu_shell_append(GTK_MENU_SHELL(menu_file_disc), GTK_WIDGET(menuitem_file_open_dvd_iso));
     menuitem_file_open_dvdnav_iso =
         GTK_MENU_ITEM(gtk_image_menu_item_new_with_mnemonic(_("Open DVD from ISO with Me_nus")));
     gtk_menu_shell_append(GTK_MENU_SHELL(menu_file_disc), GTK_WIDGET(menuitem_file_open_dvdnav_iso));
@@ -7271,7 +7027,6 @@ GtkWidget *create_window(gint windowid)
 #ifdef GIO_ENABLED
     recent_manager = gtk_recent_manager_get_default();
     menuitem_file_recent = GTK_MENU_ITEM(gtk_menu_item_new_with_mnemonic(_("Open _Recent")));
-    // g_signal_connect(recent_manager, "changed", G_CALLBACK(recent_manager_changed_callback), NULL);
     gtk_menu_shell_append(GTK_MENU_SHELL(menu_file), GTK_WIDGET(menuitem_file_recent));
     menuitem_file_recent_items = gtk_recent_chooser_menu_new();
     recent_filter = gtk_recent_filter_new();
@@ -7292,14 +7047,9 @@ GtkWidget *create_window(gint windowid)
                      G_CALLBACK(add_folder_to_playlist), menuitem_file_open_folder);
     g_signal_connect(G_OBJECT(menuitem_file_open_location), "activate",
                      G_CALLBACK(menuitem_open_location_callback), NULL);
-    //g_signal_connect(G_OBJECT(menuitem_file_open_dvd), "activate", G_CALLBACK(menuitem_open_dvd_callback), NULL);
     g_signal_connect(G_OBJECT(menuitem_file_open_dvdnav), "activate", G_CALLBACK(menuitem_open_dvdnav_callback), NULL);
-    //g_signal_connect(G_OBJECT(menuitem_file_open_dvd_folder), "activate",
-    //                 G_CALLBACK(menuitem_open_dvd_folder_callback), NULL);
     g_signal_connect(G_OBJECT(menuitem_file_open_dvdnav_folder),
                      "activate", G_CALLBACK(menuitem_open_dvdnav_folder_callback), NULL);
-    //g_signal_connect(G_OBJECT(menuitem_file_open_dvd_iso), "activate",
-    //                 G_CALLBACK(menuitem_open_dvd_iso_callback), NULL);
     g_signal_connect(G_OBJECT(menuitem_file_open_dvdnav_iso),
                      "activate", G_CALLBACK(menuitem_open_dvdnav_iso_callback), NULL);
     g_signal_connect(G_OBJECT(menuitem_file_open_acd), "activate", G_CALLBACK(menuitem_open_acd_callback), NULL);
@@ -7378,7 +7128,6 @@ GtkWidget *create_window(gint windowid)
     gtk_menu_item_set_submenu(menuitem_view, GTK_WIDGET(menu_view));
     menuitem_view_playlist = GTK_MENU_ITEM(gtk_check_menu_item_new_with_mnemonic(_("_Playlist")));
     gtk_menu_item_set_accel_path(menuitem_view_playlist, ACCEL_PATH_VIEW_PLAYLIST);
-    // gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_view_playlist), playlist_visible);
     gtk_menu_shell_append(GTK_MENU_SHELL(menu_view), GTK_WIDGET(menuitem_view_playlist));
     menuitem_view_info = GTK_MENU_ITEM(gtk_check_menu_item_new_with_mnemonic(_("Media _Info")));
     gtk_menu_item_set_accel_path(menuitem_view_info, ACCEL_PATH_VIEW_INFO);
@@ -7600,8 +7349,6 @@ GtkWidget *create_window(gint windowid)
     g_signal_connect(plvbox, "show", G_CALLBACK(view_option_show_callback), NULL);
     g_signal_connect(plvbox, "hide", G_CALLBACK(view_option_hide_callback), NULL);
     g_signal_connect(plvbox, "size_allocate", G_CALLBACK(view_option_size_allocate_callback), NULL);
-    //if (remember_loc)
-    //      gtk_paned_set_position(GTK_PANED(pane),loc_panel_position);
 #if GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION >= 2
     vbox_master = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     gtk_box_set_homogeneous(GTK_BOX(vbox_master), FALSE);
@@ -8039,11 +7786,8 @@ gboolean update_audio_meter(gpointer data)
     gint i, channel;
     gfloat f;
     gint max;
-    //gfloat freq;
     gfloat v;
-    //gfloat lsb16, rsb16;
     Export *export;
-    //gint bucketid;
     static gint update_counter = 0;
     static gint export_counter = 0;
     gboolean refresh;
@@ -8077,29 +7821,6 @@ gboolean update_audio_meter(gpointer data)
             export = (Export *) g_mapped_file_get_contents(idledata->mapped_af_export);
         if (export != NULL) {
             if (export->counter != export_counter) {
-                /*
-                   for (i = 0; export != NULL && i < (export->size / (export->nch * sizeof(gint16))); i++) {
-                   freq = 0;
-
-                   // this is an testing meter for two channel
-                   for (j = 0; j < export->nch; j++) {
-                   // scale SB16 data to 0 - 22000 range, believe this is Hz now
-                   freq += (export->payload[j][i]) * 22000 / (32768 * export->nch);
-                   }
-                   // ignore values below 20, as this is unaudible and may skew data
-                   if (freq > (22000.0 / METER_BARS)) {
-                   bucketid = (gint) (freq / (gfloat) (22000.0 / (gfloat) METER_BARS)) - 1;
-                   if (bucketid >= METER_BARS) {
-                   printf("bucketid = %i freq = %f\n", bucketid, freq);
-                   bucketid = METER_BARS - 1;
-                   }
-                   buckets[bucketid]++;
-                   }
-
-                   }
-                   export_counter = export->counter;
-                   refresh = TRUE;
-                 */
                 for (histogramloc = 0; histogramloc < UAM_HISTOGRAM_SIZE; histogramloc++) {
                     histogram[histogramloc] = 0;
                 }
@@ -8139,21 +7860,6 @@ gboolean update_audio_meter(gpointer data)
                 export_counter = export->counter;
                 refresh = TRUE;
             }
-            // g_free(export);
-            /*
-               if (export->counter > export_counter) {
-               for (j =0; j < export->nch ; j++) {
-               lsb16 = 0;
-               for(i=0; i < (export->size / ( export->nch * sizeof(gint16))); i++) {
-               lsb16 += export->payload[j][i];
-               bucketid = abs(lsb16) * METER_BARS / 1000000;
-               buckets[bucketid - 1]++;
-               }
-               }
-               export_counter = export->counter;
-               refresh = TRUE;
-               }
-             */
         }
         reading_af_export = FALSE;
         if (refresh) {
@@ -8183,10 +7889,8 @@ gboolean update_audio_meter(gpointer data)
                     g_array_append_val(max_data, f);
                 } else {
                     f = logf((gfloat) buckets[i]) / logf((gfloat) max);
-                    // f = ((gfloat) buckets[i]) / ((gfloat) max);
                     g_array_append_val(data, f);
                     f = logf((gfloat) max_buckets[i]) / logf((gfloat) max);
-                    // f = ((gfloat) max_buckets[i]) / ((gfloat) max);
                     g_array_append_val(max_data, f);
                 }
             }
