@@ -321,55 +321,6 @@ gint play_iter(GtkTreeIter * playiter, gint restart_second)
     while (gtk_events_pending())
         gtk_main_iteration();
 
-    /*
-       // wait for metadata to be available on this item
-       if (!streaming_media(uri) && !device_name(uri)) {
-       i = 0;
-       if (playable) {
-       while (demuxer == NULL && i < 50) {
-       g_free(title);
-       g_free(artist);
-       g_free(album);
-       g_free(audio_codec);
-       g_free(video_codec);
-       g_free(demuxer);
-       g_free(subtitle);
-       g_free(audiofile);
-       if (gtk_list_store_iter_is_valid(playliststore, playiter)) {
-       gtk_tree_model_get(GTK_TREE_MODEL(playliststore), playiter, LENGTH_VALUE_COLUMN,
-       &length_value, DESCRIPTION_COLUMN, &title, ARTIST_COLUMN,
-       &artist, ALBUM_COLUMN, &album, AUDIO_CODEC_COLUMN,
-       &audio_codec, VIDEO_CODEC_COLUMN, &video_codec,
-       VIDEO_WIDTH_COLUMN, &width, VIDEO_HEIGHT_COLUMN, &height,
-       DEMUXER_COLUMN, &demuxer, COVERART_COLUMN, &pixbuf,
-       SUBTITLE_COLUMN, &subtitle, AUDIOFILE_COLUMN, &audiofile,
-       COUNT_COLUMN, &count, PLAYLIST_COLUMN, &playlist,
-       PLAYABLE_COLUMN, &playable, -1);
-       if (!playable) {
-       if (verbose)
-       printf("%s is not marked as playable (%i)\n", uri, i);
-       play_next();
-       return 0;
-       }
-       } else {
-       if (verbose)
-       printf("Current iter is not valid\n");
-       return 1;   // error condition
-       }
-       gtk_main_iteration();
-       i++;
-       if (demuxer == NULL)
-       g_usleep(10000);
-       }
-       } else {
-       if (verbose)
-       printf("%s is not marked as playable\n", uri);
-       play_next();
-       return 0;
-       }
-
-       }
-     */
     // reset audio meter
     for (i = 0; i < METER_BARS; i++) {
         buckets[i] = 0;
@@ -474,22 +425,6 @@ gint play_iter(GtkTreeIter * playiter, gint restart_second)
         audiofile = NULL;
     }
 
-    /*
-       if (g_ascii_strcasecmp(thread_data->filename, "") != 0) {
-       if (!device_name(thread_data->filename) && !streaming_media(thread_data->filename)) {
-       if (!g_file_test(thread_data->filename, G_FILE_TEST_EXISTS)) {
-       error_msg = g_strdup_printf("%s not found\n", thread_data->filename);
-       dialog =
-       gtk_message_dialog_new(NULL, GTK_DIALOG_DESTROY_WITH_PARENT,
-       GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE, "%s", error_msg);
-       gtk_window_set_title(GTK_WINDOW(dialog), "GNOME MPlayer Error");
-       gtk_dialog_run(GTK_DIALOG(dialog));
-       gtk_widget_destroy(dialog);
-       return 1;
-       }
-       }
-       }
-     */
 #ifdef GIO_ENABLED
     // don't put it on the recent list, if it is running in plugin mode
     if (control_id == 0 && !streaming_media(uri)) {
