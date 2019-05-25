@@ -666,10 +666,6 @@ int main(int argc, char *argv[])
     struct sigaction sa;
     gboolean playiter = FALSE;
 
-#ifdef GIO_ENABLED
-    GFile *file;
-#endif
-
 #ifdef ENABLE_NLS
     bindtextdomain(GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
     bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
@@ -1071,26 +1067,7 @@ int main(int argc, char *argv[])
     retrieve_mutex = g_mutex_new();
     set_mutex = g_mutex_new();
     if (argv[fileindex] != NULL) {
-#ifdef GIO_ENABLED
-        file = g_file_new_for_commandline_arg(argv[fileindex]);
-        stat_result = -1;
-        if (file != NULL) {
-            GError *error = NULL;
-            GFileInfo *file_info = g_file_query_info(file, G_FILE_ATTRIBUTE_UNIX_MODE, 0, NULL, &error);
-            if (file_info != NULL) {
-                buf.st_mode = g_file_info_get_attribute_uint32(file_info, G_FILE_ATTRIBUTE_UNIX_MODE);
-                stat_result = 0;
-                g_object_unref(file_info);
-            }
-            if (error != NULL) {
-                gm_log(verbose, G_LOG_LEVEL_INFO, "failed to get mode: %s", error->message);
-                g_error_free(error);
-            }
-            g_object_unref(file);
-        }
-#else
         stat_result = g_stat(argv[fileindex], &buf);
-#endif
         gm_log(verbose, G_LOG_LEVEL_INFO, "opening %s", argv[fileindex]);
         gm_log(verbose, G_LOG_LEVEL_INFO, "stat_result = %i", stat_result);
         gm_log(verbose, G_LOG_LEVEL_INFO, "is block %s", gm_bool_to_string(S_ISBLK(buf.st_mode)));
@@ -1167,15 +1144,11 @@ int main(int argc, char *argv[])
             } else {
                 create_folder_progress_window();
                 uri = NULL;
-#ifdef GIO_ENABLED
-                file = g_file_new_for_commandline_arg(argv[fileindex]);
-                if (file != NULL) {
-                    uri = g_file_get_uri(file);
-                    g_object_unref(file);
+                // g_filename_to_uri only works with absolute paths
+                char rpath[PATH_MAX];
+                if (realpath(argv[fileindex], rpath)) {
+                    uri = g_filename_to_uri(rpath, NULL, NULL);
                 }
-#else
-                uri = g_filename_to_uri(argv[fileindex], NULL, NULL);
-#endif
                 add_folder_to_playlist_callback(uri, NULL);
                 g_free(uri);
                 destroy_folder_progress_window();
@@ -1194,21 +1167,12 @@ int main(int argc, char *argv[])
             i = fileindex;
             while (argv[i] != NULL) {
                 gm_log(verbose, G_LOG_LEVEL_DEBUG, "Argument %i is %s", i, argv[i]);
-#ifdef GIO_ENABLED
-                if (!device_name(argv[i])) {
-                    file = g_file_new_for_commandline_arg(argv[i]);
-                    if (file != NULL) {
-                        uri = g_file_get_uri(file);
-                        g_object_unref(file);
-                    } else {
-                        uri = g_strdup(argv[i]);
-                    }
-                } else {
-                    uri = g_strdup(argv[i]);
+                uri = NULL;
+                // g_filename_to_uri only works with absolute paths
+                char rpath[PATH_MAX];
+                if (realpath(argv[i], rpath)) {
+                    uri = g_filename_to_uri(rpath, NULL, NULL);
                 }
-#else
-                uri = g_filename_to_uri(argv[i], NULL, NULL);
-#endif
                 if (uri != NULL) {
                     if (playlist == FALSE)
                         playlist = detect_playlist(uri);
