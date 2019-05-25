@@ -2493,8 +2493,6 @@ gboolean pause_callback(GtkWidget * widget, GdkEventExpose * event, void *data)
 
 gboolean play_callback(GtkWidget * widget, GdkEventExpose * event, void *data)
 {
-    IdleData *idle = (IdleData *) data;
-
     autostart = 1;
     if (gmtk_media_player_get_media_state(GMTK_MEDIA_PLAYER(media)) == MEDIA_STATE_STOP ||
         gmtk_media_player_get_media_state(GMTK_MEDIA_PLAYER(media)) == MEDIA_STATE_PAUSE) {
@@ -2521,7 +2519,6 @@ gboolean play_callback(GtkWidget * widget, GdkEventExpose * event, void *data)
 
 gboolean stop_callback(GtkWidget * widget, GdkEventExpose * event, void *data)
 {
-    IdleData *idle = (IdleData *) data;
 #ifdef GTK3_ENABLED
     GtkIconTheme *icon_theme = gtk_icon_theme_get_default();
     const gchar *icon_start;
@@ -6697,7 +6694,7 @@ void player_media_state_changed_callback(GtkButton * button, GmtkMediaPlayerMedi
 //            dbus_disable_screensaver();
         gmtk_media_tracker_set_text(GMTK_MEDIA_TRACKER(tracker), _("Playing"));
         gmtk_media_player_set_attribute_boolean(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_SUB_VISIBLE,
-                                                gtk_check_menu_item_get_active(menuitem_view_subtitles));
+                                                gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menuitem_view_subtitles)));
         g_idle_add(set_media_label, idledata);
         if (gmtk_media_player_get_attribute_string(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_TITLE) != NULL) {
             g_strlcpy(idledata->display_name,

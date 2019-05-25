@@ -26,15 +26,9 @@
 #include <config.h>
 #endif
 #include <glib.h>
-#if GLIB_MAJOR_VERSION == 2 && GLIB_MINOR_VERSION < 26
 #include <libintl.h>
-#endif
 
 #ifndef __GM_COMMON_H__
 #define __GM_COMMON_H__
-
-#if GLIB_MAJOR_VERSION == 2 && GLIB_MINOR_VERSION < 26
-const gchar *g_dgettext(const gchar * domain, const gchar * msgid);
-#endif
 
 #endif
