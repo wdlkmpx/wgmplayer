@@ -8,18 +8,13 @@ gnome_mplayerdocdir = ${docdir}
 gnome_mplayerdoc_DATA = \
 	README\
 	COPYING\
-	AUTHORS\
 	ChangeLog\
-	INSTALL\
-	NEWS \
 	DOCS/keyboard_shortcuts.txt
 
 desktopdir = ${prefix}/share/applications
 desktop_DATA = gnome-mplayer.desktop
 
 prefappdir = ${prefix}/share/gnome-control-center/default-apps
-prefapp_DATA = gnome-mplayer.xml
-
 
 manpagedir = @mandir@/man1
 manpage_DATA = gnome-mplayer.1
