@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 dnl Created by Anjuta application wizard.
 
-AC_INIT([gnome-mplayer], [1.0.9])
+AC_INIT([gnome-mplayer], [1.1.1w])
 AM_INIT_AUTOMAKE([-Wall foreign silent-rules])
 AM_CONFIG_HEADER(config.h)
 AM_MAINTAINER_MODE([enable])
