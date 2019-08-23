@@ -49,9 +49,6 @@ static gint last_x, last_y;
 static gint stored_window_width, stored_window_height;
 static gchar *rpname;
 static gboolean use_volume_option;
-//static gboolean restore_playlist;
-//static gboolean restore_details;
-//static gboolean restore_info;
 static gboolean new_instance;
 static gboolean use_pausing_keep_force;
 // tv stuff
@@ -667,7 +664,6 @@ int main(int argc, char *argv[])
     quit_on_complete = FALSE;
     verbose = 0;
     reallyverbose = 0;
-    embedding_disabled = FALSE;
     disable_pause_on_click = FALSE;
     disable_animation = FALSE;
     disable_cover_art_fetch = FALSE;
@@ -766,7 +762,6 @@ int main(int argc, char *argv[])
     safe_to_save_default_playlist = TRUE;
 
     gm_store = gm_pref_store_new("gnome-mplayer");
-    gmp_store = gm_pref_store_new("gecko-mediaplayer");
     vo = gm_pref_store_get_string(gm_store, VO);
     audio_device.alsa_mixer = gm_pref_store_get_string(gm_store, ALSA_MIXER);
     use_hardware_codecs = gm_pref_store_get_boolean(gm_store, USE_HARDWARE_CODECS);
@@ -828,13 +823,6 @@ int main(int argc, char *argv[])
 
     resume_mode = gm_pref_store_get_int(gm_store, RESUME_MODE);
 
-    qt_disabled = gm_pref_store_get_boolean(gmp_store, DISABLE_QT);
-    real_disabled = gm_pref_store_get_boolean(gmp_store, DISABLE_REAL);
-    wmp_disabled = gm_pref_store_get_boolean(gmp_store, DISABLE_WMP);
-    dvx_disabled = gm_pref_store_get_boolean(gmp_store, DISABLE_DVX);
-    midi_disabled = gm_pref_store_get_boolean(gmp_store, DISABLE_MIDI);
-    embedding_disabled = gm_pref_store_get_boolean(gmp_store, DISABLE_EMBEDDING);
-    disable_embedded_scaling = gm_pref_store_get_boolean(gmp_store, DISABLE_EMBEDDED_SCALING);
     if (embed_window == 0) {
         single_instance = gm_pref_store_get_boolean(gm_store, SINGLE_INSTANCE);
         if (single_instance) {
@@ -929,16 +917,7 @@ int main(int argc, char *argv[])
         cache_size = gm_pref_store_get_int(gm_store, CACHE_SIZE);
     if (cache_size == 0)
         cache_size = 2000;
-    plugin_audio_cache_size = gm_pref_store_get_int(gm_store, PLUGIN_AUDIO_CACHE_SIZE);
-    if (plugin_audio_cache_size == 0)
-        plugin_audio_cache_size = 2000;
-    plugin_video_cache_size = gm_pref_store_get_int(gm_store, PLUGIN_VIDEO_CACHE_SIZE);
-    if (plugin_video_cache_size == 0)
-        plugin_video_cache_size = 2000;
-    if (control_id != 0)
-        cache_size = plugin_video_cache_size;
     gm_pref_store_free(gm_store);
-    gm_pref_store_free(gmp_store);
     if (embed_window) {
         gm_log(verbose, G_LOG_LEVEL_INFO, "embedded in window id 0x%x", embed_window);
     }

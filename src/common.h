@@ -47,8 +47,6 @@
 #define VOLUME_SOFTVOL		"volume-softvol"
 
 #define CACHE_SIZE				"cache-size"
-#define PLUGIN_AUDIO_CACHE_SIZE	"plugin-audio-cache-size"
-#define PLUGIN_VIDEO_CACHE_SIZE	"plugin-video-cache-size"
 #define OSDLEVEL				"osd-level"
 #define PPLEVEL					"pp-level"
 #define VERBOSE					"verbose"
@@ -291,8 +289,6 @@ gchar **accel_keys_description;
 #define DRAG_INFO_2		2
 
 gint cache_size;
-gint plugin_audio_cache_size;
-gint plugin_video_cache_size;
 gboolean forcecache;
 gint osdlevel;
 gint pplevel;
@@ -409,14 +405,6 @@ GMutex *set_mutex;
 gboolean use_mediakeys;
 gboolean use_defaultpl;
 
-gboolean qt_disabled;
-gboolean real_disabled;
-gboolean wmp_disabled;
-gboolean dvx_disabled;
-gboolean midi_disabled;
-gboolean embedding_disabled;
-gboolean disable_embedded_scaling;
-
 GArray *data;
 GArray *max_data;
 gboolean reading_af_export;
@@ -436,7 +424,6 @@ GtkWidget *list;
 
 // preference store
 GmPrefStore *gm_store;
-GmPrefStore *gmp_store;
 
 // cover
 gchar *cover_art_uri;

@@ -181,8 +181,6 @@ static GtkWidget *config_use_hw_audio;
 static GtkWidget *config_volume;
 #endif
 static GtkWidget *config_cachesize;
-static GtkWidget *config_plugin_audio_cache_size;
-static GtkWidget *config_plugin_video_cache_size;
 static GtkWidget *config_osdlevel;
 static GtkWidget *config_deinterlace;
 static GtkWidget *config_framedrop;
@@ -226,14 +224,6 @@ static GtkWidget *config_subtitle_shadow;
 static GtkWidget *config_subtitle_margin;
 static GtkWidget *config_subtitle_fuzziness;
 static GtkWidget *config_show_subtitles;
-
-static GtkWidget *config_qt;
-static GtkWidget *config_real;
-static GtkWidget *config_wmp;
-static GtkWidget *config_dvx;
-static GtkWidget *config_midi;
-static GtkWidget *config_noembed;
-static GtkWidget *config_noscaling;
 
 static GtkWidget *config_mplayer_bin;
 static GtkWidget *config_mplayer_dvd_device;
@@ -347,13 +337,8 @@ void set_media_player_attributes(GtkWidget * widget)
     gmtk_media_player_set_attribute_integer(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_POST_PROCESSING_LEVEL, pplevel);
     gmtk_media_player_set_attribute_double(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_START_TIME, (gdouble) start_second);
     gmtk_media_player_set_attribute_double(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_RUN_TIME, (gdouble) play_length);
+    gmtk_media_player_set_attribute_boolean(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_DISABLE_UPSCALING, FALSE);
 
-    if (embed_window != 0 && disable_embedded_scaling) {
-        gmtk_media_player_set_attribute_boolean(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_DISABLE_UPSCALING,
-                                                disable_embedded_scaling);
-    } else {
-        gmtk_media_player_set_attribute_boolean(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_DISABLE_UPSCALING, FALSE);
-    }
     if (option_dvd_device == NULL) {
         gmtk_media_player_set_media_device(GMTK_MEDIA_PLAYER(media), idledata->device);
     } else {
@@ -3946,8 +3931,6 @@ void config_apply(GtkWidget * widget, void *data)
     use_hardware_codecs = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(config_hardware_codecs));
     use_crystalhd_codecs = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(config_crystalhd_codecs));
     cache_size = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(config_cachesize));
-    plugin_audio_cache_size = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(config_plugin_audio_cache_size));
-    plugin_video_cache_size = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(config_plugin_video_cache_size));
     old_disable_framedrop = disable_framedrop;
     disable_deinterlace = !(gboolean) gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(config_deinterlace));
     disable_framedrop = !(gboolean) gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(config_framedrop));
@@ -4034,13 +4017,6 @@ void config_apply(GtkWidget * widget, void *data)
         gmtk_media_player_set_attribute_integer(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_OSDLEVEL, osdlevel);
     }
 
-    qt_disabled = !(gboolean) gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(config_qt));
-    real_disabled = !(gboolean) gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(config_real));
-    wmp_disabled = !(gboolean) gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(config_wmp));
-    dvx_disabled = !(gboolean) gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(config_dvx));
-    midi_disabled = !(gboolean) gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(config_midi));
-    embedding_disabled = (gboolean) gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(config_noembed));
-    disable_embedded_scaling = (gboolean) gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(config_noscaling));
     mplayer_bin = g_strdup(gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(config_mplayer_bin)));
     if (!g_file_test(mplayer_bin, G_FILE_TEST_EXISTS)) {
         g_free(mplayer_bin);
@@ -4063,8 +4039,6 @@ void config_apply(GtkWidget * widget, void *data)
     gm_pref_store_set_boolean(gm_store, USE_HARDWARE_CODECS, use_hardware_codecs);
     gm_pref_store_set_boolean(gm_store, USE_CRYSTALHD_CODECS, use_crystalhd_codecs);
     gm_pref_store_set_int(gm_store, CACHE_SIZE, cache_size);
-    gm_pref_store_set_int(gm_store, PLUGIN_AUDIO_CACHE_SIZE, plugin_audio_cache_size);
-    gm_pref_store_set_int(gm_store, PLUGIN_VIDEO_CACHE_SIZE, plugin_video_cache_size);
     gm_pref_store_set_string(gm_store, ALSA_MIXER, audio_device.alsa_mixer);
     gm_pref_store_set_int(gm_store, OSDLEVEL, osdlevel);
     gm_pref_store_set_int(gm_store, PPLEVEL, pplevel);
@@ -4113,28 +4087,6 @@ void config_apply(GtkWidget * widget, void *data)
     gm_pref_store_set_string(gm_store, EXTRAOPTS, extraopts);
     gm_pref_store_set_string(gm_store, ACCELERATOR_KEYS, g_strjoinv(" ", accel_keys));
     gm_pref_store_free(gm_store);
-
-    gmp_store = gm_pref_store_new("gecko-mediaplayer");
-    gm_pref_store_set_boolean(gmp_store, DISABLE_QT, qt_disabled);
-    gm_pref_store_set_boolean(gmp_store, DISABLE_REAL, real_disabled);
-    gm_pref_store_set_boolean(gmp_store, DISABLE_WMP, wmp_disabled);
-    gm_pref_store_set_boolean(gmp_store, DISABLE_DVX, dvx_disabled);
-    gm_pref_store_set_boolean(gmp_store, DISABLE_MIDI, midi_disabled);
-    gm_pref_store_set_boolean(gmp_store, DISABLE_EMBEDDING, embedding_disabled);
-    gm_pref_store_set_boolean(gmp_store, DISABLE_EMBEDDED_SCALING, disable_embedded_scaling);
-    gm_pref_store_set_int(gmp_store, DEBUG_LEVEL, verbose);
-
-    gm_pref_store_free(gmp_store);
-
-    filename = g_strdup_printf("%s/.mozilla/pluginreg.dat", g_getenv("HOME"));
-    g_remove(filename);
-    g_free(filename);
-    filename = g_strdup_printf("%s/.firefox/pluginreg.dat", g_getenv("HOME"));
-    g_remove(filename);
-    g_free(filename);
-    filename = g_strdup_printf("%s/.mozilla/firefox/pluginreg.dat", g_getenv("HOME"));
-    g_remove(filename);
-    g_free(filename);
 
     gmtk_media_player_restart(GMTK_MEDIA_PLAYER(media));
     gtk_widget_destroy(widget);
@@ -4824,7 +4776,6 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     GtkWidget *conf_table;
     GtkWidget *conf_label;
     GtkWidget *conf_page1;
-    GtkWidget *conf_page2;
     GtkWidget *conf_page3;
     GtkWidget *conf_page4;
     GtkWidget *conf_page5;
@@ -4859,12 +4810,6 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     gtk_box_set_homogeneous(GTK_BOX(conf_page1), FALSE);
 #else
     conf_page1 = gtk_vbox_new(FALSE, 10);
-#endif
-#if GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION >= 2
-    conf_page2 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-    gtk_box_set_homogeneous(GTK_BOX(conf_page2), FALSE);
-#else
-    conf_page2 = gtk_vbox_new(FALSE, 10);
 #endif
 #if GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION >= 2
     conf_page3 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
@@ -4913,8 +4858,6 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     gtk_notebook_append_page(GTK_NOTEBOOK(notebook), conf_page7, conf_label);
     conf_label = gtk_label_new(_("MPlayer"));
     gtk_notebook_append_page(GTK_NOTEBOOK(notebook), conf_page6, conf_label);
-    conf_label = gtk_label_new(_("Plugin"));
-    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), conf_page2, conf_label);
 
     gtk_container_add(GTK_CONTAINER(conf_vbox), notebook);
     gtk_container_add(GTK_CONTAINER(config_window), conf_vbox);
@@ -5298,92 +5241,6 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     gtk_table_attach(GTK_TABLE(conf_table), conf_label, 0, 1, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
     gtk_table_attach(GTK_TABLE(conf_table), config_pplevel, 1, 2, i, i + 1, GTK_FILL | GTK_EXPAND, GTK_SHRINK, 0, 0);
     i++;
-
-    conf_table = gtk_table_new(20, 2, FALSE);
-    gtk_container_add(GTK_CONTAINER(conf_page2), conf_table);
-    i = 0;
-    conf_label = gtk_label_new(_("<span weight=\"bold\">Adjust Plugin Emulation Settings</span>\n\n"
-                                 "These options affect the gecko-mediaplayer plugin when it is installed.\n"
-                                 "Gecko-mediaplayer is a Firefox plugin that will emulate various\n"
-                                 "media players and allow playback of various web content within\n"
-                                 "NPRuntime compatible browsers (Firefox, Konqueror, etc)."));
-    gtk_label_set_use_markup(GTK_LABEL(conf_label), TRUE);
-    gtk_misc_set_alignment(GTK_MISC(conf_label), 0.0, 0.0);
-    gtk_misc_set_padding(GTK_MISC(conf_label), 0, 6);
-    gtk_table_attach(GTK_TABLE(conf_table), conf_label, 0, 2, i, i + 1, GTK_FILL | GTK_EXPAND, GTK_SHRINK, 0, 0);
-    i++;
-
-    config_qt = gtk_check_button_new_with_label(_("QuickTime Emulation"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_qt), !qt_disabled);
-    gtk_table_attach(GTK_TABLE(conf_table), config_qt, 0, 2, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
-    i++;
-
-    config_real = gtk_check_button_new_with_label(_("RealPlayer Emulation"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_real), !real_disabled);
-    gtk_table_attach(GTK_TABLE(conf_table), config_real, 0, 2, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
-    i++;
-
-    config_wmp = gtk_check_button_new_with_label(_("Windows Media Player Emulation"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_wmp), !wmp_disabled);
-    gtk_table_attach(GTK_TABLE(conf_table), config_wmp, 0, 2, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
-    i++;
-
-    config_dvx = gtk_check_button_new_with_label(_("DiVX Player Emulation"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_dvx), !dvx_disabled);
-    gtk_table_attach(GTK_TABLE(conf_table), config_dvx, 0, 2, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
-    i++;
-
-    config_midi = gtk_check_button_new_with_label(_("MIDI Support (requires MPlayer support)"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_midi), !midi_disabled);
-    gtk_table_attach(GTK_TABLE(conf_table), config_midi, 0, 1, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
-    i++;
-
-    config_noembed = gtk_check_button_new_with_label(_("Disable Player Embedding"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_noembed), embedding_disabled);
-    gtk_table_attach(GTK_TABLE(conf_table), config_noembed, 0, 2, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
-    i++;
-
-    config_noscaling = gtk_check_button_new_with_label(_("Disable Embedded Player Scaling"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_noscaling), disable_embedded_scaling);
-    gtk_table_attach(GTK_TABLE(conf_table), config_noscaling, 0, 2, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
-    i++;
-
-    conf_label = gtk_label_new(_("Audio Cache Size (KB):"));
-    gtk_misc_set_alignment(GTK_MISC(conf_label), 0.0, 0.5);
-    gtk_misc_set_padding(GTK_MISC(conf_label), 12, 0);
-    gtk_table_attach(GTK_TABLE(conf_table), conf_label, 0, 1, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
-    gtk_widget_show(conf_label);
-    config_plugin_audio_cache_size = gtk_spin_button_new_with_range(64, 256 * 1024, 64);
-    config_plugin_video_cache_size = gtk_spin_button_new_with_range(256, 256 * 1024, 256);
-    gtk_widget_set_tooltip_text(config_plugin_audio_cache_size,
-                                _
-                                ("Amount of data to cache when playing media from network, use higher values for slow networks."));
-    gtk_widget_set_tooltip_text(config_plugin_video_cache_size,
-                                _
-                                ("Amount of data to cache when playing media from network, use higher values for slow networks."));
-
-    gtk_table_attach(GTK_TABLE(conf_table), config_plugin_audio_cache_size, 1, 2, i, i + 1,
-                     GTK_FILL | GTK_EXPAND, GTK_SHRINK, 0, 0);
-    gtk_spin_button_set_value(GTK_SPIN_BUTTON(config_plugin_audio_cache_size), plugin_audio_cache_size);
-    gtk_entry_set_width_chars(GTK_ENTRY(config_plugin_audio_cache_size), 6);
-    gtk_entry_set_alignment(GTK_ENTRY(config_plugin_audio_cache_size), 1);
-    gtk_widget_show(config_plugin_audio_cache_size);
-    i++;
-
-    conf_label = gtk_label_new(_("Video Cache Size (KB):"));
-    gtk_misc_set_alignment(GTK_MISC(conf_label), 0.0, 0.5);
-    gtk_misc_set_padding(GTK_MISC(conf_label), 12, 0);
-    gtk_table_attach(GTK_TABLE(conf_table), conf_label, 0, 1, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
-    gtk_widget_show(conf_label);
-
-    gtk_table_attach(GTK_TABLE(conf_table), config_plugin_video_cache_size, 1, 2, i, i + 1,
-                     GTK_FILL | GTK_EXPAND, GTK_SHRINK, 0, 0);
-    gtk_spin_button_set_value(GTK_SPIN_BUTTON(config_plugin_video_cache_size), plugin_video_cache_size);
-    gtk_entry_set_width_chars(GTK_ENTRY(config_plugin_video_cache_size), 6);
-    gtk_entry_set_alignment(GTK_ENTRY(config_plugin_video_cache_size), 1);
-    gtk_widget_show(config_plugin_video_cache_size);
-    i++;
-
 
     // Language 
     conf_table = gtk_table_new(20, 2, FALSE);
@@ -6869,7 +6726,7 @@ GtkWidget *create_window(gint windowid)
     fs_controls_lock = g_mutex_new();
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(window), _("GNOME MPlayer"));
-    if (windowid > 0 && embedding_disabled == FALSE) {
+    if (windowid > 0) {
         gtk_window_set_decorated(GTK_WINDOW(window), FALSE);
 #ifdef GTK3_ENABLED
         gtk_window_set_has_resize_grip(GTK_WINDOW(window), FALSE);
@@ -7591,7 +7448,7 @@ void show_window(gint windowid)
 {
     gint i;
     gchar **visuals;
-    if (windowid != 0 && embedding_disabled == FALSE) {
+    if (windowid != 0) {
         gm_log(verbose, G_LOG_LEVEL_DEBUG, "waiting for all events to drain");
         while (gtk_events_pending())
             gtk_main_iteration();
