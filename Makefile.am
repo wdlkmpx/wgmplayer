@@ -8,7 +8,6 @@ gnome_mplayerdocdir = ${docdir}
 gnome_mplayerdoc_DATA = \
 	README\
 	COPYING\
-	ChangeLog\
 	DOCS/keyboard_shortcuts.txt
 
 desktopdir = ${prefix}/share/applications
