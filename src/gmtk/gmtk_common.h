@@ -38,7 +38,10 @@
 #else
 #include <gdk/gdkkeysyms.h>
 #endif
-#include "gm_common.h"
+
+#include <glib.h>
+#include <glib/gi18n.h>
+#include <libintl.h>
 
 #ifndef __GMTK_COMMON_H__
 #define __GMTK_COMMON_H__

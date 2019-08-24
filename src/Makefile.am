@@ -29,8 +29,6 @@ bin_PROGRAMS = gnome-mplayer
 
 gnome_mplayer_SOURCES = \
 	../config.h \
-	gmtk/gm_common.c \
-	gmtk/gm_common.h \
 	gmtk/gmlib.h \
 	gmtk/gm_audio.c \
 	gmtk/gm_audio.h \

@@ -28,7 +28,7 @@
 
 #include <glib.h>
 #include <glib/gi18n.h>
-#include "gm_common.h"
+#include <libintl.h>
 
 #ifndef __GM_AUDIO_H__
 #define __GM_AUDIO_H__
