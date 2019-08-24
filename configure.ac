@@ -2,7 +2,7 @@ dnl Process this file with autoconf to produce a configure script.
 dnl Created by Anjuta application wizard.
 
 AC_INIT([gnome-mplayer], [1.1.1w])
-AM_INIT_AUTOMAKE([-Wall foreign silent-rules])
+AM_INIT_AUTOMAKE([-Wall subdir-objects foreign silent-rules])
 AM_CONFIG_HEADER(config.h)
 AM_MAINTAINER_MODE([enable])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
@@ -155,7 +155,6 @@ icons/24x24/Makefile
 icons/32x32/Makefile
 icons/48x48/Makefile
 icons/scalable/Makefile
-gmtk/Makefile
 src/Makefile
 po/Makefile.in
 ])

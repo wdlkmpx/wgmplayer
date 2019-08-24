@@ -2,7 +2,7 @@
 ## Created by Anjuta
 
 ACLOCAL_AMFLAGS = -I m4
-SUBDIRS = gmtk src po icons
+SUBDIRS = src po icons
 
 gnome_mplayerdocdir = ${docdir}
 gnome_mplayerdoc_DATA = \

@@ -21,7 +21,7 @@ AM_CFLAGS =\
      $(GIO_DEFINES) \
 	 $(ALSA_DEFINES) \
      $(NOTIFY_DEFINES) \
-     -I../gmtk
+     -Igmtk
      ## -DGTK_DISABLE_DEPRECATED 
      ## -DGSEAL_ENABLE
 
@@ -29,6 +29,32 @@ bin_PROGRAMS = gnome-mplayer
 
 gnome_mplayer_SOURCES = \
 	../config.h \
+	gmtk/gm_common.c \
+	gmtk/gm_common.h \
+	gmtk/gmlib.h \
+	gmtk/gm_audio.c \
+	gmtk/gm_audio.h \
+	gmtk/gm_file.c \
+	gmtk/gm_file.h \
+	gmtk/gm_log.c \
+	gmtk/gm_log.h \
+	gmtk/gm_parse.c \
+	gmtk/gm_parse.h \
+	gmtk/gm_pref_store.c \
+	gmtk/gm_pref_store.h \
+	gmtk/gm_strfuncs.c \
+	gmtk/gm_strfuncs.h \
+	gmtk/gmtk.h \
+	gmtk/gmtk_common.h \
+	gmtk/gmtk_common.c \
+	gmtk/gmtk_audio_meter.c \
+	gmtk/gmtk_audio_meter.h \
+	gmtk/gmtk_media_player.c \
+	gmtk/gmtk_media_player.h \
+	gmtk/gmtk_media_tracker.c \
+	gmtk/gmtk_media_tracker.h \
+	gmtk/gmtk_output_combo_box.c \
+	gmtk/gmtk_output_combo_box.h \
 	gui.c \
 	gui.h \
 	playlist.c \
@@ -48,7 +74,7 @@ gnome_mplayer_SOURCES = \
 	../pixmaps/view-fullscreen.xpm \
 	langlist.h
 
-gnome_mplayer_LDFLAGS = 
+
 
 gnome_mplayer_LDADD = \
     -lm \
@@ -58,9 +84,7 @@ gnome_mplayer_LDADD = \
     $(ALSA_LIBS) \
 	$(PULSE_LIBS) \
     $(NOTIFY_LIBS) \
-    $(XSCRNSAVER_LIBS) \
-    ../gmtk/.libs/libgmlib.a \
-    ../gmtk/.libs/libgmtk.a
+    $(XSCRNSAVER_LIBS)
 
 indent:
 	indent -kr -l120 -i4 -nut *.c
