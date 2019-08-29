@@ -48,7 +48,6 @@ static gint reallyverbose;
 static gint last_x, last_y;
 static gint stored_window_width, stored_window_height;
 static gchar *rpname;
-static gboolean use_volume_option;
 static gboolean new_instance;
 static gboolean use_pausing_keep_force;
 // tv stuff
@@ -645,7 +644,6 @@ int main(int argc, char *argv[])
     stored_window_height = -1;
     cache_size = 0;
     forcecache = FALSE;
-    use_volume_option = FALSE;
     vertical_layout = FALSE;
     playlist_visible = FALSE;
     disable_fullscreen = FALSE;
@@ -1130,7 +1128,6 @@ int main(int argc, char *argv[])
     gm_log(verbose, G_LOG_LEVEL_DEBUG, "Volume is %lf Audio Device Volume = %f", volume, audio_device.volume);
 
     gtk_scale_button_set_value(GTK_SCALE_BUTTON(vol_slider), audio_device.volume);
-    use_volume_option = detect_volume_option();
     show_window(embed_window);
     if (playiter)
         play_iter(&iter, 0);

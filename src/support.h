@@ -73,7 +73,6 @@ gboolean is_uri_dir(gchar * uri);
 gboolean uri_exists(gchar * uri);
 gchar *switch_protocol(const gchar * uri, gchar * new_protocol);
 
-gboolean detect_volume_option();
 gboolean map_af_export_file(gpointer data);
 gboolean unmap_af_export_file(gpointer data);
 
