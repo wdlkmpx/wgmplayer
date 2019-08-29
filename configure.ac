@@ -118,9 +118,7 @@ AC_ARG_WITH([libnotify],
         [],
         [with_libnotify=check])
 AS_IF([test "x$with_libnotify" != xno], 
-    [PKG_CHECK_MODULES(NOTIFY,[libnotify],[NOTIFY_DEFINES="-DNOTIFY_ENABLED" AC_DEFINE([NOTIFY_ENABLED],[1],[Define to 1 if you have NOTIFY support])],AC_MSG_NOTICE([Compiling without libnotify support]))
-	 # Check for libnotify >= 0.7
-	 PKG_CHECK_MODULES(LIBNOTIFY_07, [libnotify >= 0.7], [AC_DEFINE([NOTIFY0_7_ENABLED],[1],[Define to 1 if you have NOTIFY support])],[AC_MSG_NOTICE([Using older libnotify])])
+    [PKG_CHECK_MODULES(NOTIFY,[libnotify >= 0.7],[NOTIFY_DEFINES="-DNOTIFY_ENABLED" AC_DEFINE([NOTIFY_ENABLED],[1],[Define to 1 if you have NOTIFY support])],AC_MSG_NOTICE([Compiling without libnotify support]))
      AC_SUBST(NOTIFY_DEFINES)
      AC_SUBST(NOTIFY_CFLAGS)
      AC_SUBST(NOTIFY_LIBS)

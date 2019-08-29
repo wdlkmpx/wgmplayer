@@ -774,19 +774,11 @@ gboolean set_media_label(void *data)
         gtk_widget_hide(media_hbox);
     }
 
-    if (idle->fromdbus == FALSE) {
+    //if (idle->fromdbus == FALSE) {
 #ifdef NOTIFY_ENABLED
         if (show_notification && control_id == 0 && !gtk_window_is_active((GtkWindow *) window)) {
             notify_init("gnome-mplayer");
-#ifdef NOTIFY0_7_ENABLED
             notification = notify_notification_new(idle->display_name, idle->media_notification, "gnome-mplayer");
-#else
-            notification = notify_notification_new(idle->display_name, idle->media_notification, "gnome-mplayer", NULL);
-#endif
-#if !NOTIFY0_7_ENABLED
-            if (show_status_icon)
-                notify_notification_attach_to_status_icon(notification, status_icon);
-#endif
             notify_notification_show(notification, NULL);
             notify_uninit();
         }
@@ -794,8 +786,7 @@ gboolean set_media_label(void *data)
         if (embed_window == 0 && gtk_tree_model_iter_n_children(GTK_TREE_MODEL(playliststore), NULL) != 1) {
             gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_view_playlist), playlist_visible);
         }
-
-    }
+    //}
 
     g_idle_add(set_adjust_layout, NULL);
 
