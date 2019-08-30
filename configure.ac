@@ -112,19 +112,6 @@ AS_IF([test "x$with_pulseaudio" != xno],
 	AC_SUBST(PULSE_LIBS)
 	])
 
-AC_ARG_WITH([libnotify],
-    [AS_HELP_STRING([--with-libnotify],
-        [Send notifications of new media])],
-        [],
-        [with_libnotify=check])
-AS_IF([test "x$with_libnotify" != xno], 
-    [PKG_CHECK_MODULES(NOTIFY,[libnotify >= 0.7],[NOTIFY_DEFINES="-DNOTIFY_ENABLED" AC_DEFINE([NOTIFY_ENABLED],[1],[Define to 1 if you have NOTIFY support])],AC_MSG_NOTICE([Compiling without libnotify support]))
-     AC_SUBST(NOTIFY_DEFINES)
-     AC_SUBST(NOTIFY_CFLAGS)
-     AC_SUBST(NOTIFY_LIBS)
-    ])
-
-  
 AC_ARG_ENABLE(gseal,
 		AC_HELP_STRING([--enable-gseal],[Enable flag for testing]),
         [case "${enableval}" in

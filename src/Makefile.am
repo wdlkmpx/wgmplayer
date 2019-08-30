@@ -12,7 +12,6 @@ AM_CPPFLAGS = \
     $(GIO_CFLAGS) \
 	$(ALSA_CFLAGS) \
 	$(PULSE_CFLAGS) \
-    $(NOTIFY_CFLAGS) \
 	$(XSCRNSAVER_CFLAGS)
 
 AM_CFLAGS =\
@@ -20,7 +19,6 @@ AM_CFLAGS =\
 	 -g\
      $(GIO_DEFINES) \
 	 $(ALSA_DEFINES) \
-     $(NOTIFY_DEFINES) \
      -Igmtk
      ## -DGTK_DISABLE_DEPRECATED 
      ## -DGSEAL_ENABLE
@@ -81,7 +79,6 @@ gnome_mplayer_LDADD = \
     $(GIO_LIBS) \
     $(ALSA_LIBS) \
 	$(PULSE_LIBS) \
-    $(NOTIFY_LIBS) \
     $(XSCRNSAVER_LIBS)
 
 indent:
