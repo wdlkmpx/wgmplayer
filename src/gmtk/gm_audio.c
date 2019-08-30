@@ -136,22 +136,6 @@ gboolean gm_audio_query_devices()
     gm_audio_devices = g_list_append(gm_audio_devices, device);
 #endif
 
-#ifdef __OpenBSD__
-    device = g_new0(AudioDevice, 1);
-    device->description = g_strdup("SNDIO");
-    device->type = AUDIO_TYPE_SOFTVOL;
-    device->mplayer_ao = g_strdup("sndio");
-    device->volume = 1.0;
-    gm_audio_devices = g_list_append(gm_audio_devices, device);
-
-    device = g_new0(AudioDevice, 1);
-    device->description = g_strdup("RTunes");
-    device->type = AUDIO_TYPE_SOFTVOL;
-    device->mplayer_ao = g_strdup("rtunes");
-    device->volume = 1.0;
-    gm_audio_devices = g_list_append(gm_audio_devices, device);
-#endif
-
 #ifdef HAVE_ASOUNDLIB
     snd_ctl_card_info_alloca(&info);
     snd_pcm_info_alloca(&pcminfo);
