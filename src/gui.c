@@ -655,7 +655,7 @@ gboolean show_copyurl(void *data)
     gchar *buf;
     gtk_widget_show(GTK_WIDGET(menuitem_copyurl));
     if (control_id == 0) {
-        buf = g_strdup_printf(_("%s - GNOME MPlayer"), gmtk_media_player_get_uri(GMTK_MEDIA_PLAYER(media)));
+        buf = g_strdup_printf(_("%s - Media Player"), gmtk_media_player_get_uri(GMTK_MEDIA_PLAYER(media)));
         gtk_window_set_title(GTK_WINDOW(window), buf);
         g_free(buf);
     }
@@ -699,15 +699,15 @@ gboolean set_title_bar(void *data)
         }
         if (total > 1) {
             if (name == NULL || strlen(name) < 1) {
-                buf = g_strdup_printf(_("(%i/%i) - GNOME MPlayer"), current + 1, total);
+                buf = g_strdup_printf(_("(%i/%i) - Media Player"), current + 1, total);
             } else {
-                buf = g_strdup_printf(_("%s - (%i/%i) - GNOME MPlayer"), name, current + 1, total);
+                buf = g_strdup_printf(_("%s - (%i/%i) - Media Player"), name, current + 1, total);
             }
         } else {
             if (name == NULL || strlen(name) < 1) {
-                buf = g_strdup_printf(_("GNOME MPlayer"));
+                buf = g_strdup_printf(_("Media Player"));
             } else {
-                buf = g_strdup_printf(_("%s - GNOME MPlayer"), name);
+                buf = g_strdup_printf(_("%s - Media Player"), name);
             }
         }
         gtk_window_set_title(GTK_WINDOW(window), buf);
@@ -3341,7 +3341,7 @@ void menuitem_about_callback(GtkMenuItem * menuitem, void *data)
     gchar *authors[] = { "Kevin DeKorte", "James Carthew", "Diogo Franco", "Icons provided by Victor Castillejo",
         NULL
     };
-    gtk_show_about_dialog(GTK_WINDOW(window), "name", _("GNOME MPlayer"), "authors", authors,
+    gtk_show_about_dialog(GTK_WINDOW(window), "name", _("Media Player"), "authors", authors,
                           "copyright", "Copyright © 2007-2011 Kevin DeKorte", "comments",
                           _("A media player for GNOME that uses MPlayer"), "version", VERSION,
                           "license",
@@ -6081,7 +6081,7 @@ void player_attribute_changed_callback(GmtkMediaTracker * tracker, GmtkMediaPlay
             metadata->title =
                 g_strstrip(g_strdup(gmtk_media_player_get_attribute_string(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_TITLE)));
             if (metadata->title != NULL && strlen(metadata->title) > 0) {
-                title = g_strdup_printf(_("%s - GNOME MPlayer"), metadata->title);
+                title = g_strdup_printf(_("%s - Media Player"), metadata->title);
                 gtk_window_set_title(GTK_WINDOW(window), title);
                 g_free(title);
             }
@@ -6682,7 +6682,7 @@ GtkWidget *create_window(gint windowid)
     fs_window = NULL;
     fs_controls_lock = g_mutex_new();
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(window), _("GNOME MPlayer"));
+    gtk_window_set_title(GTK_WINDOW(window), _("Media Player"));
     if (windowid > 0) {
         gtk_window_set_decorated(GTK_WINDOW(window), FALSE);
 #ifdef GTK3_ENABLED

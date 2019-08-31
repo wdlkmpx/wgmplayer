@@ -330,23 +330,23 @@ msgstr ""
 
 #: src/gui.c:658 src/gui.c:710 src/gui.c:6084
 #, c-format
-msgid "%s - GNOME MPlayer"
-msgstr "%s - GNOME MPlayer"
+msgid "%s - Media Player"
+msgstr "%s - Media Player"
 
 #: src/gui.c:702
 #, c-format
-msgid "(%i/%i) - GNOME MPlayer"
-msgstr "(%i/%i) - GNOME MPlayer"
+msgid "(%i/%i) - Media Player"
+msgstr "(%i/%i) - Media Player"
 
 #: src/gui.c:704
 #, c-format
-msgid "%s - (%i/%i) - GNOME MPlayer"
-msgstr "%s - (%i/%i) - GNOME MPlayer"
+msgid "%s - (%i/%i) - Media Player"
+msgstr "%s - (%i/%i) - Media Player"
 
 #: src/gui.c:708 src/gui.c:3344 src/gui.c:6685
 #, c-format
-msgid "GNOME MPlayer"
-msgstr "GNOME MPlayer"
+msgid "Media Player"
+msgstr "Media Player"
 
 #: src/gui.c:810
 #, c-format
