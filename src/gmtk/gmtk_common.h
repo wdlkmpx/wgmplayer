@@ -50,6 +50,5 @@ void gmtk_get_allocation(GtkWidget * widget, GtkAllocation * allocation);
 GdkWindow *gmtk_get_window(GtkWidget * widget);
 gboolean gmtk_get_visible(GtkWidget * widget);
 gboolean gmtk_widget_get_realized(GtkWidget * widget);
-const gchar *gmtk_version();
 
 #endif

@@ -908,7 +908,6 @@ int main(int argc, char *argv[])
         verbose = 2;
     if (verbose) {
         printf(_("GNOME MPlayer v%s\n"), VERSION);
-        printf(_("gmtk v%s\n"), gmtk_version());
         printf("GTK %i.%i.%i\n", GTK_MAJOR_VERSION, GTK_MINOR_VERSION, GTK_MICRO_VERSION);
         printf("GLIB %i.%i.%i\n", GLIB_MAJOR_VERSION, GLIB_MINOR_VERSION, GLIB_MICRO_VERSION);
         printf("GDA Enabled\n");
