@@ -345,7 +345,6 @@ gchar *subtitle;
 gchar *alang;
 gchar *slang;
 gchar *metadata_codepage;
-gboolean use_mplayer2;
 gboolean vertical_layout;
 gboolean playlist_visible;
 gboolean details_visible;

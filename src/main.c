@@ -707,7 +707,6 @@ int main(int argc, char *argv[])
     skip_fixed_allocation_on_show = FALSE;
     skip_fixed_allocation_on_hide = FALSE;
     pref_volume = -1;
-    use_mplayer2 = FALSE;
     enable_global_menu = FALSE;
     cover_art_uri = NULL;
     resume_mode = RESUME_ALWAYS_ASK;

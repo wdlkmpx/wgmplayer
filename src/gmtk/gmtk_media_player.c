@@ -470,7 +470,6 @@ static void gmtk_media_player_init(GmtkMediaPlayer * player)
     player->disable_upscaling = FALSE;
     player->mplayer_binary = NULL;
     player->extra_opts = NULL;
-    player->use_mplayer2 = FALSE;
     player->features_detected = FALSE;
     player->zoom = 1.0;
     player->speed_multiplier = 1.0;
@@ -2691,7 +2690,6 @@ gpointer launch_mplayer(gpointer data)
         argv[argn++] = g_strdup_printf("-nomsgmodule");
 
         // mplayer says that nokeepaspect isn't supported by all vo's but it seems to work
-        //if (player->use_mplayer2)
         argv[argn++] = g_strdup_printf("-nokeepaspect");
 
         if (player->audio_track_file != NULL && strlen(player->audio_track_file) > 0) {
@@ -4054,13 +4052,8 @@ gboolean thread_query(gpointer data)
     if (player->player_state == PLAYER_STATE_RUNNING) {
         if (player->media_state == MEDIA_STATE_PLAY) {
             // gm_log(player->debug, G_LOG_LEVEL_DEBUG, "writing");
-            if (player->use_mplayer2) {
-                written = write(player->std_in, "get_time_pos\n", strlen("get_time_pos\n"));
-            } else {
-                written =
-                    write(player->std_in, "pausing_keep_force get_time_pos\n",
+            written = write(player->std_in, "pausing_keep_force get_time_pos\n",
                           strlen("pausing_keep_force get_time_pos\n"));
-            }
             // gm_log(player->debug, G_LOG_LEVEL_DEBUG, "written = %i", written);
             if (written == -1) {
                 //return TRUE;
@@ -4089,15 +4082,11 @@ gboolean write_to_mplayer(GmtkMediaPlayer * player, const gchar * cmd)
     gm_logsp(player->debug, G_LOG_LEVEL_DEBUG, ">", cmd);
 
     if (player->channel_in) {
-        if (player->use_mplayer2) {
+        /* if cmd starts with "pause" (non case sensitive) */
+        if (g_ascii_strncasecmp(cmd, "pause", strlen("pause")) == 0) {
             pkf_cmd = g_strdup(cmd);
         } else {
-            /* if cmd starts with "pause" (non case sensitive) */
-            if (g_ascii_strncasecmp(cmd, "pause", strlen("pause")) == 0) {
-                pkf_cmd = g_strdup(cmd);
-            } else {
-                pkf_cmd = g_strdup_printf("pausing_keep_force %s", cmd);
-            }
+            pkf_cmd = g_strdup_printf("pausing_keep_force %s", cmd);
         }
         result = g_io_channel_write_chars(player->channel_in, pkf_cmd, -1, &bytes_written, NULL);
         g_free(pkf_cmd);
@@ -4172,10 +4161,6 @@ gboolean detect_mplayer_features(GmtkMediaPlayer * player)
         /* if output[ac] starts with "Unknown option" (non case sensitive) */
         if (g_ascii_strncasecmp(output[ac], "Unknown option", strlen("Unknown option")) == 0) {
             ret = FALSE;
-        }
-        /* if output[ac] starts with "MPlayer2" (non case sensitive) */
-        if (g_ascii_strncasecmp(output[ac], "MPlayer2", strlen("MPlayer2")) == 0) {
-            player->use_mplayer2 = TRUE;
         }
         ac++;
     }
