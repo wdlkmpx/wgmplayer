@@ -25,7 +25,3 @@
 #include "gmtk_common.h"
 #include <libintl.h>
 
-gboolean gmtk_widget_get_realized(GtkWidget * widget)
-{
-    return gtk_widget_get_realized(widget);
-}
