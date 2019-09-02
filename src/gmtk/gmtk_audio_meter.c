@@ -205,9 +205,9 @@ static gboolean gmtk_audio_meter_expose(GtkWidget * meter, GdkEventExpose * even
 {
     PangoLayout *p;
 
-    gdk_window_begin_paint_region(gmtk_get_window(meter), event->region);
+    gdk_window_begin_paint_region(gtk_widget_get_window(meter), event->region);
     if (GMTK_AUDIO_METER(meter)->data_valid) {
-        GMTK_AUDIO_METER(meter)->cr = gdk_cairo_create(gmtk_get_window(GTK_WIDGET(meter)));
+        GMTK_AUDIO_METER(meter)->cr = gdk_cairo_create(gtk_widget_get_window(GTK_WIDGET(meter)));
         draw(meter);
         cairo_destroy(GMTK_AUDIO_METER(meter)->cr);
 
@@ -215,11 +215,11 @@ static gboolean gmtk_audio_meter_expose(GtkWidget * meter, GdkEventExpose * even
         p = gtk_widget_create_pango_layout(meter, g_dgettext(GETTEXT_PACKAGE, "No Data"));
 #ifdef GTK3_ENABLED
 #else
-        gdk_draw_layout(gmtk_get_window(meter), gtk_widget_get_style(meter)->fg_gc[0], 0, 0, p);
+        gdk_draw_layout(gtk_widget_get_window(meter), gtk_widget_get_style(meter)->fg_gc[0], 0, 0, p);
 #endif
         g_object_unref(p);
     }
-    gdk_window_end_paint(gmtk_get_window(meter));
+    gdk_window_end_paint(gtk_widget_get_window(meter));
     return FALSE;
 }
 
@@ -258,8 +258,8 @@ void gmtk_audio_meter_set_data(GmtkAudioMeter * meter, GArray * data)
         meter->data_valid = TRUE;
     }
 
-    if (gmtk_get_window(GTK_WIDGET(meter)))
-        gdk_window_invalidate_rect(gmtk_get_window(GTK_WIDGET(meter)), NULL, FALSE);
+    if (gtk_widget_get_window(GTK_WIDGET(meter)))
+        gdk_window_invalidate_rect(gtk_widget_get_window(GTK_WIDGET(meter)), NULL, FALSE);
 }
 
 void gmtk_audio_meter_set_data_full(GmtkAudioMeter * meter, GArray * data, GArray * max_data)
@@ -288,8 +288,8 @@ void gmtk_audio_meter_set_data_full(GmtkAudioMeter * meter, GArray * data, GArra
         meter->data_valid = TRUE;
     }
 
-    if (gmtk_get_window(GTK_WIDGET(meter)))
-        gdk_window_invalidate_rect(gmtk_get_window(GTK_WIDGET(meter)), NULL, FALSE);
+    if (gtk_widget_get_window(GTK_WIDGET(meter)))
+        gdk_window_invalidate_rect(gtk_widget_get_window(GTK_WIDGET(meter)), NULL, FALSE);
 }
 
 void gmtk_audio_meter_set_max_division_width(GmtkAudioMeter * meter, gint max_division_width)

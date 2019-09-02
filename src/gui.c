@@ -1491,7 +1491,7 @@ gboolean set_position(void *data)
 gboolean set_raise_window(void *data)
 {
     gtk_window_present(GTK_WINDOW(window));
-    gdk_window_raise(gmtk_get_window(window));
+    gdk_window_raise(gtk_widget_get_window(window));
     return FALSE;
 }
 
@@ -2711,7 +2711,7 @@ gboolean make_panel_and_mouse_invisible(gpointer data)
         || gmtk_get_visible(GTK_WIDGET(menu_help))
         || gtk_tree_view_get_enable_search(GTK_TREE_VIEW(list))) {
 
-        gdk_window_set_cursor(gmtk_get_window(window), NULL);
+        gdk_window_set_cursor(gtk_widget_get_window(window), NULL);
 
     } else {
 
@@ -2722,13 +2722,13 @@ gboolean make_panel_and_mouse_invisible(gpointer data)
             cairo_surface_destroy(s);
             cursor = gdk_cursor_new_from_pixbuf(gdk_display_get_default(), cursor_pixbuf, 0, 0);
             g_object_unref(cursor_pixbuf);
-            gdk_window_set_cursor(gmtk_get_window(window), cursor);
+            gdk_window_set_cursor(gtk_widget_get_window(window), cursor);
             g_object_unref(cursor);
 #else
             cursor_source = gdk_pixmap_new(NULL, 1, 1, 1);
             cursor = gdk_cursor_new_from_pixmap(cursor_source, cursor_source, &cursor_color, &cursor_color, 0, 0);
             gdk_pixmap_unref(cursor_source);
-            gdk_window_set_cursor(gmtk_get_window(window), cursor);
+            gdk_window_set_cursor(gtk_widget_get_window(window), cursor);
             gdk_cursor_unref(cursor);
 #endif
         }
@@ -2743,7 +2743,7 @@ gboolean make_panel_and_mouse_visible(gpointer data)
     if (showcontrols && GTK_IS_WIDGET(controls_box)) {
         show_fs_controls();
     }
-    gdk_window_set_cursor(gmtk_get_window(window), NULL);
+    gdk_window_set_cursor(gtk_widget_get_window(window), NULL);
 
     return FALSE;
 }
@@ -2763,7 +2763,7 @@ gboolean enter_button_callback(GtkWidget * widget, GdkEventCrossing * event, gpo
 
 #ifdef GTK3_ENABLED
 #else
-    gdk_draw_rectangle(gmtk_get_window(widget), gtk_widget_get_style(widget)->fg_gc[GTK_STATE_NORMAL],
+    gdk_draw_rectangle(gtk_widget_get_window(widget), gtk_widget_get_style(widget)->fg_gc[GTK_STATE_NORMAL],
                        FALSE, 0, 0, alloc.width - 1, alloc.height - 1);
 #endif
     in_button = TRUE;
@@ -2777,7 +2777,7 @@ gboolean leave_button_callback(GtkWidget * widget, GdkEventCrossing * event, gpo
     gtk_widget_get_allocation(widget, &alloc);
 #ifdef GTK3_ENABLED
 #else
-    gdk_draw_rectangle(gmtk_get_window(widget), gtk_widget_get_style(widget)->bg_gc[GTK_STATE_NORMAL],
+    gdk_draw_rectangle(gtk_widget_get_window(widget), gtk_widget_get_style(widget)->bg_gc[GTK_STATE_NORMAL],
                        FALSE, 0, 0, alloc.width - 1, alloc.height - 1);
 #endif
     in_button = FALSE;
@@ -3628,11 +3628,11 @@ void menuitem_fs_callback(GtkMenuItem * menuitem, void *data)
         } else {
             if (gtk_widget_get_mapped(window))
                 gtk_widget_unmap(window);
-            gdk_window_reparent(gmtk_get_window(window),
+            gdk_window_reparent(gtk_widget_get_window(window),
                                 gdk_x11_window_lookup_for_display(gdk_display_get_default(), embed_window), 0, 0);
             gtk_widget_map(window);
             gtk_window_move(GTK_WINDOW(window), 0, 0);
-            gdk_window_resize(gmtk_get_window(window), window_x, window_y - 1);
+            gdk_window_resize(gtk_widget_get_window(window), window_x, window_y - 1);
             if (window_x > 0 && window_y > 0)
                 gtk_window_resize(GTK_WINDOW(window), window_x, window_y);
             if (window_x < 250) {
@@ -3724,19 +3724,19 @@ void menuitem_fs_callback(GtkMenuItem * menuitem, void *data)
             gtk_window_set_screen(GTK_WINDOW(fs_window), screen);
             gtk_window_set_title(GTK_WINDOW(fs_window), _("Gnome MPlayer Fullscreen"));
             gdk_screen_get_monitor_geometry(screen,
-                                            gdk_screen_get_monitor_at_window(screen, gmtk_get_window(window)), &rect);
+                                            gdk_screen_get_monitor_at_window(screen, gtk_widget_get_window(window)), &rect);
 
-            gdk_window_get_root_origin(gmtk_get_window(window), &wx, &wy);
+            gdk_window_get_root_origin(gtk_widget_get_window(window), &wx, &wy);
             gtk_window_move(GTK_WINDOW(fs_window), wx, wy);
 #ifdef GTK3_ENABLED
             gtk_window_set_has_resize_grip(GTK_WINDOW(fs_window), FALSE);
 #endif
             gtk_widget_show(fs_window);
 #if X11_ENABLED
-            XReparentWindow(GDK_WINDOW_XDISPLAY(gmtk_get_window(window)),
-                            GDK_WINDOW_XID(gmtk_get_window(window)), GDK_WINDOW_XID(gmtk_get_window(fs_window)), 0, 0);
+            XReparentWindow(GDK_WINDOW_XDISPLAY(gtk_widget_get_window(window)),
+                            GDK_WINDOW_XID(gtk_widget_get_window(window)), GDK_WINDOW_XID(gtk_widget_get_window(fs_window)), 0, 0);
 #else
-            gdk_window_reparent(gmtk_get_window(window), gmtk_get_window(fs_window), 0, 0);
+            gdk_window_reparent(gtk_widget_get_window(window), gtk_widget_get_window(fs_window), 0, 0);
 #endif
             gtk_widget_map(window);
             gtk_window_fullscreen(GTK_WINDOW(fs_window));
@@ -7412,7 +7412,7 @@ void show_window(gint windowid)
         window_container = gdk_x11_window_foreign_new_for_display(gdk_display_get_default(), windowid);
         if (gtk_widget_get_mapped(window))
             gtk_widget_unmap(window);
-        gdk_window_reparent(gmtk_get_window(window), window_container, 0, 0);
+        gdk_window_reparent(gtk_widget_get_window(window), window_container, 0, 0);
     }
 
     if (rpcontrols == NULL || (rpcontrols != NULL && g_ascii_strcasecmp(rpcontrols, "all") == 0)) {
@@ -7761,7 +7761,7 @@ void show_fs_controls()
 
         screen = gtk_window_get_screen(GTK_WINDOW(window));
         gtk_window_set_screen(GTK_WINDOW(fs_controls), screen);
-        gdk_screen_get_monitor_geometry(screen, gdk_screen_get_monitor_at_window(screen, gmtk_get_window(window)),
+        gdk_screen_get_monitor_geometry(screen, gdk_screen_get_monitor_at_window(screen, gtk_widget_get_window(window)),
                                         &rect);
         gtk_widget_get_allocation(fs_controls, &alloc);
         gtk_widget_set_size_request(fs_controls, rect.width / 2, alloc.height);

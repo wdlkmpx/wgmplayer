@@ -46,7 +46,6 @@
 #ifndef __GMTK_COMMON_H__
 #define __GMTK_COMMON_H__
 
-GdkWindow *gmtk_get_window(GtkWidget * widget);
 gboolean gmtk_get_visible(GtkWidget * widget);
 gboolean gmtk_widget_get_realized(GtkWidget * widget);
 

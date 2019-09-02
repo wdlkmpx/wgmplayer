@@ -25,11 +25,6 @@
 #include "gmtk_common.h"
 #include <libintl.h>
 
-GdkWindow *gmtk_get_window(GtkWidget * widget)
-{
-    return gtk_widget_get_window(widget);
-}
-
 gboolean gmtk_get_visible(GtkWidget * widget)
 {
     return gtk_widget_get_visible(widget);
