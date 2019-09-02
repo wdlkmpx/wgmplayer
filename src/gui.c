@@ -477,7 +477,7 @@ void adjust_layout()
 
     if (GTK_IS_WIDGET(media_hbox) && control_id == 0
         && gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menuitem_view_info))) {
-        if (gmtk_get_visible(media_hbox) == 0) {
+        if (gtk_widget_get_visible(media_hbox) == 0) {
             gtk_widget_show_all(media_hbox);
             //gm_log(verbose, G_LOG_LEVEL_DEBUG, "waiting for all events to drain");
             //while (gtk_events_pending()) gtk_main_iteration();
@@ -492,7 +492,7 @@ void adjust_layout()
 
     if (GTK_IS_WIDGET(details_table)
         && gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menuitem_view_details))) {
-        if (gmtk_get_visible(details_vbox) == 0) {
+        if (gtk_widget_get_visible(details_vbox) == 0) {
             gtk_widget_show_all(details_vbox);
             //return;
         }
@@ -506,7 +506,7 @@ void adjust_layout()
 
     if (GTK_IS_WIDGET(audio_meter)
         && gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menuitem_view_meter))) {
-        if (gmtk_get_visible(audio_meter) == 0) {
+        if (gtk_widget_get_visible(audio_meter) == 0) {
             gtk_widget_show_all(audio_meter);
             //return;
         }
@@ -518,7 +518,7 @@ void adjust_layout()
 
     if (GTK_IS_WIDGET(plvbox)
         && gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menuitem_view_playlist))) {
-        if (gmtk_get_visible(plvbox) == 0) {
+        if (gtk_widget_get_visible(plvbox) == 0) {
             gtk_widget_show_all(plvbox);
             //return;
         }
@@ -532,7 +532,7 @@ void adjust_layout()
             gm_log(verbose, G_LOG_LEVEL_DEBUG, "totals = %i x %i", total_width, total_height);
             total_height += alloc.height + handle_size;
         } else {
-            if (gmtk_get_visible(media_hbox) && idledata->videopresent == FALSE
+            if (gtk_widget_get_visible(media_hbox) && idledata->videopresent == FALSE
                 && gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menuitem_view_playlist)) == FALSE) {
                 gtk_widget_get_allocation(media_hbox, &alloc2);
                 total_width = alloc2.width + handle_size + alloc.width;
@@ -557,7 +557,7 @@ void adjust_layout()
             gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
         }
         gtk_paned_set_position(GTK_PANED(pane), -1);
-        if (gmtk_get_visible(plvbox) == 1) {
+        if (gtk_widget_get_visible(plvbox) == 1) {
             gtk_widget_hide(plvbox);
             //return;
         }
@@ -673,7 +673,7 @@ gboolean set_title_bar(void *data)
     gint current = 0, total;
     gchar *filename = NULL;
 
-    if (data != NULL && idle != NULL && gmtk_get_visible(window)) {
+    if (data != NULL && idle != NULL && gtk_widget_get_visible(window)) {
         if (gmtk_media_player_get_attribute_boolean(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_VIDEO_PRESENT)
             && gmtk_media_player_get_media_type(GMTK_MEDIA_PLAYER(media)) == TYPE_FILE
             && g_strrstr(gmtk_media_player_get_uri(GMTK_MEDIA_PLAYER(media)), "/") != NULL) {
@@ -1348,7 +1348,7 @@ gboolean resize_window(void *data)
                     || idle->streaming) {
                     if (idle->width > 1 && idle->height > 1) {
                         gm_log(verbose, G_LOG_LEVEL_INFO, "Changing window size to %i x %i visible = %s", idle->width,
-                               idle->height, gm_bool_to_string(gmtk_get_visible(media)));
+                               idle->height, gm_bool_to_string(gtk_widget_get_visible(media)));
                         last_window_width = idle->width;
                         last_window_height = idle->height;
                         non_fs_width = idle->width;
@@ -1587,7 +1587,7 @@ gboolean set_show_controls(void *data)
 
     showcontrols = idle->showcontrols;
 
-    if (gmtk_get_visible(GTK_WIDGET(menuitem_view_controls))) {
+    if (gtk_widget_get_visible(GTK_WIDGET(menuitem_view_controls))) {
         gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_view_controls), showcontrols);
     } else {
         gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_showcontrols), showcontrols);
@@ -1771,7 +1771,7 @@ gboolean delete_callback(GtkWidget * widget, GdkEvent * event, void *data)
 gboolean status_icon_callback(GtkStatusIcon * icon, gpointer data)
 {
 
-    if (gmtk_get_visible(window)) {
+    if (gtk_widget_get_visible(window)) {
         gtk_window_get_position(GTK_WINDOW(window), &loc_window_x, &loc_window_y);
         gtk_window_iconify(GTK_WINDOW(window));
         gtk_widget_hide(GTK_WIDGET(window));
@@ -1875,7 +1875,7 @@ gboolean window_key_callback(GtkWidget * widget, GdkEventKey * event, gpointer u
     gm_log(verbose, G_LOG_LEVEL_DEBUG, "key name=%s", gdk_keyval_name(event->keyval));
     // We don't want to handle CTRL accelerators here
     // if we pass in items with CTRL then 2 and Ctrl-2 do the same thing
-    if (gmtk_get_visible(plvbox) && gtk_tree_view_get_enable_search(GTK_TREE_VIEW(list)))
+    if (gtk_widget_get_visible(plvbox) && gtk_tree_view_get_enable_search(GTK_TREE_VIEW(list)))
         return FALSE;
 
     index = get_index_from_key_and_modifier(event->keyval, event->state);
@@ -2685,7 +2685,7 @@ gboolean make_panel_and_mouse_invisible(gpointer data)
     GdkPixmap *cursor_source;
 #endif
     if ((fullscreen || always_hide_after_timeout) && auto_hide_timeout > 0
-        && (gmtk_get_visible(controls_box) || fs_controls != NULL)
+        && (gtk_widget_get_visible(controls_box) || fs_controls != NULL)
         && mouse_over_controls == FALSE) {
         g_get_current_time(&currenttime);
         g_time_val_add(&currenttime, -auto_hide_timeout * G_USEC_PER_SEC);
@@ -2705,10 +2705,10 @@ gboolean make_panel_and_mouse_invisible(gpointer data)
        get_visible(menu_help),
        gtk_tree_view_get_enable_search(GTK_TREE_VIEW(list)));
      */
-    if (gmtk_get_visible(GTK_WIDGET(menu_file))
-        || gmtk_get_visible(GTK_WIDGET(menu_edit))
-        || gmtk_get_visible(GTK_WIDGET(menu_view))
-        || gmtk_get_visible(GTK_WIDGET(menu_help))
+    if (gtk_widget_get_visible(GTK_WIDGET(menu_file))
+        || gtk_widget_get_visible(GTK_WIDGET(menu_edit))
+        || gtk_widget_get_visible(GTK_WIDGET(menu_view))
+        || gtk_widget_get_visible(GTK_WIDGET(menu_help))
         || gtk_tree_view_get_enable_search(GTK_TREE_VIEW(list))) {
 
         gdk_window_set_cursor(gtk_widget_get_window(window), NULL);
@@ -7616,7 +7616,7 @@ gboolean update_audio_meter(gpointer data)
         return TRUE;
     if (gmtk_media_player_get_media_state(GMTK_MEDIA_PLAYER(media)) != MEDIA_STATE_PLAY)
         return TRUE;
-    if (audio_meter != NULL && gmtk_get_visible(audio_meter)) {
+    if (audio_meter != NULL && gtk_widget_get_visible(audio_meter)) {
 
         if (data)
             g_array_free(data, TRUE);
