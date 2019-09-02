@@ -620,7 +620,7 @@ static gboolean gmtk_media_player_draw_event(GtkWidget * widget, cairo_t * cr)
     GtkAllocation allocation;
 
     style = gtk_widget_get_style(widget);
-    gmtk_get_allocation(widget, &allocation);
+    gtk_widget_get_allocation(widget, &allocation);
 
     cairo_set_source_rgb(cr, style->black.red / 65535.0, style->black.green / 65535.0, style->black.blue / 65535.0);
     cairo_rectangle(cr, 0, 0, allocation.width, allocation.height);
@@ -778,18 +778,18 @@ static gboolean player_key_press_event_callback(GtkWidget * widget, GdkEventKey 
         case GDK_KP_Add:
             player->zoom += 0.10;
             player->zoom = CLAMP(player->zoom, 0.1, 10.0);
-            gmtk_get_allocation(GTK_WIDGET(player), &alloc);
+            gtk_widget_get_allocation(GTK_WIDGET(player), &alloc);
             gmtk_media_player_size_allocate(GTK_WIDGET(player), &alloc);
             break;
         case GDK_KP_Subtract:
             player->zoom -= 0.10;
             player->zoom = CLAMP(player->zoom, 0.1, 10.0);
-            gmtk_get_allocation(GTK_WIDGET(player), &alloc);
+            gtk_widget_get_allocation(GTK_WIDGET(player), &alloc);
             gmtk_media_player_size_allocate(GTK_WIDGET(player), &alloc);
             break;
         case GDK_KP_Enter:
             player->zoom = 1.0;
-            gmtk_get_allocation(GTK_WIDGET(player), &alloc);
+            gtk_widget_get_allocation(GTK_WIDGET(player), &alloc);
             gmtk_media_player_size_allocate(GTK_WIDGET(player), &alloc);
             break;
         case GDK_j:
@@ -898,7 +898,7 @@ static void gmtk_media_player_size_allocate(GtkWidget * widget, GtkAllocation * 
     gfloat xscale, yscale;
 
     if (allocation->width <= 0 || allocation->height <= 0) {
-        gmtk_get_allocation(widget, allocation);
+        gtk_widget_get_allocation(widget, allocation);
         gm_log(player->debug, G_LOG_LEVEL_DEBUG, "widget allocation %i x %i", allocation->width, allocation->height);
     }
     // protect against possible divide by zero
@@ -2141,7 +2141,7 @@ void gmtk_media_player_set_aspect(GmtkMediaPlayer * player, GmtkMediaPlayerAspec
     GtkAllocation alloc;
 
     player->aspect_ratio = aspect;
-    gmtk_get_allocation(GTK_WIDGET(player), &alloc);
+    gtk_widget_get_allocation(GTK_WIDGET(player), &alloc);
     gmtk_media_player_size_allocate(GTK_WIDGET(player), &alloc);
 }
 
@@ -3368,7 +3368,7 @@ gboolean thread_reader(GIOChannel * source, GIOCondition condition, gpointer dat
             buf = strstr(mplayer_output->str, "VO:");
             sscanf(buf, "VO: [%[^]]] %ix%i => %ix%i", vm, &w, &h, &(player->video_width), &(player->video_height));
             gm_log(player->debug, G_LOG_LEVEL_DEBUG, "%ix%i => %ix%i", w, h, player->video_width, player->video_height);
-            gmtk_get_allocation(GTK_WIDGET(player), &allocation);
+            gtk_widget_get_allocation(GTK_WIDGET(player), &allocation);
             player->media_state = MEDIA_STATE_PLAY;
             if (player->restart) {
                 g_signal_emit_by_name(player, "restart-complete", NULL);
@@ -3401,7 +3401,7 @@ gboolean thread_reader(GIOChannel * source, GIOCondition condition, gpointer dat
             gm_log(player->debug, G_LOG_LEVEL_MESSAGE, "Running in audio only mode");
             player->video_width = 0;
             player->video_height = 0;
-            gmtk_get_allocation(GTK_WIDGET(player), &allocation);
+            gtk_widget_get_allocation(GTK_WIDGET(player), &allocation);
             player->media_state = MEDIA_STATE_PLAY;
             if (player->restart) {
                 g_signal_emit_by_name(player, "restart-complete", NULL);

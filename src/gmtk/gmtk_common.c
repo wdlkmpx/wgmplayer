@@ -25,11 +25,6 @@
 #include "gmtk_common.h"
 #include <libintl.h>
 
-void gmtk_get_allocation(GtkWidget * widget, GtkAllocation * allocation)
-{
-    gtk_widget_get_allocation(widget, allocation);
-}
-
 GdkWindow *gmtk_get_window(GtkWidget * widget)
 {
     return gtk_widget_get_window(widget);

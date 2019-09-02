@@ -463,7 +463,7 @@ void adjust_layout()
             total_width = gtk_paned_get_position(GTK_PANED(pane));
         } else {
             if (showcontrols) {
-                gmtk_get_allocation(controls_box, &alloc);
+                gtk_widget_get_allocation(controls_box, &alloc);
                 total_width = alloc.width;
             }
         }
@@ -482,7 +482,7 @@ void adjust_layout()
             //gm_log(verbose, G_LOG_LEVEL_DEBUG, "waiting for all events to drain");
             //while (gtk_events_pending()) gtk_main_iteration();
         }
-        gmtk_get_allocation(media_hbox, &alloc);
+        gtk_widget_get_allocation(media_hbox, &alloc);
         gm_log(verbose, G_LOG_LEVEL_DEBUG, "media height = %i", alloc.height);
         total_height += alloc.height;
         gm_log(verbose, G_LOG_LEVEL_DEBUG, "total_height = %i", total_height);
@@ -496,7 +496,7 @@ void adjust_layout()
             gtk_widget_show_all(details_vbox);
             //return;
         }
-        gmtk_get_allocation(details_vbox, &alloc);
+        gtk_widget_get_allocation(details_vbox, &alloc);
         gm_log(verbose, G_LOG_LEVEL_DEBUG, "detail height = %i", alloc.height);
         total_height += alloc.height;
         gm_log(verbose, G_LOG_LEVEL_DEBUG, "total_height = %i", total_height);
@@ -510,7 +510,7 @@ void adjust_layout()
             gtk_widget_show_all(audio_meter);
             //return;
         }
-        gmtk_get_allocation(audio_meter, &alloc);
+        gtk_widget_get_allocation(audio_meter, &alloc);
         total_height += alloc.height;
     } else {
         gtk_widget_hide(audio_meter);
@@ -527,14 +527,14 @@ void adjust_layout()
         gtk_widget_grab_default(plclose);
         gtk_widget_style_get(pane, "handle-size", &handle_size, NULL);
 
-        gmtk_get_allocation(plvbox, &alloc);
+        gtk_widget_get_allocation(plvbox, &alloc);
         if (vertical_layout) {
             gm_log(verbose, G_LOG_LEVEL_DEBUG, "totals = %i x %i", total_width, total_height);
             total_height += alloc.height + handle_size;
         } else {
             if (gmtk_get_visible(media_hbox) && idledata->videopresent == FALSE
                 && gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menuitem_view_playlist)) == FALSE) {
-                gmtk_get_allocation(media_hbox, &alloc2);
+                gtk_widget_get_allocation(media_hbox, &alloc2);
                 total_width = alloc2.width + handle_size + alloc.width;
             } else {
                 total_width += handle_size + alloc.width;
@@ -565,7 +565,7 @@ void adjust_layout()
 
     if (!fullscreen) {
         if (!enable_global_menu) {
-            gmtk_get_allocation(menubar, &alloc);
+            gtk_widget_get_allocation(menubar, &alloc);
             gm_log(verbose, G_LOG_LEVEL_DEBUG, "menubar = %i", alloc.height);
             if (!fullscreen)
                 total_height += alloc.height;
@@ -574,7 +574,7 @@ void adjust_layout()
     }
 
     if (showcontrols) {
-        gmtk_get_allocation(controls_box, &alloc);
+        gtk_widget_get_allocation(controls_box, &alloc);
         gm_log(verbose, G_LOG_LEVEL_DEBUG, "controls height = %i", alloc.height);
         total_height += alloc.height;
         gm_log(verbose, G_LOG_LEVEL_DEBUG, "total_height = %i", total_height);
@@ -1652,7 +1652,7 @@ gboolean popup_handler(GtkWidget * widget, GdkEvent * event, void *data)
     if (event->type == GDK_2BUTTON_PRESS) {
         event_button = (GdkEventButton *) event;
         if (event_button->button == 1 && idledata->videopresent == TRUE) {
-            gmtk_get_allocation(media, &alloc);
+            gtk_widget_get_allocation(media, &alloc);
             if (event_button->x > alloc.x
                 && event_button->y > alloc.y
                 && event_button->x < alloc.x + alloc.width && event_button->y < alloc.y + alloc.height) {
@@ -1804,8 +1804,8 @@ gboolean motion_notify_callback(GtkWidget * widget, GdkEventMotion * event, gpoi
 	}
 */
     if (fullscreen) {
-        gmtk_get_allocation(window, &fs_allocation);
-        gmtk_get_allocation(controls_box, &fs_controls_allocation);
+        gtk_widget_get_allocation(window, &fs_allocation);
+        gtk_widget_get_allocation(controls_box, &fs_controls_allocation);
         if (event->y > (fs_allocation.height - fs_controls_allocation.height)) {
             g_idle_add(make_panel_and_mouse_visible, NULL);
         } else {
@@ -2759,7 +2759,7 @@ gboolean enter_button_callback(GtkWidget * widget, GdkEventCrossing * event, gpo
 {
     GtkAllocation alloc;
 
-    gmtk_get_allocation(widget, &alloc);
+    gtk_widget_get_allocation(widget, &alloc);
 
 #ifdef GTK3_ENABLED
 #else
@@ -2774,7 +2774,7 @@ gboolean leave_button_callback(GtkWidget * widget, GdkEventCrossing * event, gpo
 {
     GtkAllocation alloc;
 
-    gmtk_get_allocation(widget, &alloc);
+    gtk_widget_get_allocation(widget, &alloc);
 #ifdef GTK3_ENABLED
 #else
     gdk_draw_rectangle(gmtk_get_window(widget), gtk_widget_get_style(widget)->bg_gc[GTK_STATE_NORMAL],
@@ -3802,7 +3802,7 @@ void menuitem_showcontrols_callback(GtkCheckMenuItem * menuitem, void *data)
             gtk_widget_show(controls_box);
             if (!fullscreen && embed_window == 0) {
                 gtk_window_get_size(GTK_WINDOW(window), &width, &height);
-                gmtk_get_allocation(controls_box, &alloc);
+                gtk_widget_get_allocation(controls_box, &alloc);
                 gtk_window_resize(GTK_WINDOW(window), width, height + alloc.height);
             }
         }
@@ -3815,7 +3815,7 @@ void menuitem_showcontrols_callback(GtkCheckMenuItem * menuitem, void *data)
             gtk_widget_hide(controls_box);
             if (!fullscreen && embed_window == 0) {
                 gtk_window_get_size(GTK_WINDOW(window), &width, &height);
-                gmtk_get_allocation(controls_box, &alloc);
+                gtk_widget_get_allocation(controls_box, &alloc);
                 gtk_window_resize(GTK_WINDOW(window), width, height - alloc.height);
             }
         }
@@ -7763,7 +7763,7 @@ void show_fs_controls()
         gtk_window_set_screen(GTK_WINDOW(fs_controls), screen);
         gdk_screen_get_monitor_geometry(screen, gdk_screen_get_monitor_at_window(screen, gmtk_get_window(window)),
                                         &rect);
-        gmtk_get_allocation(fs_controls, &alloc);
+        gtk_widget_get_allocation(fs_controls, &alloc);
         gtk_widget_set_size_request(fs_controls, rect.width / 2, alloc.height);
         x = rect.x + (rect.width / 4);
         y = rect.y + rect.height - alloc.height;

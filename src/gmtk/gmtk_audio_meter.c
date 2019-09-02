@@ -96,7 +96,7 @@ static void draw(GtkWidget * meter)
     cairo_pattern_t *pattern;
     GtkStyle *style;
 
-    gmtk_get_allocation(meter, &alloc);
+    gtk_widget_get_allocation(meter, &alloc);
     style = gtk_widget_get_style(meter);
 
 

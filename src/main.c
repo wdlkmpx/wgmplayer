@@ -303,7 +303,7 @@ gint play_iter(GtkTreeIter * playiter, gint restart_second)
     gm_log(verbose, G_LOG_LEVEL_INFO, "playing - %s", uri);
     gm_log(verbose, G_LOG_LEVEL_INFO, "is playlist %s", gm_bool_to_string(playlist));
 
-    gmtk_get_allocation(GTK_WIDGET(media), &alloc);
+    gtk_widget_get_allocation(GTK_WIDGET(media), &alloc);
     if (width == 0 || height == 0) {
         alloc.width = 16;
         alloc.height = 16;
