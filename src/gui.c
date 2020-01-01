@@ -756,29 +756,6 @@ gboolean set_media_label(void *data)
     return FALSE;
 }
 
-gboolean set_cover_art(gpointer pixbuf)
-{
-    gint width, height;
-    gfloat aspect;
-    GdkPixbuf *scaled;
-
-    if (pixbuf == NULL) {
-        if (GTK_IS_IMAGE(cover_art))
-            gtk_image_clear(GTK_IMAGE(cover_art));
-    } else {
-        width = gdk_pixbuf_get_width(GDK_PIXBUF(pixbuf));
-        height = gdk_pixbuf_get_height(GDK_PIXBUF(pixbuf));
-        aspect = (gfloat) width / (gfloat) height;
-        scaled = gdk_pixbuf_scale_simple(GDK_PIXBUF(pixbuf), 128, 128 / aspect, GDK_INTERP_BILINEAR);
-        gtk_image_set_from_pixbuf(GTK_IMAGE(cover_art), GDK_PIXBUF(scaled));
-        g_object_unref(pixbuf);
-        g_object_unref(scaled);
-    }
-
-    g_idle_add(set_adjust_layout, NULL);
-    return FALSE;
-}
-
 gboolean set_progress_value(void *data)
 {
 

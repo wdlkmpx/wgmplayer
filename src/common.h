@@ -438,7 +438,6 @@ gboolean show_copyurl(void *data);
 gboolean set_gui_state(void *data);
 gboolean set_title_bar(void *data);
 gboolean set_media_label(void *data);
-gboolean set_cover_art(gpointer pixbuf);
 gboolean set_progress_value(void *data);
 gboolean set_progress_text(void *data);
 gboolean set_progress_time(void *data);
