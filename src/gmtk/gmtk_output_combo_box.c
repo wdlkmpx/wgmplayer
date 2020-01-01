@@ -151,20 +151,8 @@ static void gmtk_output_combo_box_init(GmtkOutputComboBox * output)
                        OUTPUT_DEVICE_COLUMN, -1, OUTPUT_MPLAYER_DEVICE_COLUMN, "", -1);
     gtk_list_store_append(output->list, &iter);
     gtk_list_store_set(output->list, &iter, OUTPUT_TYPE_COLUMN, OUTPUT_TYPE_SOFTVOL,
-                       OUTPUT_DESCRIPTION_COLUMN, "ARTS", OUTPUT_CARD_COLUMN, -1,
-                       OUTPUT_DEVICE_COLUMN, -1, OUTPUT_MPLAYER_DEVICE_COLUMN, "arts", -1);
-    gtk_list_store_append(output->list, &iter);
-    gtk_list_store_set(output->list, &iter, OUTPUT_TYPE_COLUMN, OUTPUT_TYPE_SOFTVOL,
-                       OUTPUT_DESCRIPTION_COLUMN, "ESD", OUTPUT_CARD_COLUMN, -1,
-                       OUTPUT_DEVICE_COLUMN, -1, OUTPUT_MPLAYER_DEVICE_COLUMN, "esd", -1);
-    gtk_list_store_append(output->list, &iter);
-    gtk_list_store_set(output->list, &iter, OUTPUT_TYPE_COLUMN, OUTPUT_TYPE_SOFTVOL,
                        OUTPUT_DESCRIPTION_COLUMN, "JACK", OUTPUT_CARD_COLUMN, -1,
                        OUTPUT_DEVICE_COLUMN, -1, OUTPUT_MPLAYER_DEVICE_COLUMN, "jack", -1);
-    gtk_list_store_append(output->list, &iter);
-    gtk_list_store_set(output->list, &iter, OUTPUT_TYPE_COLUMN, OUTPUT_TYPE_SOFTVOL,
-                       OUTPUT_DESCRIPTION_COLUMN, "OSS", OUTPUT_CARD_COLUMN, -1,
-                       OUTPUT_DEVICE_COLUMN, -1, OUTPUT_MPLAYER_DEVICE_COLUMN, "oss", -1);
     gtk_list_store_append(output->list, &iter);
     gtk_list_store_set(output->list, &iter, OUTPUT_TYPE_COLUMN, OUTPUT_TYPE_SOFTVOL,
                        OUTPUT_DESCRIPTION_COLUMN, "ALSA", OUTPUT_CARD_COLUMN, -1,

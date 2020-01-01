@@ -84,30 +84,9 @@ gboolean gm_audio_query_devices()
     gm_audio_devices = g_list_append(gm_audio_devices, device);
 
     device = g_new0(AudioDevice, 1);
-    device->description = g_strdup("ARTS");
-    device->type = AUDIO_TYPE_SOFTVOL;
-    device->mplayer_ao = g_strdup("arts");
-    device->volume = 1.0;
-    gm_audio_devices = g_list_append(gm_audio_devices, device);
-
-    device = g_new0(AudioDevice, 1);
-    device->description = g_strdup("ESD");
-    device->type = AUDIO_TYPE_SOFTVOL;
-    device->mplayer_ao = g_strdup("esd");
-    device->volume = 1.0;
-    gm_audio_devices = g_list_append(gm_audio_devices, device);
-
-    device = g_new0(AudioDevice, 1);
     device->description = g_strdup("JACK");
     device->type = AUDIO_TYPE_SOFTVOL;
     device->mplayer_ao = g_strdup("jack");
-    device->volume = 1.0;
-    gm_audio_devices = g_list_append(gm_audio_devices, device);
-
-    device = g_new0(AudioDevice, 1);
-    device->description = g_strdup("OSS");
-    device->type = AUDIO_TYPE_SOFTVOL;
-    device->mplayer_ao = g_strdup("oss");
     device->volume = 1.0;
     gm_audio_devices = g_list_append(gm_audio_devices, device);
 
