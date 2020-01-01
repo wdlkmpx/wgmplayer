@@ -73,7 +73,6 @@ static GtkMenuItem *menuitem_help;
 static GtkMenuItem *menuitem_view;
 static GtkMenu *menu_view;
 static GtkMenuItem *menuitem_view_details;
-static GtkMenuItem *menuitem_view_meter;
 static GtkMenuItem *menuitem_view_sep0;
 static GtkMenuItem *menuitem_view_fullscreen;
 static GtkMenuItem *menuitem_view_sep1;
@@ -502,18 +501,6 @@ void adjust_layout()
         gm_log(verbose, G_LOG_LEVEL_DEBUG, "total_height = %i", total_height);
     } else {
         gtk_widget_hide(details_vbox);
-    }
-
-    if (GTK_IS_WIDGET(audio_meter)
-        && gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menuitem_view_meter))) {
-        if (gtk_widget_get_visible(audio_meter) == 0) {
-            gtk_widget_show_all(audio_meter);
-            //return;
-        }
-        gtk_widget_get_allocation(audio_meter, &alloc);
-        total_height += alloc.height;
-    } else {
-        gtk_widget_hide(audio_meter);
     }
 
     if (GTK_IS_WIDGET(plvbox)
@@ -1896,8 +1883,6 @@ gboolean window_key_callback(GtkWidget * widget, GdkEventKey * event, gpointer u
         case VIEW_INFO:
             break;
         case VIEW_DETAILS:
-            break;
-        case VIEW_METER:
             break;
         case VIEW_FULLSCREEN:
             if (fullscreen) {
@@ -3607,7 +3592,6 @@ void menuitem_fs_callback(GtkMenuItem * menuitem, void *data)
     gint wx, wy;
     static gboolean restore_playlist;
     static gboolean restore_details;
-    static gboolean restore_meter;
     static gboolean restore_info;
 
     if (GTK_CHECK_MENU_ITEM(menuitem) == GTK_CHECK_MENU_ITEM(menuitem_view_fullscreen)) {
@@ -3651,9 +3635,6 @@ void menuitem_fs_callback(GtkMenuItem * menuitem, void *data)
         if (restore_details) {
             gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_view_details), TRUE);
         }
-        if (restore_meter) {
-            gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_view_meter), TRUE);
-        }
         if (restore_info) {
             gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_view_info), TRUE);
         }
@@ -3674,12 +3655,6 @@ void menuitem_fs_callback(GtkMenuItem * menuitem, void *data)
             gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_view_details), FALSE);
         } else {
             restore_details = FALSE;
-        }
-        if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menuitem_view_meter))) {
-            restore_meter = TRUE;
-            gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_view_meter), FALSE);
-        } else {
-            restore_meter = FALSE;
         }
         if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menuitem_view_info))) {
             restore_info = TRUE;
@@ -4100,12 +4075,6 @@ void saturation_callback(GtkRange * range, gpointer data)
 {
     gmtk_media_player_set_attribute_integer(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_SATURATION,
                                             (gint) gtk_range_get_value(range));
-}
-
-void menuitem_meter_callback(GtkMenuItem * menuitem, void *data)
-{
-    g_idle_add(set_adjust_layout, NULL);
-    //adjust_layout();
 }
 
 void menuitem_details_callback(GtkMenuItem * menuitem, void *data)
@@ -4624,12 +4593,9 @@ void ass_toggle_callback(GtkToggleButton * source, gpointer user_data)
 void hw_audio_toggle_callback(GtkToggleButton * source, gpointer user_data)
 {
     if (gtk_toggle_button_get_active(source)) {
-        gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_view_meter), FALSE);
-        gtk_widget_hide(GTK_WIDGET(menuitem_view_meter));
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_softvol), FALSE);
         gtk_widget_set_sensitive(GTK_WIDGET(config_softvol), FALSE);
     } else {
-        gtk_widget_show(GTK_WIDGET(menuitem_view_meter));
         gtk_widget_set_sensitive(GTK_WIDGET(config_softvol), TRUE);
     }
 }
@@ -6630,8 +6596,6 @@ void setup_accelerators()
         gtk_accel_map_change_entry(ACCEL_PATH_VIEW_INFO, key, modifier, TRUE);
     if (get_key_and_modifier(accel_keys[VIEW_DETAILS], &key, &modifier))
         gtk_accel_map_change_entry(ACCEL_PATH_VIEW_DETAILS, key, modifier, TRUE);
-    if (get_key_and_modifier(accel_keys[VIEW_METER], &key, &modifier))
-        gtk_accel_map_change_entry(ACCEL_PATH_VIEW_METER, key, modifier, TRUE);
     if (!disable_fullscreen) {
         if (get_key_and_modifier(accel_keys[VIEW_FULLSCREEN], &key, &modifier))
             gtk_accel_map_change_entry(ACCEL_PATH_VIEW_FULLSCREEN, key, modifier, TRUE);
@@ -6949,11 +6913,6 @@ GtkWidget *create_window(gint windowid)
     menuitem_view_details = GTK_MENU_ITEM(gtk_check_menu_item_new_with_mnemonic(_("D_etails")));
     gtk_menu_item_set_accel_path(menuitem_view_details, ACCEL_PATH_VIEW_DETAILS);
     gtk_menu_shell_append(GTK_MENU_SHELL(menu_view), GTK_WIDGET(menuitem_view_details));
-    menuitem_view_meter = GTK_MENU_ITEM(gtk_check_menu_item_new_with_mnemonic(_("Audio _Meter")));
-    gtk_menu_item_set_accel_path(menuitem_view_meter, ACCEL_PATH_VIEW_METER);
-    gtk_menu_shell_append(GTK_MENU_SHELL(menu_view), GTK_WIDGET(menuitem_view_meter));
-    menuitem_view_sep0 = GTK_MENU_ITEM(gtk_separator_menu_item_new());
-    gtk_menu_shell_append(GTK_MENU_SHELL(menu_view), GTK_WIDGET(menuitem_view_sep0));
     menuitem_view_fullscreen = GTK_MENU_ITEM(gtk_check_menu_item_new_with_mnemonic(_("_Full Screen")));
     gtk_menu_item_set_accel_path(menuitem_view_fullscreen, ACCEL_PATH_VIEW_FULLSCREEN);
     menuitem_view_sep1 = GTK_MENU_ITEM(gtk_separator_menu_item_new());
@@ -7025,7 +6984,6 @@ GtkWidget *create_window(gint windowid)
     g_signal_connect(G_OBJECT(menuitem_view_playlist), "toggled", G_CALLBACK(menuitem_view_playlist_callback), NULL);
     g_signal_connect(G_OBJECT(menuitem_view_info), "activate", G_CALLBACK(menuitem_view_info_callback), NULL);
     g_signal_connect(G_OBJECT(menuitem_view_details), "activate", G_CALLBACK(menuitem_details_callback), NULL);
-    g_signal_connect(G_OBJECT(menuitem_view_meter), "activate", G_CALLBACK(menuitem_meter_callback), NULL);
     g_signal_connect(G_OBJECT(menuitem_view_fullscreen), "toggled", G_CALLBACK(menuitem_fs_callback), NULL);
     g_signal_connect(G_OBJECT(menuitem_view_onetoone), "activate",
                      G_CALLBACK(menuitem_view_onetoone_callback), idledata);
@@ -7140,18 +7098,11 @@ GtkWidget *create_window(gint windowid)
     create_details_table();
     gtk_container_add(GTK_CONTAINER(details_vbox), details_table);
     gtk_misc_set_alignment(GTK_MISC(media_label), 0, 0);
-    audio_meter = gmtk_audio_meter_new(METER_BARS);
-    g_signal_connect(audio_meter, "show", G_CALLBACK(view_option_show_callback), NULL);
-    g_signal_connect(audio_meter, "size_allocate", G_CALLBACK(view_option_size_allocate_callback), NULL);
-    gmtk_audio_meter_set_max_division_width(GMTK_AUDIO_METER(audio_meter), 10);
-    gtk_widget_set_size_request(audio_meter, -1, 100);
-    g_timeout_add_full(G_PRIORITY_HIGH, 40, update_audio_meter, NULL, NULL);
     gtk_box_pack_start(GTK_BOX(vbox), media, TRUE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(media_hbox), cover_art, FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(media_hbox), media_label, FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), media_hbox, FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), details_vbox, FALSE, FALSE, 0);
-    gtk_box_pack_start(GTK_BOX(vbox), audio_meter, FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(controls_box), hbox, FALSE, FALSE, 1);
     if (vertical_layout) {
         pane = gtk_vpaned_new();
@@ -7424,7 +7375,6 @@ void show_window(gint windowid)
         } else {
             gtk_widget_hide(menu_event_box);
         }
-        gtk_widget_hide(audio_meter);
         if (disable_fullscreen)
             gtk_widget_hide(fs_event_box);
         gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_showcontrols), showcontrols);
@@ -7455,7 +7405,6 @@ void show_window(gint windowid)
         gtk_widget_hide(menubar);
         gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_view_info), FALSE);
         gtk_widget_hide(menu_event_box);
-        gtk_widget_hide(audio_meter);
         gtk_widget_hide(controls_box);
         gm_log(verbose, G_LOG_LEVEL_MESSAGE, "showing the following controls = %s", rpcontrols);
         visuals = g_strsplit(rpcontrols, ",", 0);
@@ -7571,7 +7520,6 @@ void show_window(gint windowid)
     gtk_widget_hide(GTK_WIDGET(menuitem_prev));
     gtk_widget_hide(GTK_WIDGET(menuitem_next));
     gtk_widget_hide(media_hbox);
-    gtk_widget_hide(audio_meter);
     gtk_widget_hide(plvbox);
     gtk_widget_hide(details_vbox);
     gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_view_details), details_visible);
@@ -7594,127 +7542,6 @@ static inline double logdb(double v)
         return METER_BARS - 1;
     return log(v) / -0.23025850929940456840179914546843642076;
 }
-
-gboolean update_audio_meter(gpointer data)
-{
-    gint i, channel;
-    gfloat f;
-    gint max;
-    gfloat v;
-    Export *export;
-    static gint update_counter = 0;
-    static gint export_counter = 0;
-    gboolean refresh;
-#define UAM_HISTOGRAM_SIZE 65536
-    long long histogram[UAM_HISTOGRAM_SIZE];
-    gint histogramloc;
-    gint thispayloadni;
-    gint thispayloadnch;
-    gint bucketi;
-
-    if (!gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menuitem_view_meter)))
-        return TRUE;
-    if (gmtk_media_player_get_media_state(GMTK_MEDIA_PLAYER(media)) != MEDIA_STATE_PLAY)
-        return TRUE;
-    if (audio_meter != NULL && gtk_widget_get_visible(audio_meter)) {
-
-        if (data)
-            g_array_free(data, TRUE);
-        if (max_data)
-            g_array_free(max_data, TRUE);
-        data = g_array_new(FALSE, TRUE, sizeof(gfloat));
-        max_data = g_array_new(FALSE, TRUE, sizeof(gfloat));
-        for (i = 0; i < METER_BARS; i++) {
-            buckets[i] = 0;
-        }
-
-        refresh = FALSE;
-        reading_af_export = TRUE;
-        export = NULL;
-        if (idledata->mapped_af_export != NULL)
-            export = (Export *) g_mapped_file_get_contents(idledata->mapped_af_export);
-        if (export != NULL) {
-            if (export->counter != export_counter) {
-                for (histogramloc = 0; histogramloc < UAM_HISTOGRAM_SIZE; histogramloc++) {
-                    histogram[histogramloc] = 0;
-                }
-                thispayloadni = (export->size / (export->nch * sizeof(gint16)));
-                if (thispayloadni > PAYLOADNI) {
-                    thispayloadni = PAYLOADNI;
-                }
-                if (thispayloadni < 0) {
-                    thispayloadni = 0;
-                }
-                thispayloadnch = export->nch;
-                if (thispayloadnch > PAYLOADNCH) {
-                    thispayloadnch = PAYLOADNCH;
-                }
-                if (thispayloadnch < 0) {
-                    thispayloadnch = 0;
-                }
-                for (i = 0; export != NULL && i < thispayloadni; i++) {
-                    for (channel = 0; channel < thispayloadnch; channel++) {
-                        // scale SB16 data to 0 - 22000 range, believe this is Hz now
-                        histogramloc = export->payload[channel][i] + 32768;
-                        if (histogramloc >= 0 && histogramloc < UAM_HISTOGRAM_SIZE) {
-                            histogram[histogramloc]++;
-                        }
-                    }
-                }
-                for (histogramloc = 0; histogramloc < UAM_HISTOGRAM_SIZE; histogramloc++) {
-                    v = (histogramloc - 32768) / 32768.0;
-                    bucketi = (gint) (logdb(v * v) / 2.0);
-                    if (bucketi < METER_BARS) {
-                        buckets[bucketi] += histogram[histogramloc];
-                    }
-                }
-                buckets[0] = buckets[1] - (buckets[2] - buckets[1]);
-                if (buckets[0] < 0)
-                    buckets[0] = 0;
-                export_counter = export->counter;
-                refresh = TRUE;
-            }
-        }
-        reading_af_export = FALSE;
-        if (refresh) {
-            max = 0;
-            update_counter++;
-            for (i = 0; i < METER_BARS; i++) {
-                if (buckets[i] > max_buckets[i]) {
-                    max_buckets[i] = buckets[i];
-                } else {
-                    // raise this value for slower melting of max
-                    if (update_counter % 1 == 0) {
-                        update_counter = 0;
-                        max_buckets[i]--;
-                        if (max_buckets[i] < 0)
-                            max_buckets[i] = 0;
-                    }
-                }
-
-                if (max_buckets[i] > max)
-                    max = max_buckets[i];
-            }
-
-            for (i = 0; i < METER_BARS; i++) {
-                if (max == 0) {
-                    f = 0.0;
-                    g_array_append_val(data, f);
-                    g_array_append_val(max_data, f);
-                } else {
-                    f = logf((gfloat) buckets[i]) / logf((gfloat) max);
-                    g_array_append_val(data, f);
-                    f = logf((gfloat) max_buckets[i]) / logf((gfloat) max);
-                    g_array_append_val(max_data, f);
-                }
-            }
-
-            gmtk_audio_meter_set_data_full(GMTK_AUDIO_METER(audio_meter), data, max_data);
-        }
-    }
-    return TRUE;
-}
-
 
 void show_fs_controls()
 {

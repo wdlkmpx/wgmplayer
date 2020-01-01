@@ -42,8 +42,6 @@ gnome_mplayer_SOURCES = \
 	gmtk/gm_strfuncs.h \
 	gmtk/gmtk.h \
 	gmtk/gmtk_common.h \
-	gmtk/gmtk_audio_meter.c \
-	gmtk/gmtk_audio_meter.h \
 	gmtk/gmtk_media_player.c \
 	gmtk/gmtk_media_player.h \
 	gmtk/gmtk_media_tracker.c \

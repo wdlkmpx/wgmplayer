@@ -2390,7 +2390,5 @@ gboolean unmap_af_export_file(gpointer data)
         idle->mapped_af_export = NULL;
     }
 
-    gmtk_audio_meter_set_data(GMTK_AUDIO_METER(audio_meter), NULL);
-
     return FALSE;
 }
