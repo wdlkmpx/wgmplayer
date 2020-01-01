@@ -87,7 +87,6 @@ gboolean detect_playlist(gchar * uri)
                 gm_log(verbose, G_LOG_LEVEL_DEBUG, "buffer=%s", buffer);
                 if (strstr(lower, "[playlist]") != 0
                     || strstr(lower, "[reference]") != 0
-                    || strstr(lower, "<asx") != 0
                     || strstr(lower, "<smil>") != 0
                     || strstr(lower, "#extm3u") != 0
                     || strstr(lower, "#extm4u") != 0
@@ -145,10 +144,6 @@ gboolean detect_playlist(gchar * uri)
                     }
 
                     if (g_ascii_strncasecmp(buffer, "#EXT", strlen("#EXT")) == 0) {
-                        playlist = TRUE;
-                    }
-
-                    if (strstr(lower, "<asx") != 0) {
                         playlist = TRUE;
                     }
 
@@ -218,8 +213,6 @@ gboolean parse_playlist(gchar * uri)
     ret = parse_basic(uri);
     if (!ret)
         ret = parse_ram(uri);
-    if (!ret)
-        ret = parse_asx(uri);
     if (!ret)
         ret = parse_cdda(uri);
     if (!ret)
@@ -352,18 +345,8 @@ gboolean parse_basic(gchar * uri)
                 gm_log(verbose, G_LOG_LEVEL_DEBUG, "ref");
                 //continue;
                 //playlist = TRUE;
-            } else if (g_ascii_strncasecmp(newline, "<asx", strlen("<asx")) == 0) {
-                gm_log(verbose, G_LOG_LEVEL_DEBUG, "asx");
-                //idledata->streaming = TRUE;
-                g_free(newline);
-                break;
             } else if (g_ascii_strncasecmp(newline, "<smil", strlen("<smil")) == 0) {
                 gm_log(verbose, G_LOG_LEVEL_DEBUG, "smil");
-                g_free(newline);
-                break;
-            } else if (g_strrstr(newline, "<asx") != NULL) {
-                gm_log(verbose, G_LOG_LEVEL_DEBUG, "asx");
-                //idledata->streaming = TRUE;
                 g_free(newline);
                 break;
             } else if (g_strrstr(newline, "<smil") != NULL) {
@@ -481,60 +464,6 @@ gboolean parse_ram(gchar * filename)
     }
     g_free(buffer);
     buffer = NULL;
-
-    return ret;
-}
-
-gboolean parse_asx(gchar * uri)
-{
-    gboolean ret = FALSE;
-
-    if (device_name(uri))
-        return FALSE;
-
-    if (streaming_media(uri))
-        return FALSE;
-
-    if (gm_parse_asx_is_asx(uri)) {
-        ret = TRUE;
-#ifdef GIO_ENABLED
-        gchar *line;
-        GFile *file;
-        GFileInputStream *input;
-        GDataInputStream *data;
-        gchar *asx_data = g_new0(gchar, 16 * 1024);
-
-        gsize length;
-        file = g_file_new_for_uri(uri);
-        input = g_file_read(file, NULL, NULL);
-        data = g_data_input_stream_new((GInputStream *) input);
-        if (data != NULL) {
-            line = g_data_input_stream_read_line(data, &length, NULL, NULL);
-            while (line != NULL) {
-                g_strlcat(asx_data, line, 16 * 1024);
-                g_free(line);
-                line = g_data_input_stream_read_line(data, &length, NULL, NULL);
-            }
-            g_input_stream_close((GInputStream *) data, NULL, NULL);
-            g_input_stream_close((GInputStream *) input, NULL, NULL);
-        }
-        g_object_unref(file);
-
-        gm_parse_asx(asx_data, &add_item_to_playlist_callback, NULL);
-        g_free(asx_data);
-#else
-        gchar *filename;
-        gchar *contents = NULL;
-
-        filename = g_filename_from_uri(uri, NULL, NULL);
-        g_file_get_contents(filename, &contents, NULL, NULL);
-        if (contents != NULL) {
-            gm_parse_asx(contents, &add_item_to_playlist_callback, NULL);
-            g_free(contents);
-        }
-        g_free(filename);
-#endif
-    }
 
     return ret;
 }

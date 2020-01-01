@@ -34,8 +34,6 @@ gnome_mplayer_SOURCES = \
 	gmtk/gm_file.h \
 	gmtk/gm_log.c \
 	gmtk/gm_log.h \
-	gmtk/gm_parse.c \
-	gmtk/gm_parse.h \
 	gmtk/gm_pref_store.c \
 	gmtk/gm_pref_store.h \
 	gmtk/gm_strfuncs.c \
