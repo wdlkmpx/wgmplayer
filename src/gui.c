@@ -31,10 +31,6 @@
 #include "common.h"
 #include "../pixmaps/gnome_mplayer.xpm"
 #include "langlist.h"
-#ifdef NOTIFY_ENABLED
-#include <libnotify/notify.h>
-#include <libnotify/notification.h>
-#endif
 
 static GdkWindow *window_container;
 static GtkWidget *fs_window;
@@ -200,9 +196,6 @@ static GtkWidget *config_remember_softvol;
 static GtkWidget *config_volume_gain;
 static GtkWidget *config_forcecache;
 static GtkWidget *config_verbose;
-#ifdef NOTIFY_ENABLED
-static GtkWidget *config_show_notification;
-#endif
 static GtkWidget *config_use_mediakeys;
 static GtkWidget *config_use_defaultpl;
 static GtkWidget *config_disable_animation;
@@ -732,9 +725,6 @@ gboolean set_media_label(void *data)
     gpointer pixbuf;
     GdkPixbuf *scaled;
     gdouble aspect;
-#ifdef NOTIFY_ENABLED
-    NotifyNotification *notification;
-#endif
 
     if (data != NULL && idle != NULL && GTK_IS_WIDGET(media_label)) {
         if (idle->media_info != NULL && strlen(idle->media_info) > 0) {
@@ -773,20 +763,6 @@ gboolean set_media_label(void *data)
     } else {
         gtk_widget_hide(media_hbox);
     }
-
-    //if (idle->fromdbus == FALSE) {
-#ifdef NOTIFY_ENABLED
-        if (show_notification && control_id == 0 && !gtk_window_is_active((GtkWindow *) window)) {
-            notify_init("gnome-mplayer");
-            notification = notify_notification_new(idle->display_name, idle->media_notification, "gnome-mplayer");
-            notify_notification_show(notification, NULL);
-            notify_uninit();
-        }
-#endif
-        if (embed_window == 0 && gtk_tree_model_iter_n_children(GTK_TREE_MODEL(playliststore), NULL) != 1) {
-            gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_view_playlist), playlist_visible);
-        }
-    //}
 
     g_idle_add(set_adjust_layout, NULL);
 
@@ -3948,9 +3924,6 @@ void config_apply(GtkWidget * widget, void *data)
     single_instance = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(config_single_instance));
     replace_and_play = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(config_replace_and_play));
     bring_to_front = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(config_bring_to_front));
-#ifdef NOTIFY_ENABLED
-    show_notification = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(config_show_notification));
-#endif
     show_status_icon = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(config_show_status_icon));
     if (GTK_IS_STATUS_ICON(status_icon)) {
         gtk_status_icon_set_visible(status_icon, show_status_icon);
@@ -5464,13 +5437,6 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_use_defaultpl), use_defaultpl);
     gtk_table_attach(GTK_TABLE(conf_table), config_use_defaultpl, 0, 2, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
     i++;
-
-#ifdef NOTIFY_ENABLED
-    config_show_notification = gtk_check_button_new_with_label(_("Show notification popup"));
-    gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_show_notification), show_notification);
-    gtk_table_attach(GTK_TABLE(conf_table), config_show_notification, 0, 2, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
-    i++;
-#endif
 
     config_show_status_icon = gtk_check_button_new_with_label(_("Show status icon"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_show_status_icon), show_status_icon);
