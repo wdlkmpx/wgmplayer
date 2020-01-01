@@ -32,6 +32,9 @@
 extern "C" {
 #endif
 
+    gchar *gm_tempname(gchar * path, const gchar * name_template);
+    gchar *gm_get_path(gchar * uri);
+
     void gm_str_strip_unicode(gchar * data, gsize len);
     void gm_str_replace_amp(gchar * data);
     void gm_str_unreplace_amp(gchar * data);

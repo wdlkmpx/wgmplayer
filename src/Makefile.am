@@ -30,8 +30,6 @@ gnome_mplayer_SOURCES = \
 	gmtk/gmlib.h \
 	gmtk/gm_audio.c \
 	gmtk/gm_audio.h \
-	gmtk/gm_file.c \
-	gmtk/gm_file.h \
 	gmtk/gm_log.c \
 	gmtk/gm_log.h \
 	gmtk/gm_pref_store.c \
