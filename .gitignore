@@ -29,3 +29,6 @@ INSTALL
 *.gmo
 *.valid
 apps.gnome-mplayer.preferences.enums.xml
+ar-lib
+.dirstamp
+*.log
