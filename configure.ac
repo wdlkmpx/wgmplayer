@@ -125,6 +125,11 @@ if test x$ENABLE_GSEAL = "xyes"; then
 		AC_SUBST(GTK_CFLAGS)
 fi
 
+case "$CC" in
+  gcc*) CPPFLAGS="$CPPFLAGS -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers" ;;
+  *) ;;
+esac
+
 AC_CHECK_HEADERS([mntent.h])
 AC_CHECK_HEADERS([sys/ucred.h])
 AC_CHECK_HEADERS([sys/mount.h])
