@@ -1,17 +1,20 @@
 dnl Process this file with autoconf to produce a configure script.
-dnl Created by Anjuta application wizard.
 
-AC_INIT([gnome-mplayer], [1.1.3w])
+AC_INIT([gnome-mplayer],[1.1.3w])
 AM_INIT_AUTOMAKE([-Wall subdir-objects foreign silent-rules])
-AM_CONFIG_HEADER(config.h)
-AM_MAINTAINER_MODE([enable])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
+
+AM_CONFIG_HEADER(config.h)
 AC_CONFIG_MACRO_DIR([m4])
+AM_GNU_GETTEXT([external])
 
 AM_PROG_AR
 LT_INIT
 
-AC_ISC_POSIX
+# Init intltool
+IT_PROG_INTLTOOL
+
+AC_SEARCH_LIBS([strerror],[cposix])
 AC_PROG_CC
 AM_PROG_CC_STDC
 AC_HEADER_STDC
@@ -30,15 +33,11 @@ ALL_LINGUAS="ar bg ca cs da de el es et eu fi fo fr fy gl he hr hu id it ja kk k
 AC_SUBST(ALL_LINGUAS)
 AM_GLIB_GNU_GETTEXT
 
-####################################################################
-# Windows check
-####################################################################
-
 PKG_CHECK_MODULES([X11], [x11],[AC_DEFINE([X11_ENABLED],[1],[Define to 1 if X11 support is needed])],[AC_MSG_NOTICE([Compiling without X11 support])])
 AC_SUBST(X11_LIBS)
 
 AC_ARG_ENABLE(gtk3,
-    AC_HELP_STRING([--enable-gtk3],[compile using GTK3]),
+    AS_HELP_STRING([--enable-gtk3],[compile using GTK3]),
     [case "${enableval}" in
     yes) ENABLE_GTK3=yes ;;
     no) ENABLE_GTK3=no ;;
@@ -113,7 +112,7 @@ AS_IF([test "x$with_pulseaudio" != xno],
 	])
 
 AC_ARG_ENABLE(gseal,
-		AC_HELP_STRING([--enable-gseal],[Enable flag for testing]),
+		AS_HELP_STRING([--enable-gseal],[Enable flag for testing]),
         [case "${enableval}" in
         yes) ENABLE_GSEAL=yes ;;
         no) ENABLE_GSEAL=no ;;
@@ -131,7 +130,7 @@ AC_CHECK_HEADERS([sys/ucred.h])
 AC_CHECK_HEADERS([sys/mount.h])
 AC_CHECK_HEADERS([fstab.h])
 AC_CHECK_HEADERS([signal.h])
-AC_OUTPUT([
+AC_CONFIG_FILES([
 Makefile
 icons/Makefile
 icons/16x16/Makefile
@@ -143,3 +142,4 @@ icons/scalable/Makefile
 src/Makefile
 po/Makefile.in
 ])
+AC_OUTPUT

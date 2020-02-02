@@ -28,7 +28,9 @@ gnome-mplayer
 INSTALL
 *.gmo
 *.valid
-apps.gnome-mplayer.preferences.enums.xml
+config.rpath
 ar-lib
+po/Makefile.in.in
+stamp-it
 .dirstamp
 *.log
