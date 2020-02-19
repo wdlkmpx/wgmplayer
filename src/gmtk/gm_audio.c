@@ -90,6 +90,15 @@ gboolean gm_audio_query_devices()
     device->volume = 1.0;
     gm_audio_devices = g_list_append(gm_audio_devices, device);
 
+#ifndef __linux__
+    device = g_new0(AudioDevice, 1);
+    device->description = g_strdup("OSS");
+    device->type = AUDIO_TYPE_SOFTVOL;
+    device->mplayer_ao = g_strdup("oss");
+    device->volume = 1.0;
+    gm_audio_devices = g_list_append(gm_audio_devices, device);
+#endif
+
     device = g_new0(AudioDevice, 1);
     device->description = g_strdup("ALSA");
     device->type = AUDIO_TYPE_SOFTVOL;
