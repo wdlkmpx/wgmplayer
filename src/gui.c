@@ -3300,21 +3300,20 @@ void about_url_hook(GtkAboutDialog * about, const char *link, gpointer data)
 
 void menuitem_about_callback(GtkMenuItem * menuitem, void *data)
 {
-    gchar *authors[] = { "Kevin DeKorte", "James Carthew", "Diogo Franco", "Icons provided by Victor Castillejo",
+    gchar *authors[] = {
+        "Kevin DeKorte - main author",
+        "James Carthew",
+        "Diogo Franco",
+        "Icons provided by Victor Castillejo",
         NULL
     };
-    gtk_show_about_dialog(GTK_WINDOW(window), "name", _("Media Player"), "authors", authors,
-                          "copyright", "Copyright © 2007-2011 Kevin DeKorte", "comments",
-                          _("A media player for GNOME that uses MPlayer"), "version", VERSION,
-                          "license",
-                          _
-                          ("Gnome MPlayer is free software; you can redistribute it and/or modify it under\nthe terms of the GNU General Public License as published by the Free\nSoftware Foundation; either version 2 of the License, or (at your option)\nany later version."
-                           "\n\nGnome MPlayer is distributed in the hope that it will be useful, but WITHOUT\nANY WARRANTY; without even the implied warranty of MERCHANTABILITY or\nFITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for\nmore details."
-                           "\n\nYou should have received a copy of the GNU General Public License along with\nGnome MPlayer if not, write to the\n\nFree Software Foundation, Inc.,\n51 Franklin St, Fifth Floor\nBoston, MA 02110-1301 USA")
-
-
-                          ,
-                          "website", "http://code.google.com/p/gnome-mplayer/",
+    gtk_show_about_dialog(GTK_WINDOW(window),
+                          "authors", authors,
+                          "copyright", "Copyright © 2007-2020",
+                          "comments", "GTK front-end for MPlayer",
+                          "version", VERSION,
+                          "license", "This program is free software; you can redistribute it and/or\nmodify it under the terms of the GNU General Public License\nas published by the Free Software Foundation; either version 2\nof the License, or (at your option) any later version.\n\nThis program is distributed in the hope that it will be useful,\nbut WITHOUT ANY WARRANTY; without even the implied warranty of\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\nGNU General Public License for more details.\n\nYou should have received a copy of the GNU General Public License\nalong with this program; if not, write to the Free Software\nFoundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.",
+                          "website", "https://github.com/wdlkmpx/gtk-mplayer",
                           "translator-credits",
                           "Bulgarian - Adrian Dimitrov\n"
                           "Czech - Petr Pisar\n"
@@ -3336,7 +3335,8 @@ void menuitem_about_callback(GtkMenuItem * menuitem, void *data)
                           "Russian - Dmitry Stropaloff and Denis Koryavov\n"
                           "Serbian - Милош Поповић\n"
                           "Spanish - Festor Wailon Dacoba\n"
-                          "Swedish - Daniel Nylander\n" "Turkish - Onur Küçük", NULL);
+                          "Swedish - Daniel Nylander\n" "Turkish - Onur Küçük",
+                          NULL);
 }
 
 void menuitem_play_callback(GtkMenuItem * menuitem, void *data)
