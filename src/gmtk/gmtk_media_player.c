@@ -2518,11 +2518,11 @@ gpointer launch_mplayer(gpointer data)
                     argv[argn++] = g_strdup_printf("%d", player->post_processing_level);
                 }
 
-                argv[argn++] = g_strdup_printf("-vf-add");
-                argv[argn++] = g_strdup_printf("screenshot");
-
             }
         }
+
+        argv[argn++] = g_strdup_printf("-vf-add");
+        argv[argn++] = g_strdup_printf("screenshot");
 
         if (player->enable_crystalhd_codecs) {
             codecs_crystalhd = g_strdup_printf
