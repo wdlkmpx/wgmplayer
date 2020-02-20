@@ -108,13 +108,25 @@ void context_state_callback(pa_context * context, gpointer data)
 
 G_DEFINE_TYPE(GmtkOutputComboBox, gmtk_output_combo_box, GTK_TYPE_COMBO_BOX);
 
+static void gmtk_output_combo_box_finalize(GObject * object)
+{
+	//fprintf(stdout, "gmtk_output_combo_box_finalize: %p\n", object);
+	GmtkOutputComboBox *output = GMTK_OUTPUT_COMBO_BOX(object);
+
+	if (output->list) {
+		gtk_list_store_clear(output->list);
+		g_object_unref(output->list);
+		output->list = NULL;
+	}
+
+	G_OBJECT_CLASS(parent_class)->finalize(object);
+}
+
 static void gmtk_output_combo_box_class_init(GmtkOutputComboBoxClass * class)
 {
-    //GtkWidgetClass *widget_class;
-    //GObjectClass *object_class;
-
-    //object_class = G_OBJECT_CLASS(class);
-    //widget_class = GTK_WIDGET_CLASS(class);
+    GObjectClass *oc = G_OBJECT_CLASS(class);
+    oc->finalize = gmtk_output_combo_box_finalize;
+    //GtkWidgetClass *wc = GTK_WIDGET_CLASS(class);
 
     parent_class = g_type_class_peek_parent(class);
 }
@@ -255,21 +267,6 @@ static void gmtk_output_combo_box_init(GmtkOutputComboBox * output)
 
 
 }
-
-/* unused
-
-static void gmtk_output_combo_box_dispose(GObject * object)
-{
-    GmtkOutputComboBox *output = GMTK_OUTPUT_COMBO_BOX(object);
-
-    gtk_list_store_clear(output->list);
-    g_object_unref(output->list);
-
-    G_OBJECT_CLASS(parent_class)->dispose(object);
-
-}
-*/
-
 
 GtkWidget *gmtk_output_combo_box_new()
 {
