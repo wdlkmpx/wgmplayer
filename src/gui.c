@@ -3713,17 +3713,17 @@ void menuitem_fs_callback(GtkMenuItem * menuitem, void *data)
 void menuitem_copyurl_callback(GtkMenuItem * menuitem, void *data)
 {
     GtkClipboard *clipboard;
-    gchar *url;
+    gchar *url, *s;
 
-    if (idledata->url) {
-        url = g_strdup(idledata->url);
-    } else {
-        url = g_strdup(gmtk_media_player_get_uri(GMTK_MEDIA_PLAYER(media)));
+    url = g_strdup(gmtk_media_player_get_uri(GMTK_MEDIA_PLAYER(media)));
+    s = url;
+    if (strncmp(url, "file://", 7) == 0) {
+        s = url + 7;
     }
     clipboard = gtk_clipboard_get(GDK_SELECTION_PRIMARY);
-    gtk_clipboard_set_text(clipboard, url, -1);
+    gtk_clipboard_set_text(clipboard, s, -1);
     clipboard = gtk_clipboard_get(GDK_SELECTION_CLIPBOARD);
-    gtk_clipboard_set_text(clipboard, url, -1);
+    gtk_clipboard_set_text(clipboard, s, -1);
 
     g_free(url);
 }
