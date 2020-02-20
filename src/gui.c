@@ -6373,10 +6373,8 @@ void setup_accelerators()
         gtk_accel_map_change_entry(ACCEL_PATH_VIEW_INFO, key, modifier, TRUE);
     if (get_key_and_modifier(accel_keys[VIEW_DETAILS], &key, &modifier))
         gtk_accel_map_change_entry(ACCEL_PATH_VIEW_DETAILS, key, modifier, TRUE);
-    if (!disable_fullscreen) {
-        if (get_key_and_modifier(accel_keys[VIEW_FULLSCREEN], &key, &modifier))
-            gtk_accel_map_change_entry(ACCEL_PATH_VIEW_FULLSCREEN, key, modifier, TRUE);
-    }
+    if (get_key_and_modifier(accel_keys[VIEW_FULLSCREEN], &key, &modifier))
+        gtk_accel_map_change_entry(ACCEL_PATH_VIEW_FULLSCREEN, key, modifier, TRUE);
     if (get_key_and_modifier(accel_keys[VIEW_ASPECT], &key, &modifier))
         gtk_accel_map_change_entry(ACCEL_PATH_VIEW_ASPECT, key, modifier, TRUE);
     if (get_key_and_modifier(accel_keys[VIEW_SUBTITLES], &key, &modifier))
@@ -6469,10 +6467,9 @@ GtkWidget *create_window()
     gtk_widget_show(GTK_WIDGET(menuitem_showcontrols));
     gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_showcontrols), TRUE);
     menuitem_fullscreen = GTK_MENU_ITEM(gtk_check_menu_item_new_with_mnemonic(_("_Full Screen")));
-    if (!disable_fullscreen) {
-        gtk_menu_shell_append(GTK_MENU_SHELL(popup_menu), GTK_WIDGET(menuitem_fullscreen));
-        gtk_widget_show(GTK_WIDGET(menuitem_fullscreen));
-    }
+    gtk_menu_shell_append(GTK_MENU_SHELL(popup_menu), GTK_WIDGET(menuitem_fullscreen));
+    gtk_widget_show(GTK_WIDGET(menuitem_fullscreen));
+
     menuitem_copyurl = GTK_MENU_ITEM(gtk_menu_item_new_with_mnemonic(_("_Copy Location")));
     gtk_menu_shell_append(GTK_MENU_SHELL(popup_menu), GTK_WIDGET(menuitem_copyurl));
     gtk_widget_show(GTK_WIDGET(menuitem_copyurl));
@@ -6671,10 +6668,9 @@ GtkWidget *create_window()
     menuitem_view_fullscreen = GTK_MENU_ITEM(gtk_check_menu_item_new_with_mnemonic(_("_Full Screen")));
     gtk_menu_item_set_accel_path(menuitem_view_fullscreen, ACCEL_PATH_VIEW_FULLSCREEN);
     menuitem_view_sep1 = GTK_MENU_ITEM(gtk_separator_menu_item_new());
-    if (!disable_fullscreen) {
-        gtk_menu_shell_append(GTK_MENU_SHELL(menu_view), GTK_WIDGET(menuitem_view_fullscreen));
-        gtk_menu_shell_append(GTK_MENU_SHELL(menu_view), GTK_WIDGET(menuitem_view_sep1));
-    }
+    gtk_menu_shell_append(GTK_MENU_SHELL(menu_view), GTK_WIDGET(menuitem_view_fullscreen));
+    gtk_menu_shell_append(GTK_MENU_SHELL(menu_view), GTK_WIDGET(menuitem_view_sep1));
+
     menuitem_view_onetoone = GTK_MENU_ITEM(gtk_image_menu_item_new_with_mnemonic(_("_Normal (1:1)")));
     gtk_menu_item_set_accel_path(menuitem_view_onetoone, ACCEL_PATH_VIEW_NORMAL);
     gtk_menu_shell_append(GTK_MENU_SHELL(menu_view), GTK_WIDGET(menuitem_view_onetoone));
@@ -7069,8 +7065,7 @@ GtkWidget *create_window()
     g_signal_connect(G_OBJECT(fs_event_box), "button_press_event", G_CALLBACK(fs_callback), NULL);
     gtk_box_pack_end(GTK_BOX(hbox), fs_event_box, FALSE, FALSE, 0);
     gtk_widget_show(image_fs);
-    if (!disable_fullscreen)
-        gtk_widget_show(fs_event_box);
+    gtk_widget_show(fs_event_box);
     // volume control
     if ((window_y > window_x)
         && (rpcontrols != NULL && g_ascii_strcasecmp(rpcontrols, "volumeslider") == 0)) {
@@ -7115,8 +7110,6 @@ void show_window()
         } else {
             gtk_widget_hide(menu_event_box);
         }
-        if (disable_fullscreen)
-            gtk_widget_hide(fs_event_box);
         gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_showcontrols), showcontrols);
 
         gtk_widget_set_size_request(window, -1, -1);

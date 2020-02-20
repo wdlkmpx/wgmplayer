@@ -88,8 +88,6 @@ static GOptionEntry entries[] = {
      N_("Autostart the media default to 1, set to 0 to load but don't play"), "[0|1]"},
     {"disablecontextmenu", 0, 0, G_OPTION_ARG_NONE, &disable_context_menu,
      N_("Disable popup menu on right click"), NULL},
-    {"disablefullscreen", 0, 0, G_OPTION_ARG_NONE, &disable_fullscreen,
-     N_("Disable fullscreen options in browser mode"), NULL},
     {"loop", 0, 0, G_OPTION_ARG_NONE, &loop, N_("Play all files on the playlist forever"), NULL},
     {"quit_on_complete", 'q', 0, G_OPTION_ARG_NONE, &quit_on_complete,
      N_("Quit application when last file on playlist is played"), NULL},
@@ -642,7 +640,6 @@ int main(int argc, char *argv[])
     forcecache = FALSE;
     vertical_layout = FALSE;
     playlist_visible = FALSE;
-    disable_fullscreen = FALSE;
     disable_framedrop = FALSE;
     softvol = FALSE;
     remember_softvol = FALSE;
@@ -784,7 +781,6 @@ int main(int argc, char *argv[])
     restore_controls = showcontrols;
     disable_deinterlace = gm_pref_store_get_boolean(gm_store, DISABLEDEINTERLACE);
     disable_framedrop = gm_pref_store_get_boolean(gm_store, DISABLEFRAMEDROP);
-    disable_fullscreen = gm_pref_store_get_boolean(gm_store, DISABLEFULLSCREEN);
     disable_context_menu = gm_pref_store_get_boolean(gm_store, DISABLECONTEXTMENU);
     disable_ass = gm_pref_store_get_boolean(gm_store, DISABLEASS);
     disable_embeddedfonts = gm_pref_store_get_boolean(gm_store, DISABLEEMBEDDEDFONTS);

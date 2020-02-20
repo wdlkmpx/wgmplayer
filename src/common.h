@@ -65,7 +65,6 @@
 #define DISABLEEMBEDDEDFONTS    "disable-embeddedfonts"
 #define DISABLEDEINTERLACE		"disable-deinterlace"
 #define DISABLEFRAMEDROP		"disable-framedrop"
-#define DISABLEFULLSCREEN		"disable-fullscreen"
 #define DISABLECONTEXTMENU		"disable-contextmenu"
 #define DISABLEPAUSEONCLICK		"disable-pause-on-click"
 #define DISABLEANIMATION		"disable-animation"
