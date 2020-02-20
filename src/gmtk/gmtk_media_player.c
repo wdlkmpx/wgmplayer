@@ -47,7 +47,6 @@ gboolean thread_query(gpointer data);
 gboolean thread_complete(GIOChannel * source, GIOCondition condition, gpointer data);
 
 gboolean write_to_mplayer(GmtkMediaPlayer * player, const gchar * cmd);
-gboolean detect_mplayer_features(GmtkMediaPlayer * player);
 
 static void player_realized(GtkWidget * widget, gpointer data)
 {
@@ -470,7 +469,6 @@ static void gmtk_media_player_init(GmtkMediaPlayer * player)
     player->disable_upscaling = FALSE;
     player->mplayer_binary = NULL;
     player->extra_opts = NULL;
-    player->features_detected = FALSE;
     player->zoom = 1.0;
     player->speed_multiplier = 1.0;
     player->subtitle_scale = 1.0;
@@ -1658,7 +1656,6 @@ void gmtk_media_player_set_attribute_string(GmtkMediaPlayer * player,
         } else {
             player->mplayer_binary = g_strdup(value);
         }
-        player->features_detected = FALSE;
         break;
 
     case ATTRIBUTE_AUDIO_TRACK_FILE:
@@ -2441,8 +2438,6 @@ gpointer launch_mplayer(gpointer data)
             if (filename != NULL)
                 player->type = TYPE_FILE;
         }
-
-        player->minimum_mplayer = detect_mplayer_features(player);
 
         if (player->mplayer_binary == NULL || !g_file_test(player->mplayer_binary, G_FILE_TEST_EXISTS)) {
             argv[argn++] = g_strdup_printf("mplayer");
@@ -3919,18 +3914,6 @@ gboolean thread_reader(GIOChannel * source, GIOCondition condition, gpointer dat
             g_strfreev(split);
         }
 
-        if (player->minimum_mplayer == FALSE) {
-            message = g_strdup_printf(g_dgettext(GETTEXT_PACKAGE, "MPlayer should be Upgraded to a Newer Version"));
-            dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_INFO,
-                                            GTK_BUTTONS_OK, "%s", message);
-            gtk_window_set_title(GTK_WINDOW(dialog), g_dgettext(GETTEXT_PACKAGE, "GNOME MPlayer Notification"));
-            gtk_dialog_run(GTK_DIALOG(dialog));
-            gtk_widget_destroy(dialog);
-            g_free(message);
-            message = NULL;
-            player->minimum_mplayer = TRUE;
-        }
-
         if (strstr(mplayer_output->str, "ICY Info") != NULL) {
             buf = strstr(mplayer_output->str, "'");
             if (message) {
@@ -4102,78 +4085,3 @@ gboolean write_to_mplayer(GmtkMediaPlayer * player, const gchar * cmd)
 
 }
 
-gboolean detect_mplayer_features(GmtkMediaPlayer * player)
-{
-    gchar *av[255];
-    gint ac = 0, i;
-    gchar **output;
-    GError *error;
-    gint exit_status;
-    gchar *out = NULL;
-    gchar *err = NULL;
-    gboolean ret = TRUE;
-
-    if (player->features_detected)
-        return ret;
-
-    if (player->mplayer_binary == NULL || !g_file_test(player->mplayer_binary, G_FILE_TEST_EXISTS)) {
-        av[ac++] = g_strdup_printf("mplayer");
-    } else {
-        av[ac++] = g_strdup_printf("%s", player->mplayer_binary);
-    }
-    av[ac++] = g_strdup_printf("-noidle");
-    av[ac++] = g_strdup_printf("-softvol");
-    av[ac++] = g_strdup_printf("-volume");
-    av[ac++] = g_strdup_printf("100");
-    av[ac++] = g_strdup_printf("-nostop-xscreensaver");
-
-    // enable these lines to force newer mplayer
-    //av[ac++] = g_strdup_printf("-gamma");
-    //av[ac++] = g_strdup_printf("0");
-
-    av[ac] = NULL;
-
-    error = NULL;
-
-    g_spawn_sync(NULL, av, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, &out, &err, &exit_status, &error);
-
-    for (i = 0; i < ac; i++) {
-        g_free(av[i]);
-    }
-
-    if (error != NULL) {
-        gm_log(player->debug, G_LOG_LEVEL_MESSAGE, "Error when running: %s", error->message);
-        g_error_free(error);
-        error = NULL;
-        if (out != NULL) {
-            g_free(out);
-            out = NULL;
-        }
-        if (err != NULL) {
-            g_free(err);
-            err = NULL;
-        }
-        return FALSE;
-    }
-    output = g_strsplit(out, "\n", 0);
-    ac = 0;
-    while (output[ac] != NULL) {
-        /* if output[ac] starts with "Unknown option" (non case sensitive) */
-        if (g_ascii_strncasecmp(output[ac], "Unknown option", strlen("Unknown option")) == 0) {
-            ret = FALSE;
-        }
-        ac++;
-    }
-    g_strfreev(output);
-    g_free(out);
-    out = NULL;
-    g_free(err);
-    err = NULL;
-
-    player->features_detected = TRUE;
-    if (!ret) {
-        gm_log(player->debug, G_LOG_LEVEL_MESSAGE,
-               g_dgettext(GETTEXT_PACKAGE, "You might want to consider upgrading mplayer to a newer version"));
-    }
-    return ret;
-}

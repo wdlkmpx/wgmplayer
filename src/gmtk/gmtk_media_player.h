@@ -374,8 +374,6 @@ struct _GmtkMediaPlayer {
     GCond *mplayer_complete_cond;
     gchar *mplayer_binary;
     gboolean use_mplayer2;
-    gboolean features_detected;
-    gboolean minimum_mplayer;
 
     gint std_in;
     gint std_out;
