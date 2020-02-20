@@ -222,6 +222,13 @@ static void gmtk_output_combo_box_init(GmtkOutputComboBox * output)
 
 #endif
 
+#ifdef __OpenBSD__
+    gtk_list_store_append(output->list, &iter);
+    gtk_list_store_set(output->list, &iter, OUTPUT_TYPE_COLUMN, OUTPUT_TYPE_SOFTVOL,
+                       OUTPUT_DESCRIPTION_COLUMN, "SNDIO", OUTPUT_CARD_COLUMN, -1,
+                       OUTPUT_DEVICE_COLUMN, -1, OUTPUT_MPLAYER_DEVICE_COLUMN, "sndio", -1);
+#endif
+
 #ifdef HAVE_PULSEAUDIO
 
     pa_glib_mainloop *loop = pa_glib_mainloop_new(g_main_context_default());
