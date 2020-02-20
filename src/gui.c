@@ -110,8 +110,6 @@ static GtkMenuItem *menuitem_stop;
 static GtkMenuItem *menuitem_sep1;
 static GtkMenuItem *menuitem_copyurl;
 static GtkMenuItem *menuitem_sep2;
-static GtkMenuItem *menuitem_sep4;
-static GtkMenuItem *menuitem_save;
 static GtkMenuItem *menuitem_showcontrols;
 static GtkMenuItem *menuitem_fullscreen;
 static GtkMenuItem *menuitem_config;
@@ -376,7 +374,7 @@ gboolean add_to_playlist_and_play(gpointer data)
             gmtk_media_player_set_state(GMTK_MEDIA_PLAYER(media), MEDIA_STATE_QUIT);
             gmtk_media_player_set_media_type(GMTK_MEDIA_PLAYER(media), TYPE_FILE);
             g_idle_add(async_play_iter, &iter);
-            if (embed_window == 0 && bring_to_front)
+            if (bring_to_front)
                 present_main_window();
         }
     }
@@ -474,7 +472,7 @@ void adjust_layout()
         }
     }
 
-    if (GTK_IS_WIDGET(media_hbox) && control_id == 0
+    if (GTK_IS_WIDGET(media_hbox)
         && gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menuitem_view_info))) {
         if (gtk_widget_get_visible(media_hbox) == 0) {
             gtk_widget_show_all(media_hbox);
@@ -599,10 +597,8 @@ gboolean hide_buttons(void *data)
         if (idle->streaming) {
             gtk_widget_hide(ff_event_box);
             gtk_widget_hide(rew_event_box);
-            if (GTK_IS_WIDGET(menuitem_save))
-                gtk_widget_set_sensitive(GTK_WIDGET(menuitem_save), FALSE);
         } else {
-            if (embed_window == 0 || window_x > 250) {
+            if (window_x > 250) {
                 gtk_widget_show_all(ff_event_box);
                 gtk_widget_show_all(rew_event_box);
             }
@@ -636,19 +632,6 @@ gboolean hide_buttons(void *data)
 
     return FALSE;
 }
-
-gboolean show_copyurl(void *data)
-{
-    gchar *buf;
-    gtk_widget_show(GTK_WIDGET(menuitem_copyurl));
-    if (control_id == 0) {
-        buf = g_strdup_printf(_("%s - Media Player"), gmtk_media_player_get_uri(GMTK_MEDIA_PLAYER(media)));
-        gtk_window_set_title(GTK_WINDOW(window), buf);
-        g_free(buf);
-    }
-    return FALSE;
-}
-
 
 gboolean set_title_bar(void *data)
 {
@@ -744,7 +727,7 @@ gboolean set_media_label(void *data)
         return FALSE;
     }
 
-    if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menuitem_view_info)) && control_id == 0
+    if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menuitem_view_info))
         && strlen(idle->media_info) > 0) {
         gtk_widget_show_all(media_hbox);
     } else {
@@ -841,12 +824,6 @@ gboolean set_progress_value(void *data)
             gtk_widget_set_sensitive(play_event_box, TRUE);
             autopause = FALSE;
         }
-    }
-
-    if (idle->cachepercent >= 1.0 || idle->cachepercent == 0.0) {
-        gtk_widget_set_sensitive(GTK_WIDGET(menuitem_save), TRUE);
-    } else {
-        gtk_widget_set_sensitive(GTK_WIDGET(menuitem_save), FALSE);
     }
 
     if (gmtk_media_player_get_media_state(GMTK_MEDIA_PLAYER(media)) == MEDIA_STATE_UNKNOWN) {
@@ -1291,12 +1268,6 @@ gboolean resize_window(void *data)
             gtk_widget_set_sensitive(GTK_WIDGET(menuitem_view_info), TRUE);
             gtk_widget_set_sensitive(GTK_WIDGET(menuitem_edit_set_subtitle), TRUE);
             gtk_widget_set_sensitive(GTK_WIDGET(menuitem_edit_set_audiofile), TRUE);
-            if (embed_window == -1) {
-                gtk_widget_show_all(window);
-                gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_view_info), FALSE);
-                hide_buttons(idle);
-                gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_showcontrols), showcontrols);
-            }
             gtk_window_set_resizable(GTK_WINDOW(window), TRUE);
 #ifdef GTK3_ENABLED
             gtk_window_set_has_resize_grip(GTK_WINDOW(window), idledata->videopresent);
@@ -1369,7 +1340,7 @@ gboolean resize_window(void *data)
 
 gboolean set_play(void *data)
 {
-    if (embed_window == 0 && bring_to_front)
+    if (bring_to_front)
         gtk_window_present(GTK_WINDOW(window));
 
     play_callback(NULL, NULL, data);
@@ -1687,7 +1658,7 @@ gboolean delete_callback(GtkWidget * widget, GdkEvent * event, void *data)
     g_idle_remove_by_data(idledata);
     gm_audio_set_server_volume_update_callback(&audio_device, NULL);
 
-    if (remember_loc && !fullscreen && embed_window == 0) {
+    if (remember_loc && !fullscreen) {
         gm_store = gm_pref_store_new("gnome-mplayer");
         gtk_window_get_position(GTK_WINDOW(window), &loc_window_x, &loc_window_y);
         gtk_window_get_size(GTK_WINDOW(window), &loc_window_width, &loc_window_height);
@@ -1712,22 +1683,15 @@ gboolean delete_callback(GtkWidget * widget, GdkEvent * event, void *data)
         gtk_main_iteration();
     }
 
-    if (control_id == 0) {
-        g_thread_pool_stop_unused_threads();
-        if (retrieve_metadata_pool != NULL) {
-            gm_log(verbose, G_LOG_LEVEL_DEBUG, "waiting for all events to drain and retrieve_metadata_pool to empty");
-            while (gtk_events_pending() || g_thread_pool_unprocessed(retrieve_metadata_pool)) {
-                gtk_main_iteration();
-            }
-            g_thread_pool_free(retrieve_metadata_pool, TRUE, TRUE);
-        }
-    } else {
-        gm_log(verbose, G_LOG_LEVEL_DEBUG, "waiting for all events to drain");
-        while (gtk_events_pending()) {
+    g_thread_pool_stop_unused_threads();
+    if (retrieve_metadata_pool != NULL) {
+        gm_log(verbose, G_LOG_LEVEL_DEBUG, "waiting for all events to drain and retrieve_metadata_pool to empty");
+        while (gtk_events_pending() || g_thread_pool_unprocessed(retrieve_metadata_pool)) {
             gtk_main_iteration();
         }
+        g_thread_pool_free(retrieve_metadata_pool, TRUE, TRUE);
     }
-    if (use_defaultpl && embed_window == 0)
+    if (use_defaultpl)
         save_playlist_pls(default_playlist);
     return FALSE;
 }
@@ -3186,93 +3150,6 @@ void menuitem_open_dtv_callback(GtkMenuItem * menuitem, void *data)
     }
 }
 
-void menuitem_save_callback(GtkMenuItem * menuitem, void *data)
-{
-    // save dialog
-    GtkWidget *file_chooser_save;
-    GtkWidget *dialog;
-    gchar *filename;
-    gchar *srcfilename;
-    FILE *fin;
-    FILE *fout;
-    char buffer[1000];
-    gint count;
-    gchar *default_name;
-    gchar *uri;
-    gchar *msg;
-    gboolean save_file = TRUE;
-
-    file_chooser_save = gtk_file_chooser_dialog_new(_("Save As..."),
-                                                    GTK_WINDOW(window),
-                                                    GTK_FILE_CHOOSER_ACTION_SAVE,
-                                                    GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                                    GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT, NULL);
-
-    uri = g_strdup(idledata->url);
-    default_name = g_strrstr(uri, "/");
-    if (default_name == NULL) {
-        default_name = uri;
-    } else {
-        default_name += sizeof(gchar);
-    }
-    g_strlcpy(buffer, default_name, 1000);
-    while (g_strrstr(buffer, "&") != NULL) {
-        default_name = g_strrstr(buffer, "&");
-        default_name[0] = '\0';
-    }
-    g_free(uri);
-
-    gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(file_chooser_save), buffer);
-
-    if (gtk_dialog_run(GTK_DIALOG(file_chooser_save)) == GTK_RESPONSE_ACCEPT) {
-        filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(file_chooser_save));
-
-        srcfilename = g_filename_from_uri(gmtk_media_player_get_uri(GMTK_MEDIA_PLAYER(media)), NULL, NULL);
-        gm_log(verbose, G_LOG_LEVEL_INFO, "Copy %s to %s", srcfilename, filename);
-
-        if (g_file_test(filename, G_FILE_TEST_EXISTS) == TRUE) {
-
-            dialog = gtk_message_dialog_new(GTK_WINDOW(window),
-                                            GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-                                            GTK_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO, _("Overwrite %s"), filename);
-            if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_NO) {
-                save_file = FALSE;
-            }
-            gtk_widget_destroy(dialog);
-        }
-
-        if (save_file) {
-
-            fin = g_fopen(srcfilename, "rb");
-            fout = g_fopen(filename, "wb");
-
-            if (fin != NULL && fout != NULL) {
-                while (!feof(fin)) {
-                    count = fread(buffer, 1, 1000, fin);
-                    fwrite(buffer, 1, count, fout);
-                }
-                fclose(fout);
-                fclose(fin);
-            } else {
-                msg = g_strdup_printf(_("Unable to save ' %s '"), filename);
-                dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR,
-                                                GTK_BUTTONS_CLOSE, "%s", msg);
-                gtk_window_set_title(GTK_WINDOW(dialog), _("GNOME MPlayer Error"));
-                gtk_dialog_run(GTK_DIALOG(dialog));
-                gtk_widget_destroy(dialog);
-                g_free(msg);
-            }
-        }
-
-        g_free(filename);
-        g_free(srcfilename);
-    }
-
-    gtk_widget_destroy(file_chooser_save);
-
-}
-
-
 
 void menuitem_quit_callback(GtkMenuItem * menuitem, void *data)
 {
@@ -3583,28 +3460,8 @@ void menuitem_fs_callback(GtkMenuItem * menuitem, void *data)
     if (fullscreen) {
         hide_fs_controls();
 
-        if (embed_window == 0) {
-            skip_fixed_allocation_on_show = TRUE;
-            gtk_window_unfullscreen(GTK_WINDOW(window));
-        } else {
-            if (gtk_widget_get_mapped(window))
-                gtk_widget_unmap(window);
-            gdk_window_reparent(gtk_widget_get_window(window),
-                                gdk_x11_window_lookup_for_display(gdk_display_get_default(), embed_window), 0, 0);
-            gtk_widget_map(window);
-            gtk_window_move(GTK_WINDOW(window), 0, 0);
-            gdk_window_resize(gtk_widget_get_window(window), window_x, window_y - 1);
-            if (window_x > 0 && window_y > 0)
-                gtk_window_resize(GTK_WINDOW(window), window_x, window_y);
-            if (window_x < 250) {
-                gtk_widget_hide(fs_event_box);
-            }
-            if (window_x < 170) {
-                gtk_widget_hide(GTK_WIDGET(tracker));
-            }
-            gtk_widget_hide(fs_window);
-
-        }
+        skip_fixed_allocation_on_show = TRUE;
+        gtk_window_unfullscreen(GTK_WINDOW(window));
         gtk_widget_show(menubar);
         if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menuitem_view_controls))) {
             gtk_widget_show(controls_box);
@@ -3645,61 +3502,12 @@ void menuitem_fs_callback(GtkMenuItem * menuitem, void *data)
         } else {
             restore_playlist = FALSE;
         }
-        if (embed_window == 0) {
-            // --fullscreen option doesn' t work without this event flush gm_log(verbose, G_LOG_LEVEL_DEBUG, "waiting for all events to drain");
-            while (gtk_events_pending())
-                gtk_main_iteration();
 
-            gtk_window_fullscreen(GTK_WINDOW(window));
-        } else {
-            if (fs_window == NULL) {
-                fs_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-                gtk_window_set_resizable(GTK_WINDOW(window), TRUE);
-                gtk_widget_add_events(fs_window, GDK_BUTTON_PRESS_MASK);
-                gtk_widget_add_events(fs_window, GDK_BUTTON_RELEASE_MASK);
-                gtk_widget_add_events(fs_window, GDK_KEY_PRESS_MASK);
-                gtk_widget_add_events(fs_window, GDK_KEY_RELEASE_MASK);
-                gtk_widget_add_events(fs_window, GDK_ENTER_NOTIFY_MASK);
-                gtk_widget_add_events(fs_window, GDK_LEAVE_NOTIFY_MASK);
-                gtk_widget_add_events(fs_window, GDK_KEY_PRESS_MASK);
-                gtk_widget_add_events(fs_window, GDK_VISIBILITY_NOTIFY_MASK);
-                gtk_widget_add_events(fs_window, GDK_STRUCTURE_MASK);
-                gtk_widget_add_events(fs_window, GDK_POINTER_MOTION_MASK);
-                g_signal_connect(G_OBJECT(fs_window), "key_press_event", G_CALLBACK(window_key_callback), NULL);
-                g_signal_connect(G_OBJECT(fs_window), "motion_notify_event", G_CALLBACK(motion_notify_callback), NULL);
-                gtk_widget_realize(fs_window);
-
-                gdk_window_ensure_native(gtk_widget_get_window(fs_window));
-            }
-
-            screen = gtk_window_get_screen(GTK_WINDOW(window));
-            gtk_window_set_screen(GTK_WINDOW(fs_window), screen);
-            gtk_window_set_title(GTK_WINDOW(fs_window), _("Gnome MPlayer Fullscreen"));
-            gdk_screen_get_monitor_geometry(screen,
-                                            gdk_screen_get_monitor_at_window(screen, gtk_widget_get_window(window)), &rect);
-
-            gdk_window_get_root_origin(gtk_widget_get_window(window), &wx, &wy);
-            gtk_window_move(GTK_WINDOW(fs_window), wx, wy);
-#ifdef GTK3_ENABLED
-            gtk_window_set_has_resize_grip(GTK_WINDOW(fs_window), FALSE);
-#endif
-            gtk_widget_show(fs_window);
-#if X11_ENABLED
-            XReparentWindow(GDK_WINDOW_XDISPLAY(gtk_widget_get_window(window)),
-                            GDK_WINDOW_XID(gtk_widget_get_window(window)), GDK_WINDOW_XID(gtk_widget_get_window(fs_window)), 0, 0);
-#else
-            gdk_window_reparent(gtk_widget_get_window(window), gtk_widget_get_window(fs_window), 0, 0);
-#endif
-            gtk_widget_map(window);
-            gtk_window_fullscreen(GTK_WINDOW(fs_window));
-            gtk_window_resize(GTK_WINDOW(window), rect.width, rect.height);
-            if (window_x < 250) {
-                gtk_widget_show(fs_event_box);
-            }
-            if (window_x < 170) {
-                gtk_widget_show(GTK_WIDGET(tracker));
-            }
+        // --fullscreen option doesn' t work without this event flush gm_log(verbose, G_LOG_LEVEL_DEBUG, "waiting for all events to drain");
+        while (gtk_events_pending()) {
+            gtk_main_iteration();
         }
+        gtk_window_fullscreen(GTK_WINDOW(window));
     }
 
     fullscreen = !fullscreen;
@@ -3752,7 +3560,7 @@ void menuitem_showcontrols_callback(GtkCheckMenuItem * menuitem, void *data)
         } else {
             gtk_widget_set_size_request(controls_box, -1, -1);
             gtk_widget_show(controls_box);
-            if (!fullscreen && embed_window == 0) {
+            if (!fullscreen) {
                 gtk_window_get_size(GTK_WINDOW(window), &width, &height);
                 gtk_widget_get_allocation(controls_box, &alloc);
                 gtk_window_resize(GTK_WINDOW(window), width, height + alloc.height);
@@ -3765,7 +3573,7 @@ void menuitem_showcontrols_callback(GtkCheckMenuItem * menuitem, void *data)
             hide_fs_controls();
         } else {
             gtk_widget_hide(controls_box);
-            if (!fullscreen && embed_window == 0) {
+            if (!fullscreen) {
                 gtk_window_get_size(GTK_WINDOW(window), &width, &height);
                 gtk_widget_get_allocation(controls_box, &alloc);
                 gtk_window_resize(GTK_WINDOW(window), width, height - alloc.height);
@@ -6136,10 +5944,6 @@ void player_media_state_changed_callback(GtkButton * button, GmtkMediaPlayerMedi
                     idledata->fullscreen = 0;
                     g_idle_add(set_fullscreen, idledata);
                     g_idle_add(set_stop, idledata);
-                    // nothing is on the playlist and we are not looping so ask plugin for next item
-                    if (embed_window != 0 || control_id != 0) {
-                        js_state = STATE_MEDIAENDED;
-                    }
                 }
 
                 if (quit_on_complete) {
@@ -6270,16 +6074,12 @@ void player_error_message_callback(GmtkMediaPlayer * media, gchar * message)
 {
     GtkWidget *dialog;
 
-    // log messages to the screen when in normal playback mode, and to the log when in plugin mode
-    if (control_id == 0) {
-        dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR,
-                                        GTK_BUTTONS_CLOSE, "%s", message);
-        gtk_window_set_title(GTK_WINDOW(dialog), g_dgettext(GETTEXT_PACKAGE, "GNOME MPlayer Error"));
-        gtk_dialog_run(GTK_DIALOG(dialog));
-        gtk_widget_destroy(dialog);
-    } else {
-        gm_log(TRUE, G_LOG_LEVEL_MESSAGE, "GNOME MPlayer Error: %s", message);
-    }
+    // log messages to the screen
+    dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR,
+                                    GTK_BUTTONS_CLOSE, "%s", message);
+    gtk_window_set_title(GTK_WINDOW(dialog), g_dgettext(GETTEXT_PACKAGE, "GNOME MPlayer Error"));
+    gtk_dialog_run(GTK_DIALOG(dialog));
+    gtk_widget_destroy(dialog);
 }
 
 void player_cache_percent_changed_callback(GmtkMediaTracker * tracker, gdouble percentage)
@@ -6594,7 +6394,7 @@ void setup_accelerators()
     gtk_accel_map_change_entry(ACCEL_PATH_VIEW_DOUBLE, GDK_2, GDK_CONTROL_MASK, TRUE);
 }
 
-GtkWidget *create_window(gint windowid)
+GtkWidget *create_window()
 {
     GtkIconTheme *icon_theme;
     GtkTargetEntry target_entry[3];
@@ -6624,13 +6424,6 @@ GtkWidget *create_window(gint windowid)
     fs_controls_lock = g_mutex_new();
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(window), _("Media Player"));
-    if (windowid > 0) {
-        gtk_window_set_decorated(GTK_WINDOW(window), FALSE);
-#ifdef GTK3_ENABLED
-        gtk_window_set_has_resize_grip(GTK_WINDOW(window), FALSE);
-#endif
-        gtk_widget_set_can_focus(window, TRUE);
-    }
     gtk_window_set_resizable(GTK_WINDOW(window), TRUE);
     gtk_widget_add_events(window, GDK_BUTTON_PRESS_MASK);
     gtk_widget_add_events(window, GDK_BUTTON_RELEASE_MASK);
@@ -6648,6 +6441,7 @@ GtkWidget *create_window(gint windowid)
     g_signal_connect(G_OBJECT(window), "window_state_event", G_CALLBACK(window_state_callback), NULL);
     g_signal_connect(G_OBJECT(window), "configure_event", G_CALLBACK(configure_callback), NULL);
     accel_group = gtk_accel_group_new();
+
     // right click menu
     popup_menu = GTK_MENU(gtk_menu_new());
     menubar = gtk_menu_bar_new();
@@ -6684,32 +6478,17 @@ GtkWidget *create_window(gint windowid)
     gtk_widget_show(GTK_WIDGET(menuitem_copyurl));
     menuitem_sep2 = GTK_MENU_ITEM(gtk_separator_menu_item_new());
     gtk_menu_shell_append(GTK_MENU_SHELL(popup_menu), GTK_WIDGET(menuitem_sep2));
-    if (control_id != 0)
-        gtk_widget_show(GTK_WIDGET(menuitem_sep2));
+    gtk_widget_show(GTK_WIDGET(menuitem_sep2)); // control_id
     menuitem_config = GTK_MENU_ITEM(gtk_image_menu_item_new_from_stock(GTK_STOCK_PREFERENCES, NULL));
     gtk_menu_shell_append(GTK_MENU_SHELL(popup_menu), GTK_WIDGET(menuitem_config));
-    if (control_id != 0)
-        gtk_widget_show(GTK_WIDGET(menuitem_config));
-    menuitem_sep4 = GTK_MENU_ITEM(gtk_separator_menu_item_new());
-    gtk_menu_shell_append(GTK_MENU_SHELL(popup_menu), GTK_WIDGET(menuitem_sep4));
-    menuitem_save = GTK_MENU_ITEM(gtk_image_menu_item_new_from_stock(GTK_STOCK_SAVE_AS, accel_group));
-    gtk_menu_shell_append(GTK_MENU_SHELL(popup_menu), GTK_WIDGET(menuitem_save));
-    // we only want to show the save option when under control of gecko-mediaplayer
-    if (control_id != 0) {
-        gtk_widget_show(GTK_WIDGET(menuitem_sep4));
-        gtk_widget_show(GTK_WIDGET(menuitem_save));
-        if (embed_window != 0)
-            gtk_widget_set_sensitive(GTK_WIDGET(menuitem_save), FALSE);
-    }
+    gtk_widget_show(GTK_WIDGET(menuitem_config)); // control_id
 
     menuitem_sep3 = GTK_MENU_ITEM(gtk_separator_menu_item_new());
     gtk_menu_shell_append(GTK_MENU_SHELL(popup_menu), GTK_WIDGET(menuitem_sep3));
-    if (control_id != 0)
-        gtk_widget_show(GTK_WIDGET(menuitem_sep3));
+    gtk_widget_show(GTK_WIDGET(menuitem_sep3)); // control_id
     menuitem_quit = GTK_MENU_ITEM(gtk_image_menu_item_new_from_stock(GTK_STOCK_QUIT, accel_group));
     gtk_menu_shell_append(GTK_MENU_SHELL(popup_menu), GTK_WIDGET(menuitem_quit));
-    if (control_id != 0)
-        gtk_widget_show(GTK_WIDGET(menuitem_quit));
+    gtk_widget_show(GTK_WIDGET(menuitem_quit)); // control_id
 
     g_signal_connect(G_OBJECT(menuitem_open), "activate", G_CALLBACK(menuitem_open_callback), NULL);
     g_signal_connect(G_OBJECT(menuitem_play), "activate", G_CALLBACK(menuitem_pause_callback), NULL);
@@ -6720,7 +6499,6 @@ GtkWidget *create_window(gint windowid)
     g_signal_connect(G_OBJECT(menuitem_fullscreen), "toggled", G_CALLBACK(menuitem_fs_callback), NULL);
     g_signal_connect(G_OBJECT(menuitem_copyurl), "activate", G_CALLBACK(menuitem_copyurl_callback), NULL);
     g_signal_connect(G_OBJECT(menuitem_config), "activate", G_CALLBACK(menuitem_config_callback), NULL);
-    g_signal_connect(G_OBJECT(menuitem_save), "activate", G_CALLBACK(menuitem_save_callback), NULL);
     g_signal_connect(G_OBJECT(menuitem_quit), "activate", G_CALLBACK(menuitem_quit_callback), NULL);
     g_signal_connect_swapped(G_OBJECT(window), "button_release_event", G_CALLBACK(popup_handler), G_OBJECT(popup_menu));
     g_signal_connect_swapped(G_OBJECT(window), "enter_notify_event", G_CALLBACK(notification_handler), NULL);
@@ -7097,8 +6875,7 @@ GtkWidget *create_window(gint windowid)
 #else
     vbox_master = gtk_vbox_new(FALSE, 0);
 #endif
-    if (windowid == 0)
-        gtk_box_pack_start(GTK_BOX(vbox_master), menubar, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(vbox_master), menubar, FALSE, FALSE, 0);
     gtk_widget_show(menubar);
     gtk_box_pack_start(GTK_BOX(vbox_master), pane, TRUE, TRUE, 0);
     gtk_box_pack_start(GTK_BOX(vbox_master), controls_box, FALSE, FALSE, 0);
@@ -7172,7 +6949,7 @@ GtkWidget *create_window(gint windowid)
     gtk_window_set_default_icon_list(icon_list);
     gtk_window_set_icon_list(GTK_WINDOW(window), icon_list);
 
-    if (control_id == 0 && show_status_icon) {
+    if (show_status_icon) {
         if (gtk_icon_theme_has_icon(icon_theme, "gnome-mplayer-panel")) {
             status_icon = gtk_status_icon_new_from_icon_name("gnome-mplayer-panel");
         } else if (gtk_icon_theme_has_icon(icon_theme, "gnome-mplayer")) {
@@ -7180,11 +6957,7 @@ GtkWidget *create_window(gint windowid)
         } else {
             status_icon = gtk_status_icon_new_from_pixbuf(pb_icon);
         }
-        if (control_id != 0) {
-            gtk_status_icon_set_visible(status_icon, FALSE);
-        } else {
-            gtk_status_icon_set_visible(status_icon, show_status_icon);
-        }
+        gtk_status_icon_set_visible(status_icon, show_status_icon);
         g_signal_connect(status_icon, "activate", G_CALLBACK(status_icon_callback), NULL);
         g_signal_connect(status_icon, "popup_menu", G_CALLBACK(status_icon_context_callback), NULL);
     }
@@ -7329,23 +7102,13 @@ GtkWidget *create_window(gint windowid)
     return window;
 }
 
-void show_window(gint windowid)
+void show_window()
 {
     gint i;
     gchar **visuals;
-    if (windowid != 0) {
-        gm_log(verbose, G_LOG_LEVEL_DEBUG, "waiting for all events to drain");
-        while (gtk_events_pending())
-            gtk_main_iteration();
-        window_container = gdk_x11_window_foreign_new_for_display(gdk_display_get_default(), windowid);
-        if (gtk_widget_get_mapped(window))
-            gtk_widget_unmap(window);
-        gdk_window_reparent(gtk_widget_get_window(window), window_container, 0, 0);
-    }
 
     if (rpcontrols == NULL || (rpcontrols != NULL && g_ascii_strcasecmp(rpcontrols, "all") == 0)) {
-        if (windowid != -1)
-            gtk_widget_show_all(window);
+        gtk_widget_show_all(window);
         gtk_widget_hide(media_hbox);
         if (gmtk_media_player_get_media_type(GMTK_MEDIA_PLAYER(media)) == TYPE_DVD) {
             gtk_widget_show(menu_event_box);
@@ -7355,29 +7118,13 @@ void show_window(gint windowid)
         if (disable_fullscreen)
             gtk_widget_hide(fs_event_box);
         gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_showcontrols), showcontrols);
-        if (windowid > 0) {
-            if (window_x < 250) {
-                gtk_widget_hide(rew_event_box);
-                gtk_widget_hide(ff_event_box);
-                gtk_widget_hide(fs_event_box);
-            }
 
-            if (window_x < 170) {
-                gtk_widget_hide(GTK_WIDGET(tracker));
-            }
-            if (window_x > 0 && window_y > 0) {
-                gtk_window_resize(GTK_WINDOW(window), window_x, window_y);
-                gtk_widget_set_size_request(window, window_x, window_y);
-            }
-        } else {
-            gtk_widget_set_size_request(window, -1, -1);
-            gtk_widget_set_size_request(GTK_WIDGET(tracker), 200, -1);
-        }
+        gtk_widget_set_size_request(window, -1, -1);
+        gtk_widget_set_size_request(GTK_WIDGET(tracker), 200, -1);
 
     } else {
 
-        if (windowid != -1)
-            gtk_widget_show_all(window);
+        gtk_widget_show_all(window);
         gtk_widget_hide(media);
         gtk_widget_hide(menubar);
         gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_view_info), FALSE);

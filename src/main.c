@@ -64,10 +64,8 @@ typedef struct _PlayData {
 } PlayData;
 
 static GOptionEntry entries[] = {
-    {"window", 0, 0, G_OPTION_ARG_INT, &embed_window, N_("Window to embed in"), "WID"},
     {"width", 'w', 0, G_OPTION_ARG_INT, &window_x, N_("Width of window to embed in"), "X"},
     {"height", 'h', 0, G_OPTION_ARG_INT, &window_y, N_("Height of window to embed in"), "Y"},
-    {"controlid", 0, 0, G_OPTION_ARG_INT, &control_id, N_("Unique DBUS controller id"), "CID"},
     {"playlist", 0, 0, G_OPTION_ARG_NONE, &playlist, N_("File Argument is a playlist"), NULL},
     {"verbose", 'v', 0, G_OPTION_ARG_NONE, &verbose, N_("Show more output on the console"), NULL},
     {"reallyverbose", '\0', 0, G_OPTION_ARG_NONE, &reallyverbose,
@@ -352,7 +350,7 @@ gint play_iter(GtkTreeIter * playiter, gint restart_second)
     message = g_strconcat(message, "</small>", NULL);
 
     // probably not much cover art for random video files
-    if (cover_art_file == NULL && video_codec == NULL && !streaming_media(uri) && control_id == 0 && !playlist) {
+    if (cover_art_file == NULL && video_codec == NULL && !streaming_media(uri) && !playlist) {
         metadata = (MetaData *) g_new0(MetaData, 1);
         metadata->uri = g_strdup(uri);
         if (title != NULL)
@@ -394,11 +392,7 @@ gint play_iter(GtkTreeIter * playiter, gint restart_second)
     g_strlcpy(idledata->media_notification, message, sizeof(idledata->media_notification));
     g_free(message);
 
-    if (control_id == 0) {
-        set_media_label(idledata);
-    } else {
-        gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_view_info), FALSE);
-    }
+    set_media_label(idledata);
 
     if (subtitles)
         gtk_container_forall(GTK_CONTAINER(subtitles), remove_langs, NULL);
@@ -423,7 +417,7 @@ gint play_iter(GtkTreeIter * playiter, gint restart_second)
 
 #ifdef GIO_ENABLED
     // don't put it on the recent list, if it is running in plugin mode
-    if (control_id == 0 && !streaming_media(uri)) {
+    if (!streaming_media(uri)) {
         recent_data = (GtkRecentData *) g_new0(GtkRecentData, 1);
         if (artist != NULL && strlen(artist) > 0) {
             recent_data->display_name = g_strdup_printf("%s - %s", artist, title);
@@ -608,8 +602,6 @@ int main(int argc, char *argv[])
 #endif
 
     playlist = FALSE;
-    embed_window = 0;
-    control_id = 0;
     window_x = 0;
     window_y = 0;
     last_window_width = 0;
@@ -824,13 +816,12 @@ int main(int argc, char *argv[])
 
     resume_mode = gm_pref_store_get_int(gm_store, RESUME_MODE);
 
-    if (embed_window == 0) {
-        single_instance = gm_pref_store_get_boolean(gm_store, SINGLE_INSTANCE);
-        if (single_instance) {
-            replace_and_play = gm_pref_store_get_boolean(gm_store, REPLACE_AND_PLAY);
-            bring_to_front = gm_pref_store_get_boolean(gm_store, BRING_TO_FRONT);
-        }
+    single_instance = gm_pref_store_get_boolean(gm_store, SINGLE_INSTANCE);
+    if (single_instance) {
+        replace_and_play = gm_pref_store_get_boolean(gm_store, REPLACE_AND_PLAY);
+        bring_to_front = gm_pref_store_get_boolean(gm_store, BRING_TO_FRONT);
     }
+
     enable_global_menu = gm_pref_store_get_boolean(gm_store, ENABLE_GLOBAL_MENU);
     gm_log(verbose, G_LOG_LEVEL_DEBUG, "Enable global menu preference value is %s",
            gm_bool_to_string(enable_global_menu));
@@ -918,9 +909,6 @@ int main(int argc, char *argv[])
     if (cache_size == 0)
         cache_size = 2000;
     gm_pref_store_free(gm_store);
-    if (embed_window) {
-        gm_log(verbose, G_LOG_LEVEL_INFO, "embedded in window id 0x%x", embed_window);
-    }
 
     if (single_instance) {
         gm_log(verbose, G_LOG_LEVEL_INFO, "Running in single instance mode");
@@ -946,8 +934,6 @@ int main(int argc, char *argv[])
 
     if (large_buttons)
         button_size = GTK_ICON_SIZE_DIALOG;
-    if (playlist_visible && control_id != 0)
-        playlist_visible = FALSE;
     if (error != NULL) {
         printf("%s\n", error->message);
         printf(_("Run 'gnome-mplayer --help' to see a full list of available command line options.\n"));
@@ -965,13 +951,11 @@ int main(int argc, char *argv[])
                            G_TYPE_FLOAT, G_TYPE_FLOAT, G_TYPE_BOOLEAN);
     // only use dark theme if not embedded, otherwise use the default theme  
 #ifdef GTK3_ENABLED
-    if (embed_window <= 0) {
-        gtk_settings = gtk_settings_get_default();
-        g_object_set(G_OBJECT(gtk_settings), "gtk-application-prefer-dark-theme", TRUE, NULL);
-    }
+    gtk_settings = gtk_settings_get_default();
+    g_object_set(G_OBJECT(gtk_settings), "gtk-application-prefer-dark-theme", TRUE, NULL);
 #endif
 
-    create_window(embed_window);
+    create_window();
     autopause = FALSE;
 #ifdef GIO_ENABLED
     idledata->caching = g_mutex_new();
@@ -1008,7 +992,6 @@ int main(int argc, char *argv[])
         gm_log(verbose, G_LOG_LEVEL_INFO, "is reg %s", gm_bool_to_string(S_ISREG(buf.st_mode)));
         gm_log(verbose, G_LOG_LEVEL_INFO, "is dir %s", gm_bool_to_string(S_ISDIR(buf.st_mode)));
         gm_log(verbose, G_LOG_LEVEL_INFO, "playlist %s", gm_bool_to_string(playlist));
-        gm_log(verbose, G_LOG_LEVEL_INFO, "embedded in window id 0x%x", embed_window);
         if (stat_result == 0 && S_ISBLK(buf.st_mode)) {
             // might have a block device, so could be a DVD
 
@@ -1162,22 +1145,12 @@ int main(int argc, char *argv[])
     gm_log(verbose, G_LOG_LEVEL_DEBUG, "Volume is %lf Audio Device Volume = %f", volume, audio_device.volume);
 
     gtk_scale_button_set_value(GTK_SCALE_BUTTON(vol_slider), audio_device.volume);
-    show_window(embed_window);
+    show_window();
     if (playiter)
         play_iter(&iter, 0);
-    if (argv[fileindex] == NULL && embed_window == 0) {
-        // When running as apple.com external player, don't load the default playlist
-        if (control_id == 0) {
-            use_remember_loc = remember_loc;
-            gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_view_playlist), playlist_visible);
-        } else {
-            remember_loc = FALSE;
-            use_remember_loc = FALSE;
-            // prevents saving of a playlist with one item on it
-            use_defaultpl = FALSE;
-            // don't save the loc when launched with a single file
-            save_loc = FALSE;
-        }
+    if (argv[fileindex] == NULL) {
+        use_remember_loc = remember_loc;
+        gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_view_playlist), playlist_visible);
     } else {
         // prevents saving of a playlist with one item on it
         use_defaultpl = FALSE;
@@ -1185,18 +1158,14 @@ int main(int argc, char *argv[])
         save_loc = FALSE;
     }
 
-    if (single_instance && embed_window == 0) {
-        if (control_id == 0) {
-            use_remember_loc = remember_loc;
-            gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_view_playlist), playlist_visible);
-        }
+    if (single_instance) {
+        use_remember_loc = remember_loc;
+        gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_view_playlist), playlist_visible);
     }
 
-    if (embed_window == 0) {
-        if (remember_loc) {
-            gtk_window_move(GTK_WINDOW(window), loc_window_x, loc_window_y);
-            g_idle_add(set_pane_position, NULL);
-        }
+    if (remember_loc) {
+        gtk_window_move(GTK_WINDOW(window), loc_window_x, loc_window_y);
+        g_idle_add(set_pane_position, NULL);
     }
 
     safe_to_save_default_playlist = FALSE;
@@ -1209,7 +1178,7 @@ int main(int argc, char *argv[])
     // put the request to update the volume into the list of tasks to complete
     g_idle_add(hookup_volume, NULL);
     g_idle_add(set_volume, NULL);
-    if (fullscreen && embed_window == 0)
+    if (fullscreen)
         g_idle_add(set_fullscreen, NULL);
     gtk_main();
     return 0;

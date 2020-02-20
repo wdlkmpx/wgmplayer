@@ -299,10 +299,8 @@ gint fullscreen;
 gint init_fullscreen;
 gboolean videopresent;
 gboolean playlist;
-gint embed_window;
 gint window_x;
 gint window_y;
-gint control_id;
 gboolean softvol;
 gboolean remember_softvol;
 gdouble volume_softvol;
@@ -427,13 +425,12 @@ GmPrefStore *gm_store;
 // cover
 gchar *cover_art_uri;
 
-GtkWidget *create_window(gint windowid);
-void show_window(gint windowid);
+GtkWidget *create_window();
+void show_window();
 void present_main_window();
 gint get_player_window();
 void adjust_layout();
 gboolean hide_buttons(void *data);
-gboolean show_copyurl(void *data);
 
 gboolean set_gui_state(void *data);
 gboolean set_title_bar(void *data);
