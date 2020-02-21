@@ -641,8 +641,8 @@ int main(int argc, char *argv[])
     vertical_layout = FALSE;
     playlist_visible = FALSE;
     disable_framedrop = FALSE;
-    softvol = FALSE;
-    remember_softvol = FALSE;
+    softvol = TRUE;
+    remember_softvol = TRUE;
     volume_softvol = -1;
     volume_gain = 0;
     subtitlefont = NULL;
