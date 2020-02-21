@@ -1075,8 +1075,15 @@ void gmtk_media_player_set_state(GmtkMediaPlayer * player, const GmtkMediaPlayer
 
         if (new_media_state == MEDIA_STATE_PLAY) {
             // launch player
+            GError *error = NULL;
             gm_log(player->debug, G_LOG_LEVEL_DEBUG, "launching launch_mplayer thread");
-            player->mplayer_thread = g_thread_create(launch_mplayer, player, TRUE, NULL);
+            player->mplayer_thread = g_thread_try_new("launch_mplayer",
+                                                      launch_mplayer,
+                                                      player,
+                                                      &error);
+            if (error) {
+                 g_critical("Couldn't start mplayer thread: %s", error->message);
+            }
             if (player->mplayer_thread != NULL) {
                 if (player->message != NULL) {
                     g_free(player->message);
