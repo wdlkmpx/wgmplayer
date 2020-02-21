@@ -47,13 +47,13 @@ AC_ARG_ENABLE(gtk3,
 
 AS_IF([test "x$ENABLE_GTK3" = xcheck],        
         [ENABLE_GTK3=no
-        PKG_CHECK_MODULES(GTK,[gtk+-3.0 >= 3.8.0 glib-2.0 >= 2.24.0 gthread-2.0],[ENABLE_GTK3=yes],[ENABLE_GTK3=no])
+        PKG_CHECK_MODULES(GTK,[gtk+-3.0 >= 3.8.0 glib-2.0 >= 2.32.0],[ENABLE_GTK3=yes],[ENABLE_GTK3=no])
         ])    
     
 AS_IF([test "x$ENABLE_GTK3" = "xyes"],   
     [
     
-    PKG_CHECK_MODULES(GTK, [gtk+-3.0 glib-2.0 gthread-2.0],[AC_MSG_NOTICE([Using GTK3])]) 
+    PKG_CHECK_MODULES(GTK, [gtk+-3.0 glib-2.0],[AC_MSG_NOTICE([Using GTK3])]) 
     AC_DEFINE([GTK3_ENABLED],[1],[Define to 1 if you have GTK 3 or higher])
     
     ])
@@ -61,7 +61,7 @@ AS_IF([test "x$ENABLE_GTK3" = "xyes"],
 AS_IF([test "x$ENABLE_GTK3" != "xyes"],   
     [
 
-    PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.24.0 glib-2.0 >= 2.24.0 gthread-2.0],[AC_MSG_NOTICE([Using GTK2])])
+    PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.24.0 glib-2.0 >= 2.32.0],[AC_MSG_NOTICE([Using GTK2])])
     AC_SUBST(GTK_CFLAGS)
     AC_SUBST(GTK_LIBS)
 
