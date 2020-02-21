@@ -176,7 +176,7 @@ typedef struct _IdleData {
     GFile *src;
     GFile *tmp;
     GCancellable *cancel;
-    GMutex *caching;
+    GMutex caching;
     GCond caching_complete;
 #endif
 } IdleData;
@@ -395,8 +395,8 @@ gboolean keep_on_top;
 gboolean cancel_folder_load;
 
 GThreadPool *retrieve_metadata_pool;
-GMutex *retrieve_mutex;
-GMutex *set_mutex;
+GMutex retrieve_mutex;
+GMutex set_mutex;
 
 gboolean use_mediakeys;
 gboolean use_defaultpl;

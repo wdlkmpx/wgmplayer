@@ -370,7 +370,7 @@ struct _GmtkMediaPlayer {
     GmtkMediaPlayerAspectRatio aspect_ratio;
     GmtkMediaPlayerMediaType type;
 
-    GMutex *thread_running;
+    GMutex thread_running;
     GCond mplayer_complete_cond;
     gchar *mplayer_binary;
     gboolean use_mplayer2;
@@ -397,7 +397,7 @@ struct _GmtkMediaPlayer {
     gdouble speed;
 
     gboolean disposed;
-    GMutex *player_lock;
+    GMutex player_lock;
     GRegex *name_regex;
     GRegex *genre_regex;
     GRegex *title_regex;

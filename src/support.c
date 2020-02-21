@@ -936,7 +936,7 @@ void retrieve_metadata(gpointer data, gpointer user_data)
     gm_log(FALSE, G_LOG_LEVEL_DEBUG, "retrieve_metadata(%s)", uri);
 
     gm_log(FALSE, G_LOG_LEVEL_DEBUG, "locking retrieve_mutex");
-    g_mutex_lock(retrieve_mutex);
+    g_mutex_lock(&retrieve_mutex);
     mdata = get_metadata(uri);
     if (mdata != NULL) {
         mdata->uri = g_strdup(uri);
@@ -944,7 +944,7 @@ void retrieve_metadata(gpointer data, gpointer user_data)
     }
     g_free(data);
     gm_log(FALSE, G_LOG_LEVEL_DEBUG, "unlocking retrieve_mutex");
-    g_mutex_unlock(retrieve_mutex);
+    g_mutex_unlock(&retrieve_mutex);
     gm_log(FALSE, G_LOG_LEVEL_DEBUG, "unlocked retrieve_mutex");
 }
 
@@ -2188,14 +2188,14 @@ gchar *get_localfile_from_uri(gchar * uri)
                 idledata->tmp = g_file_new_for_path(localfile);
                 idledata->cancel = g_cancellable_new();
                 gm_log(verbose, G_LOG_LEVEL_DEBUG, "locking idledata->caching");
-                g_mutex_lock(idledata->caching);
+                g_mutex_lock( &(idledata->caching) );
                 gm_log(verbose, G_LOG_LEVEL_INFO, "caching uri to localfile via gio asynchronously");
                 g_file_copy_async(idledata->src, idledata->tmp, G_FILE_COPY_NONE,
                                   G_PRIORITY_DEFAULT, idledata->cancel, cache_callback, NULL, ready_callback, NULL);
                 gm_log(verbose, G_LOG_LEVEL_DEBUG, "waiting for idledata->caching_complete");
-                g_cond_wait( &(idledata->caching_complete), idledata->caching);
+                g_cond_wait( &(idledata->caching_complete), &(idledata->caching) );
                 gm_log(verbose, G_LOG_LEVEL_DEBUG, "unlocking idledata->caching");
-                g_mutex_unlock(idledata->caching);
+                g_mutex_unlock( &(idledata->caching) );
                 idledata->tmpfile = TRUE;
             }
         } else {

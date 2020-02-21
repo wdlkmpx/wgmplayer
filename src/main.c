@@ -955,13 +955,15 @@ int main(int argc, char *argv[])
     autopause = FALSE;
 
 #ifdef GIO_ENABLED
-    idledata->caching = g_mutex_new();
+    g_mutex_init( &(idledata->caching) );
     g_cond_init( &(idledata->caching_complete) );
 #endif
 
     retrieve_metadata_pool = g_thread_pool_new(retrieve_metadata, NULL, 10, TRUE, NULL);
-    retrieve_mutex = g_mutex_new();
-    set_mutex = g_mutex_new();
+
+    g_mutex_init(&retrieve_mutex);
+    g_mutex_init(&set_mutex);
+
     if (argv[fileindex] != NULL) {
 #ifdef GIO_ENABLED
         file = g_file_new_for_commandline_arg(argv[fileindex]);

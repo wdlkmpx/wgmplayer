@@ -440,7 +440,7 @@ static void gmtk_media_player_init(GmtkMediaPlayer * player)
     player->mplayer_thread = NULL;
     player->aspect_ratio = ASPECT_DEFAULT;
     g_cond_init( &(player->mplayer_complete_cond) );
-    player->thread_running = g_mutex_new();
+    g_mutex_init( &(player->thread_running) );
     player->video_width = 0;
     player->video_height = 0;
     player->video_present = FALSE;
@@ -489,7 +489,7 @@ static void gmtk_media_player_init(GmtkMediaPlayer * player)
     player->title = NULL;
     player->album = NULL;
     player->disposed = FALSE;
-    player->player_lock = g_mutex_new();
+    g_mutex_init( &(player->player_lock) );
     player->name_regex = g_regex_new(".*name\\s*:\\s*(.*)\n", G_REGEX_CASELESS, 0, NULL);
     player->genre_regex = g_regex_new(".*genre\\s*:\\s*(.*)\n", G_REGEX_CASELESS, 0, NULL);
     player->title_regex = g_regex_new(".*title\\s*:\\s*(.*)\n", G_REGEX_CASELESS, 0, NULL);
@@ -2385,7 +2385,7 @@ gpointer launch_mplayer(gpointer data)
     player->hardware_ac3 = FALSE;
 
     gm_log(player->debug, G_LOG_LEVEL_DEBUG, "locking thread_running");
-    g_mutex_lock(player->thread_running);
+    g_mutex_lock( &(player->thread_running) );
 
     do {
         gm_log(player->debug, G_LOG_LEVEL_INFO, "setting up mplayer");
@@ -2940,7 +2940,7 @@ gpointer launch_mplayer(gpointer data)
             // Now this thread waits till somebody signals player->mplayer_complete_cond
 
             gm_log(player->debug, G_LOG_LEVEL_DEBUG, "waiting for mplayer_complete_cond");
-            g_cond_wait( &(player->mplayer_complete_cond), player->thread_running);
+            g_cond_wait( &(player->mplayer_complete_cond), &(player->thread_running) );
             gm_log(player->debug, G_LOG_LEVEL_DEBUG, "mplayer_complete_cond was signalled");
 
             g_source_remove(player->watch_in_id);
@@ -3058,7 +3058,7 @@ gpointer launch_mplayer(gpointer data)
     gmtk_media_player_log_state(player, "finished");
 
     gm_log(player->debug, G_LOG_LEVEL_DEBUG, "unlocking thread_running");
-    g_mutex_unlock(player->thread_running);
+    g_mutex_unlock( &(player->thread_running) );
 
     if (player->restart) {
         g_signal_emit_by_name(player, "restart-shutdown-complete", NULL);
