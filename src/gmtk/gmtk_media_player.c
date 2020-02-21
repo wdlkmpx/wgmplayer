@@ -2523,20 +2523,19 @@ gpointer launch_mplayer(gpointer data)
                         argv[argn++] = g_strdup_printf("-zoom");
                     }
                 }
-
-                if (player->deinterlace) {
-                    argv[argn++] = g_strdup_printf("-vf-pre");
-                    argv[argn++] = g_strdup_printf("yadif,softskip,scale");
-                }
-
-                if (player->post_processing_level > 0) {
-                    argv[argn++] = g_strdup_printf("-vf-add");
-                    argv[argn++] = g_strdup_printf("pp=ac/tn:a");
-                    argv[argn++] = g_strdup_printf("-autoq");
-                    argv[argn++] = g_strdup_printf("%d", player->post_processing_level);
-                }
-
             }
+        }
+
+        if (player->deinterlace) {
+            argv[argn++] = g_strdup_printf("-vf-pre");
+            argv[argn++] = g_strdup_printf("yadif,softskip,scale");
+        }
+
+        if (player->post_processing_level > 0) {
+            argv[argn++] = g_strdup_printf("-vf-add");
+            argv[argn++] = g_strdup_printf("pp=ac/tn:a");
+            argv[argn++] = g_strdup_printf("-autoq");
+            argv[argn++] = g_strdup_printf("%d", player->post_processing_level);
         }
 
         argv[argn++] = g_strdup_printf("-vf-add");
