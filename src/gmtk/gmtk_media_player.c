@@ -30,8 +30,15 @@ G_DEFINE_TYPE(GmtkMediaPlayer, gmtk_media_player, GTK_TYPE_EVENT_BOX);
 static GObjectClass *parent_class = NULL;
 
 static void gmtk_media_player_dispose(GObject * object);
+
+#if GTK_CHECK_VERSION(3, 0, 0)
+// https://developer.gnome.org/gtk3/stable/GtkWidget.html#GtkWidget-draw
 static gboolean gmtk_media_player_draw_event(GtkWidget * widget, cairo_t * cr);
+#else
+// https://developer.gnome.org/gtk2/stable/GtkWidget.html#GtkWidget-expose-event
 static gboolean gmtk_media_player_expose_event(GtkWidget * widget, GdkEventExpose * event);
+#endif
+
 static void gmtk_media_player_size_allocate(GtkWidget * widget, GtkAllocation * allocation);
 static gboolean player_key_press_event_callback(GtkWidget * widget, GdkEventKey * event, gpointer data);
 static gboolean player_button_press_event_callback(GtkWidget * widget, GdkEventButton * event, gpointer data);
@@ -320,7 +327,7 @@ static void gmtk_media_player_class_init(GmtkMediaPlayerClass * class)
 
     parent_class = g_type_class_peek_parent(class);
     G_OBJECT_CLASS(class)->dispose = gmtk_media_player_dispose;
-#ifdef GTK3_ENABLED
+#if GTK_CHECK_VERSION(3, 0, 0)
     widget_class->draw = gmtk_media_player_draw_event;
 #else
     widget_class->expose_event = gmtk_media_player_expose_event;
@@ -614,6 +621,7 @@ static void gmtk_media_player_dispose(GObject * object)
     G_OBJECT_CLASS(parent_class)->dispose(object);
 }
 
+#if GTK_CHECK_VERSION(3, 0, 0)
 static gboolean gmtk_media_player_draw_event(GtkWidget * widget, cairo_t * cr)
 {
     GtkStyle *style;
@@ -629,11 +637,12 @@ static gboolean gmtk_media_player_draw_event(GtkWidget * widget, cairo_t * cr)
 
     return FALSE;
 }
-
+#else
 static gboolean gmtk_media_player_expose_event(GtkWidget * widget, GdkEventExpose * event)
 {
     return FALSE;
 }
+#endif
 
 gboolean gmtk_media_player_send_key_press_event(GmtkMediaPlayer * widget, GdkEventKey * event, gpointer data)
 {
