@@ -32,7 +32,6 @@
 #include "../pixmaps/gnome_mplayer.xpm"
 #include "langlist.h"
 
-static GdkWindow *window_container;
 static GtkWidget *fs_window;
 static GtkWidget *fs_controls;
 
@@ -3441,9 +3440,6 @@ void menuitem_edit_take_screenshot_callback(GtkMenuItem * menuitem, void *data)
 
 void menuitem_fs_callback(GtkMenuItem * menuitem, void *data)
 {
-    GdkScreen *screen;
-    GdkRectangle rect;
-    gint wx, wy;
     static gboolean restore_playlist;
     static gboolean restore_details;
     static gboolean restore_info;
@@ -3587,7 +3583,6 @@ void config_apply(GtkWidget * widget, void *data)
 {
     gint oldosd;
     gboolean old_disable_framedrop;
-    gchar *filename;
     GdkColor sub_color;
 
     if (vo != NULL) {

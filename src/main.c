@@ -577,7 +577,7 @@ int main(int argc, char *argv[])
     gint fileindex = 1;
     GError *error = NULL;
     GOptionContext *context;
-    gint i;
+    guint i;
     gdouble volume = 100.0;
     gchar *accelerator_keys;
     gchar **parse;
