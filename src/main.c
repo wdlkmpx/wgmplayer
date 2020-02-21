@@ -696,7 +696,6 @@ int main(int argc, char *argv[])
     skip_fixed_allocation_on_show = FALSE;
     skip_fixed_allocation_on_hide = FALSE;
     pref_volume = -1;
-    enable_global_menu = FALSE;
     cover_art_uri = NULL;
     resume_mode = RESUME_ALWAYS_ASK;
 
@@ -810,21 +809,6 @@ int main(int argc, char *argv[])
     if (single_instance) {
         replace_and_play = gm_pref_store_get_boolean_with_default (gm_store, REPLACE_AND_PLAY, replace_and_play);
         bring_to_front = gm_pref_store_get_boolean_with_default (gm_store, BRING_TO_FRONT, bring_to_front);
-    }
-
-    enable_global_menu = gm_pref_store_get_boolean_with_default (gm_store, ENABLE_GLOBAL_MENU, enable_global_menu);
-    gm_log(verbose, G_LOG_LEVEL_DEBUG, "Enable global menu preference value is %s",
-           gm_bool_to_string(enable_global_menu));
-    if (!enable_global_menu) {
-        if (g_getenv("UBUNTU_MENUPROXY") != NULL) {
-            if (g_ascii_strcasecmp(g_getenv("UBUNTU_MENUPROXY"), "0") == 0)
-                enable_global_menu = FALSE;
-            if (g_ascii_strcasecmp(g_getenv("UBUNTU_MENUPROXY"), "1") == 0)
-                enable_global_menu = TRUE;
-        }
-        gm_log(verbose, G_LOG_LEVEL_DEBUG,
-               "Enable global menu preference value is %s after reading UBUNTU_MENUPROXY",
-               gm_bool_to_string(enable_global_menu));
     }
 
     if (mplayer_bin == NULL)

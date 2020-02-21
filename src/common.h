@@ -116,9 +116,6 @@
 
 #define ACCELERATOR_KEYS	"accelerator-keys"
 
-// set this to true in gconf/dconf when using with gnome global menus
-#define ENABLE_GLOBAL_MENU  "enable-global-menu"
-
 // JavaScript Playstates
 #define STATE_UNDEFINED     0
 #define STATE_STOPPED       1

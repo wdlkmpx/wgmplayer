@@ -548,13 +548,10 @@ void adjust_layout()
     }
 
     if (!fullscreen) {
-        if (!enable_global_menu) {
-            gtk_widget_get_allocation(menubar, &alloc);
-            gm_log(verbose, G_LOG_LEVEL_DEBUG, "menubar = %i", alloc.height);
-            if (!fullscreen)
-                total_height += alloc.height;
-            gm_log(verbose, G_LOG_LEVEL_DEBUG, "total_height = %i", total_height);
-        }
+        gtk_widget_get_allocation(menubar, &alloc);
+        gm_log(verbose, G_LOG_LEVEL_DEBUG, "menubar = %i", alloc.height);
+        total_height += alloc.height;
+        gm_log(verbose, G_LOG_LEVEL_DEBUG, "total_height = %i", total_height);
     }
 
     if (showcontrols) {
