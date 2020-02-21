@@ -677,7 +677,7 @@ int main(int argc, char *argv[])
     lang_group = NULL;
     audio_group = NULL;
     disable_cover_art_fetch = FALSE;
-    fullscreen = 0;
+    fullscreen = FALSE;
     vo = NULL;
     data = NULL;
     max_data = NULL;
@@ -691,7 +691,7 @@ int main(int argc, char *argv[])
     start_second = 0;
     play_length = 0;
     save_loc = TRUE;
-    //screensaver_disabled = FALSE;
+
     update_control_flag = FALSE;
     skip_fixed_allocation_on_show = FALSE;
     skip_fixed_allocation_on_hide = FALSE;
@@ -699,6 +699,10 @@ int main(int argc, char *argv[])
     enable_global_menu = FALSE;
     cover_art_uri = NULL;
     resume_mode = RESUME_ALWAYS_ASK;
+
+    use_hardware_codecs = FALSE;
+    use_crystalhd_codecs = FALSE;
+    disable_ass = FALSE;
 
     g_type_init();
     gtk_init(&argc, &argv);
@@ -745,8 +749,8 @@ int main(int argc, char *argv[])
     gm_store = gm_pref_store_new("gnome-mplayer");
     vo = gm_pref_store_get_string(gm_store, VO);
     audio_device.alsa_mixer = gm_pref_store_get_string(gm_store, ALSA_MIXER);
-    use_hardware_codecs = gm_pref_store_get_boolean(gm_store, USE_HARDWARE_CODECS);
-    use_crystalhd_codecs = gm_pref_store_get_boolean(gm_store, USE_CRYSTALHD_CODECS);
+    use_hardware_codecs = gm_pref_store_get_boolean_with_default (gm_store, USE_HARDWARE_CODECS, use_hardware_codecs);
+    use_crystalhd_codecs = gm_pref_store_get_boolean_with_default (gm_store, USE_CRYSTALHD_CODECS, use_crystalhd_codecs);
     osdlevel = gm_pref_store_get_int(gm_store, OSDLEVEL);
     pplevel = gm_pref_store_get_int(gm_store, PPLEVEL);
 #ifndef HAVE_ASOUNDLIB
@@ -756,31 +760,30 @@ int main(int argc, char *argv[])
     }
 #endif
     audio_channels = gm_pref_store_get_int(gm_store, AUDIO_CHANNELS);
-    use_hw_audio = gm_pref_store_get_boolean(gm_store, USE_HW_AUDIO);
-    fullscreen = gm_pref_store_get_boolean(gm_store, FULLSCREEN);
-    softvol = gm_pref_store_get_boolean(gm_store, SOFTVOL);
-    remember_softvol = gm_pref_store_get_boolean(gm_store, REMEMBER_SOFTVOL);
+    use_hw_audio = gm_pref_store_get_boolean_with_default (gm_store, USE_HW_AUDIO, use_hw_audio);
+    fullscreen = gm_pref_store_get_boolean_with_default (gm_store, FULLSCREEN, fullscreen);
+    softvol = gm_pref_store_get_boolean_with_default (gm_store, SOFTVOL, softvol);
+    remember_softvol = gm_pref_store_get_boolean_with_default (gm_store, REMEMBER_SOFTVOL, remember_softvol);
     volume_softvol = gm_pref_store_get_float(gm_store, VOLUME_SOFTVOL);
     volume_gain = gm_pref_store_get_int(gm_store, VOLUME_GAIN);
-    forcecache = gm_pref_store_get_boolean(gm_store, FORCECACHE);
-    vertical_layout = gm_pref_store_get_boolean(gm_store, VERTICAL);
-    playlist_visible = gm_pref_store_get_boolean(gm_store, SHOWPLAYLIST);
-    details_visible = gm_pref_store_get_boolean(gm_store, SHOWDETAILS);
-    show_notification = gm_pref_store_get_boolean(gm_store, SHOW_NOTIFICATION);
-    show_status_icon = gm_pref_store_get_boolean(gm_store, SHOW_STATUS_ICON);
+    forcecache = gm_pref_store_get_boolean_with_default (gm_store, FORCECACHE, forcecache);
+    vertical_layout = gm_pref_store_get_boolean_with_default (gm_store, VERTICAL, vertical_layout);
+    playlist_visible = gm_pref_store_get_boolean_with_default (gm_store, SHOWPLAYLIST, playlist_visible);
+    details_visible = gm_pref_store_get_boolean_with_default (gm_store, SHOWDETAILS, details_visible);
+    show_notification = gm_pref_store_get_boolean_with_default (gm_store, SHOW_NOTIFICATION, show_notification);
+    show_status_icon = gm_pref_store_get_boolean_with_default (gm_store, SHOW_STATUS_ICON, show_status_icon);
     showcontrols = gm_pref_store_get_boolean_with_default(gm_store, SHOW_CONTROLS, showcontrols);
     restore_controls = showcontrols;
-    disable_deinterlace = gm_pref_store_get_boolean(gm_store, DISABLEDEINTERLACE);
-    disable_framedrop = gm_pref_store_get_boolean(gm_store, DISABLEFRAMEDROP);
-    disable_context_menu = gm_pref_store_get_boolean(gm_store, DISABLECONTEXTMENU);
-    disable_ass = gm_pref_store_get_boolean(gm_store, DISABLEASS);
-    disable_embeddedfonts = gm_pref_store_get_boolean(gm_store, DISABLEEMBEDDEDFONTS);
-    disable_pause_on_click = gm_pref_store_get_boolean(gm_store, DISABLEPAUSEONCLICK);
-    disable_animation = gm_pref_store_get_boolean(gm_store, DISABLEANIMATION);
+    disable_deinterlace = gm_pref_store_get_boolean_with_default(gm_store, DISABLEDEINTERLACE, disable_deinterlace);
+    disable_framedrop = gm_pref_store_get_boolean_with_default(gm_store, DISABLEFRAMEDROP, disable_framedrop);
+    disable_context_menu = gm_pref_store_get_boolean_with_default (gm_store, DISABLECONTEXTMENU, disable_context_menu);
+    disable_ass = gm_pref_store_get_boolean_with_default (gm_store, DISABLEASS, disable_ass);
+    disable_embeddedfonts = gm_pref_store_get_boolean_with_default (gm_store, DISABLEEMBEDDEDFONTS, disable_embeddedfonts);
+    disable_pause_on_click = gm_pref_store_get_boolean_with_default (gm_store, DISABLEPAUSEONCLICK, disable_pause_on_click);
+    disable_animation = gm_pref_store_get_boolean_with_default (gm_store, DISABLEANIMATION, disable_animation);
     disable_cover_art_fetch =
         gm_pref_store_get_boolean_with_default(gm_store, DISABLE_COVER_ART_FETCH, disable_cover_art_fetch);
     auto_hide_timeout = gm_pref_store_get_int_with_default(gm_store, AUTOHIDETIMEOUT, auto_hide_timeout);
-    disable_cover_art_fetch = gm_pref_store_get_boolean(gm_store, DISABLE_COVER_ART_FETCH);
     use_mediakeys = gm_pref_store_get_boolean_with_default(gm_store, USE_MEDIAKEYS, use_mediakeys);
     use_defaultpl = gm_pref_store_get_boolean_with_default(gm_store, USE_DEFAULTPL, use_defaultpl);
     metadata_codepage = gm_pref_store_get_string(gm_store, METADATACODEPAGE);
@@ -795,21 +798,21 @@ int main(int argc, char *argv[])
     }
     subtitle_codepage = gm_pref_store_get_string(gm_store, SUBTITLECODEPAGE);
     subtitle_color = gm_pref_store_get_string(gm_store, SUBTITLECOLOR);
-    subtitle_outline = gm_pref_store_get_boolean(gm_store, SUBTITLEOUTLINE);
-    subtitle_shadow = gm_pref_store_get_boolean(gm_store, SUBTITLESHADOW);
+    subtitle_outline = gm_pref_store_get_boolean_with_default (gm_store, SUBTITLEOUTLINE, subtitle_outline);
+    subtitle_shadow = gm_pref_store_get_boolean_with_default (gm_store, SUBTITLESHADOW, subtitle_shadow);
     subtitle_margin = gm_pref_store_get_int(gm_store, SUBTITLE_MARGIN);
     subtitle_fuzziness = gm_pref_store_get_int(gm_store, SUBTITLE_FUZZINESS);
-    showsubtitles = gm_pref_store_get_boolean_with_default(gm_store, SHOW_SUBTITLES, TRUE);
+    showsubtitles = gm_pref_store_get_boolean_with_default(gm_store, SHOW_SUBTITLES, showsubtitles);
 
     resume_mode = gm_pref_store_get_int(gm_store, RESUME_MODE);
 
-    single_instance = gm_pref_store_get_boolean(gm_store, SINGLE_INSTANCE);
+    single_instance = gm_pref_store_get_boolean_with_default (gm_store, SINGLE_INSTANCE, single_instance);
     if (single_instance) {
-        replace_and_play = gm_pref_store_get_boolean(gm_store, REPLACE_AND_PLAY);
-        bring_to_front = gm_pref_store_get_boolean(gm_store, BRING_TO_FRONT);
+        replace_and_play = gm_pref_store_get_boolean_with_default (gm_store, REPLACE_AND_PLAY, replace_and_play);
+        bring_to_front = gm_pref_store_get_boolean_with_default (gm_store, BRING_TO_FRONT, bring_to_front);
     }
 
-    enable_global_menu = gm_pref_store_get_boolean(gm_store, ENABLE_GLOBAL_MENU);
+    enable_global_menu = gm_pref_store_get_boolean_with_default (gm_store, ENABLE_GLOBAL_MENU, enable_global_menu);
     gm_log(verbose, G_LOG_LEVEL_DEBUG, "Enable global menu preference value is %s",
            gm_bool_to_string(enable_global_menu));
     if (!enable_global_menu) {
