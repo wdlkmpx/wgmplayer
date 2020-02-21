@@ -700,15 +700,6 @@ int main(int argc, char *argv[])
     cover_art_uri = NULL;
     resume_mode = RESUME_ALWAYS_ASK;
 
-
-    // All Gtk docs say we need to call g_thread_init() and gdk_threads_init() before gtk_init()
-    //
-    // Why do we not call this? Why does the program seem to deadlock if we enable this call?
-    // I assume once we have truly fixed locking/threading this will work....
-    // gdk_threads_init();
-    if (!g_thread_supported())
-        g_thread_init(NULL);
-
     g_type_init();
     gtk_init(&argc, &argv);
     g_setenv("PULSE_PROP_media.role", "video", TRUE);
