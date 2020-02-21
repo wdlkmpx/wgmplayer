@@ -2677,35 +2677,6 @@ gboolean fs_callback(GtkWidget * widget, GdkEventExpose * event, void *data)
     return FALSE;
 }
 
-gboolean enter_button_callback(GtkWidget * widget, GdkEventCrossing * event, gpointer data)
-{
-    GtkAllocation alloc;
-
-    gtk_widget_get_allocation(widget, &alloc);
-
-#ifdef GTK3_ENABLED
-#else
-    gdk_draw_rectangle(gtk_widget_get_window(widget), gtk_widget_get_style(widget)->fg_gc[GTK_STATE_NORMAL],
-                       FALSE, 0, 0, alloc.width - 1, alloc.height - 1);
-#endif
-    in_button = TRUE;
-    return FALSE;
-}
-
-gboolean leave_button_callback(GtkWidget * widget, GdkEventCrossing * event, gpointer data)
-{
-    GtkAllocation alloc;
-
-    gtk_widget_get_allocation(widget, &alloc);
-#ifdef GTK3_ENABLED
-#else
-    gdk_draw_rectangle(gtk_widget_get_window(widget), gtk_widget_get_style(widget)->bg_gc[GTK_STATE_NORMAL],
-                       FALSE, 0, 0, alloc.width - 1, alloc.height - 1);
-#endif
-    in_button = FALSE;
-    return FALSE;
-}
-
 gboolean fs_controls_entered(GtkWidget * widget, GdkEventCrossing * event, gpointer data)
 {
     mouse_over_controls = TRUE;
