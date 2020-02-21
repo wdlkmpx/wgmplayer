@@ -2599,13 +2599,11 @@ gboolean make_panel_and_mouse_invisible(gpointer data)
 {
     GTimeVal currenttime;
     GdkCursor *cursor;
-#ifdef GTK3_ENABLED
+#if GTK_CHECK_VERSION(3, 0, 0)
     cairo_surface_t *s;
-    GdkPixbuf *cursor_pixbuf;
-#else
-    GdkColor cursor_color = { 0, 0, 0, 0 };
-    GdkPixmap *cursor_source;
 #endif
+    GdkPixbuf *cursor_pixbuf;
+
     if ((fullscreen || always_hide_after_timeout) && auto_hide_timeout > 0
         && (gtk_widget_get_visible(controls_box) || fs_controls != NULL)
         && mouse_over_controls == FALSE) {
@@ -2638,20 +2636,21 @@ gboolean make_panel_and_mouse_invisible(gpointer data)
     } else {
 
         if (last_movement_time > 0 && currenttime.tv_sec > last_movement_time) {
-#ifdef GTK3_ENABLED
+#if GTK_CHECK_VERSION(3, 0, 0)
             s = cairo_image_surface_create(CAIRO_FORMAT_A1, 1, 1);
             cursor_pixbuf = gdk_pixbuf_get_from_surface(s, 0, 0, 1, 1);
             cairo_surface_destroy(s);
+#else
+            cursor_pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8, 1, 1);
+#endif
             cursor = gdk_cursor_new_from_pixbuf(gdk_display_get_default(), cursor_pixbuf, 0, 0);
             g_object_unref(cursor_pixbuf);
             gdk_window_set_cursor(gtk_widget_get_window(window), cursor);
+#if GTK_CHECK_VERSION(3, 0, 0)
             g_object_unref(cursor);
 #else
-            cursor_source = gdk_pixmap_new(NULL, 1, 1, 1);
-            cursor = gdk_cursor_new_from_pixmap(cursor_source, cursor_source, &cursor_color, &cursor_color, 0, 0);
-            gdk_pixmap_unref(cursor_source);
-            gdk_window_set_cursor(gtk_widget_get_window(window), cursor);
-            gdk_cursor_unref(cursor);
+            // gtk2.24: g_object_unref segfaults..
+            gdk_cursor_unref(cursor); // gdk_cursor_unref is not deprecated
 #endif
         }
     }
