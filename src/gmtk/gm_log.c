@@ -79,9 +79,6 @@ static int fixup_loglevel(gboolean force_info_to_message, GLogLevelFlags * log_l
     return 1;
 }
 
-// in newer versions of GLib you can use a static (or stack-allocated)
-// GMutex directly, but for older versions you need to use a GStaticMutex
-static GStaticMutex ptr2strmutex = G_STATIC_MUTEX_INIT;
 static GHashTable *ptr2str = NULL;
 
 static gboolean key_equal_func(gconstpointer a, gconstpointer b)
@@ -95,7 +92,7 @@ static gboolean key_equal_func(gconstpointer a, gconstpointer b)
 
 /*
    This function operates on static data structures, thus it needs to be
-   locked by the above mutex.
+   locked by the ptr2strmutex mutex.
    
    It returns a string representation of the current thread number.
    Unfortunately, in GLib you can only access g_thread_self(), which is a
@@ -133,9 +130,9 @@ static const gchar *threadid()
     if (!g_getenv("GM_DEBUG_THREADS")) {
         return "";
     }
-    g_static_mutex_lock(&ptr2strmutex);
+    g_mutex_lock(&ptr2strmutex);
     str = threadid_core(NULL);
-    g_static_mutex_unlock(&ptr2strmutex);
+    g_mutex_unlock(&ptr2strmutex);
     return str;
 }
 
@@ -147,9 +144,9 @@ void gm_log_name_this_thread(gchar const *const name)
     if (!g_getenv("GM_DEBUG_THREADS")) {
         return;
     }
-    g_static_mutex_lock(&ptr2strmutex);
+    g_mutex_lock(&ptr2strmutex);
     (void) threadid_core(name);
-    g_static_mutex_unlock(&ptr2strmutex);
+    g_mutex_unlock(&ptr2strmutex);
 }
 
 // Note that the format should not have a trailing \n - the glib logging system adds it

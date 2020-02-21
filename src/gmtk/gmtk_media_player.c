@@ -393,6 +393,8 @@ static void gmtk_media_player_init(GmtkMediaPlayer * player)
 {
     GtkStyle *style;
 
+    g_mutex_init(&ptr2strmutex); // gm_log.c
+
     // player is an GtkEventBox that holds a GtkAlignment that holds a GtkSocket
     // mplayer uses the xwindow id from the socket to display media
 

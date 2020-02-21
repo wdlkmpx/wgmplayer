@@ -34,6 +34,8 @@ extern "C" {
     void gm_logsp(gboolean force_info_to_message, GLogLevelFlags log_level, const gchar * prefix, const gchar * msg);
     void gm_log_name_this_thread(gchar const *const name);
 
+    GMutex ptr2strmutex;
+
 #ifdef __cplusplus
 }
 #endif
