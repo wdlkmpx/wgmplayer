@@ -953,10 +953,12 @@ int main(int argc, char *argv[])
 
     create_window();
     autopause = FALSE;
+
 #ifdef GIO_ENABLED
     idledata->caching = g_mutex_new();
-    idledata->caching_complete = g_cond_new();
+    g_cond_init( &(idledata->caching_complete) );
 #endif
+
     retrieve_metadata_pool = g_thread_pool_new(retrieve_metadata, NULL, 10, TRUE, NULL);
     retrieve_mutex = g_mutex_new();
     set_mutex = g_mutex_new();

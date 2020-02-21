@@ -371,7 +371,7 @@ struct _GmtkMediaPlayer {
     GmtkMediaPlayerMediaType type;
 
     GMutex *thread_running;
-    GCond *mplayer_complete_cond;
+    GCond mplayer_complete_cond;
     gchar *mplayer_binary;
     gboolean use_mplayer2;
 
