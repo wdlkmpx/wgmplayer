@@ -54,18 +54,7 @@ gnome_mplayer_SOURCES = \
 	common.h \
 	gtkcompat.c \
 	gtkcompat.h \
-	../pixmaps/gnome_mplayer.xpm \
-	../pixmaps/media-playback-pause.xpm \
-	../pixmaps/media-playback-start.xpm \
-	../pixmaps/media-playback-stop.xpm \
-	../pixmaps/media-seek-backward.xpm \
-	../pixmaps/media-seek-forward.xpm \
-	../pixmaps/media-skip-backward.xpm \
-	../pixmaps/media-skip-forward.xpm \
-	../pixmaps/view-fullscreen.xpm \
-	langlist.h
-
-
+	../pixmaps/gnome_mplayer.xpm
 
 gnome_mplayer_LDADD = \
     -lm \
