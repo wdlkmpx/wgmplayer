@@ -31,8 +31,10 @@
 #ifdef X11_ENABLED
 #include <gdk/gdkx.h>
 #endif
-#include <gmlib.h>
-#include <gmtk.h>
+
+#include "gmlib.h"
+#include "gmtk.h"
+
 #include <gdk/gdkkeysyms.h>
 #include <glib.h>
 #include <glib/gstdio.h>

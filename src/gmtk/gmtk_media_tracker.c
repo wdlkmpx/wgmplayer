@@ -82,11 +82,7 @@ static void gmtk_media_tracker_init(GmtkMediaTracker * tracker)
 
     gtk_widget_push_composite_child();
 
-#if GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION >= 2
     tracker->scale = gtk_scale_new_with_range(GTK_ORIENTATION_HORIZONTAL, 0, 1, 0.001);
-#else
-    tracker->scale = gtk_hscale_new_with_range(0, 1, 0.001);
-#endif
     gtk_scale_set_draw_value(GTK_SCALE(tracker->scale), FALSE);
     gtk_widget_set_can_focus(tracker->scale, FALSE);
     gtk_widget_set_size_request(tracker->scale, 200, -1);
@@ -103,12 +99,7 @@ static void gmtk_media_tracker_init(GmtkMediaTracker * tracker)
     g_signal_connect_swapped(G_OBJECT(tracker->scale), "motion-notify-event",
                              G_CALLBACK(gmtk_media_tracker_motion_notify), tracker);
 
-#if GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION >= 2
     tracker->hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-    gtk_box_set_homogeneous(GTK_BOX(tracker->hbox), FALSE);
-#else
-    tracker->hbox = gtk_hbox_new(0, FALSE);
-#endif
     tracker->message = gtk_label_new("");
     gtk_label_set_markup(GTK_LABEL(tracker->message), "<small> </small>");
     gtk_misc_set_alignment(GTK_MISC(tracker->message), 0.0, 0.0);

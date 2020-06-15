@@ -23,8 +23,7 @@
  */
 
 #include <gtk/gtk.h>
-#include <gmlib.h>
-
+#include "gmlib.h"
 
 #ifdef GIO_ENABLED
 #include <gio/gio.h>

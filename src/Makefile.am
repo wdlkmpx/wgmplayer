@@ -52,6 +52,8 @@ gnome_mplayer_SOURCES = \
 	support.h \
 	main.c \
 	common.h \
+	gtkcompat.c \
+	gtkcompat.h \
 	../pixmaps/gnome_mplayer.xpm \
 	../pixmaps/media-playback-pause.xpm \
 	../pixmaps/media-playback-start.xpm \

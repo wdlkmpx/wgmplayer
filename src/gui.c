@@ -1153,12 +1153,7 @@ void create_folder_progress_window()
     gtk_window_set_resizable(GTK_WINDOW(folder_progress_window), FALSE);
     gtk_widget_set_size_request(folder_progress_window, 400, -1);
 
-#if GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION >= 2
     vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-    gtk_box_set_homogeneous(GTK_BOX(vbox), FALSE);
-#else
-    vbox = gtk_vbox_new(FALSE, 10);
-#endif
     folder_progress_bar = gtk_progress_bar_new();
     gtk_progress_bar_set_pulse_step(GTK_PROGRESS_BAR(folder_progress_bar), 0.10);
     folder_progress_label = gtk_label_new("");
@@ -1166,11 +1161,8 @@ void create_folder_progress_window()
 
     cancel = gtk_button_new_from_stock(GTK_STOCK_CANCEL);
     g_signal_connect(G_OBJECT(cancel), "clicked", G_CALLBACK(cancel_clicked), NULL);
-#if GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION >= 2
+
     hbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
-#else
-    hbox = gtk_hbutton_box_new();
-#endif
     gtk_button_box_set_layout(GTK_BUTTON_BOX(hbox), GTK_BUTTONBOX_END);
     gtk_container_add(GTK_CONTAINER(hbox), cancel);
 
@@ -2810,31 +2802,18 @@ void menuitem_open_location_callback(GtkMenuItem * menuitem, void *data)
 
     gtk_window_set_resizable(GTK_WINDOW(open_window), FALSE);
     gtk_window_set_title(GTK_WINDOW(open_window), _("Open Location"));
-#if GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION >= 2
+
     vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 6);
-    gtk_box_set_homogeneous(GTK_BOX(vbox), FALSE);
-#else
-    vbox = gtk_vbox_new(FALSE, 6);
-#endif
     label = gtk_label_new(_("Location:"));
     open_location = gtk_entry_new();
     gtk_entry_set_width_chars(GTK_ENTRY(open_location), 50);
     gtk_entry_set_activates_default(GTK_ENTRY(open_location), TRUE);
-#if GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION >= 2
+
     item_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 6);
-    gtk_box_set_homogeneous(GTK_BOX(item_box), FALSE);
-#else
-    item_box = gtk_hbox_new(FALSE, 6);
-#endif
     gtk_box_pack_start(GTK_BOX(item_box), label, FALSE, FALSE, 12);
     gtk_box_pack_end(GTK_BOX(item_box), open_location, TRUE, TRUE, 0);
 
-#if GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION >= 2
     button_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 6);
-    gtk_box_set_homogeneous(GTK_BOX(button_box), FALSE);
-#else
-    button_box = gtk_hbox_new(FALSE, 6);
-#endif
     cancel_button = gtk_button_new_from_stock(GTK_STOCK_CANCEL);
     open_button = gtk_button_new_from_stock(GTK_STOCK_OPEN);
     gtk_widget_set_can_default(open_button, TRUE);
@@ -4012,13 +3991,8 @@ void menuitem_advanced_callback(GtkMenuItem * menuitem, void *data)
 
     gtk_window_set_title(GTK_WINDOW(adv_window), _("Video Picture Adjustments"));
 
-#if GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION >= 2
     adv_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-    gtk_box_set_homogeneous(GTK_BOX(adv_vbox), FALSE);
-#else
-    adv_vbox = gtk_vbox_new(FALSE, 10);
-#endif
-    adv_hbutton_box = gtk_hbutton_box_new();
+    adv_hbutton_box = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
     gtk_button_box_set_layout(GTK_BUTTON_BOX(adv_hbutton_box), GTK_BUTTONBOX_END);
     adv_table = gtk_table_new(20, 2, FALSE);
 
@@ -4036,7 +4010,7 @@ void menuitem_advanced_callback(GtkMenuItem * menuitem, void *data)
     i++;
 
     label = gtk_label_new(_("Brightness"));
-    adv_brightness = gtk_hscale_new_with_range(-100.0, 100.0, 1.0);
+    adv_brightness = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, -100.0, 100.0, 1.0);
     gtk_widget_set_size_request(adv_brightness, 200, -1);
     gtk_range_set_value(GTK_RANGE(adv_brightness),
                         gmtk_media_player_get_attribute_integer(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_BRIGHTNESS));
@@ -4047,7 +4021,7 @@ void menuitem_advanced_callback(GtkMenuItem * menuitem, void *data)
     i++;
 
     label = gtk_label_new(_("Contrast"));
-    adv_contrast = gtk_hscale_new_with_range(-100.0, 100.0, 1.0);
+    adv_contrast = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, -100.0, 100.0, 1.0);
     gtk_widget_set_size_request(adv_contrast, 200, -1);
     gtk_range_set_value(GTK_RANGE(adv_contrast),
                         gmtk_media_player_get_attribute_integer(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_CONTRAST));
@@ -4058,7 +4032,7 @@ void menuitem_advanced_callback(GtkMenuItem * menuitem, void *data)
     i++;
 
     label = gtk_label_new(_("Gamma"));
-    adv_gamma = gtk_hscale_new_with_range(-100.0, 100.0, 1.0);
+    adv_gamma = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, -100.0, 100.0, 1.0);
     gtk_widget_set_size_request(adv_gamma, 200, -1);
     gtk_range_set_value(GTK_RANGE(adv_gamma),
                         gmtk_media_player_get_attribute_integer(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_GAMMA));
@@ -4069,7 +4043,7 @@ void menuitem_advanced_callback(GtkMenuItem * menuitem, void *data)
     i++;
 
     label = gtk_label_new(_("Hue"));
-    adv_hue = gtk_hscale_new_with_range(-100.0, 100.0, 1.0);
+    adv_hue = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, -100.0, 100.0, 1.0);
     gtk_widget_set_size_request(adv_hue, 200, -1);
     gtk_range_set_value(GTK_RANGE(adv_hue),
                         gmtk_media_player_get_attribute_integer(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_HUE));
@@ -4080,7 +4054,7 @@ void menuitem_advanced_callback(GtkMenuItem * menuitem, void *data)
     i++;
 
     label = gtk_label_new(_("Saturation"));
-    adv_saturation = gtk_hscale_new_with_range(-100.0, 100.0, 1.0);
+    adv_saturation = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, -100.0, 100.0, 1.0);
     gtk_widget_set_size_request(adv_saturation, 200, -1);
     gtk_range_set_value(GTK_RANGE(adv_saturation),
                         gmtk_media_player_get_attribute_integer(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_SATURATION));
@@ -4476,49 +4450,14 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     gtk_window_set_icon(GTK_WINDOW(config_window), pb_icon);
 
     gtk_window_set_resizable(GTK_WINDOW(config_window), FALSE);
-#if GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION >= 2
     conf_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-    gtk_box_set_homogeneous(GTK_BOX(conf_vbox), FALSE);
-#else
-    conf_vbox = gtk_vbox_new(FALSE, 10);
-#endif
-#if GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION >= 2
     conf_page1 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-    gtk_box_set_homogeneous(GTK_BOX(conf_page1), FALSE);
-#else
-    conf_page1 = gtk_vbox_new(FALSE, 10);
-#endif
-#if GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION >= 2
     conf_page3 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-    gtk_box_set_homogeneous(GTK_BOX(conf_page3), FALSE);
-#else
-    conf_page3 = gtk_vbox_new(FALSE, 10);
-#endif
-#if GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION >= 2
     conf_page4 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-    gtk_box_set_homogeneous(GTK_BOX(conf_page4), FALSE);
-#else
-    conf_page4 = gtk_vbox_new(FALSE, 10);
-#endif
-#if GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION >= 2
     conf_page5 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-    gtk_box_set_homogeneous(GTK_BOX(conf_page5), FALSE);
-#else
-    conf_page5 = gtk_vbox_new(FALSE, 10);
-#endif
-#if GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION >= 2
     conf_page6 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-    gtk_box_set_homogeneous(GTK_BOX(conf_page6), FALSE);
-#else
-    conf_page6 = gtk_vbox_new(FALSE, 10);
-#endif
-#if GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION >= 2
     conf_page7 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-    gtk_box_set_homogeneous(GTK_BOX(conf_page7), FALSE);
-#else
-    conf_page7 = gtk_vbox_new(FALSE, 10);
-#endif
-    conf_hbutton_box = gtk_hbutton_box_new();
+    conf_hbutton_box = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
     gtk_button_box_set_layout(GTK_BUTTON_BOX(conf_hbutton_box), GTK_BUTTONBOX_END);
     conf_table = gtk_table_new(20, 2, FALSE);
 
@@ -4897,7 +4836,7 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
 #endif
 
     conf_label = gtk_label_new(_("On Screen Display Level:"));
-    config_osdlevel = gtk_hscale_new_with_range(0.0, 3.0, 1.0);
+    config_osdlevel = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, 0.0, 3.0, 1.0);
     gtk_range_set_value(GTK_RANGE(config_osdlevel), osdlevel);
     g_signal_connect(G_OBJECT(config_osdlevel), "format-value", G_CALLBACK(osdlevel_format_callback), NULL);
     g_signal_connect(G_OBJECT(config_osdlevel), "value-changed", G_CALLBACK(osdlevel_change_callback), NULL);
@@ -4909,7 +4848,7 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     i++;
 
     conf_label = gtk_label_new(_("Post-processing level:"));
-    config_pplevel = gtk_hscale_new_with_range(0.0, 6.0, 1.0);
+    config_pplevel = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, 0.0, 6.0, 1.0);
     g_signal_connect(G_OBJECT(config_pplevel), "format-value", G_CALLBACK(pplevel_format_callback), NULL);
     gtk_widget_set_size_request(config_pplevel, 150, -1);
     gtk_range_set_value(GTK_RANGE(config_pplevel), pplevel);
@@ -5096,7 +5035,7 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     i++;
 
     conf_label = gtk_label_new(_("Subtitle Load Fuzziness:"));
-    config_subtitle_fuzziness = gtk_hscale_new_with_range(0.0, 2.0, 1.0);
+    config_subtitle_fuzziness = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, 0.0, 2.0, 1.0);
     g_signal_connect(G_OBJECT(config_subtitle_fuzziness), "format-value",
                      G_CALLBACK(subtitle_fuzziness_format_callback), NULL);
     gtk_widget_set_size_request(config_subtitle_fuzziness, 150, -1);
@@ -6753,24 +6692,9 @@ GtkWidget *create_window()
     gtk_drag_dest_add_uri_targets(window);
     //Connect the signal for DnD
     g_signal_connect(G_OBJECT(window), "drag_data_received", G_CALLBACK(drop_callback), NULL);
-#if GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION >= 2
     vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-    gtk_box_set_homogeneous(GTK_BOX(vbox), FALSE);
-#else
-    vbox = gtk_vbox_new(FALSE, 0);
-#endif
-#if GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION >= 2
     hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-    gtk_box_set_homogeneous(GTK_BOX(hbox), FALSE);
-#else
-    hbox = gtk_hbox_new(FALSE, 0);
-#endif
-#if GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION >= 2
     controls_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-    gtk_box_set_homogeneous(GTK_BOX(controls_box), FALSE);
-#else
-    controls_box = gtk_vbox_new(FALSE, 0);
-#endif
     media = gmtk_media_player_new();
     g_signal_connect_swapped(G_OBJECT(media), "media_state_changed",
                              G_CALLBACK(player_media_state_changed_callback), NULL);
@@ -6786,20 +6710,10 @@ GtkWidget *create_window()
     media_label = gtk_label_new("");
     gtk_widget_set_size_request(media_label, 300, 100);
     gtk_label_set_ellipsize(GTK_LABEL(media_label), PANGO_ELLIPSIZE_END);
-#if GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION >= 2
     media_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
-    gtk_box_set_homogeneous(GTK_BOX(media_hbox), FALSE);
-#else
-    media_hbox = gtk_hbox_new(FALSE, 10);
-#endif
     g_signal_connect(media_hbox, "show", G_CALLBACK(view_option_show_callback), NULL);
     g_signal_connect(media_hbox, "size_allocate", G_CALLBACK(view_option_size_allocate_callback), NULL);
-#if GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION >= 2
     details_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-    gtk_box_set_homogeneous(GTK_BOX(details_vbox), FALSE);
-#else
-    details_vbox = gtk_vbox_new(FALSE, 10);
-#endif
     details_table = gtk_table_new(20, 2, FALSE);
     g_signal_connect(details_vbox, "show", G_CALLBACK(view_option_show_callback), NULL);
     g_signal_connect(details_vbox, "size_allocate", G_CALLBACK(view_option_size_allocate_callback), NULL);
@@ -6813,21 +6727,17 @@ GtkWidget *create_window()
     gtk_box_pack_start(GTK_BOX(vbox), details_vbox, FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(controls_box), hbox, FALSE, FALSE, 1);
     if (vertical_layout) {
-        pane = gtk_vpaned_new();
+        pane = gtk_paned_new (GTK_ORIENTATION_VERTICAL);
     } else {
-        pane = gtk_hpaned_new();
+        pane = gtk_paned_new (GTK_ORIENTATION_HORIZONTAL);
     }
     gtk_paned_pack1(GTK_PANED(pane), vbox, FALSE, TRUE);
     create_playlist_widget();
     g_signal_connect(plvbox, "show", G_CALLBACK(view_option_show_callback), NULL);
     g_signal_connect(plvbox, "hide", G_CALLBACK(view_option_hide_callback), NULL);
     g_signal_connect(plvbox, "size_allocate", G_CALLBACK(view_option_size_allocate_callback), NULL);
-#if GTK_MAJOR_VERSION == 3 && GTK_MINOR_VERSION >= 2
+
     vbox_master = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-    gtk_box_set_homogeneous(GTK_BOX(vbox_master), FALSE);
-#else
-    vbox_master = gtk_vbox_new(FALSE, 0);
-#endif
     gtk_box_pack_start(GTK_BOX(vbox_master), menubar, FALSE, FALSE, 0);
     gtk_widget_show(menubar);
     gtk_box_pack_start(GTK_BOX(vbox_master), pane, TRUE, TRUE, 0);
@@ -7026,7 +6936,7 @@ GtkWidget *create_window()
     // volume control
     if ((window_y > window_x)
         && (rpcontrols != NULL && g_ascii_strcasecmp(rpcontrols, "volumeslider") == 0)) {
-        vol_slider = gtk_vscale_new_with_range(0.0, 1.0, 0.20);
+        vol_slider = gtk_scale_new_with_range (GTK_ORIENTATION_VERTICAL, 0.0, 1.0, 0.20);
         gtk_widget_set_size_request(vol_slider, -1, window_y);
         gtk_range_set_inverted(GTK_RANGE(vol_slider), TRUE);
     } else {

@@ -26,3 +26,4 @@
 #include "gmtk_media_player.h"
 #include "gmtk_output_combo_box.h"
 #include "gmtk_common.h"
+#include "gtkcompat.h"
