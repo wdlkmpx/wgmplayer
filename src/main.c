@@ -643,7 +643,7 @@ int main(int argc, char *argv[])
     disable_framedrop = FALSE;
     softvol = TRUE;
     remember_softvol = TRUE;
-    volume_softvol = -1;
+    volume_softvol = 0.8;
     volume_gain = 0;
     subtitlefont = NULL;
     subtitle_codepage = NULL;
@@ -763,7 +763,7 @@ int main(int argc, char *argv[])
     fullscreen = gm_pref_store_get_boolean_with_default (gm_store, FULLSCREEN, fullscreen);
     softvol = gm_pref_store_get_boolean_with_default (gm_store, SOFTVOL, softvol);
     remember_softvol = gm_pref_store_get_boolean_with_default (gm_store, REMEMBER_SOFTVOL, remember_softvol);
-    volume_softvol = gm_pref_store_get_float(gm_store, VOLUME_SOFTVOL);
+    volume_softvol = gm_pref_store_get_float_with_default(gm_store, VOLUME_SOFTVOL, volume_softvol);
     volume_gain = gm_pref_store_get_int(gm_store, VOLUME_GAIN);
     forcecache = gm_pref_store_get_boolean_with_default (gm_store, FORCECACHE, forcecache);
     vertical_layout = gm_pref_store_get_boolean_with_default (gm_store, VERTICAL, vertical_layout);
