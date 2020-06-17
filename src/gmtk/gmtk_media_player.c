@@ -2569,8 +2569,15 @@ gpointer launch_mplayer(gpointer data)
             codecs = NULL;
         }
 
-        if (player->ao != NULL) {
+#ifdef __linux__
+        // problem with alsa OSS emulation in older distros, try to avoid OSS driver
+        if (player->ao == NULL) {
+            argv[argn++] = g_strdup_printf("-ao");
+            argv[argn++] = g_strdup_printf("pulse,jack,alsa");
+        }
+#endif
 
+        if (player->ao != NULL) {
             argv[argn++] = g_strdup_printf("-ao");
             argv[argn++] = g_strdup_printf("%s", player->ao);
 
