@@ -144,7 +144,6 @@ gint gm_pref_store_get_int_with_default(GmPrefStore * store, const gchar * key, 
     return value;
 }
 
-
 void gm_pref_store_set_int(GmPrefStore * store, const gchar * key, gint value)
 {
 
@@ -155,14 +154,26 @@ void gm_pref_store_set_int(GmPrefStore * store, const gchar * key, gint value)
 
 gfloat gm_pref_store_get_float(GmPrefStore * store, const gchar * key)
 {
-
     gfloat value = 0.0;
-
     if (store == NULL)
         return value;
 
     if (g_key_file_has_key(store->keyfile, store->context, key, NULL))
         value = g_key_file_get_double(store->keyfile, store->context, key, NULL);
+    return value;
+}
+
+gfloat gm_pref_store_get_float_with_default(GmPrefStore * store, const gchar * key, gfloat default_value)
+{
+    gfloat value = 0.0;
+    if (store == NULL) {
+        return default_value;
+    }
+    if (g_key_file_has_key(store->keyfile, store->context, key, NULL)) {
+        value = g_key_file_get_double(store->keyfile, store->context, key, NULL);
+    } else {
+        value = default_value;
+    }
     return value;
 }
 

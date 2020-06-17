@@ -48,6 +48,7 @@ extern "C" {
     void gm_pref_store_set_int(GmPrefStore * store, const gchar * key, gint value);
 
     gfloat gm_pref_store_get_float(GmPrefStore * store, const gchar * key);
+    gfloat gm_pref_store_get_float_with_default(GmPrefStore * store, const gchar * key, gfloat default_value);
     void gm_pref_store_set_float(GmPrefStore * store, const gchar * key, gfloat value);
 
     gchar *gm_pref_store_get_string(GmPrefStore * store, const gchar * key);
