@@ -22,9 +22,9 @@ missing
 stamp-h1
 .deps
 .libs
-gnome-mplayer.spec
+gee-mplayer.spec
 po/POTFILES
-gnome-mplayer
+gee-mplayer
 INSTALL
 *.gmo
 *.valid

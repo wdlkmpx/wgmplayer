@@ -1,11 +1,11 @@
-# Vietnamese translation for gnome-mplayer
+# Vietnamese translation for gee-mplayer
 # Copyright (c) 2011 Rosetta Contributors and Canonical Ltd 2011
-# This file is distributed under the same license as the gnome-mplayer package.
+# This file is distributed under the same license as the gee-mplayer package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-mplayer\n"
+"Project-Id-Version: gee-mplayer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-03 18:08+0800\n"
 "PO-Revision-Date: 2011-05-19 14:09+0000\n"
@@ -295,21 +295,21 @@ msgid "Controls"
 msgstr "Tương phản"
 
 #: src/main.c:894
-msgid "[FILES...] - GNOME Media player based on MPlayer"
-msgstr "[FILES...] - Chương trình phát đa phương tiện GNOME dựa trên MPlayer"
+msgid "[FILES...] - GEE Media player based on MPlayer"
+msgstr "[FILES...] - Chương trình phát đa phương tiện GEE dựa trên MPlayer"
 
 #: src/main.c:910
 #, c-format
-msgid "GNOME MPlayer v%s\n"
-msgstr "GNOME MPlayer phiên bản %s\n"
+msgid "GEE MPlayer v%s\n"
+msgstr "GEE MPlayer phiên bản %s\n"
 
 #: src/main.c:953
 #, c-format
 msgid ""
-"Run 'gnome-mplayer --help' to see a full list of available command line "
+"Run 'gee-mplayer --help' to see a full list of available command line "
 "options.\n"
 msgstr ""
-"Chạy 'gnome-mplayer --help' để xem danh sách đầy đủ các tùy chỉnh bằng dòng "
+"Chạy 'gee-mplayer --help' để xem danh sách đầy đủ các tùy chỉnh bằng dòng "
 "lệnh.\n"
 
 #: src/gui.c:665 src/gui.c:717 src/gui.c:6118
@@ -433,22 +433,22 @@ msgid "Unable to save ' %s '"
 msgstr "Không thể lưu '%s'"
 
 #: src/gui.c:3322 src/support.c:791 src/support.c:882
-msgid "GNOME MPlayer Error"
-msgstr "Lỗi GNOME MPlayer"
+msgid "GEE MPlayer Error"
+msgstr "Lỗi GEE MPlayer"
 
 #: src/gui.c:3370
-msgid "A media player for GNOME that uses MPlayer"
-msgstr "Một trình phát đa phương tiện cho GNOME sử dụng MPlayer"
+msgid "A media player for GEE that uses MPlayer"
+msgstr "Một trình phát đa phương tiện cho GEE sử dụng MPlayer"
 
 #: src/gui.c:3373
 msgid ""
-"Gnome MPlayer is free software; you can redistribute it and/or modify it "
+"Gee MPlayer is free software; you can redistribute it and/or modify it "
 "under\n"
 "the terms of the GNU General Public License as published by the Free\n"
 "Software Foundation; either version 2 of the License, or (at your option)\n"
 "any later version.\n"
 "\n"
-"Gnome MPlayer is distributed in the hope that it will be useful, but "
+"Gee MPlayer is distributed in the hope that it will be useful, but "
 "WITHOUT\n"
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or\n"
 "FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for\n"
@@ -456,7 +456,7 @@ msgid ""
 "\n"
 "You should have received a copy of the GNU General Public License along "
 "with\n"
-"Gnome MPlayer if not, write to the\n"
+"Gee MPlayer if not, write to the\n"
 "\n"
 "Free Software Foundation, Inc.,\n"
 "51 Franklin St, Fifth Floor\n"
@@ -472,7 +472,7 @@ msgid "Set Subtitle"
 msgstr "Thiết lập phụ đề"
 
 #: src/gui.c:3749
-msgid "Gnome MPlayer Fullscreen"
+msgid "Gee MPlayer Fullscreen"
 msgstr ""
 
 #: src/gui.c:4151
@@ -642,8 +642,8 @@ msgid "MPlayer"
 msgstr "MPlayer"
 
 #: src/gui.c:4856
-msgid "GNOME MPlayer Configuration"
-msgstr "Cấu hình GNOME MPlayer"
+msgid "GEE MPlayer Configuration"
+msgstr "Cấu hình GEE MPlayer"
 
 #: src/gui.c:4869
 msgid ""
@@ -846,7 +846,7 @@ msgid "Place playlist below media (requires application restart)"
 msgstr ""
 
 #: src/gui.c:5486
-msgid "Only allow one instance of Gnome MPlayer"
+msgid "Only allow one instance of Gee MPlayer"
 msgstr ""
 
 #: src/gui.c:5496
@@ -901,7 +901,7 @@ msgstr ""
 
 #: src/gui.c:5567
 msgid ""
-"Set this option if changing the volume in Gnome MPlayer changes the master "
+"Set this option if changing the volume in Gee MPlayer changes the master "
 "volume"
 msgstr ""
 

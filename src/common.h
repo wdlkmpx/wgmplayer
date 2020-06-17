@@ -228,22 +228,22 @@ typedef enum {
     DO_NOT_RESUME
 } ResumeMode;
 
-#define ACCEL_PATH_OPEN_LOCATION "<GNOME MPlayer>/File/Open Location"
-#define ACCEL_PATH_EDIT_SCREENSHOT "<GNOME MPlayer>/Edit/Screenshot"
-#define ACCEL_PATH_EDIT_PREFERENCES "<GNOME MPlayer>/Edit/Preferences"
-#define ACCEL_PATH_VIEW_PLAYLIST "<GNOME MPlayer>/View/Playlist"
-#define ACCEL_PATH_VIEW_INFO "<GNOME MPlayer>/View/Info"
-#define ACCEL_PATH_VIEW_DETAILS "<GNOME MPlayer>/View/Details"
-#define ACCEL_PATH_VIEW_METER "<GNOME MPlayer>/View/Meter"
-#define ACCEL_PATH_VIEW_FULLSCREEN "<GNOME MPlayer>/View/Fullscreen"
-#define ACCEL_PATH_VIEW_ASPECT "<GNOME MPlayer>/View/Aspect"
-#define ACCEL_PATH_VIEW_SUBTITLES "<GNOME MPlayer>/View/Subtitles"
-#define ACCEL_PATH_VIEW_DECREASE_SIZE "<GNOME MPlayer>/View/Decrease Size"
-#define ACCEL_PATH_VIEW_INCREASE_SIZE "<GNOME MPlayer>/View/Increase Size"
-#define ACCEL_PATH_VIEW_ANGLE "<GNOME MPlayer>/View/Angle"
-#define ACCEL_PATH_VIEW_CONTROLS "<GNOME MPlayer>/View/Controls"
-#define ACCEL_PATH_VIEW_NORMAL "<GNOME MPlayer>/View/Normal"
-#define ACCEL_PATH_VIEW_DOUBLE "<GNOME MPlayer>/View/Double"
+#define ACCEL_PATH_OPEN_LOCATION "<GEE MPlayer>/File/Open Location"
+#define ACCEL_PATH_EDIT_SCREENSHOT "<GEE MPlayer>/Edit/Screenshot"
+#define ACCEL_PATH_EDIT_PREFERENCES "<GEE MPlayer>/Edit/Preferences"
+#define ACCEL_PATH_VIEW_PLAYLIST "<GEE MPlayer>/View/Playlist"
+#define ACCEL_PATH_VIEW_INFO "<GEE MPlayer>/View/Info"
+#define ACCEL_PATH_VIEW_DETAILS "<GEE MPlayer>/View/Details"
+#define ACCEL_PATH_VIEW_METER "<GEE MPlayer>/View/Meter"
+#define ACCEL_PATH_VIEW_FULLSCREEN "<GEE MPlayer>/View/Fullscreen"
+#define ACCEL_PATH_VIEW_ASPECT "<GEE MPlayer>/View/Aspect"
+#define ACCEL_PATH_VIEW_SUBTITLES "<GEE MPlayer>/View/Subtitles"
+#define ACCEL_PATH_VIEW_DECREASE_SIZE "<GEE MPlayer>/View/Decrease Size"
+#define ACCEL_PATH_VIEW_INCREASE_SIZE "<GEE MPlayer>/View/Increase Size"
+#define ACCEL_PATH_VIEW_ANGLE "<GEE MPlayer>/View/Angle"
+#define ACCEL_PATH_VIEW_CONTROLS "<GEE MPlayer>/View/Controls"
+#define ACCEL_PATH_VIEW_NORMAL "<GEE MPlayer>/View/Normal"
+#define ACCEL_PATH_VIEW_DOUBLE "<GEE MPlayer>/View/Double"
 
 typedef struct _MetaData {
     gchar *uri;

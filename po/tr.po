@@ -1,6 +1,6 @@
 # translation of tr.po to Turkish
-# Turkish translation of GNOME MPlayer.
-# This file is distributed under the same license as the gnome-mplayer package.
+# Turkish translation of GEE MPlayer.
+# This file is distributed under the same license as the gee-mplayer package.
 # Copyright (C) Kevin DeKorte 2006-2008 <kdekorte@gmail.com>
 # Onur Küçük <onur@pardus.org.tr>, 2008, 2009, 2010, 2011.
 msgid ""
@@ -307,21 +307,21 @@ msgid "Controls"
 msgstr "_Kontroller"
 
 #: src/main.c:894
-msgid "[FILES...] - GNOME Media player based on MPlayer"
-msgstr "[FILES...] - MPlayer tabanlı GNOME Medya Oynatıcı"
+msgid "[FILES...] - GEE Media player based on MPlayer"
+msgstr "[FILES...] - MPlayer tabanlı GEE Medya Oynatıcı"
 
 #: src/main.c:910
 #, c-format
-msgid "GNOME MPlayer v%s\n"
-msgstr "GNOME MPlayer %s\n"
+msgid "GEE MPlayer v%s\n"
+msgstr "GEE MPlayer %s\n"
 
 #: src/main.c:953
 #, c-format
 msgid ""
-"Run 'gnome-mplayer --help' to see a full list of available command line "
+"Run 'gee-mplayer --help' to see a full list of available command line "
 "options.\n"
 msgstr ""
-"Kullanılabilir komut satırı parametrelerini görmek için 'gnome-mplayer --"
+"Kullanılabilir komut satırı parametrelerini görmek için 'gee-mplayer --"
 "help' komutunu kullanabilirsiniz.\n"
 
 #: src/gui.c:665 src/gui.c:717 src/gui.c:6118
@@ -332,12 +332,12 @@ msgstr "%s - Media Player"
 #: src/gui.c:709
 #, c-format
 msgid "(%i/%i) - Media Player"
-msgstr "(%i/%i) GNOME MPlayer"
+msgstr "(%i/%i) GEE MPlayer"
 
 #: src/gui.c:711
 #, c-format
 msgid "%s - (%i/%i) - Media Player"
-msgstr "%s - (%i/%i) GNOME MPlayer"
+msgstr "%s - (%i/%i) GEE MPlayer"
 
 #: src/gui.c:715 src/gui.c:3368 src/gui.c:6719
 #, c-format
@@ -446,22 +446,22 @@ msgid "Unable to save ' %s '"
 msgstr "Kaydetme başarısız '%s'"
 
 #: src/gui.c:3322 src/support.c:791 src/support.c:882
-msgid "GNOME MPlayer Error"
-msgstr "GNOME MPlayer Hatası"
+msgid "GEE MPlayer Error"
+msgstr "GEE MPlayer Hatası"
 
 #: src/gui.c:3370
-msgid "A media player for GNOME that uses MPlayer"
-msgstr "MPlayer kullanan GNOME tabanlı çokluortam oynatıcı"
+msgid "A media player for GEE that uses MPlayer"
+msgstr "MPlayer kullanan GEE tabanlı çokluortam oynatıcı"
 
 #: src/gui.c:3373
 msgid ""
-"Gnome MPlayer is free software; you can redistribute it and/or modify it "
+"Gee MPlayer is free software; you can redistribute it and/or modify it "
 "under\n"
 "the terms of the GNU General Public License as published by the Free\n"
 "Software Foundation; either version 2 of the License, or (at your option)\n"
 "any later version.\n"
 "\n"
-"Gnome MPlayer is distributed in the hope that it will be useful, but "
+"Gee MPlayer is distributed in the hope that it will be useful, but "
 "WITHOUT\n"
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or\n"
 "FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for\n"
@@ -469,7 +469,7 @@ msgid ""
 "\n"
 "You should have received a copy of the GNU General Public License along "
 "with\n"
-"Gnome MPlayer if not, write to the\n"
+"Gee MPlayer if not, write to the\n"
 "\n"
 "Free Software Foundation, Inc.,\n"
 "51 Franklin St, Fifth Floor\n"
@@ -485,8 +485,8 @@ msgid "Set Subtitle"
 msgstr "Altyazıyı seç"
 
 #: src/gui.c:3749
-msgid "Gnome MPlayer Fullscreen"
-msgstr "Gnome MPlayer Tam Ekran"
+msgid "Gee MPlayer Fullscreen"
+msgstr "Gee MPlayer Tam Ekran"
 
 #: src/gui.c:4151
 msgid "<span weight=\"bold\">Video Details</span>"
@@ -656,8 +656,8 @@ msgid "MPlayer"
 msgstr "MPlayer"
 
 #: src/gui.c:4856
-msgid "GNOME MPlayer Configuration"
-msgstr "GNOME MPlayer Yapılandırması"
+msgid "GEE MPlayer Configuration"
+msgstr "GEE MPlayer Yapılandırması"
 
 #: src/gui.c:4869
 msgid ""
@@ -867,8 +867,8 @@ msgid "Place playlist below media (requires application restart)"
 msgstr "Oynatma listesini aşağı yerleştir (program tekrar başlatılmalı)"
 
 #: src/gui.c:5486
-msgid "Only allow one instance of Gnome MPlayer"
-msgstr "Sadece bir Gnome MPlayer çalışsın"
+msgid "Only allow one instance of Gee MPlayer"
+msgstr "Sadece bir Gee MPlayer çalışsın"
 
 #: src/gui.c:5496
 msgid "When opening in single instance mode, replace existing file"
@@ -924,10 +924,10 @@ msgstr "<span weight=\"bold\">MPlayer İçin Gelişmiş Ayarlar</span>"
 
 #: src/gui.c:5567
 msgid ""
-"Set this option if changing the volume in Gnome MPlayer changes the master "
+"Set this option if changing the volume in Gee MPlayer changes the master "
 "volume"
 msgstr ""
-"Gnome MPlayer altında ses seviyesi değiştirilince ana ses seviyesinin "
+"Gee MPlayer altında ses seviyesi değiştirilince ana ses seviyesinin "
 "değişmesini istiyorsanız bu seçeneği işaretleyin"
 
 #: src/gui.c:5576

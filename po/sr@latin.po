@@ -1,12 +1,12 @@
-# Serbian translation of GNOME Mplayer.
+# Serbian translation of GEE Mplayer.
 # Copyright (C) Prevod.org team (http://prevod.org)
-# This file is distributed under the same license as the gnome-mplayer package.
+# This file is distributed under the same license as the gee-mplayer package.
 #
 # Miloš Popović <gpopac@gmail.com>, 2008-2010.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-mplayer\n"
+"Project-Id-Version: gee-mplayer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-03 18:08+0800\n"
 "PO-Revision-Date: 2011-04-11 08:43-0700\n"
@@ -308,21 +308,21 @@ msgid "Controls"
 msgstr "_Kontrole"
 
 #: src/main.c:894
-msgid "[FILES...] - GNOME Media player based on MPlayer"
+msgid "[FILES...] - GEE Media player based on MPlayer"
 msgstr "[DATOTEKE...] - Gnomov bioskop i muzička kutija zasnovan na Mplejeru"
 
 #: src/main.c:910
 #, c-format
-msgid "GNOME MPlayer v%s\n"
+msgid "GEE MPlayer v%s\n"
 msgstr "Gnomov Mplejer v%s\n"
 
 #: src/main.c:953
 #, c-format
 msgid ""
-"Run 'gnome-mplayer --help' to see a full list of available command line "
+"Run 'gee-mplayer --help' to see a full list of available command line "
 "options.\n"
 msgstr ""
-"Pokrenite „gnome-mplayer --help“ za kompletan spisak dostupnih opcija u "
+"Pokrenite „gee-mplayer --help“ za kompletan spisak dostupnih opcija u "
 "komandnoj liniji.\n"
 
 #: src/gui.c:665 src/gui.c:717 src/gui.c:6118
@@ -449,22 +449,22 @@ msgid "Unable to save ' %s '"
 msgstr "Ne mogu da sačuvam ‘%s’"
 
 #: src/gui.c:3322 src/support.c:791 src/support.c:882
-msgid "GNOME MPlayer Error"
+msgid "GEE MPlayer Error"
 msgstr "Greška u Gnomovom Mplejeru"
 
 #: src/gui.c:3370
-msgid "A media player for GNOME that uses MPlayer"
+msgid "A media player for GEE that uses MPlayer"
 msgstr "Bioskop i muzička kutija za Gnom koja koristi Mplejer"
 
 #: src/gui.c:3373
 msgid ""
-"Gnome MPlayer is free software; you can redistribute it and/or modify it "
+"Gee MPlayer is free software; you can redistribute it and/or modify it "
 "under\n"
 "the terms of the GNU General Public License as published by the Free\n"
 "Software Foundation; either version 2 of the License, or (at your option)\n"
 "any later version.\n"
 "\n"
-"Gnome MPlayer is distributed in the hope that it will be useful, but "
+"Gee MPlayer is distributed in the hope that it will be useful, but "
 "WITHOUT\n"
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or\n"
 "FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for\n"
@@ -472,7 +472,7 @@ msgid ""
 "\n"
 "You should have received a copy of the GNU General Public License along "
 "with\n"
-"Gnome MPlayer if not, write to the\n"
+"Gee MPlayer if not, write to the\n"
 "\n"
 "Free Software Foundation, Inc.,\n"
 "51 Franklin St, Fifth Floor\n"
@@ -504,7 +504,7 @@ msgid "Set Subtitle"
 msgstr "Postavi titl"
 
 #: src/gui.c:3749
-msgid "Gnome MPlayer Fullscreen"
+msgid "Gee MPlayer Fullscreen"
 msgstr "Gnomov Mplejer preko celog ekrana"
 
 #: src/gui.c:4151
@@ -677,7 +677,7 @@ msgid "MPlayer"
 msgstr "MPlejer"
 
 #: src/gui.c:4856
-msgid "GNOME MPlayer Configuration"
+msgid "GEE MPlayer Configuration"
 msgstr "Postavke Gnomovog Mplejera"
 
 #: src/gui.c:4869
@@ -883,7 +883,7 @@ msgid "Place playlist below media (requires application restart)"
 msgstr "Postavi listu ispod medijuma (zahteva ponovno pokretanje)"
 
 #: src/gui.c:5486
-msgid "Only allow one instance of Gnome MPlayer"
+msgid "Only allow one instance of Gee MPlayer"
 msgstr "Dozvoli samo po jedan Gnomov mplejer u isto vreme"
 
 #: src/gui.c:5496
@@ -940,7 +940,7 @@ msgstr "<span weight=\"bold\">Dodatne postavke za Mplejer</span>"
 
 #: src/gui.c:5567
 msgid ""
-"Set this option if changing the volume in Gnome MPlayer changes the master "
+"Set this option if changing the volume in Gee MPlayer changes the master "
 "volume"
 msgstr ""
 "Uključite ukoliko promena jačine zvuka u Gnomovom Mplejeru menja jačinu "

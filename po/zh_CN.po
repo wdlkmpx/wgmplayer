@@ -1,11 +1,11 @@
-# Simplified Chinese translation for gnome-mplayer
+# Simplified Chinese translation for gee-mplayer
 # Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
-# This file is distributed under the same license as the gnome-mplayer package.
+# This file is distributed under the same license as the gee-mplayer package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-mplayer\n"
+"Project-Id-Version: gee-mplayer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-03 18:08+0800\n"
 "PO-Revision-Date: 2011-03-30 14:32+0000\n"
@@ -302,20 +302,20 @@ msgid "Controls"
 msgstr "控制条(_C)"
 
 #: src/main.c:894
-msgid "[FILES...] - GNOME Media player based on MPlayer"
-msgstr "[FILES...] - 基于Mplayer的Gnome媒体播放器"
+msgid "[FILES...] - GEE Media player based on MPlayer"
+msgstr "[FILES...] - 基于Mplayer的Gee媒体播放器"
 
 #: src/main.c:910
 #, c-format
-msgid "GNOME MPlayer v%s\n"
-msgstr "GNOME MPlayer v%s\n"
+msgid "GEE MPlayer v%s\n"
+msgstr "GEE MPlayer v%s\n"
 
 #: src/main.c:953
 #, c-format
 msgid ""
-"Run 'gnome-mplayer --help' to see a full list of available command line "
+"Run 'gee-mplayer --help' to see a full list of available command line "
 "options.\n"
-msgstr "运行'gnome-mplayer --help'查看完整的可用命令参数。\n"
+msgstr "运行'gee-mplayer --help'查看完整的可用命令参数。\n"
 
 #: src/gui.c:665 src/gui.c:717 src/gui.c:6118
 #, c-format
@@ -438,22 +438,22 @@ msgid "Unable to save ' %s '"
 msgstr "无法保存 '%s'"
 
 #: src/gui.c:3322 src/support.c:791 src/support.c:882
-msgid "GNOME MPlayer Error"
-msgstr "GNOME MPlayer 错误"
+msgid "GEE MPlayer Error"
+msgstr "GEE MPlayer 错误"
 
 #: src/gui.c:3370
-msgid "A media player for GNOME that uses MPlayer"
-msgstr "基于MPlayer的Gnome媒体播放器"
+msgid "A media player for GEE that uses MPlayer"
+msgstr "基于MPlayer的Gee媒体播放器"
 
 #: src/gui.c:3373
 msgid ""
-"Gnome MPlayer is free software; you can redistribute it and/or modify it "
+"Gee MPlayer is free software; you can redistribute it and/or modify it "
 "under\n"
 "the terms of the GNU General Public License as published by the Free\n"
 "Software Foundation; either version 2 of the License, or (at your option)\n"
 "any later version.\n"
 "\n"
-"Gnome MPlayer is distributed in the hope that it will be useful, but "
+"Gee MPlayer is distributed in the hope that it will be useful, but "
 "WITHOUT\n"
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or\n"
 "FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for\n"
@@ -461,21 +461,21 @@ msgid ""
 "\n"
 "You should have received a copy of the GNU General Public License along "
 "with\n"
-"Gnome MPlayer if not, write to the\n"
+"Gee MPlayer if not, write to the\n"
 "\n"
 "Free Software Foundation, Inc.,\n"
 "51 Franklin St, Fifth Floor\n"
 "Boston, MA 02110-1301 USA"
 msgstr ""
-"Gnome MPlayer 是自由软件，您可以在遵守自由软件基金会\n"
+"Gee MPlayer 是自由软件，您可以在遵守自由软件基金会\n"
 "发布的 GNU 通用公共许可证的前提下重新发布和/或修改它，\n"
 "许可证可以是第二版本或者更新版本。\n"
 "\n"
-"Gnome MPlayer 的分布是希望它能有用，但没有任何担保，\n"
+"Gee MPlayer 的分布是希望它能有用，但没有任何担保，\n"
 "甚至没有适销性的隐含的保证，或者适和于某种特定目的。\n"
 "请参阅 GNU 通用公共许可证来了解更多详情。\n"
 "\n"
-"您应该随同 Gnome MPlayer 收到一份 GNU 通用公共许可证的副本。\n"
+"您应该随同 Gee MPlayer 收到一份 GNU 通用公共许可证的副本。\n"
 "如果没有，写信给\n"
 "\n"
 "Free Software Foundation, Inc.,\n"
@@ -491,8 +491,8 @@ msgid "Set Subtitle"
 msgstr "设置字幕"
 
 #: src/gui.c:3749
-msgid "Gnome MPlayer Fullscreen"
-msgstr "Gnome MPlayer 全屏幕"
+msgid "Gee MPlayer Fullscreen"
+msgstr "Gee MPlayer 全屏幕"
 
 #: src/gui.c:4151
 msgid "<span weight=\"bold\">Video Details</span>"
@@ -662,8 +662,8 @@ msgid "MPlayer"
 msgstr "MPlayer"
 
 #: src/gui.c:4856
-msgid "GNOME MPlayer Configuration"
-msgstr "GNOME MPlayer 设置"
+msgid "GEE MPlayer Configuration"
+msgstr "GEE MPlayer 设置"
 
 #: src/gui.c:4869
 msgid ""
@@ -867,8 +867,8 @@ msgid "Place playlist below media (requires application restart)"
 msgstr "将播放列表放在下方(下次启动程序生效)"
 
 #: src/gui.c:5486
-msgid "Only allow one instance of Gnome MPlayer"
-msgstr "只允许运行一个Gnome Mplayer实例"
+msgid "Only allow one instance of Gee MPlayer"
+msgstr "只允许运行一个Gee Mplayer实例"
 
 #: src/gui.c:5496
 msgid "When opening in single instance mode, replace existing file"
@@ -923,7 +923,7 @@ msgstr "<span weight=\"bold\">MPlayer高级设置</span>"
 
 #: src/gui.c:5567
 msgid ""
-"Set this option if changing the volume in Gnome MPlayer changes the master "
+"Set this option if changing the volume in Gee MPlayer changes the master "
 "volume"
 msgstr "启用这个选项将会使用软件混音，改变音量大小不会改变全局音量"
 

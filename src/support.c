@@ -717,7 +717,7 @@ gboolean parse_dvd(gchar * filename)
         if (error_msg != NULL) {
             dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR,
                                             GTK_BUTTONS_CLOSE, "%s", error_msg);
-            gtk_window_set_title(GTK_WINDOW(dialog), _("GNOME MPlayer Error"));
+            gtk_window_set_title(GTK_WINDOW(dialog), _("GEE MPlayer Error"));
             gtk_dialog_run(GTK_DIALOG(dialog));
             gtk_widget_destroy(dialog);
             g_free(error_msg);
@@ -808,7 +808,7 @@ gboolean parse_vcd(gchar * filename)
         if (error_msg != NULL) {
             dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR,
                                             GTK_BUTTONS_CLOSE, "%s", error_msg);
-            gtk_window_set_title(GTK_WINDOW(dialog), _("GNOME MPlayer Error"));
+            gtk_window_set_title(GTK_WINDOW(dialog), _("GEE MPlayer Error"));
             gtk_dialog_run(GTK_DIALOG(dialog));
             gtk_widget_destroy(dialog);
             g_free(error_msg);
@@ -1906,7 +1906,7 @@ gboolean save_playlist_pls(gchar * uri)
     } else {
         dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR,
                                         GTK_BUTTONS_CLOSE, _("Unable to save playlist, cannot open file for writing"));
-        gtk_window_set_title(GTK_WINDOW(dialog), "GNOME MPlayer Error");
+        gtk_window_set_title(GTK_WINDOW(dialog), "GEE MPlayer Error");
         gtk_dialog_run(GTK_DIALOG(dialog));
         gtk_widget_destroy(dialog);
 
@@ -1936,7 +1936,7 @@ gboolean save_playlist_pls(gchar * uri)
     } else {
         dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR,
                                         GTK_BUTTONS_CLOSE, _("Unable to save playlist, cannot open file for writing"));
-        gtk_window_set_title(GTK_WINDOW(dialog), "GNOME MPlayer Error");
+        gtk_window_set_title(GTK_WINDOW(dialog), "GEE MPlayer Error");
         gtk_dialog_run(GTK_DIALOG(dialog));
         gtk_widget_destroy(dialog);
 
@@ -1979,7 +1979,7 @@ gboolean save_playlist_m3u(gchar * uri)
     } else {
         dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR,
                                         GTK_BUTTONS_CLOSE, _("Unable to save playlist, cannot open file for writing"));
-        gtk_window_set_title(GTK_WINDOW(dialog), "GNOME MPlayer Error");
+        gtk_window_set_title(GTK_WINDOW(dialog), "GEE MPlayer Error");
         gtk_dialog_run(GTK_DIALOG(dialog));
         gtk_widget_destroy(dialog);
 
@@ -2007,7 +2007,7 @@ gboolean save_playlist_m3u(gchar * uri)
     } else {
         dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR,
                                         GTK_BUTTONS_CLOSE, _("Unable to save playlist, cannot open file for writing"));
-        gtk_window_set_title(GTK_WINDOW(dialog), "GNOME MPlayer Error");
+        gtk_window_set_title(GTK_WINDOW(dialog), "GEE MPlayer Error");
         gtk_dialog_run(GTK_DIALOG(dialog));
         gtk_widget_destroy(dialog);
 
@@ -2173,7 +2173,7 @@ gchar *get_localfile_from_uri(gchar * uri)
     idledata->tmpfile = FALSE;
     if (localfile == NULL) {
         gm_log(verbose, G_LOG_LEVEL_INFO, "using gio to access file");
-        tmp = g_strdup_printf("%s/gnome-mplayer", g_get_user_cache_dir());
+        tmp = g_strdup_printf("%s/gee-mplayer", g_get_user_cache_dir());
 
         idledata->src = g_file_new_for_uri(uri);
         localfile = g_file_get_path(idledata->src);

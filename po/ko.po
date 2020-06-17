@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-mplayer\n"
+"Project-Id-Version: gee-mplayer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-03 18:08+0800\n"
 "PO-Revision-Date: 2013-06-19 00:35+0900\n"
@@ -289,21 +289,21 @@ msgid "Controls"
 msgstr "컨트롤"
 
 #: src/main.c:894
-msgid "[FILES...] - GNOME Media player based on MPlayer"
+msgid "[FILES...] - GEE Media player based on MPlayer"
 msgstr "[파일...] - 엠플레이어를 기반으로 하는 그놈 미디어 재생기"
 
 #: src/main.c:910
 #, c-format
-msgid "GNOME MPlayer v%s\n"
+msgid "GEE MPlayer v%s\n"
 msgstr "그놈 엠플레이어 v%s\n"
 
 #: src/main.c:953
 #, c-format
 msgid ""
-"Run 'gnome-mplayer --help' to see a full list of available command line "
+"Run 'gee-mplayer --help' to see a full list of available command line "
 "options.\n"
 msgstr ""
-"명령줄 옵션의 전체 목록을 보려면 'gnome-mplayer --help'를 실행하십시오.\n"
+"명령줄 옵션의 전체 목록을 보려면 'gee-mplayer --help'를 실행하십시오.\n"
 
 #: src/gui.c:665 src/gui.c:717 src/gui.c:6118
 #, c-format
@@ -426,22 +426,22 @@ msgid "Unable to save ' %s '"
 msgstr "' %s '을(를) 저장할 수 없음"
 
 #: src/gui.c:3322 src/support.c:791 src/support.c:882
-msgid "GNOME MPlayer Error"
+msgid "GEE MPlayer Error"
 msgstr "그놈 엠플레이어 오류"
 
 #: src/gui.c:3370
-msgid "A media player for GNOME that uses MPlayer"
+msgid "A media player for GEE that uses MPlayer"
 msgstr "엠플레이어를 사용하는 그놈용 미디어 재생기"
 
 #: src/gui.c:3373
 msgid ""
-"Gnome MPlayer is free software; you can redistribute it and/or modify it "
+"Gee MPlayer is free software; you can redistribute it and/or modify it "
 "under\n"
 "the terms of the GNU General Public License as published by the Free\n"
 "Software Foundation; either version 2 of the License, or (at your option)\n"
 "any later version.\n"
 "\n"
-"Gnome MPlayer is distributed in the hope that it will be useful, but "
+"Gee MPlayer is distributed in the hope that it will be useful, but "
 "WITHOUT\n"
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or\n"
 "FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for\n"
@@ -449,19 +449,19 @@ msgid ""
 "\n"
 "You should have received a copy of the GNU General Public License along "
 "with\n"
-"Gnome MPlayer if not, write to the\n"
+"Gee MPlayer if not, write to the\n"
 "\n"
 "Free Software Foundation, Inc.,\n"
 "51 Franklin St, Fifth Floor\n"
 "Boston, MA 02110-1301 USA"
 msgstr ""
-"Gnome MPlayer is free software; you can redistribute it and/or modify it "
+"Gee MPlayer is free software; you can redistribute it and/or modify it "
 "under\n"
 "the terms of the GNU General Public License as published by the Free\n"
 "Software Foundation; either version 2 of the License, or (at your option)\n"
 "any later version.\n"
 "\n"
-"Gnome MPlayer is distributed in the hope that it will be useful, but "
+"Gee MPlayer is distributed in the hope that it will be useful, but "
 "WITHOUT\n"
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or\n"
 "FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for\n"
@@ -469,7 +469,7 @@ msgstr ""
 "\n"
 "You should have received a copy of the GNU General Public License along "
 "with\n"
-"Gnome MPlayer if not, write to the\n"
+"Gee MPlayer if not, write to the\n"
 "\n"
 "Free Software Foundation, Inc.,\n"
 "51 Franklin St, Fifth Floor\n"
@@ -484,7 +484,7 @@ msgid "Set Subtitle"
 msgstr "자막 지정"
 
 #: src/gui.c:3749
-msgid "Gnome MPlayer Fullscreen"
+msgid "Gee MPlayer Fullscreen"
 msgstr "그놈 엠플레이어 전체화면"
 
 #: src/gui.c:4151
@@ -654,7 +654,7 @@ msgid "MPlayer"
 msgstr "엠플레이어"
 
 #: src/gui.c:4856
-msgid "GNOME MPlayer Configuration"
+msgid "GEE MPlayer Configuration"
 msgstr "그놈 엠플레이어 설정"
 
 #: src/gui.c:4869
@@ -861,7 +861,7 @@ msgid "Place playlist below media (requires application restart)"
 msgstr "미디어 영역 아래에 재생 목록 두기(프로그램 다시 시작 필요)"
 
 #: src/gui.c:5486
-msgid "Only allow one instance of Gnome MPlayer"
+msgid "Only allow one instance of Gee MPlayer"
 msgstr "그놈 엠플레이어를 하나만 실행합니다."
 
 #: src/gui.c:5496
@@ -918,7 +918,7 @@ msgstr "<span weight=\"bold\">자세한 엠플레이어 설정</span>"
 
 #: src/gui.c:5567
 msgid ""
-"Set this option if changing the volume in Gnome MPlayer changes the master "
+"Set this option if changing the volume in Gee MPlayer changes the master "
 "volume"
 msgstr ""
 "그놈 엠플레이어에서 시스템 볼륨을 수정하는 것을 피하고 싶다면, 이 옵션을 설정"

@@ -22,7 +22,7 @@
  * 	Boston, MA  02110-1301, USA.
  */
  
-/* https://developer.gnome.org/glib/stable/glib-Key-value-file-parser.html */
+/* https://developer.gee.org/glib/stable/glib-Key-value-file-parser.html */
 
 #include "gm_pref_store.h"
 

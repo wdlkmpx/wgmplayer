@@ -1,6 +1,6 @@
-# GNOME MPlayer
+# GEE MPlayer
 # Copyright (C) 2007 Kevin DeKorte
-# This file is distributed under the same license as the GNOME MPlayer package.
+# This file is distributed under the same license as the GEE MPlayer package.
 # Kevin DeKorte <kdekorte@gmail.com> 2007.
 #
 #
@@ -312,22 +312,22 @@ msgid "Controls"
 msgstr "_Έλεγχοι"
 
 #: src/main.c:894
-msgid "[FILES...] - GNOME Media player based on MPlayer"
+msgid "[FILES...] - GEE Media player based on MPlayer"
 msgstr ""
-"[FILES...] - Αναπαραγωγέας Πολυμέσων για GNOME, βασισμένος στον MPlayer"
+"[FILES...] - Αναπαραγωγέας Πολυμέσων για GEE, βασισμένος στον MPlayer"
 
 #: src/main.c:910
 #, c-format
-msgid "GNOME MPlayer v%s\n"
-msgstr "GNOME MPlayer v%s\n"
+msgid "GEE MPlayer v%s\n"
+msgstr "GEE MPlayer v%s\n"
 
 #: src/main.c:953
 #, c-format
 msgid ""
-"Run 'gnome-mplayer --help' to see a full list of available command line "
+"Run 'gee-mplayer --help' to see a full list of available command line "
 "options.\n"
 msgstr ""
-"Τρέξε 'gnome-mplayer --help' για εμφάνιση πλήρης λίστας εντολών κονσόλας.\n"
+"Τρέξε 'gee-mplayer --help' για εμφάνιση πλήρης λίστας εντολών κονσόλας.\n"
 
 #: src/gui.c:665 src/gui.c:717 src/gui.c:6118
 #, c-format
@@ -451,22 +451,22 @@ msgid "Unable to save ' %s '"
 msgstr "Αδυναμία αποθήκευσης '%s'"
 
 #: src/gui.c:3322 src/support.c:791 src/support.c:882
-msgid "GNOME MPlayer Error"
-msgstr "Σφάλμα Gnome Mplayer"
+msgid "GEE MPlayer Error"
+msgstr "Σφάλμα Gee Mplayer"
 
 #: src/gui.c:3370
-msgid "A media player for GNOME that uses MPlayer"
-msgstr "Αναπαραγωγέας πολυμέσων για GNOME με χρήση του MPlayer"
+msgid "A media player for GEE that uses MPlayer"
+msgstr "Αναπαραγωγέας πολυμέσων για GEE με χρήση του MPlayer"
 
 #: src/gui.c:3373
 msgid ""
-"Gnome MPlayer is free software; you can redistribute it and/or modify it "
+"Gee MPlayer is free software; you can redistribute it and/or modify it "
 "under\n"
 "the terms of the GNU General Public License as published by the Free\n"
 "Software Foundation; either version 2 of the License, or (at your option)\n"
 "any later version.\n"
 "\n"
-"Gnome MPlayer is distributed in the hope that it will be useful, but "
+"Gee MPlayer is distributed in the hope that it will be useful, but "
 "WITHOUT\n"
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or\n"
 "FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for\n"
@@ -474,23 +474,23 @@ msgid ""
 "\n"
 "You should have received a copy of the GNU General Public License along "
 "with\n"
-"Gnome MPlayer if not, write to the\n"
+"Gee MPlayer if not, write to the\n"
 "\n"
 "Free Software Foundation, Inc.,\n"
 "51 Franklin St, Fifth Floor\n"
 "Boston, MA 02110-1301 USA"
 msgstr ""
-"Ο Gnome Mplayer είναι ελεύθερο λογισμικό. Η επεξεργασία και αναδιανομή του\n"
+"Ο Gee Mplayer είναι ελεύθερο λογισμικό. Η επεξεργασία και αναδιανομή του\n"
 "είναι δυνατή υπό τους όρους της δεύτερης έκδοσης της GNU General Public\n"
 "License όπως δημοσιεύθηκε από το Free Software Foundation, ή (κατ' "
 "επιλογήν)\n"
 "οποιαδήποτε μεταγενέστερη έκδοση της άδειας αυτής.\n"
 "\n"
-"Ο Gnome Mplayer διανέμεται με την ελπίδα ότι θα φανεί χρήσιμος, αλλά ΧΩΡΙΣ\n"
+"Ο Gee Mplayer διανέμεται με την ελπίδα ότι θα φανεί χρήσιμος, αλλά ΧΩΡΙΣ\n"
 "ΚΑΜΙΑ ΕΓΓΥΗΣΗ ΠΟΙΟΤΗΤΑΣ Η ΚΑΛΗΣ ΛΕΙΤΟΥΡΓΙΑΣ. Για περισσότερες πληροφορίες\n"
 "δείτε την GNU General Public License\n"
 "\n"
-"Μαζί με τον Gnome Mplayer παραλαμβάνετε και ένα αντίτυπο της GNU General\n"
+"Μαζί με τον Gee Mplayer παραλαμβάνετε και ένα αντίτυπο της GNU General\n"
 "Public License. Εάν όχι, απευθυνθείτε γραπτώς στην εξής διεύθυνση\n"
 "\n"
 "Free Software Foundation, Inc.,\n"
@@ -506,8 +506,8 @@ msgid "Set Subtitle"
 msgstr "Επιλογή Υποτίτλων"
 
 #: src/gui.c:3749
-msgid "Gnome MPlayer Fullscreen"
-msgstr "Πλήρης Οθόνη Gnome MPlayer"
+msgid "Gee MPlayer Fullscreen"
+msgstr "Πλήρης Οθόνη Gee MPlayer"
 
 #: src/gui.c:4151
 msgid "<span weight=\"bold\">Video Details</span>"
@@ -677,8 +677,8 @@ msgid "MPlayer"
 msgstr "MPlayer"
 
 #: src/gui.c:4856
-msgid "GNOME MPlayer Configuration"
-msgstr "Διαμόρφωση GNOME MPlayer"
+msgid "GEE MPlayer Configuration"
+msgstr "Διαμόρφωση GEE MPlayer"
 
 #: src/gui.c:4869
 msgid ""
@@ -883,7 +883,7 @@ msgstr ""
 "Τοποθέτηση λίστας κάτω από το βίντεο (απαιτείται επανεκκίνηση εφαρμογής)"
 
 #: src/gui.c:5486
-msgid "Only allow one instance of Gnome MPlayer"
+msgid "Only allow one instance of Gee MPlayer"
 msgstr "Επέτρεψε μοναδική εκτέλεση του MPlayer (SIM)"
 
 #: src/gui.c:5496
@@ -941,10 +941,10 @@ msgstr "<span weight=\"bold\">Εξειδικευμένες ρυθμίσεις MP
 
 #: src/gui.c:5567
 msgid ""
-"Set this option if changing the volume in Gnome MPlayer changes the master "
+"Set this option if changing the volume in Gee MPlayer changes the master "
 "volume"
 msgstr ""
-"Επιλέξτε εδώ αν η αλλάχη της έντασης ήχου στον Gnome Mplayer αλλάζει το "
+"Επιλέξτε εδώ αν η αλλάχη της έντασης ήχου στον Gee Mplayer αλλάζει το "
 "master volume"
 
 #: src/gui.c:5576

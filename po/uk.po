@@ -1,11 +1,11 @@
-# Ukrainian translation for gnome-mplayer
+# Ukrainian translation for gee-mplayer
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
-# This file is distributed under the same license as the gnome-mplayer package.
+# This file is distributed under the same license as the gee-mplayer package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-mplayer\n"
+"Project-Id-Version: gee-mplayer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-03 18:08+0800\n"
 "PO-Revision-Date: 2011-05-29 14:57+0000\n"
@@ -304,21 +304,21 @@ msgid "Controls"
 msgstr "_Панель керування"
 
 #: src/main.c:894
-msgid "[FILES...] - GNOME Media player based on MPlayer"
+msgid "[FILES...] - GEE Media player based on MPlayer"
 msgstr "[FILES...] - Медіапрогравач на основі MPlayer"
 
 #: src/main.c:910
 #, c-format
-msgid "GNOME MPlayer v%s\n"
-msgstr "GNOME MPlayer v%s\n"
+msgid "GEE MPlayer v%s\n"
+msgstr "GEE MPlayer v%s\n"
 
 #: src/main.c:953
 #, c-format
 msgid ""
-"Run 'gnome-mplayer --help' to see a full list of available command line "
+"Run 'gee-mplayer --help' to see a full list of available command line "
 "options.\n"
 msgstr ""
-"Виконайте команду 'gnome-mplayer --help', щоб отримати повний список опцій.\n"
+"Виконайте команду 'gee-mplayer --help', щоб отримати повний список опцій.\n"
 
 #: src/gui.c:665 src/gui.c:717 src/gui.c:6118
 #, c-format
@@ -443,22 +443,22 @@ msgid "Unable to save ' %s '"
 msgstr "Не вдається зберегти '%s'"
 
 #: src/gui.c:3322 src/support.c:791 src/support.c:882
-msgid "GNOME MPlayer Error"
-msgstr "Помилка GNOME MPlayer"
+msgid "GEE MPlayer Error"
+msgstr "Помилка GEE MPlayer"
 
 #: src/gui.c:3370
-msgid "A media player for GNOME that uses MPlayer"
-msgstr "Програвач мультимедіа для GNOME, який використовує MPlayer"
+msgid "A media player for GEE that uses MPlayer"
+msgstr "Програвач мультимедіа для GEE, який використовує MPlayer"
 
 #: src/gui.c:3373
 msgid ""
-"Gnome MPlayer is free software; you can redistribute it and/or modify it "
+"Gee MPlayer is free software; you can redistribute it and/or modify it "
 "under\n"
 "the terms of the GNU General Public License as published by the Free\n"
 "Software Foundation; either version 2 of the License, or (at your option)\n"
 "any later version.\n"
 "\n"
-"Gnome MPlayer is distributed in the hope that it will be useful, but "
+"Gee MPlayer is distributed in the hope that it will be useful, but "
 "WITHOUT\n"
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or\n"
 "FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for\n"
@@ -466,7 +466,7 @@ msgid ""
 "\n"
 "You should have received a copy of the GNU General Public License along "
 "with\n"
-"Gnome MPlayer if not, write to the\n"
+"Gee MPlayer if not, write to the\n"
 "\n"
 "Free Software Foundation, Inc.,\n"
 "51 Franklin St, Fifth Floor\n"
@@ -482,7 +482,7 @@ msgid "Set Subtitle"
 msgstr "Вибрати субтитри"
 
 #: src/gui.c:3749
-msgid "Gnome MPlayer Fullscreen"
+msgid "Gee MPlayer Fullscreen"
 msgstr "Повноекранний режим"
 
 #: src/gui.c:4151
@@ -653,8 +653,8 @@ msgid "MPlayer"
 msgstr "Mplayer"
 
 #: src/gui.c:4856
-msgid "GNOME MPlayer Configuration"
-msgstr "Налаштування GNOME MPlayer"
+msgid "GEE MPlayer Configuration"
+msgstr "Налаштування GEE MPlayer"
 
 #: src/gui.c:4869
 msgid ""
@@ -860,8 +860,8 @@ msgstr ""
 "програму)"
 
 #: src/gui.c:5486
-msgid "Only allow one instance of Gnome MPlayer"
-msgstr "Тільки одна копія Gnome MPlayer"
+msgid "Only allow one instance of Gee MPlayer"
+msgstr "Тільки одна копія Gee MPlayer"
 
 #: src/gui.c:5496
 msgid "When opening in single instance mode, replace existing file"
@@ -917,10 +917,10 @@ msgstr "<span weight=\"bold\">Розширені налаштування MPlaye
 
 #: src/gui.c:5567
 msgid ""
-"Set this option if changing the volume in Gnome MPlayer changes the master "
+"Set this option if changing the volume in Gee MPlayer changes the master "
 "volume"
 msgstr ""
-"Встановіть цю опцію, коли зміна гучності у Gnome MPlayer призводить до зміни "
+"Встановіть цю опцію, коли зміна гучності у Gee MPlayer призводить до зміни "
 "на рівні цілого пристрою"
 
 #: src/gui.c:5576

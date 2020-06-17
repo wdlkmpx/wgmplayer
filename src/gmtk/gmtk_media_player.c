@@ -32,10 +32,10 @@ static GObjectClass *parent_class = NULL;
 static void gmtk_media_player_dispose(GObject * object);
 
 #if GTK_CHECK_VERSION(3, 0, 0)
-// https://developer.gnome.org/gtk3/stable/GtkWidget.html#GtkWidget-draw
+// https://developer.gee.org/gtk3/stable/GtkWidget.html#GtkWidget-draw
 static gboolean gmtk_media_player_draw_event(GtkWidget * widget, cairo_t * cr);
 #else
-// https://developer.gnome.org/gtk2/stable/GtkWidget.html#GtkWidget-expose-event
+// https://developer.gee.org/gtk2/stable/GtkWidget.html#GtkWidget-expose-event
 static gboolean gmtk_media_player_expose_event(GtkWidget * widget, GdkEventExpose * event);
 #endif
 
@@ -3299,7 +3299,7 @@ gboolean thread_reader_error(GIOChannel * source, GIOCondition condition, gpoint
             /*
                dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR,
                GTK_BUTTONS_CLOSE, "%s", error_msg);
-               gtk_window_set_title(GTK_WINDOW(dialog), g_dgettext(GETTEXT_PACKAGE, "GNOME MPlayer Error"));
+               gtk_window_set_title(GTK_WINDOW(dialog), g_dgettext(GETTEXT_PACKAGE, "GEE MPlayer Error"));
                gtk_dialog_run(GTK_DIALOG(dialog));
                gtk_widget_destroy(dialog);
              */
@@ -3795,7 +3795,7 @@ gboolean thread_reader(GIOChannel * source, GIOCondition condition, gpointer dat
             message = g_strdup_printf(g_dgettext(GETTEXT_PACKAGE, "Screenshot saved to '%s'"), buf);
             dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_INFO,
                                             GTK_BUTTONS_OK, "%s", message);
-            gtk_window_set_title(GTK_WINDOW(dialog), g_dgettext(GETTEXT_PACKAGE, "GNOME MPlayer Notification"));
+            gtk_window_set_title(GTK_WINDOW(dialog), g_dgettext(GETTEXT_PACKAGE, "GEE MPlayer Notification"));
             gtk_dialog_run(GTK_DIALOG(dialog));
             gtk_widget_destroy(dialog);
             g_free(message);
@@ -3805,7 +3805,7 @@ gboolean thread_reader(GIOChannel * source, GIOCondition condition, gpointer dat
         if (strstr(mplayer_output->str, "failed (forgot -vf screenshot?)") != 0) {
             dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR,
                                             GTK_BUTTONS_OK, g_dgettext(GETTEXT_PACKAGE, "Failed to take screenshot"));
-            gtk_window_set_title(GTK_WINDOW(dialog), g_dgettext(GETTEXT_PACKAGE, "GNOME MPlayer Notification"));
+            gtk_window_set_title(GTK_WINDOW(dialog), g_dgettext(GETTEXT_PACKAGE, "GEE MPlayer Notification"));
             gtk_dialog_run(GTK_DIALOG(dialog));
             gtk_widget_destroy(dialog);
         }

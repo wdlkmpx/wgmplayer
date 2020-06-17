@@ -1,5 +1,5 @@
 /* XPM */
-static char * gnome_mplayer_xpm[] = {
+static char * gee_mplayer_xpm[] = {
 "48 48 375 2",
 "  	c None",
 ". 	c #353535",

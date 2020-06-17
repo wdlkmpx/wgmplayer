@@ -1,6 +1,6 @@
-# GNOME MPlayer
+# GEE MPlayer
 # Copyright (C) 2007 Kevin DeKorte
-# This file is distributed under the same license as the GNOME MPlayer package.
+# This file is distributed under the same license as the GEE MPlayer package.
 # Kevin DeKorte <kdekorte@gmail.com> 2007.
 #
 #
@@ -299,21 +299,21 @@ msgid "Controls"
 msgstr "Bedienelemente"
 
 #: src/main.c:894
-msgid "[FILES...] - GNOME Media player based on MPlayer"
-msgstr "[Dateien...] - GNOME Media player basierend auf MPlayer"
+msgid "[FILES...] - GEE Media player based on MPlayer"
+msgstr "[Dateien...] - GEE Media player basierend auf MPlayer"
 
 #: src/main.c:910
 #, c-format
-msgid "GNOME MPlayer v%s\n"
-msgstr "GNOME MPlayer v%s\n"
+msgid "GEE MPlayer v%s\n"
+msgstr "GEE MPlayer v%s\n"
 
 #: src/main.c:953
 #, c-format
 msgid ""
-"Run 'gnome-mplayer --help' to see a full list of available command line "
+"Run 'gee-mplayer --help' to see a full list of available command line "
 "options.\n"
 msgstr ""
-"Führe 'gnome-mplayer --help' für eine komplette Liste von verfügbaren "
+"Führe 'gee-mplayer --help' für eine komplette Liste von verfügbaren "
 "Parametern aus.\n"
 
 #: src/gui.c:665 src/gui.c:717 src/gui.c:6118
@@ -438,22 +438,22 @@ msgid "Unable to save ' %s '"
 msgstr "Fehler beim Speichern von '%s'"
 
 #: src/gui.c:3322 src/support.c:791 src/support.c:882
-msgid "GNOME MPlayer Error"
-msgstr "GNOME MPlayer Fehler"
+msgid "GEE MPlayer Error"
+msgstr "GEE MPlayer Fehler"
 
 #: src/gui.c:3370
-msgid "A media player for GNOME that uses MPlayer"
-msgstr "Ein MPlayer benutzender Media Player für GNOME"
+msgid "A media player for GEE that uses MPlayer"
+msgstr "Ein MPlayer benutzender Media Player für GEE"
 
 #: src/gui.c:3373
 msgid ""
-"Gnome MPlayer is free software; you can redistribute it and/or modify it "
+"Gee MPlayer is free software; you can redistribute it and/or modify it "
 "under\n"
 "the terms of the GNU General Public License as published by the Free\n"
 "Software Foundation; either version 2 of the License, or (at your option)\n"
 "any later version.\n"
 "\n"
-"Gnome MPlayer is distributed in the hope that it will be useful, but "
+"Gee MPlayer is distributed in the hope that it will be useful, but "
 "WITHOUT\n"
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or\n"
 "FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for\n"
@@ -461,13 +461,13 @@ msgid ""
 "\n"
 "You should have received a copy of the GNU General Public License along "
 "with\n"
-"Gnome MPlayer if not, write to the\n"
+"Gee MPlayer if not, write to the\n"
 "\n"
 "Free Software Foundation, Inc.,\n"
 "51 Franklin St, Fifth Floor\n"
 "Boston, MA 02110-1301 USA"
 msgstr ""
-"Gnome MPlayer ist freie Software; Sie dürfen ihn unter den Bedingungen der "
+"Gee MPlayer ist freie Software; Sie dürfen ihn unter den Bedingungen der "
 "GNU General Public \n"
 "License wie sie von der Free Software Foundation veröffentlicht wurde "
 "weitergeben\n"
@@ -475,7 +475,7 @@ msgstr ""
 "Entscheidung)\n"
 "einer späteren Version.\n"
 "\n"
-"Gnome MPlayer wird in der Hoffnung angeboten, dass er Nutzen bringt, aber "
+"Gee MPlayer wird in der Hoffnung angeboten, dass er Nutzen bringt, aber "
 "OHNE\n"
 "JEGLICHE GEWÄHRLEISTUNG; sogar ohne die implizierte Garantie auf "
 "GEBRAUCHSTAUGLICHKEIT\n"
@@ -483,7 +483,7 @@ msgstr ""
 "Sie in der \n"
 "GNU General Public License.\n"
 "\n"
-"Sie sollten eine Kopie der GNU General Public License zusammen mit Gnome "
+"Sie sollten eine Kopie der GNU General Public License zusammen mit Gee "
 "MPlayer erhalten\n"
 "haben, wenn nicht wenden Sie sich an die\n"
 "\n"
@@ -500,8 +500,8 @@ msgid "Set Subtitle"
 msgstr "Wähle Untertiteldatei"
 
 #: src/gui.c:3749
-msgid "Gnome MPlayer Fullscreen"
-msgstr "Gnome MPlayer Vollbild"
+msgid "Gee MPlayer Fullscreen"
+msgstr "Gee MPlayer Vollbild"
 
 #: src/gui.c:4151
 msgid "<span weight=\"bold\">Video Details</span>"
@@ -670,8 +670,8 @@ msgid "MPlayer"
 msgstr "MPlayer"
 
 #: src/gui.c:4856
-msgid "GNOME MPlayer Configuration"
-msgstr "GNOME MPlayer Einstellungen"
+msgid "GEE MPlayer Configuration"
+msgstr "GEE MPlayer Einstellungen"
 
 #: src/gui.c:4869
 msgid ""
@@ -877,8 +877,8 @@ msgstr ""
 "Anwendungsneustart)"
 
 #: src/gui.c:5486
-msgid "Only allow one instance of Gnome MPlayer"
-msgstr "Erlaube nur eine Instanz des Gnome MPlayer"
+msgid "Only allow one instance of Gee MPlayer"
+msgstr "Erlaube nur eine Instanz des Gee MPlayer"
 
 #: src/gui.c:5496
 msgid "When opening in single instance mode, replace existing file"
@@ -937,7 +937,7 @@ msgstr "<span weight=\"bold\">Erweiterte Einstellungen für MPlayer</span>"
 
 #: src/gui.c:5567
 msgid ""
-"Set this option if changing the volume in Gnome MPlayer changes the master "
+"Set this option if changing the volume in Gee MPlayer changes the master "
 "volume"
 msgstr ""
 "Aktiviere diese Option um bei Lautstärkeänderungen die Master-Lautstärke zu "

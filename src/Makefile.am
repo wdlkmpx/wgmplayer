@@ -23,9 +23,9 @@ AM_CFLAGS =\
      ## -DGTK_DISABLE_DEPRECATED 
      ## -DGSEAL_ENABLE
 
-bin_PROGRAMS = gnome-mplayer 
+bin_PROGRAMS = gee-mplayer 
 
-gnome_mplayer_SOURCES = \
+gee_mplayer_SOURCES = \
 	../config.h \
 	gmtk/gmlib.h \
 	gmtk/gm_audio.c \
@@ -54,9 +54,9 @@ gnome_mplayer_SOURCES = \
 	common.h \
 	gtkcompat.c \
 	gtkcompat.h \
-	../pixmaps/gnome_mplayer.xpm
+	../pixmaps/gee_mplayer.xpm
 
-gnome_mplayer_LDADD = \
+gee_mplayer_LDADD = \
     -lm \
     $(X11_LIBS) \
     $(GTK_LIBS) \
@@ -74,6 +74,6 @@ cppcheck:
 	cppcheck -q -a -v -f -j3 .
 	
 valgrind:
-	G_SLICE=always-malloc G_DEBUG=gc-friendly valgrind --tool=memcheck --leak-check=full --leak-resolution=high --num-callers=20 --log-file=vgdump ./gnome-mplayer 
+	G_SLICE=always-malloc G_DEBUG=gc-friendly valgrind --tool=memcheck --leak-check=full --leak-resolution=high --num-callers=20 --log-file=vgdump ./gee-mplayer 
 valgrind-suppress:
-	G_SLICE=always-malloc G_DEBUG=gc-friendly valgrind --tool=memcheck --leak-check=full --leak-resolution=high --num-callers=20 --log-file=vgdump --suppressions=$(HOME)/gtk.suppression ./gnome-mplayer 
+	G_SLICE=always-malloc G_DEBUG=gc-friendly valgrind --tool=memcheck --leak-check=full --leak-resolution=high --num-callers=20 --log-file=vgdump --suppressions=$(HOME)/gtk.suppression ./gee-mplayer 
