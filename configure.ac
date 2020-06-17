@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([gee-mplayer],[1.1.3w])
+AC_INIT([gee-mplayer],[1.2])
 AM_INIT_AUTOMAKE([-Wall subdir-objects foreign silent-rules])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
