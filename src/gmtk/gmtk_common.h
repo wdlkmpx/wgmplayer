@@ -33,11 +33,6 @@
 #include <gtk/gtkx.h>
 #endif
 #endif
-#if GTK_MAJOR_VERSION == 3
-#include <gdk/gdkkeysyms-compat.h>
-#else
-#include <gdk/gdkkeysyms.h>
-#endif
 
 #include <glib.h>
 #include <glib/gi18n.h>

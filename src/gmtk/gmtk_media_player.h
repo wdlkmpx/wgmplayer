@@ -25,23 +25,24 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
+
 #ifdef X11_ENABLED
 #include <gdk/gdkx.h>
 #ifdef GTK3_ENABLED
 #include <gtk/gtkx.h>
-#endif
-#endif
-#ifdef GTK3_ENABLED
-#include <gdk/gdkkeysyms-compat.h>
 #include <cairo.h>
-#else
-#include <gdk/gdkkeysyms.h>
 #endif
+#endif
+
 #include <glib/gstdio.h>
 #include <glib/gi18n.h>
 #include <math.h>
+#include <unistd.h>
+
+#include "gtkcompat.h"
 
 #ifndef __GMTK_MEDIA_PLAYER_H__
 #define __GMTK_MEDIA_PLAYER_H__
@@ -370,8 +371,12 @@ struct _GmtkMediaPlayer {
     GmtkMediaPlayerAspectRatio aspect_ratio;
     GmtkMediaPlayerMediaType type;
 
-    GMutex thread_running;
+    WGMutex thread_running;
+#if GLIB_CHECK_VERSION (2, 32, 0)
     GCond mplayer_complete_cond;
+#else
+    GCond * mplayer_complete_cond;
+#endif
     gchar *mplayer_binary;
     gboolean use_mplayer2;
 
@@ -397,7 +402,7 @@ struct _GmtkMediaPlayer {
     gdouble speed;
 
     gboolean disposed;
-    GMutex player_lock;
+    WGMutex player_lock;
     GRegex *name_regex;
     GRegex *genre_regex;
     GRegex *title_regex;

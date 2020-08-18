@@ -703,6 +703,11 @@ int main(int argc, char *argv[])
     use_crystalhd_codecs = FALSE;
     disable_ass = FALSE;
 
+#if GTK_MAJOR_VERSION == 2
+    if (!g_thread_supported())
+        g_thread_init(NULL);
+#endif
+
     g_type_init();
     gtk_init(&argc, &argv);
     g_setenv("PULSE_PROP_media.role", "video", TRUE);
@@ -933,14 +938,18 @@ int main(int argc, char *argv[])
     autopause = FALSE;
 
 #ifdef GIO_ENABLED
-    g_mutex_init( &(idledata->caching) );
+    Wg_mutex_init( &(idledata->caching) );
+#if GLIB_CHECK_VERSION (2, 32, 0)
     g_cond_init( &(idledata->caching_complete) );
+#else
+    idledata->caching_complete = g_cond_new ();
+#endif
 #endif
 
     retrieve_metadata_pool = g_thread_pool_new(retrieve_metadata, NULL, 10, TRUE, NULL);
 
-    g_mutex_init(&retrieve_mutex);
-    g_mutex_init(&set_mutex);
+    Wg_mutex_init(&retrieve_mutex);
+    Wg_mutex_init(&set_mutex);
 
     if (argv[fileindex] != NULL) {
 #ifdef GIO_ENABLED

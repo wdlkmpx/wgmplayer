@@ -32,7 +32,7 @@ message, info and debug. You can also use the special values all and help.
 
 G_MESSAGES_PREFIXED="" disables all prefixing
 
-G_MESSAGES_DEBUG.
+G_MESSAGES_DEBUG. Since glib 2.31, but emulated below for earlier versions.
 A space-separated list of log domains for which informational and
 debug messages should be printed. By default, these messages are not printed.
 
@@ -55,6 +55,26 @@ static int fixup_loglevel(gboolean force_info_to_message, GLogLevelFlags * log_l
     if (force_info_to_message && ((*log_level) & G_LOG_LEVEL_INFO)) {
         (*log_level) &= ~G_LOG_LEVEL_INFO;
         (*log_level) |= G_LOG_LEVEL_MESSAGE;
+    }
+    // emulate G_MESSAGES_DEBUG for glib < 2.31. We determine version at runtime
+    // because it might have changed from the time we compiled this
+    if (glib_major_version == 2 && glib_minor_version < 31) {
+        if ((*log_level) & G_LOG_LEVEL_DEBUG) {
+            const gchar *G_MESSAGES_DEBUG = g_getenv("G_MESSAGES_DEBUG");
+
+            // if it doesn't exists or we can't find the string "GMLIB",
+            // then don't print this message
+            if (G_MESSAGES_DEBUG == NULL) {
+                return 0;
+            }
+            if (G_MESSAGES_DEBUG[0] == '\0') {
+                return 0;
+            }
+            // this is not quite proper, but for a simple emulation whose need will go away in the future...
+            if (strstr(G_MESSAGES_DEBUG, G_LOG_DOMAIN) == NULL && strstr(G_MESSAGES_DEBUG, "all") == NULL) {
+                return 0;
+            }
+        }
     }
     return 1;
 }
@@ -110,9 +130,9 @@ static const gchar *threadid()
     if (!g_getenv("GM_DEBUG_THREADS")) {
         return "";
     }
-    g_mutex_lock(&ptr2strmutex);
+    Wg_mutex_lock(&ptr2strmutex);
     str = threadid_core(NULL);
-    g_mutex_unlock(&ptr2strmutex);
+    Wg_mutex_unlock(&ptr2strmutex);
     return str;
 }
 
@@ -124,9 +144,9 @@ void gm_log_name_this_thread(gchar const *const name)
     if (!g_getenv("GM_DEBUG_THREADS")) {
         return;
     }
-    g_mutex_lock(&ptr2strmutex);
+    Wg_mutex_lock(&ptr2strmutex);
     (void) threadid_core(name);
-    g_mutex_unlock(&ptr2strmutex);
+    Wg_mutex_unlock(&ptr2strmutex);
 }
 
 // Note that the format should not have a trailing \n - the glib logging system adds it

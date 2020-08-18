@@ -1090,7 +1090,7 @@ gboolean set_metadata(gpointer data)
         return FALSE;
     }
 
-    g_mutex_lock(&set_mutex);
+    Wg_mutex_lock(&set_mutex);
     riter = find_iter_by_uri(mdata->uri);
 
     if (gtk_list_store_iter_is_valid(playliststore, riter)) {
@@ -1118,7 +1118,7 @@ gboolean set_metadata(gpointer data)
     g_free(riter);
     free_metadata(mdata);
 
-    g_mutex_unlock(&set_mutex);
+    Wg_mutex_unlock(&set_mutex);
     return FALSE;
 }
 
@@ -6315,7 +6315,7 @@ GtkWidget *create_window()
     last_movement_time = -1;
     fs_window = NULL;
 
-    g_mutex_init(&fs_controls_lock);
+    Wg_mutex_init(&fs_controls_lock);
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(window), _("Media Player"));
     gtk_window_set_resizable(GTK_WINDOW(window), TRUE);
@@ -7138,7 +7138,7 @@ void show_fs_controls()
 #endif
 
 
-    g_mutex_lock(&fs_controls_lock);
+    Wg_mutex_lock(&fs_controls_lock);
     if (fs_controls == NULL && fullscreen) {
         fs_controls = gtk_window_new(GTK_WINDOW_POPUP);
         gtk_widget_add_events(fs_controls, GDK_ENTER_NOTIFY_MASK);
@@ -7180,7 +7180,7 @@ void show_fs_controls()
         y = rect.y + rect.height - alloc.height;
         gtk_window_move(GTK_WINDOW(fs_controls), x, y);
     }
-    g_mutex_unlock(&fs_controls_lock);
+    Wg_mutex_unlock(&fs_controls_lock);
 
 }
 
@@ -7190,7 +7190,7 @@ void hide_fs_controls()
     GtkIconTheme *icon_theme = gtk_icon_theme_get_default();
 #endif
 
-    g_mutex_lock(&fs_controls_lock);
+    Wg_mutex_lock(&fs_controls_lock);
     if (fs_controls != NULL) {
 #ifdef GTK3_ENABLED
         if (gtk_icon_theme_has_icon(icon_theme, "view-fullscreen-symbolic")) {
@@ -7214,6 +7214,6 @@ void hide_fs_controls()
             fs_controls = NULL;
         }
     }
-    g_mutex_unlock(&fs_controls_lock);
+    Wg_mutex_unlock(&fs_controls_lock);
 
 }

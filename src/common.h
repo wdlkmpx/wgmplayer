@@ -172,8 +172,12 @@ typedef struct _IdleData {
     GFile *src;
     GFile *tmp;
     GCancellable *cancel;
-    GMutex caching;
+    WGMutex caching;
+#if GLIB_CHECK_VERSION (2, 32, 0)
     GCond caching_complete;
+#else
+    GCond * caching_complete;
+#endif
 #endif
 } IdleData;
 
@@ -391,8 +395,8 @@ gboolean keep_on_top;
 gboolean cancel_folder_load;
 
 GThreadPool *retrieve_metadata_pool;
-GMutex retrieve_mutex;
-GMutex set_mutex;
+WGMutex retrieve_mutex;
+WGMutex set_mutex;
 
 gboolean use_mediakeys;
 gboolean use_defaultpl;

@@ -400,7 +400,7 @@ static void gmtk_media_player_init(GmtkMediaPlayer * player)
 {
     GtkStyle *style;
 
-    g_mutex_init(&ptr2strmutex); // gm_log.c
+    Wg_mutex_init(&ptr2strmutex); // gm_log.c
 
     // player is an GtkEventBox that holds a GtkAlignment that holds a GtkSocket
     // mplayer uses the xwindow id from the socket to display media
@@ -448,8 +448,12 @@ static void gmtk_media_player_init(GmtkMediaPlayer * player)
     player->message = NULL;
     player->mplayer_thread = NULL;
     player->aspect_ratio = ASPECT_DEFAULT;
-    g_cond_init( &(player->mplayer_complete_cond) );
-    g_mutex_init( &(player->thread_running) );
+#if GLIB_CHECK_VERSION (2, 32, 0)
+    g_cond_init ( &(player->mplayer_complete_cond) );
+#else
+    player->mplayer_complete_cond = g_cond_new ();
+#endif
+    Wg_mutex_init( &(player->thread_running) );
     player->video_width = 0;
     player->video_height = 0;
     player->video_present = FALSE;
@@ -498,7 +502,7 @@ static void gmtk_media_player_init(GmtkMediaPlayer * player)
     player->title = NULL;
     player->album = NULL;
     player->disposed = FALSE;
-    g_mutex_init( &(player->player_lock) );
+    Wg_mutex_init( &(player->player_lock) );
     player->name_regex = g_regex_new(".*name\\s*:\\s*(.*)\n", G_REGEX_CASELESS, 0, NULL);
     player->genre_regex = g_regex_new(".*genre\\s*:\\s*(.*)\n", G_REGEX_CASELESS, 0, NULL);
     player->title_regex = g_regex_new(".*title\\s*:\\s*(.*)\n", G_REGEX_CASELESS, 0, NULL);
@@ -2403,7 +2407,7 @@ gpointer launch_mplayer(gpointer data)
     player->hardware_ac3 = FALSE;
 
     gm_log(player->debug, G_LOG_LEVEL_DEBUG, "locking thread_running");
-    g_mutex_lock( &(player->thread_running) );
+    Wg_mutex_lock( &(player->thread_running) );
 
     do {
         gm_log(player->debug, G_LOG_LEVEL_INFO, "setting up mplayer");
@@ -2964,7 +2968,11 @@ gpointer launch_mplayer(gpointer data)
             // Now this thread waits till somebody signals player->mplayer_complete_cond
 
             gm_log(player->debug, G_LOG_LEVEL_DEBUG, "waiting for mplayer_complete_cond");
-            g_cond_wait( &(player->mplayer_complete_cond), &(player->thread_running) );
+#if GLIB_CHECK_VERSION (2, 32, 0)
+            g_cond_wait ( &(player->mplayer_complete_cond), &(player->thread_running) );
+#else
+            g_cond_wait (player->mplayer_complete_cond, g_static_mutex_get_mutex (&(player->thread_running)));
+#endif
             gm_log(player->debug, G_LOG_LEVEL_DEBUG, "mplayer_complete_cond was signalled");
 
             g_source_remove(player->watch_in_id);
@@ -3082,7 +3090,7 @@ gpointer launch_mplayer(gpointer data)
     gmtk_media_player_log_state(player, "finished");
 
     gm_log(player->debug, G_LOG_LEVEL_DEBUG, "unlocking thread_running");
-    g_mutex_unlock( &(player->thread_running) );
+    Wg_mutex_unlock( &(player->thread_running) );
 
     if (player->restart) {
         g_signal_emit_by_name(player, "restart-shutdown-complete", NULL);
@@ -3103,7 +3111,11 @@ static void finalize_mplayer(GmtkMediaPlayer * player)
     g_unlink(player->af_export_filename);
     gmtk_media_player_log_state(player, "completed");
     gm_log(player->debug, G_LOG_LEVEL_DEBUG, "signaling mplayer_complete_cond");
-    g_cond_signal( &(player->mplayer_complete_cond) );
+#if GLIB_CHECK_VERSION (2, 32, 0)
+    g_cond_signal ( &(player->mplayer_complete_cond) );
+#else
+    g_cond_signal (player->mplayer_complete_cond);
+#endif
 }
 
 // this executes in the main thread

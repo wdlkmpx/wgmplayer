@@ -3,12 +3,13 @@ dnl Process this file with autoconf to produce a configure script.
 AC_INIT([gee-mplayer],[1.2])
 AM_INIT_AUTOMAKE([-Wall subdir-objects foreign silent-rules])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
+m4_ifdef([AM_MAINTAINER_MODE], [AM_MAINTAINER_MODE])
 
 AM_CONFIG_HEADER(config.h)
 AC_CONFIG_MACRO_DIR([m4])
 AM_GNU_GETTEXT([external])
 
-AM_PROG_AR
+m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
 LT_INIT
 
 # Init intltool
@@ -47,13 +48,13 @@ AC_ARG_ENABLE(gtk3,
 
 AS_IF([test "x$ENABLE_GTK3" = xcheck],        
         [ENABLE_GTK3=no
-        PKG_CHECK_MODULES(GTK,[gtk+-3.0 >= 3.8.0 glib-2.0 >= 2.32.0],[ENABLE_GTK3=yes],[ENABLE_GTK3=no])
+        PKG_CHECK_MODULES(GTK,[gtk+-3.0 >= 3.8.0 glib-2.0 >= 2.24.0 gthread-2.0],[ENABLE_GTK3=yes],[ENABLE_GTK3=no])
         ])    
     
 AS_IF([test "x$ENABLE_GTK3" = "xyes"],   
     [
     
-    PKG_CHECK_MODULES(GTK, [gtk+-3.0 glib-2.0],[AC_MSG_NOTICE([Using GTK3])]) 
+    PKG_CHECK_MODULES(GTK, [gtk+-3.0 glib-2.0 gthread-2.0],[AC_MSG_NOTICE([Using GTK3])]) 
     AC_DEFINE([GTK3_ENABLED],[1],[Define to 1 if you have GTK 3 or higher])
     
     ])
@@ -61,7 +62,7 @@ AS_IF([test "x$ENABLE_GTK3" = "xyes"],
 AS_IF([test "x$ENABLE_GTK3" != "xyes"],   
     [
 
-    PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.24.0 glib-2.0 >= 2.32.0],[AC_MSG_NOTICE([Using GTK2])])
+    PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.14.0 glib-2.0 >= 2.18.0 gthread-2.0],[AC_MSG_NOTICE([Using GTK2])])
     AC_SUBST(GTK_CFLAGS)
     AC_SUBST(GTK_LIBS)
 
@@ -105,7 +106,7 @@ AC_ARG_WITH([pulseaudio],
         [],
         [with_pulseaudio=check])
 AS_IF([test "x$with_pulseaudio" != xno], 
-	[PKG_CHECK_MODULES(PULSE, [libpulse libpulse-mainloop-glib],[AC_DEFINE([HAVE_PULSEAUDIO],[1],[Define to 1 if you have PulseAudio development packages])],AC_MSG_NOTICE([Compiling without PulseAudio support]))
+	[PKG_CHECK_MODULES(PULSE, [libpulse >= 2.0 libpulse-mainloop-glib >= 2.0],[AC_DEFINE([HAVE_PULSEAUDIO],[1],[Define to 1 if you have PulseAudio development packages])],AC_MSG_NOTICE([Compiling without PulseAudio support]))
 	AC_SUBST(PULSE_DEFINES)
 	AC_SUBST(PULSE_CFLAGS)
 	AC_SUBST(PULSE_LIBS)
