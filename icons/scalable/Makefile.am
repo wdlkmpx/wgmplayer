@@ -1,4 +1,4 @@
 icondir = $(datadir)/icons/hicolor/scalable/apps
-icon_DATA = gee-mplayer.svg
+icon_DATA = g-mplayer.svg
 
 EXTRA_DIST = $(icon_DATA) 

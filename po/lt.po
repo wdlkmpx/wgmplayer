@@ -302,21 +302,21 @@ msgid "Controls"
 msgstr "_Valdikliai"
 
 #: src/main.c:894
-msgid "[FILES...] - GEE Media player based on MPlayer"
+msgid "[FILES...] - G-Media player based on MPlayer"
 msgstr "[RINKMENOS...] - GEE grotuvas MPlayer pagrindu"
 
 #: src/main.c:910
 #, c-format
-msgid "GEE MPlayer v%s\n"
-msgstr "GEE MPlayer v%s\n"
+msgid "G-MPlayer v%s\n"
+msgstr "G-MPlayer v%s\n"
 
 #: src/main.c:953
 #, c-format
 msgid ""
-"Run 'gee-mplayer --help' to see a full list of available command line "
+"Run 'g-mplayer --help' to see a full list of available command line "
 "options.\n"
 msgstr ""
-"Įvykdykite „gee-mplayer --help“ norėdami matyti visas galimas parinktis "
+"Įvykdykite „g-mplayer --help“ norėdami matyti visas galimas parinktis "
 "komandinėje eilutėje.\n"
 
 #: src/gui.c:665 src/gui.c:717 src/gui.c:6118
@@ -442,8 +442,8 @@ msgid "Unable to save ' %s '"
 msgstr "Nepavyksta įrašyti '%s'"
 
 #: src/gui.c:3322 src/support.c:791 src/support.c:882
-msgid "GEE MPlayer Error"
-msgstr "GEE MPlayer klaida"
+msgid "G-MPlayer Error"
+msgstr "G-MPlayer klaida"
 
 #: src/gui.c:3370
 msgid "A media player for GEE that uses MPlayer"
@@ -451,13 +451,13 @@ msgstr "GEE grotuvas, naudojantis MPlayer"
 
 #: src/gui.c:3373
 msgid ""
-"Gee MPlayer is free software; you can redistribute it and/or modify it "
+"G-MPlayer is free software; you can redistribute it and/or modify it "
 "under\n"
 "the terms of the GNU General Public License as published by the Free\n"
 "Software Foundation; either version 2 of the License, or (at your option)\n"
 "any later version.\n"
 "\n"
-"Gee MPlayer is distributed in the hope that it will be useful, but "
+"G-MPlayer is distributed in the hope that it will be useful, but "
 "WITHOUT\n"
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or\n"
 "FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for\n"
@@ -465,7 +465,7 @@ msgid ""
 "\n"
 "You should have received a copy of the GNU General Public License along "
 "with\n"
-"Gee MPlayer if not, write to the\n"
+"G-MPlayer if not, write to the\n"
 "\n"
 "Free Software Foundation, Inc.,\n"
 "51 Franklin St, Fifth Floor\n"
@@ -481,7 +481,7 @@ msgid "Set Subtitle"
 msgstr "Pasirinkite subtitrų rinkmeną"
 
 #: src/gui.c:3749
-msgid "Gee MPlayer Fullscreen"
+msgid "G-MPlayer Fullscreen"
 msgstr "Visas ekranas"
 
 #: src/gui.c:4151
@@ -652,8 +652,8 @@ msgid "MPlayer"
 msgstr "MPlayer"
 
 #: src/gui.c:4856
-msgid "GEE MPlayer Configuration"
-msgstr "GEE MPlayer nuostatos"
+msgid "G-MPlayer Configuration"
+msgstr "G-MPlayer nuostatos"
 
 #: src/gui.c:4869
 msgid ""
@@ -857,8 +857,8 @@ msgid "Place playlist below media (requires application restart)"
 msgstr "Priešais kūrinį rodyti grojaraštį (reikia perkrauti programą)"
 
 #: src/gui.c:5486
-msgid "Only allow one instance of Gee MPlayer"
-msgstr "Leisti veikti tik vienai Gee MPlayer programai tuo pačiu metu"
+msgid "Only allow one instance of G-MPlayer"
+msgstr "Leisti veikti tik vienai G-MPlayer programai tuo pačiu metu"
 
 #: src/gui.c:5496
 msgid "When opening in single instance mode, replace existing file"
@@ -912,7 +912,7 @@ msgstr "<span weight=\"bold\"> Sudėtingesnės MPlayer nuostatos</span>"
 
 #: src/gui.c:5567
 msgid ""
-"Set this option if changing the volume in Gee MPlayer changes the master "
+"Set this option if changing the volume in G-MPlayer changes the master "
 "volume"
 msgstr ""
 

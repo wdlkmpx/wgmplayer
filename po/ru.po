@@ -1,6 +1,6 @@
-# translation of GEE-Mplayer to Russian
+# translation of G-MPlayer to Russian
 # Copyright (C) 2008 Kevin DeKorte <kdekorte@gmail.com>
-# This file is distributed under the same license as the gee-mplayer package.
+# This file is distributed under the same license as the g-mplayer package.
 #
 # Roman Kashtanov <staroberdansk@gmail.com>, 2009.
 # Denis Koryavov <dkoryavov@yandex.ru>, 2009-2010.
@@ -310,21 +310,21 @@ msgid "Controls"
 msgstr "Панель _управления"
 
 #: src/main.c:894
-msgid "[FILES...] - GEE Media player based on MPlayer"
+msgid "[FILES...] - G-Media player based on MPlayer"
 msgstr "[FILES...] - Медиапроигрыватель на основе MPlayer"
 
 #: src/main.c:910
 #, c-format
-msgid "GEE MPlayer v%s\n"
+msgid "G-MPlayer v%s\n"
 msgstr "GEE·MPlayer·v%s\n"
 
 #: src/main.c:953
 #, c-format
 msgid ""
-"Run 'gee-mplayer --help' to see a full list of available command line "
+"Run 'g-mplayer --help' to see a full list of available command line "
 "options.\n"
 msgstr ""
-"Запустите 'gee-mplayer·--help' для получения полного списка настроек "
+"Запустите 'g-mplayer·--help' для получения полного списка настроек "
 "командной строки.\n"
 
 #: src/gui.c:665 src/gui.c:717 src/gui.c:6118
@@ -450,8 +450,8 @@ msgid "Unable to save ' %s '"
 msgstr "Не удалось сохранить '%s'"
 
 #: src/gui.c:3322 src/support.c:791 src/support.c:882
-msgid "GEE MPlayer Error"
-msgstr "Ошибка GEE MPlayer"
+msgid "G-MPlayer Error"
+msgstr "Ошибка G-MPlayer"
 
 #: src/gui.c:3370
 msgid "A media player for GEE that uses MPlayer"
@@ -459,13 +459,13 @@ msgstr "Медиа-проигрыватель для среды GEE, котор�
 
 #: src/gui.c:3373
 msgid ""
-"Gee MPlayer is free software; you can redistribute it and/or modify it "
+"G-MPlayer is free software; you can redistribute it and/or modify it "
 "under\n"
 "the terms of the GNU General Public License as published by the Free\n"
 "Software Foundation; either version 2 of the License, or (at your option)\n"
 "any later version.\n"
 "\n"
-"Gee MPlayer is distributed in the hope that it will be useful, but "
+"G-MPlayer is distributed in the hope that it will be useful, but "
 "WITHOUT\n"
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or\n"
 "FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for\n"
@@ -473,25 +473,25 @@ msgid ""
 "\n"
 "You should have received a copy of the GNU General Public License along "
 "with\n"
-"Gee MPlayer if not, write to the\n"
+"G-MPlayer if not, write to the\n"
 "\n"
 "Free Software Foundation, Inc.,\n"
 "51 Franklin St, Fifth Floor\n"
 "Boston, MA 02110-1301 USA"
 msgstr ""
-"GEE MPlayer — свободная программа; вы можете повторно распространять ее и/"
+"G-MPlayer — свободная программа; вы можете повторно распространять ее и/"
 "или\n"
 "модифицировать ее в соответствии с Универсальной Общественной Лицензией\n"
 "GNU, опубликованной Фондом Свободного ПО; либо версии 2, либо (по вашему\n"
 "выбору) любой более поздней версии.\n"
 "\n"
-"GEE MPlayer распространяется в надежде, что она будет полезной, но БЕЗ\n"
+"G-MPlayer распространяется в надежде, что она будет полезной, но БЕЗ\n"
 "КАКИХ-ЛИБО ГАРАНТИЙ; даже без подразумеваемых гарантий КОММЕРЧЕСКОЙ\n"
 "ЦЕННОСТИ или ПРИГОДНОСТИ ДЛЯ КОНКРЕТНОЙ ЦЕЛИ.  Для получения подробных\n"
 "сведений смотрите Универсальную Общественную Лицензию GNU.\n"
 "\n"
 "Вы должны были получить копию Универсальной Общественной Лицензии GNU\n"
-"вместе с GEE MPlayer; если нет, напишите по адресу\n"
+"вместе с G-MPlayer; если нет, напишите по адресу\n"
 "\n"
 "Free Software Foundation,\n"
 "Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA"
@@ -505,7 +505,7 @@ msgid "Set Subtitle"
 msgstr "Добавить субтитры"
 
 #: src/gui.c:3749
-msgid "Gee MPlayer Fullscreen"
+msgid "G-MPlayer Fullscreen"
 msgstr "Полноэкранный режим"
 
 #: src/gui.c:4151
@@ -676,8 +676,8 @@ msgid "MPlayer"
 msgstr "MPlayer"
 
 #: src/gui.c:4856
-msgid "GEE MPlayer Configuration"
-msgstr "Настройка GEE MPlayer"
+msgid "G-MPlayer Configuration"
+msgstr "Настройка G-MPlayer"
 
 #: src/gui.c:4869
 msgid ""
@@ -882,8 +882,8 @@ msgstr ""
 "Список воспроизведения под основным окном (требуется перезапуск приложения)"
 
 #: src/gui.c:5486
-msgid "Only allow one instance of Gee MPlayer"
-msgstr "Запускать только один экземпляр Gee MPlayer"
+msgid "Only allow one instance of G-MPlayer"
+msgstr "Запускать только один экземпляр G-MPlayer"
 
 #: src/gui.c:5496
 msgid "When opening in single instance mode, replace existing file"
@@ -939,10 +939,10 @@ msgstr "<span weight=\"bold\">Продвинутые настройки MPlayer<
 
 #: src/gui.c:5567
 msgid ""
-"Set this option if changing the volume in Gee MPlayer changes the master "
+"Set this option if changing the volume in G-MPlayer changes the master "
 "volume"
 msgstr ""
-"Включайте эту опцию, если изменение громкости в Gee MPlayer изменяет "
+"Включайте эту опцию, если изменение громкости в G-MPlayer изменяет "
 "громкость в системе"
 
 #: src/gui.c:5576

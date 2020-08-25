@@ -1,11 +1,11 @@
-# Indonesian translation for gee-mplayer
+# Indonesian translation for g-mplayer
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
-# This file is distributed under the same license as the gee-mplayer package.
+# This file is distributed under the same license as the g-mplayer package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gee-mplayer\n"
+"Project-Id-Version: g-mplayer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-09-03 18:08+0800\n"
 "PO-Revision-Date: 2011-01-08 13:22+0000\n"
@@ -293,21 +293,21 @@ msgid "Controls"
 msgstr ""
 
 #: src/main.c:894
-msgid "[FILES...] - GEE Media player based on MPlayer"
+msgid "[FILES...] - G-Media player based on MPlayer"
 msgstr ""
 
 #: src/main.c:910
 #, c-format
-msgid "GEE MPlayer v%s\n"
+msgid "G-MPlayer v%s\n"
 msgstr ""
 
 #: src/main.c:953
 #, c-format
 msgid ""
-"Run 'gee-mplayer --help' to see a full list of available command line "
+"Run 'g-mplayer --help' to see a full list of available command line "
 "options.\n"
 msgstr ""
-"Jalankan 'gee-mplayer --help' dari terminal untuk melihat daftar lengkap "
+"Jalankan 'g-mplayer --help' dari terminal untuk melihat daftar lengkap "
 "dari pilihan-pilihan baris perintah yang tersedia.\n"
 
 #: src/gui.c:665 src/gui.c:717 src/gui.c:6118
@@ -432,8 +432,8 @@ msgid "Unable to save ' %s '"
 msgstr "Tidak dapat menyimpan '%s'"
 
 #: src/gui.c:3322 src/support.c:791 src/support.c:882
-msgid "GEE MPlayer Error"
-msgstr "Galat GEE MPlayer"
+msgid "G-MPlayer Error"
+msgstr "Galat G-MPlayer"
 
 #: src/gui.c:3370
 msgid "A media player for GEE that uses MPlayer"
@@ -441,13 +441,13 @@ msgstr ""
 
 #: src/gui.c:3373
 msgid ""
-"Gee MPlayer is free software; you can redistribute it and/or modify it "
+"G-MPlayer is free software; you can redistribute it and/or modify it "
 "under\n"
 "the terms of the GNU General Public License as published by the Free\n"
 "Software Foundation; either version 2 of the License, or (at your option)\n"
 "any later version.\n"
 "\n"
-"Gee MPlayer is distributed in the hope that it will be useful, but "
+"G-MPlayer is distributed in the hope that it will be useful, but "
 "WITHOUT\n"
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or\n"
 "FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for\n"
@@ -455,7 +455,7 @@ msgid ""
 "\n"
 "You should have received a copy of the GNU General Public License along "
 "with\n"
-"Gee MPlayer if not, write to the\n"
+"G-MPlayer if not, write to the\n"
 "\n"
 "Free Software Foundation, Inc.,\n"
 "51 Franklin St, Fifth Floor\n"
@@ -471,7 +471,7 @@ msgid "Set Subtitle"
 msgstr ""
 
 #: src/gui.c:3749
-msgid "Gee MPlayer Fullscreen"
+msgid "G-MPlayer Fullscreen"
 msgstr ""
 
 #: src/gui.c:4151
@@ -641,7 +641,7 @@ msgid "MPlayer"
 msgstr ""
 
 #: src/gui.c:4856
-msgid "GEE MPlayer Configuration"
+msgid "G-MPlayer Configuration"
 msgstr ""
 
 #: src/gui.c:4869
@@ -843,7 +843,7 @@ msgid "Place playlist below media (requires application restart)"
 msgstr ""
 
 #: src/gui.c:5486
-msgid "Only allow one instance of Gee MPlayer"
+msgid "Only allow one instance of G-MPlayer"
 msgstr ""
 
 #: src/gui.c:5496
@@ -898,7 +898,7 @@ msgstr "<span weight=\"bold\">Pengaturan Lanjutan untuk MPlayer</span>"
 
 #: src/gui.c:5567
 msgid ""
-"Set this option if changing the volume in Gee MPlayer changes the master "
+"Set this option if changing the volume in G-MPlayer changes the master "
 "volume"
 msgstr ""
 

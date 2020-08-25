@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([gee-mplayer],[1.2])
-AM_INIT_AUTOMAKE([-Wall subdir-objects foreign silent-rules])
+AC_INIT([g-mplayer],[1.2])
+AM_INIT_AUTOMAKE([-Wall subdir-objects foreign])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 m4_ifdef([AM_MAINTAINER_MODE], [AM_MAINTAINER_MODE])
 
@@ -25,7 +25,7 @@ AC_PROG_CXX
 AM_PROG_CC_C_O
 
 dnl Set gettext package name
-GETTEXT_PACKAGE=gee-mplayer
+GETTEXT_PACKAGE=g-mplayer
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [GETTEXT package name])
 

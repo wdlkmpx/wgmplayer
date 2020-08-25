@@ -34,9 +34,7 @@
 #include <asoundlib.h>
 #endif
 
-#ifdef GIO_ENABLED
 #include <gio/gio.h>
-#endif
 
 gint get_bitrate(gchar * name);
 void free_metadata(MetaData * data);

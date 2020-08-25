@@ -1,6 +1,6 @@
-# GEE MPlayer
+# G-MPlayer
 # Copyright (C) 2007 Kevin DeKorte
-# This file is distributed under the same license as the GEE MPlayer package.
+# This file is distributed under the same license as the G-MPlayer package.
 # Kevin DeKorte <kdekorte@gmail.com> 2007.
 #
 #
@@ -305,21 +305,21 @@ msgid "Controls"
 msgstr "_Controale"
 
 #: src/main.c:894
-msgid "[FILES...] - GEE Media player based on MPlayer"
-msgstr "[FIȘIERE...] - GEE Media player bazat pe MPlayer"
+msgid "[FILES...] - G-Media player based on MPlayer"
+msgstr "[FIȘIERE...] - G-Media player bazat pe MPlayer"
 
 #: src/main.c:910
 #, c-format
-msgid "GEE MPlayer v%s\n"
-msgstr "GEE MPlayer v%s\n"
+msgid "G-MPlayer v%s\n"
+msgstr "G-MPlayer v%s\n"
 
 #: src/main.c:953
 #, c-format
 msgid ""
-"Run 'gee-mplayer --help' to see a full list of available command line "
+"Run 'g-mplayer --help' to see a full list of available command line "
 "options.\n"
 msgstr ""
-"Rulați „gee-mplayer --help” pentru a vedea o listă completă a opțiunilor "
+"Rulați „g-mplayer --help” pentru a vedea o listă completă a opțiunilor "
 "din linia de comandă.\n"
 
 #: src/gui.c:665 src/gui.c:717 src/gui.c:6118
@@ -445,8 +445,8 @@ msgid "Unable to save ' %s '"
 msgstr "Nu se poate salva „%s”"
 
 #: src/gui.c:3322 src/support.c:791 src/support.c:882
-msgid "GEE MPlayer Error"
-msgstr "Eroare GEE MPlayer"
+msgid "G-MPlayer Error"
+msgstr "Eroare G-MPlayer"
 
 #: src/gui.c:3370
 msgid "A media player for GEE that uses MPlayer"
@@ -454,13 +454,13 @@ msgstr "Un player media GEE ce folosește MPlayer"
 
 #: src/gui.c:3373
 msgid ""
-"Gee MPlayer is free software; you can redistribute it and/or modify it "
+"G-MPlayer is free software; you can redistribute it and/or modify it "
 "under\n"
 "the terms of the GNU General Public License as published by the Free\n"
 "Software Foundation; either version 2 of the License, or (at your option)\n"
 "any later version.\n"
 "\n"
-"Gee MPlayer is distributed in the hope that it will be useful, but "
+"G-MPlayer is distributed in the hope that it will be useful, but "
 "WITHOUT\n"
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or\n"
 "FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for\n"
@@ -468,7 +468,7 @@ msgid ""
 "\n"
 "You should have received a copy of the GNU General Public License along "
 "with\n"
-"Gee MPlayer if not, write to the\n"
+"G-MPlayer if not, write to the\n"
 "\n"
 "Free Software Foundation, Inc.,\n"
 "51 Franklin St, Fifth Floor\n"
@@ -496,8 +496,8 @@ msgid "Set Subtitle"
 msgstr "Definește subtitrare"
 
 #: src/gui.c:3749
-msgid "Gee MPlayer Fullscreen"
-msgstr "Gee MPlayer pe tot ecranul"
+msgid "G-MPlayer Fullscreen"
+msgstr "G-MPlayer pe tot ecranul"
 
 #: src/gui.c:4151
 msgid "<span weight=\"bold\">Video Details</span>"
@@ -667,8 +667,8 @@ msgid "MPlayer"
 msgstr "MPlayer"
 
 #: src/gui.c:4856
-msgid "GEE MPlayer Configuration"
-msgstr "Configurare GEE MPlayer"
+msgid "G-MPlayer Configuration"
+msgstr "Configurare G-MPlayer"
 
 #: src/gui.c:4869
 msgid ""
@@ -872,8 +872,8 @@ msgid "Place playlist below media (requires application restart)"
 msgstr ""
 
 #: src/gui.c:5486
-msgid "Only allow one instance of Gee MPlayer"
-msgstr "Permite numai o singură instanță pentru Gee MPlayer"
+msgid "Only allow one instance of G-MPlayer"
+msgstr "Permite numai o singură instanță pentru G-MPlayer"
 
 #: src/gui.c:5496
 msgid "When opening in single instance mode, replace existing file"
@@ -927,7 +927,7 @@ msgstr "<span weight=\"bold\">Opțiuni avansate pentru MPlayer</span>"
 
 #: src/gui.c:5567
 msgid ""
-"Set this option if changing the volume in Gee MPlayer changes the master "
+"Set this option if changing the volume in G-MPlayer changes the master "
 "volume"
 msgstr ""
 

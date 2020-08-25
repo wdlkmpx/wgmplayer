@@ -29,7 +29,7 @@
 #include "gui.h"
 #include "support.h"
 #include "common.h"
-#include "../pixmaps/gee_mplayer.xpm"
+#include "../pixmaps/g_mplayer.xpm"
 #include "langlist.h"
 
 static GtkWidget *fs_window;
@@ -1420,7 +1420,7 @@ gboolean set_raise_window(void *data)
 
 gboolean set_software_volume(gdouble * data)
 {
-    gm_store = gm_pref_store_new("gee-mplayer");
+    gm_store = gm_pref_store_new("g-mplayer");
     gm_pref_store_set_float(gm_store, VOLUME_SOFTVOL, *data);
     gm_pref_store_free(gm_store);
     return FALSE;
@@ -1647,7 +1647,7 @@ gboolean delete_callback(GtkWidget * widget, GdkEvent * event, void *data)
     gm_audio_set_server_volume_update_callback(&audio_device, NULL);
 
     if (remember_loc && !fullscreen) {
-        gm_store = gm_pref_store_new("gee-mplayer");
+        gm_store = gm_pref_store_new("g-mplayer");
         gtk_window_get_position(GTK_WINDOW(window), &loc_window_x, &loc_window_y);
         gtk_window_get_size(GTK_WINDOW(window), &loc_window_width, &loc_window_height);
         loc_panel_position = gtk_paned_get_position(GTK_PANED(pane));
@@ -2699,12 +2699,10 @@ void menuitem_open_callback(GtkMenuItem * menuitem, void *data)
 
     /*allow multiple files to be selected */
     gtk_file_chooser_set_select_multiple(GTK_FILE_CHOOSER(dialog), TRUE);
-#ifdef GIO_ENABLED
     gtk_file_chooser_set_local_only(GTK_FILE_CHOOSER(dialog), FALSE);
-#endif
 
     gtk_widget_show(dialog);
-    gm_store = gm_pref_store_new("gee-mplayer");
+    gm_store = gm_pref_store_new("g-mplayer");
     last_dir = gm_pref_store_get_string(gm_store, LAST_DIR);
     if (last_dir != NULL && is_uri_dir(last_dir)) {
         gtk_file_chooser_set_current_folder_uri(GTK_FILE_CHOOSER(dialog), last_dir);
@@ -2716,7 +2714,7 @@ void menuitem_open_callback(GtkMenuItem * menuitem, void *data)
         filename = gtk_file_chooser_get_uris(GTK_FILE_CHOOSER(dialog));
         last_dir = gtk_file_chooser_get_current_folder_uri(GTK_FILE_CHOOSER(dialog));
         if (last_dir != NULL && is_uri_dir(last_dir)) {
-            gm_store = gm_pref_store_new("gee-mplayer");
+            gm_store = gm_pref_store_new("g-mplayer");
             gm_pref_store_set_string(gm_store, LAST_DIR, last_dir);
             gm_pref_store_free(gm_store);
             g_free(last_dir);
@@ -2861,7 +2859,7 @@ void menuitem_open_dvdnav_folder_callback(GtkMenuItem * menuitem, void *data)
                                          GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                                          GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT, NULL);
     gtk_widget_show(dialog);
-    gm_store = gm_pref_store_new("gee-mplayer");
+    gm_store = gm_pref_store_new("g-mplayer");
     last_dir = gm_pref_store_get_string(gm_store, LAST_DIR);
     if (last_dir != NULL && is_uri_dir(last_dir)) {
         gtk_file_chooser_set_current_folder_uri(GTK_FILE_CHOOSER(dialog), last_dir);
@@ -2901,7 +2899,7 @@ void menuitem_open_dvdnav_iso_callback(GtkMenuItem * menuitem, void *data)
                                          GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                                          GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT, NULL);
     gtk_widget_show(dialog);
-    gm_store = gm_pref_store_new("gee-mplayer");
+    gm_store = gm_pref_store_new("g-mplayer");
     last_dir = gm_pref_store_get_string(gm_store, LAST_DIR);
     if (last_dir != NULL && is_uri_dir(last_dir)) {
         gtk_file_chooser_set_current_folder_uri(GTK_FILE_CHOOSER(dialog), last_dir);
@@ -3631,8 +3629,8 @@ void config_apply(GtkWidget * widget, void *data)
     } else {
         if (show_status_icon) {
             GtkIconTheme *icon_theme = gtk_icon_theme_get_default();
-            if (gtk_icon_theme_has_icon(icon_theme, "gee-mplayer")) {
-                status_icon = gtk_status_icon_new_from_icon_name("gee-mplayer");
+            if (gtk_icon_theme_has_icon(icon_theme, "g-mplayer")) {
+                status_icon = gtk_status_icon_new_from_icon_name("g-mplayer");
             } else {
                 status_icon = gtk_status_icon_new_from_pixbuf(pb_icon);
             }
@@ -3691,7 +3689,7 @@ void config_apply(GtkWidget * widget, void *data)
 
     set_media_player_attributes(media);
 
-    gm_store = gm_pref_store_new("gee-mplayer");
+    gm_store = gm_pref_store_new("g-mplayer");
 
     gm_pref_store_set_string(gm_store, AUDIO_DEVICE_NAME, audio_device_name);
 
@@ -4478,7 +4476,7 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     gtk_container_add(GTK_CONTAINER(conf_vbox), notebook);
     gtk_container_add(GTK_CONTAINER(config_window), conf_vbox);
 
-    gtk_window_set_title(GTK_WINDOW(config_window), _("GEE MPlayer Configuration"));
+    gtk_window_set_title(GTK_WINDOW(config_window), _("G-MPlayer Configuration"));
     gtk_container_set_border_width(GTK_CONTAINER(config_window), 5);
     gtk_window_set_default_size(GTK_WINDOW(config_window), 300, 300);
     conf_ok = gtk_button_new_from_stock(GTK_STOCK_OK);
@@ -4681,13 +4679,10 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
 
     i++;
 
-#ifdef GIO_ENABLED
     GVolumeMonitor *volumemonitor;
     GList *d, *drives;
     GDrive *drive;
     gchar *unix_device;
-
-
     volumemonitor = g_volume_monitor_get();
     if (volumemonitor != NULL) {
         drives = g_volume_monitor_get_connected_drives(volumemonitor);
@@ -4709,7 +4704,6 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
         }
 
     }
-#endif
     if (j != -1) {
         gtk_combo_box_set_active(GTK_COMBO_BOX(config_mplayer_dvd_device), j);
     } else {
@@ -4825,7 +4819,7 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     gtk_widget_set_tooltip_text(config_volume, _("Default volume for playback"));
     gtk_widget_set_size_request(config_volume, 100, -1);
     gtk_table_attach(GTK_TABLE(conf_table), config_volume, 1, 2, i, i + 1, GTK_FILL | GTK_EXPAND, GTK_SHRINK, 0, 0);
-    gm_store = gm_pref_store_new("gee-mplayer");
+    gm_store = gm_pref_store_new("g-mplayer");
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(config_volume), gm_pref_store_get_int(gm_store, VOLUME));
     gm_pref_store_free(gm_store);
     gtk_entry_set_width_chars(GTK_ENTRY(config_volume), 6);
@@ -5101,7 +5095,7 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     gtk_table_attach(GTK_TABLE(conf_table), config_vertical_layout, 0, 2, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
     i++;
 
-    config_single_instance = gtk_check_button_new_with_label(_("Only allow one instance of Gee MPlayer"));
+    config_single_instance = gtk_check_button_new_with_label(_("Only allow one instance of G-MPlayer"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_single_instance), single_instance);
     gtk_table_attach(GTK_TABLE(conf_table), config_single_instance, 0, 2, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
     g_signal_connect(G_OBJECT(config_single_instance), "toggled", G_CALLBACK(config_single_instance_callback), NULL);
@@ -5182,7 +5176,7 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     i++;
 
     gtk_widget_set_tooltip_text(config_softvol,
-                                _("Set this option if changing the volume in Gee MPlayer changes the master volume"));
+                                _("Set this option if changing the volume in G-MPlayer changes the master volume"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_softvol), softvol);
     gtk_table_attach(GTK_TABLE(conf_table), config_softvol, 0, 2, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
     g_signal_connect(G_OBJECT(config_softvol), "toggled", G_CALLBACK(config_softvol_callback), NULL);
@@ -5972,7 +5966,7 @@ void player_error_message_callback(GmtkMediaPlayer * media, gchar * message)
     // log messages to the screen
     dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR,
                                     GTK_BUTTONS_CLOSE, "%s", message);
-    gtk_window_set_title(GTK_WINDOW(dialog), g_dgettext(GETTEXT_PACKAGE, "GEE MPlayer Error"));
+    gtk_window_set_title(GTK_WINDOW(dialog), g_dgettext(GETTEXT_PACKAGE, "G-MPlayer Error"));
     gtk_dialog_run(GTK_DIALOG(dialog));
     gtk_widget_destroy(dialog);
 }
@@ -6120,8 +6114,8 @@ void make_button(gchar * src, gchar * hrefid)
     if (error != NULL) {
         g_error_free(error);
         error = NULL;
-        basepath = g_strdup_printf("%s/gee-mplayer/plugin", g_get_user_cache_dir());
-        dirname = gm_tempname(basepath, "gee-mplayerXXXXXX");
+        basepath = g_strdup_printf("%s/g-mplayer/plugin", g_get_user_cache_dir());
+        dirname = gm_tempname(basepath, "g-mplayerXXXXXX");
         filename = g_strdup_printf("%s/00000001.jpg", dirname);
         g_free(basepath);
         // run mplayer and try to get the first frame and convert it to a jpeg
@@ -6450,19 +6444,17 @@ GtkWidget *create_window()
     menuitem_file_open_dtv = GTK_MENU_ITEM(gtk_image_menu_item_new_with_mnemonic(_("Open _Digital TV")));
     gtk_menu_shell_append(GTK_MENU_SHELL(menu_file_tv), GTK_WIDGET(menuitem_file_open_dtv));
 
-#ifdef GIO_ENABLED
     recent_manager = gtk_recent_manager_get_default();
     menuitem_file_recent = GTK_MENU_ITEM(gtk_menu_item_new_with_mnemonic(_("Open _Recent")));
     gtk_menu_shell_append(GTK_MENU_SHELL(menu_file), GTK_WIDGET(menuitem_file_recent));
     menuitem_file_recent_items = gtk_recent_chooser_menu_new();
     recent_filter = gtk_recent_filter_new();
-    gtk_recent_filter_add_application(recent_filter, "gee-mplayer");
+    gtk_recent_filter_add_application(recent_filter, "g-mplayer");
     gtk_recent_chooser_add_filter(GTK_RECENT_CHOOSER(menuitem_file_recent_items), recent_filter);
     gtk_recent_chooser_set_show_tips(GTK_RECENT_CHOOSER(menuitem_file_recent_items), TRUE);
     gtk_recent_chooser_set_sort_type(GTK_RECENT_CHOOSER(menuitem_file_recent_items), GTK_RECENT_SORT_MRU);
     gtk_menu_item_set_submenu(menuitem_file_recent, menuitem_file_recent_items);
     gtk_recent_chooser_set_local_only(GTK_RECENT_CHOOSER(menuitem_file_recent_items), FALSE);
-#endif
 
     menuitem_file_sep2 = GTK_MENU_ITEM(gtk_separator_menu_item_new());
     gtk_menu_shell_append(GTK_MENU_SHELL(menu_file), GTK_WIDGET(menuitem_file_sep2));
@@ -6483,10 +6475,8 @@ GtkWidget *create_window()
     g_signal_connect(G_OBJECT(menuitem_file_open_atv), "activate", G_CALLBACK(menuitem_open_atv_callback), NULL);
     g_signal_connect(G_OBJECT(menuitem_file_open_dtv), "activate", G_CALLBACK(menuitem_open_dtv_callback), NULL);
 
-#ifdef GIO_ENABLED
     g_signal_connect(G_OBJECT(menuitem_file_recent_items),
                      "item-activated", G_CALLBACK(menuitem_open_recent_callback), NULL);
-#endif
 
     g_signal_connect(G_OBJECT(menuitem_file_quit), "activate", G_CALLBACK(menuitem_quit_callback), NULL);
     // Edit Menu
@@ -6785,27 +6775,27 @@ GtkWidget *create_window()
 #endif
 
     icon_list = NULL;
-    if (gtk_icon_theme_has_icon(icon_theme, "gee-mplayer")) {
-        pb_icon = gtk_icon_theme_load_icon(icon_theme, "gee-mplayer", 128, 0, NULL);
+    if (gtk_icon_theme_has_icon(icon_theme, "g-mplayer")) {
+        pb_icon = gtk_icon_theme_load_icon(icon_theme, "g-mplayer", 128, 0, NULL);
         if (pb_icon)
             icon_list = g_list_prepend(icon_list, pb_icon);
-        pb_icon = gtk_icon_theme_load_icon(icon_theme, "gee-mplayer", 64, 0, NULL);
+        pb_icon = gtk_icon_theme_load_icon(icon_theme, "g-mplayer", 64, 0, NULL);
         if (pb_icon)
             icon_list = g_list_prepend(icon_list, pb_icon);
-        pb_icon = gtk_icon_theme_load_icon(icon_theme, "gee-mplayer", 48, 0, NULL);
+        pb_icon = gtk_icon_theme_load_icon(icon_theme, "g-mplayer", 48, 0, NULL);
         if (pb_icon)
             icon_list = g_list_prepend(icon_list, pb_icon);
-        pb_icon = gtk_icon_theme_load_icon(icon_theme, "gee-mplayer", 24, 0, NULL);
+        pb_icon = gtk_icon_theme_load_icon(icon_theme, "g-mplayer", 24, 0, NULL);
         if (pb_icon)
             icon_list = g_list_prepend(icon_list, pb_icon);
-        pb_icon = gtk_icon_theme_load_icon(icon_theme, "gee-mplayer", 22, 0, NULL);
+        pb_icon = gtk_icon_theme_load_icon(icon_theme, "g-mplayer", 22, 0, NULL);
         if (pb_icon)
             icon_list = g_list_prepend(icon_list, pb_icon);
-        pb_icon = gtk_icon_theme_load_icon(icon_theme, "gee-mplayer", 16, 0, NULL);
+        pb_icon = gtk_icon_theme_load_icon(icon_theme, "g-mplayer", 16, 0, NULL);
         if (pb_icon)
             icon_list = g_list_prepend(icon_list, pb_icon);
     } else {
-        pb_icon = gdk_pixbuf_new_from_xpm_data((const char **) gee_mplayer_xpm);
+        pb_icon = gdk_pixbuf_new_from_xpm_data((const char **) g_mplayer_xpm);
         if (pb_icon)
             icon_list = g_list_prepend(icon_list, pb_icon);
     }
@@ -6813,10 +6803,10 @@ GtkWidget *create_window()
     gtk_window_set_icon_list(GTK_WINDOW(window), icon_list);
 
     if (show_status_icon) {
-        if (gtk_icon_theme_has_icon(icon_theme, "gee-mplayer-panel")) {
-            status_icon = gtk_status_icon_new_from_icon_name("gee-mplayer-panel");
-        } else if (gtk_icon_theme_has_icon(icon_theme, "gee-mplayer")) {
-            status_icon = gtk_status_icon_new_from_icon_name("gee-mplayer");
+        if (gtk_icon_theme_has_icon(icon_theme, "g-mplayer-panel")) {
+            status_icon = gtk_status_icon_new_from_icon_name("g-mplayer-panel");
+        } else if (gtk_icon_theme_has_icon(icon_theme, "g-mplayer")) {
+            status_icon = gtk_status_icon_new_from_icon_name("g-mplayer");
         } else {
             status_icon = gtk_status_icon_new_from_pixbuf(pb_icon);
         }

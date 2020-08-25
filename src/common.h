@@ -24,10 +24,7 @@
 
 #include <gtk/gtk.h>
 #include "gmlib.h"
-
-#ifdef GIO_ENABLED
 #include <gio/gio.h>
-#endif
 
 #ifndef _COMMON_H
 #define _COMMON_H
@@ -168,7 +165,7 @@ typedef struct _IdleData {
     gboolean window_resized;
     gboolean tmpfile;
     gboolean retry_on_full_cache;
-#ifdef GIO_ENABLED
+
     GFile *src;
     GFile *tmp;
     GCancellable *cancel;
@@ -178,7 +175,7 @@ typedef struct _IdleData {
 #else
     GCond * caching_complete;
 #endif
-#endif
+
 } IdleData;
 
 IdleData *idledata;
@@ -232,22 +229,22 @@ typedef enum {
     DO_NOT_RESUME
 } ResumeMode;
 
-#define ACCEL_PATH_OPEN_LOCATION "<GEE MPlayer>/File/Open Location"
-#define ACCEL_PATH_EDIT_SCREENSHOT "<GEE MPlayer>/Edit/Screenshot"
-#define ACCEL_PATH_EDIT_PREFERENCES "<GEE MPlayer>/Edit/Preferences"
-#define ACCEL_PATH_VIEW_PLAYLIST "<GEE MPlayer>/View/Playlist"
-#define ACCEL_PATH_VIEW_INFO "<GEE MPlayer>/View/Info"
-#define ACCEL_PATH_VIEW_DETAILS "<GEE MPlayer>/View/Details"
-#define ACCEL_PATH_VIEW_METER "<GEE MPlayer>/View/Meter"
-#define ACCEL_PATH_VIEW_FULLSCREEN "<GEE MPlayer>/View/Fullscreen"
-#define ACCEL_PATH_VIEW_ASPECT "<GEE MPlayer>/View/Aspect"
-#define ACCEL_PATH_VIEW_SUBTITLES "<GEE MPlayer>/View/Subtitles"
-#define ACCEL_PATH_VIEW_DECREASE_SIZE "<GEE MPlayer>/View/Decrease Size"
-#define ACCEL_PATH_VIEW_INCREASE_SIZE "<GEE MPlayer>/View/Increase Size"
-#define ACCEL_PATH_VIEW_ANGLE "<GEE MPlayer>/View/Angle"
-#define ACCEL_PATH_VIEW_CONTROLS "<GEE MPlayer>/View/Controls"
-#define ACCEL_PATH_VIEW_NORMAL "<GEE MPlayer>/View/Normal"
-#define ACCEL_PATH_VIEW_DOUBLE "<GEE MPlayer>/View/Double"
+#define ACCEL_PATH_OPEN_LOCATION "<G-MPlayer>/File/Open Location"
+#define ACCEL_PATH_EDIT_SCREENSHOT "<G-MPlayer>/Edit/Screenshot"
+#define ACCEL_PATH_EDIT_PREFERENCES "<G-MPlayer>/Edit/Preferences"
+#define ACCEL_PATH_VIEW_PLAYLIST "<G-MPlayer>/View/Playlist"
+#define ACCEL_PATH_VIEW_INFO "<G-MPlayer>/View/Info"
+#define ACCEL_PATH_VIEW_DETAILS "<G-MPlayer>/View/Details"
+#define ACCEL_PATH_VIEW_METER "<G-MPlayer>/View/Meter"
+#define ACCEL_PATH_VIEW_FULLSCREEN "<G-MPlayer>/View/Fullscreen"
+#define ACCEL_PATH_VIEW_ASPECT "<G-MPlayer>/View/Aspect"
+#define ACCEL_PATH_VIEW_SUBTITLES "<G-MPlayer>/View/Subtitles"
+#define ACCEL_PATH_VIEW_DECREASE_SIZE "<G-MPlayer>/View/Decrease Size"
+#define ACCEL_PATH_VIEW_INCREASE_SIZE "<G-MPlayer>/View/Increase Size"
+#define ACCEL_PATH_VIEW_ANGLE "<G-MPlayer>/View/Angle"
+#define ACCEL_PATH_VIEW_CONTROLS "<G-MPlayer>/View/Controls"
+#define ACCEL_PATH_VIEW_NORMAL "<G-MPlayer>/View/Normal"
+#define ACCEL_PATH_VIEW_DOUBLE "<G-MPlayer>/View/Double"
 
 typedef struct _MetaData {
     gchar *uri;
