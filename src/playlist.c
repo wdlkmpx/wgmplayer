@@ -143,8 +143,8 @@ void playlist_set_subtitle_callback(GtkMenuItem * menuitem, void *data)
         dialog = gtk_file_chooser_dialog_new(_("Set Subtitle"),
                                              GTK_WINDOW(window),
                                              GTK_FILE_CHOOSER_ACTION_OPEN,
-                                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                             GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT, NULL);
+                                             "gtk-cancel", GTK_RESPONSE_CANCEL,
+                                             "gtk-open",   GTK_RESPONSE_ACCEPT, NULL);
         gtk_widget_show(dialog);
         gtk_file_chooser_set_current_folder_uri(GTK_FILE_CHOOSER(dialog), path);
         if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
@@ -180,8 +180,8 @@ void playlist_set_audiofile_callback(GtkMenuItem * menuitem, void *data)
         dialog = gtk_file_chooser_dialog_new(_("Set Audio"),
                                              GTK_WINDOW(window),
                                              GTK_FILE_CHOOSER_ACTION_OPEN,
-                                             GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                             GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT, NULL);
+                                             "gtk-cancel", GTK_RESPONSE_CANCEL,
+                                             "gtk-open",   GTK_RESPONSE_ACCEPT, NULL);
         gtk_widget_show(dialog);
         gtk_file_chooser_set_current_folder_uri(GTK_FILE_CHOOSER(dialog), path);
         if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
@@ -312,8 +312,8 @@ void save_playlist(GtkWidget * widget, void *data)
     dialog = gtk_file_chooser_dialog_new(_("Save Playlist"),
                                          GTK_WINDOW(window),
                                          GTK_FILE_CHOOSER_ACTION_SAVE,
-                                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                         GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT, NULL);
+                                         "gtk-cancel", GTK_RESPONSE_CANCEL,
+                                         "gtk-save",   GTK_RESPONSE_ACCEPT, NULL);
 
 #ifdef GIO_ENABLED
     gtk_file_chooser_set_local_only(GTK_FILE_CHOOSER(dialog), FALSE);
@@ -371,8 +371,8 @@ void load_playlist(GtkWidget * widget, void *data)
     dialog = gtk_file_chooser_dialog_new(_("Open Playlist"),
                                          GTK_WINDOW(window),
                                          GTK_FILE_CHOOSER_ACTION_OPEN,
-                                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                         GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT, NULL);
+                                         "gtk-cancel", GTK_RESPONSE_CANCEL,
+                                         "gtk-open",   GTK_RESPONSE_ACCEPT, NULL);
     gtk_widget_show(dialog);
     gm_store = gm_pref_store_new("g-mplayer");
     last_dir = gm_pref_store_get_string(gm_store, LAST_DIR);
@@ -543,8 +543,8 @@ void add_to_playlist(GtkWidget * widget, void *data)
     dialog = gtk_file_chooser_dialog_new(_("Open File"),
                                          GTK_WINDOW(window),
                                          GTK_FILE_CHOOSER_ACTION_OPEN,
-                                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                         GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT, NULL);
+                                         "gtk-cancel", GTK_RESPONSE_CANCEL,
+                                         "gtk-open",   GTK_RESPONSE_ACCEPT, NULL);
 
     /*allow multiple files to be selected */
     gtk_widget_show(dialog);
@@ -605,8 +605,8 @@ void add_folder_to_playlist(GtkWidget * widget, void *data)
     dialog = gtk_file_chooser_dialog_new(_("Choose Directory"),
                                          GTK_WINDOW(window),
                                          GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER,
-                                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                         GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT, NULL);
+                                         "gtk-cancel", GTK_RESPONSE_CANCEL,
+                                         "gtk-open",   GTK_RESPONSE_ACCEPT, NULL);
 
     gtk_widget_show(dialog);
     /*allow multiple files to be selected */
@@ -968,7 +968,7 @@ void create_playlist_widget()
 
     plclose = gtk_button_new();
     gtk_widget_set_tooltip_text(plclose, _("Close Playlist View"));
-    gtk_container_add(GTK_CONTAINER(plclose), gtk_image_new_from_stock(GTK_STOCK_CLOSE, GTK_ICON_SIZE_MENU));
+    gtk_container_add(GTK_CONTAINER(plclose), gtk_image_new_from_stock("gtk-close", GTK_ICON_SIZE_MENU));
 
     g_signal_connect_swapped(G_OBJECT(plclose), "clicked", G_CALLBACK(playlist_close), NULL);
 
@@ -976,50 +976,50 @@ void create_playlist_widget()
     loadlist = gtk_button_new();
 
     gtk_widget_set_tooltip_text(loadlist, _("Open Playlist"));
-    gtk_container_add(GTK_CONTAINER(loadlist), gtk_image_new_from_stock(GTK_STOCK_OPEN, GTK_ICON_SIZE_MENU));
+    gtk_container_add(GTK_CONTAINER(loadlist), gtk_image_new_from_stock("gtk-open", GTK_ICON_SIZE_MENU));
     gtk_box_pack_start(GTK_BOX(ctrlbox), loadlist, FALSE, FALSE, 0);
     g_signal_connect(G_OBJECT(loadlist), "clicked", G_CALLBACK(load_playlist), NULL);
 
     savelist = gtk_button_new();
     gtk_widget_set_tooltip_text(savelist, _("Save Playlist"));
-    gtk_container_add(GTK_CONTAINER(savelist), gtk_image_new_from_stock(GTK_STOCK_SAVE, GTK_ICON_SIZE_MENU));
+    gtk_container_add(GTK_CONTAINER(savelist), gtk_image_new_from_stock("gtk-save", GTK_ICON_SIZE_MENU));
     gtk_box_pack_start(GTK_BOX(ctrlbox), savelist, FALSE, FALSE, 0);
     g_signal_connect(G_OBJECT(savelist), "clicked", G_CALLBACK(save_playlist), NULL);
 
     add = gtk_button_new();
     gtk_widget_set_tooltip_text(add, _("Add Item to Playlist"));
-    gtk_button_set_image(GTK_BUTTON(add), gtk_image_new_from_stock(GTK_STOCK_ADD, GTK_ICON_SIZE_MENU));
+    gtk_button_set_image(GTK_BUTTON(add), gtk_image_new_from_stock("gtk-add", GTK_ICON_SIZE_MENU));
     gtk_box_pack_start(GTK_BOX(ctrlbox), add, FALSE, FALSE, 0);
     g_signal_connect(G_OBJECT(add), "clicked", G_CALLBACK(add_to_playlist), NULL);
 
     remove = gtk_button_new();
     gtk_widget_set_tooltip_text(remove, _("Remove Item from Playlist"));
-    gtk_button_set_image(GTK_BUTTON(remove), gtk_image_new_from_stock(GTK_STOCK_REMOVE, GTK_ICON_SIZE_MENU));
+    gtk_button_set_image(GTK_BUTTON(remove), gtk_image_new_from_stock("gtk-remove", GTK_ICON_SIZE_MENU));
     gtk_box_pack_start(GTK_BOX(ctrlbox), remove, FALSE, FALSE, 0);
     g_signal_connect(G_OBJECT(remove), "clicked", G_CALLBACK(remove_from_playlist), list);
 
     add_folder = gtk_button_new();
     gtk_widget_set_tooltip_text(add_folder, _("Add Items in Folder to Playlist"));
-    gtk_button_set_image(GTK_BUTTON(add_folder), gtk_image_new_from_stock(GTK_STOCK_DIRECTORY, GTK_ICON_SIZE_MENU));
+    gtk_button_set_image(GTK_BUTTON(add_folder), gtk_image_new_from_stock("gtk-directory", GTK_ICON_SIZE_MENU));
     gtk_box_pack_start(GTK_BOX(ctrlbox), add_folder, FALSE, FALSE, 0);
     g_signal_connect(G_OBJECT(add_folder), "clicked", G_CALLBACK(add_folder_to_playlist), list);
 
     clear = gtk_button_new();
     gtk_widget_set_tooltip_text(clear, _("Clear Playlist"));
-    gtk_button_set_image(GTK_BUTTON(clear), gtk_image_new_from_stock(GTK_STOCK_CLEAR, GTK_ICON_SIZE_MENU));
+    gtk_button_set_image(GTK_BUTTON(clear), gtk_image_new_from_stock("gtk-clear", GTK_ICON_SIZE_MENU));
     gtk_box_pack_start(GTK_BOX(ctrlbox), clear, FALSE, FALSE, 0);
     g_signal_connect(G_OBJECT(clear), "clicked", G_CALLBACK(clear_playlist), list);
 
     up = gtk_button_new();
     gtk_widget_set_tooltip_text(up, _("Move Item Up"));
-    gtk_button_set_image(GTK_BUTTON(up), gtk_image_new_from_stock(GTK_STOCK_GO_UP, GTK_ICON_SIZE_MENU));
+    gtk_button_set_image(GTK_BUTTON(up), gtk_image_new_from_stock("gtk-go-up", GTK_ICON_SIZE_MENU));
     gtk_box_pack_start(GTK_BOX(ctrlbox), up, FALSE, FALSE, 0);
     g_signal_connect(G_OBJECT(up), "clicked", G_CALLBACK(move_item_up), list);
     gtk_widget_set_sensitive(up, FALSE);
 
     down = gtk_button_new();
     gtk_widget_set_tooltip_text(down, _("Move Item Down"));
-    gtk_button_set_image(GTK_BUTTON(down), gtk_image_new_from_stock(GTK_STOCK_GO_DOWN, GTK_ICON_SIZE_MENU));
+    gtk_button_set_image(GTK_BUTTON(down), gtk_image_new_from_stock("gtk-go-down", GTK_ICON_SIZE_MENU));
     gtk_box_pack_start(GTK_BOX(ctrlbox), down, FALSE, FALSE, 0);
     g_signal_connect(G_OBJECT(down), "clicked", G_CALLBACK(move_item_down), list);
     gtk_widget_set_sensitive(down, FALSE);
@@ -1027,7 +1027,7 @@ void create_playlist_widget()
 
     undo = gtk_button_new();
     gtk_widget_set_tooltip_text(undo, _("UnSort List"));
-    gtk_button_set_image(GTK_BUTTON(undo), gtk_image_new_from_stock(GTK_STOCK_UNDO, GTK_ICON_SIZE_MENU));
+    gtk_button_set_image(GTK_BUTTON(undo), gtk_image_new_from_stock("gtk-undo", GTK_ICON_SIZE_MENU));
     gtk_box_pack_start(GTK_BOX(ctrlbox), undo, FALSE, FALSE, 0);
     g_signal_connect(G_OBJECT(undo), "clicked", G_CALLBACK(undo_playlist_sort), list);
     gtk_widget_set_sensitive(undo, TRUE);
