@@ -26,6 +26,8 @@ bin_PROGRAMS = g-mplayer
 
 g_mplayer_SOURCES = \
 	../config.h \
+	gtkcompat.c \
+	gtkcompat.h \
 	gmtk/gmlib.h \
 	gmtk/gm_audio.c \
 	gmtk/gm_audio.h \
@@ -51,8 +53,6 @@ g_mplayer_SOURCES = \
 	support.h \
 	main.c \
 	common.h \
-	gtkcompat.c \
-	gtkcompat.h \
 	../icons/g_mplayer.xpm
 
 g_mplayer_LDADD = \

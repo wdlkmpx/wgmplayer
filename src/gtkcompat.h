@@ -3,7 +3,7 @@
  * 
  * gtkcompat, GTK2+ compatibility layer
  * 
- * v1.0
+ * 2020-08-25
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -14,6 +14,12 @@
 
 #ifndef __GTKCOMPAT_H
 #define __GTKCOMPAT_H
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
@@ -89,9 +95,17 @@
 #endif /* __GLIB_COMPAT_H */
 
 
+
 /* ================================================== */
 /*                       GTK                          */
 /* ================================================== */
+
+// GTK < 3.12
+#if ! GTK_CHECK_VERSION (3, 12, 0)
+#define gtk_widget_set_margin_start(widget,margin) gtk_widget_set_margin_left(widget,margin)
+#define gtk_widget_set_margin_end(widget,margin)   gtk_widget_set_margin_right(widget,margin)
+#endif
+
 
 // GTK < 3.0
 #if ! GTK_CHECK_VERSION (3, 0, 0)
@@ -102,8 +116,21 @@ GtkWidget *gtk_scale_new_with_range (GtkOrientation orientation, gdouble min, gd
 GtkWidget *gtk_separator_new (GtkOrientation orientation);
 GtkWidget *gtk_scrollbar_new (GtkOrientation orientation, GtkAdjustment *adjustment);
 GtkWidget *gtk_paned_new (GtkOrientation orientation);
-#define gtk_widget_get_allocated_height(widget) ( ((GtkWidget *)(widget))->allocation.height )
-#define gtk_widget_get_allocated_width(widget)  ( ((GtkWidget *)(widget))->allocation.width  )
+#define gtk_widget_get_allocated_height(widget) (GTK_WIDGET(widget)->allocation.height )
+#define gtk_widget_get_allocated_width(widget)  (GTK_WIDGET(widget)->allocation.width  )
+typedef enum /* GtkAlign */
+{
+  GTK_ALIGN_FILL,
+  GTK_ALIGN_START,
+  GTK_ALIGN_END,
+  GTK_ALIGN_CENTER
+} GtkAlign;
+void gtk_widget_set_halign (GtkWidget *widget, GtkAlign align);
+void gtk_widget_set_valign (GtkWidget *widget, GtkAlign align);
+void gtk_widget_set_margin_left  (GtkWidget *widget, gint margin);
+void gtk_widget_set_margin_right (GtkWidget *widget, gint margin);
+void gtk_widget_set_margin_top (GtkWidget *widget, gint margin);
+void gtk_widget_set_margin_bottom (GtkWidget *widget, gint margin);
 #endif
 
 
@@ -132,6 +159,7 @@ typedef struct _GtkComboBoxPrivate GtkComboBoxTextPrivate;
 #if ! GTK_CHECK_VERSION (2, 22, 0)
 gboolean gtk_window_has_group (GtkWindow *window);
 GtkWidget * gtk_window_group_get_current_grab (GtkWindowGroup *window_group);
+#define gtk_font_selection_dialog_get_font_selection(fsd)(GTK_FONT_SELECTION_DIALOG(fsd)->fontsel)
 #endif
 
 
@@ -139,15 +167,15 @@ GtkWidget * gtk_window_group_get_current_grab (GtkWindowGroup *window_group);
 #if ! GTK_CHECK_VERSION (2, 20, 0)
 #define gtk_widget_get_mapped(wid) ((GTK_WIDGET_FLAGS (wid) & GTK_MAPPED) != 0)
 #define gtk_widget_get_realized(wid) ((GTK_WIDGET_FLAGS (wid) & GTK_REALIZED) != 0)
+#define gtk_window_get_window_type(window) (GTK_WINDOW(window)->type)
+void gtk_widget_get_requisition (GtkWidget *widget, GtkRequisition *requisition);
 void gtk_widget_set_mapped (GtkWidget *widget, gboolean mapped);
 void gtk_widget_set_realized (GtkWidget *widget, gboolean realized);
-GtkWindowType gtk_window_get_window_type (GtkWindow *window);
 #endif
 
 
 // GTK < 2.18
 #if ! GTK_CHECK_VERSION (2, 18, 0)
-//GtkStateType gtk_widget_get_state (GtkWidget *widget);
 #define gtk_widget_get_state(wid) (GTK_WIDGET (wid)->state)
 #define gtk_widget_is_toplevel(wid) ((GTK_WIDGET_FLAGS (wid) & GTK_TOPLEVEL) != 0)
 #define gtk_widget_get_has_window(wid) !((GTK_WIDGET_FLAGS (wid) & GTK_NO_WINDOW) != 0)
@@ -175,16 +203,17 @@ void gtk_widget_set_visible (GtkWidget *widget, gboolean visible);
 // GTK < 2.16
 #if ! GTK_CHECK_VERSION (2, 16, 0)
 #define gtk_status_icon_set_tooltip_text(icon,text) gtk_status_icon_set_tooltip(icon,text)
-const gchar * gtk_menu_item_get_label (GtkMenuItem *menu_item);
+#define gtk_menu_item_get_label(i) (gtk_label_get_label (GTK_LABEL (GTK_BIN (i)->child)))
+#define gtk_menu_item_get_use_underline(i) (gtk_label_get_use_underline (GTK_LABEL (GTK_BIN (i)->child)))
 #endif
 
 
 // GTK < 2.14
 #if ! GTK_CHECK_VERSION (2, 14, 0)
-GtkWidget * gtk_dialog_get_action_area (GtkDialog *dialog);
-GtkWidget * gtk_dialog_get_content_area (GtkDialog *dialog);
-GdkWindow * gtk_widget_get_window (GtkWidget *widget);
-GtkWidget * gtk_window_get_default_widget (GtkWindow *window);
+#define gtk_dialog_get_action_area(dialog)    (GTK_DIALOG(dialog)->action_area)
+#define gtk_dialog_get_content_area(dialog)   (GTK_DIALOG(dialog)->vbox)
+#define gtk_widget_get_window(widget)         (GTK_WIDGET(widget)->window)
+#define gtk_window_get_default_widget(window) (GTK_WINDOW(window)->default_widget)
 #endif
 
 
@@ -218,4 +247,15 @@ GtkWidget * gtk_window_get_default_widget (GtkWindow *window);
 #	define GDK_KEY_s GDK_s
 #endif
 
+
+// PANGO
+#ifndef PANGO_WEIGHT_MEDIUM
+#define PANGO_WEIGHT_MEDIUM 500
 #endif
+
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* __GTKCOMPAT_H */
