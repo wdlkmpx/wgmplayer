@@ -4,10 +4,7 @@ ACLOCAL_AMFLAGS = -I m4
 SUBDIRS = src po icons
 
 g_mplayerdocdir = ${docdir}
-g_mplayerdoc_DATA = \
-	README\
-	COPYING\
-	DOCS/keyboard_shortcuts.txt
+g_mplayerdoc_DATA = README COPYING
 
 desktopdir = ${prefix}/share/applications
 desktop_DATA = g-mplayer.desktop
