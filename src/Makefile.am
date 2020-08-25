@@ -7,7 +7,6 @@ AM_CPPFLAGS = \
 	-DPACKAGE_LOCALE_DIR=\""$(localedir)"\" \
 	-DPACKAGE_SRC_DIR=\""$(srcdir)"\" \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
-	-I../pixmaps \
 	$(GTK_CFLAGS) \
     $(GIO_CFLAGS) \
 	$(ALSA_CFLAGS) \
@@ -54,7 +53,7 @@ g_mplayer_SOURCES = \
 	common.h \
 	gtkcompat.c \
 	gtkcompat.h \
-	../pixmaps/g_mplayer.xpm
+	../icons/g_mplayer.xpm
 
 g_mplayer_LDADD = \
     -lm \
