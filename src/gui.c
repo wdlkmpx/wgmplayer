@@ -227,11 +227,11 @@ static GtkWidget *folder_progress_label;
 static GtkWidget *folder_progress_bar;
 
 // Video Settings
-static GtkWidget *adv_brightness;
-static GtkWidget *adv_contrast;
-static GtkWidget *adv_gamma;
-static GtkWidget *adv_hue;
-static GtkWidget *adv_saturation;
+static GtkWidget * vpa_scale_brightness;
+static GtkWidget * vpa_scale_contrast;
+static GtkWidget * vpa_scale_gamma;
+static GtkWidget * vpa_scale_hue;
+static GtkWidget * vpa_scale_saturation;
 
 static glong last_movement_time;
 
@@ -3755,13 +3755,13 @@ void config_apply(GtkWidget * widget, void *data)
     gtk_widget_destroy(widget);
 }
 
-void adv_reset_values(GtkWidget * widget, void *data)
+void vpa_reset_values(GtkWidget * widget, void *data)
 {
-    gtk_range_set_value(GTK_RANGE(adv_brightness), 0);
-    gtk_range_set_value(GTK_RANGE(adv_contrast), 0);
-    gtk_range_set_value(GTK_RANGE(adv_hue), 0);
-    gtk_range_set_value(GTK_RANGE(adv_gamma), 0);
-    gtk_range_set_value(GTK_RANGE(adv_saturation), 0);
+    gtk_range_set_value (GTK_RANGE (vpa_scale_brightness), 0);
+    gtk_range_set_value (GTK_RANGE (vpa_scale_contrast),   0);
+    gtk_range_set_value (GTK_RANGE (vpa_scale_hue),        0);
+    gtk_range_set_value (GTK_RANGE (vpa_scale_gamma),      0);
+    gtk_range_set_value (GTK_RANGE (vpa_scale_saturation), 0);
 }
 
 
@@ -3772,30 +3772,30 @@ void config_close(GtkWidget * widget, void *data)
         gtk_widget_destroy(widget);
 }
 
-void brightness_callback(GtkRange * range, gpointer data)
+void on_gtk_scale_ValueChanged_brightness_cb (GtkRange * range, gpointer data)
 {
     gmtk_media_player_set_attribute_integer(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_BRIGHTNESS,
                                             (gint) gtk_range_get_value(range));
 }
 
-void contrast_callback(GtkRange * range, gpointer data)
+void on_gtk_scale_ValueChanged_contrast_cb (GtkRange * range, gpointer data)
 {
     gmtk_media_player_set_attribute_integer(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_CONTRAST,
                                             (gint) gtk_range_get_value(range));
 }
 
-void gamma_callback(GtkRange * range, gpointer data)
+void on_gtk_scale_ValueChanged_gamma_cb (GtkRange * range, gpointer data)
 {
     gmtk_media_player_set_attribute_integer(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_GAMMA,
                                             (gint) gtk_range_get_value(range));
 }
 
-void hue_callback(GtkRange * range, gpointer data)
+void on_gtk_scale_ValueChanged_hue_cb (GtkRange * range, gpointer data)
 {
     gmtk_media_player_set_attribute_integer(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_HUE, (gint) gtk_range_get_value(range));
 }
 
-void saturation_callback(GtkRange * range, gpointer data)
+void on_gtk_scale_ValueChanged_saturation_cb (GtkRange * range, gpointer data)
 {
     gmtk_media_player_set_attribute_integer(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_SATURATION,
                                             (gint) gtk_range_get_value(range));
@@ -3951,114 +3951,110 @@ void create_details_table()
 }
 
 
-void menuitem_advanced_callback(GtkMenuItem * menuitem, void *data)
+void menuitem_video_adjustments_dlg (GtkMenuItem * menuitem, void *data)
 {
-    GtkWidget *adv_window;
-    GtkWidget *adv_vbox;
-    GtkWidget *adv_hbutton_box;
-    GtkWidget *adv_table;
-    GtkWidget *adv_reset;
-    GtkWidget *adv_close;
-    GtkWidget *label;
-    gint i = 0;
+    GtkWidget * dlg_window;
+    GtkWidget * main_vbox;
+    GtkWidget * frame1, * vbox_table, * hbox_row[5], * label_row[5], * scale_row[5];
+    GtkWidget * hbutton_box;
+    GtkWidget * button_reset, * button_close;
+    GtkWidget * label;
 
-    adv_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_type_hint(GTK_WINDOW(adv_window), GDK_WINDOW_TYPE_HINT_UTILITY);
-    gtk_window_set_resizable(GTK_WINDOW(adv_window), FALSE);
-    gtk_window_set_icon(GTK_WINDOW(adv_window), pb_icon);
-    gtk_window_set_transient_for(GTK_WINDOW(adv_window), GTK_WINDOW(window));
-    gtk_window_set_position(GTK_WINDOW(adv_window), GTK_WIN_POS_CENTER_ON_PARENT);
+    dlg_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_type_hint (GTK_WINDOW (dlg_window), GDK_WINDOW_TYPE_HINT_UTILITY);
+    gtk_window_set_resizable (GTK_WINDOW (dlg_window), FALSE);
+    gtk_window_set_icon (GTK_WINDOW (dlg_window), pb_icon);
+    gtk_window_set_transient_for (GTK_WINDOW (dlg_window), GTK_WINDOW(window));
+    gtk_window_set_position (GTK_WINDOW (dlg_window), GTK_WIN_POS_CENTER_ON_PARENT);
+    gtk_window_set_keep_above (GTK_WINDOW (dlg_window), keep_on_top);
 
-    gtk_window_set_title(GTK_WINDOW(adv_window), _("Video Picture Adjustments"));
+    gtk_window_set_title(GTK_WINDOW(dlg_window), _("Video Picture Adjustments"));
+    gtk_container_set_border_width (GTK_CONTAINER (dlg_window), 4);
 
-    adv_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-    adv_hbutton_box = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
-    gtk_button_box_set_layout(GTK_BUTTON_BOX(adv_hbutton_box), GTK_BUTTONBOX_END);
-    adv_table = gtk_table_new(20, 2, FALSE);
+    // vbox
+    main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 5);
+    gtk_container_add (GTK_CONTAINER (dlg_window), main_vbox);
+    gtk_container_set_border_width (GTK_CONTAINER (main_vbox), 4);
 
-    label = gtk_label_new(_("<span weight=\"bold\">Video Picture Adjustments</span>"));
-    gtk_label_set_use_markup(GTK_LABEL(label), TRUE);
-    gtk_widget_set_halign (label, GTK_ALIGN_CENTER);
-    gtk_container_add(GTK_CONTAINER(adv_vbox), label);
+    // vbox -> frame1
+    frame1 = gtk_frame_new (_("<span weight=\"bold\">Video Picture Adjustments</span>"));
+    label = gtk_frame_get_label_widget (GTK_FRAME (frame1));
+    gtk_label_set_use_markup (GTK_LABEL(label), TRUE);
+    gtk_box_pack_start (GTK_BOX (main_vbox), frame1, TRUE, TRUE, 0);
 
-    gtk_container_add(GTK_CONTAINER(adv_vbox), adv_table);
-    gtk_container_add(GTK_CONTAINER(adv_vbox), adv_hbutton_box);
-    gtk_container_add(GTK_CONTAINER(adv_window), adv_vbox);
+    // vbox -> frame1 -> vbox
+    vbox_table = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+    gtk_container_add (GTK_CONTAINER (frame1), vbox_table);
+    gtk_container_set_border_width (GTK_CONTAINER (vbox_table), 5); // padding
+    gtk_box_set_spacing (GTK_BOX (vbox_table), 4);
 
-    gtk_container_set_border_width(GTK_CONTAINER(adv_window), 5);
+    int i;
+    for (i = 0 ; i < 5 ; i++)
+    {
+       hbox_row[i]  = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+       gtk_box_pack_start (GTK_BOX (vbox_table), hbox_row[i], FALSE, FALSE, 0);
 
-    label = gtk_label_new(_("Brightness"));
-    adv_brightness = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, -100.0, 100.0, 1.0);
-    gtk_range_set_value(GTK_RANGE(adv_brightness),
+       label_row[i] = gtk_label_new ("empty label");
+       scale_row[i] = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, -100.0, 100.0, 1.0);
+       gtk_widget_set_size_request (scale_row[i], 200, -1);
+       gtk_scale_set_value_pos (GTK_SCALE (scale_row[i]), GTK_POS_LEFT);
+       gtk_range_set_value (GTK_RANGE (scale_row[i]), 0.0);
+
+       gtk_box_pack_end (GTK_BOX (hbox_row[i]), scale_row[i], FALSE, FALSE, 0);
+       gtk_box_pack_end (GTK_BOX (hbox_row[i]), label_row[i], FALSE, FALSE, 0);
+    }
+
+    gtk_label_set_text (GTK_LABEL (label_row[0]), _("Brightness"));
+    vpa_scale_brightness = scale_row[0];
+    gtk_range_set_value(GTK_RANGE(vpa_scale_brightness),
                         gmtk_media_player_get_attribute_integer(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_BRIGHTNESS));
-    gtk_widget_set_halign (label, GTK_ALIGN_END);
-    gtk_widget_set_margin_start (label, 12);
-    gtk_table_attach_defaults(GTK_TABLE(adv_table), label, 0, 1, i, i + 1);
-    gtk_table_attach_defaults(GTK_TABLE(adv_table), adv_brightness, 1, 2, i, i + 1);
-    i++;
-
-    label = gtk_label_new(_("Contrast"));
-    adv_contrast = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, -100.0, 100.0, 1.0);
-    gtk_widget_set_size_request(adv_contrast, 200, -1);
-    gtk_range_set_value(GTK_RANGE(adv_contrast),
+    gtk_label_set_text (GTK_LABEL (label_row[1]), _("Contrast"));
+    vpa_scale_contrast = scale_row[1];
+    gtk_range_set_value(GTK_RANGE(vpa_scale_contrast),
                         gmtk_media_player_get_attribute_integer(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_CONTRAST));
-    gtk_widget_set_halign (label, GTK_ALIGN_END);
-    gtk_widget_set_margin_start (label, 12);
-    gtk_table_attach_defaults(GTK_TABLE(adv_table), label, 0, 1, i, i + 1);
-    gtk_table_attach_defaults(GTK_TABLE(adv_table), adv_contrast, 1, 2, i, i + 1);
-    i++;
-
-    label = gtk_label_new(_("Gamma"));
-    adv_gamma = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, -100.0, 100.0, 1.0);
-    gtk_widget_set_size_request(adv_gamma, 200, -1);
-    gtk_range_set_value(GTK_RANGE(adv_gamma),
+    gtk_label_set_text (GTK_LABEL (label_row[2]), _("Gamma"));
+    vpa_scale_gamma = scale_row[2];
+    gtk_range_set_value(GTK_RANGE(vpa_scale_gamma),
                         gmtk_media_player_get_attribute_integer(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_GAMMA));
-    gtk_widget_set_halign (label, GTK_ALIGN_END);
-    gtk_widget_set_margin_start (label, 12);
-    gtk_table_attach_defaults(GTK_TABLE(adv_table), label, 0, 1, i, i + 1);
-    gtk_table_attach_defaults(GTK_TABLE(adv_table), adv_gamma, 1, 2, i, i + 1);
-    i++;
-
-    label = gtk_label_new(_("Hue"));
-    adv_hue = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, -100.0, 100.0, 1.0);
-    gtk_widget_set_size_request(adv_hue, 200, -1);
-    gtk_range_set_value(GTK_RANGE(adv_hue),
+    gtk_label_set_text (GTK_LABEL (label_row[3]), _("Hue"));
+    vpa_scale_hue = scale_row[3];
+    gtk_range_set_value(GTK_RANGE(vpa_scale_hue),
                         gmtk_media_player_get_attribute_integer(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_HUE));
-    gtk_widget_set_halign (label, GTK_ALIGN_END);
-    gtk_widget_set_margin_start (label, 12);
-    gtk_table_attach_defaults(GTK_TABLE(adv_table), label, 0, 1, i, i + 1);
-    gtk_table_attach_defaults(GTK_TABLE(adv_table), adv_hue, 1, 2, i, i + 1);
-    i++;
-
-    label = gtk_label_new(_("Saturation"));
-    adv_saturation = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, -100.0, 100.0, 1.0);
-    gtk_widget_set_size_request(adv_saturation, 200, -1);
-    gtk_range_set_value(GTK_RANGE(adv_saturation),
+    gtk_label_set_text (GTK_LABEL (label_row[4]), _("Saturation"));
+    vpa_scale_saturation = scale_row[4];
+    gtk_range_set_value(GTK_RANGE(vpa_scale_saturation),
                         gmtk_media_player_get_attribute_integer(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_SATURATION));
-    gtk_widget_set_halign (label, GTK_ALIGN_END);
-    gtk_widget_set_margin_start (label, 12);
-    gtk_table_attach_defaults(GTK_TABLE(adv_table), label, 0, 1, i, i + 1);
-    gtk_table_attach_defaults(GTK_TABLE(adv_table), adv_saturation, 1, 2, i, i + 1);
-    i++;
 
-    g_signal_connect(G_OBJECT(adv_brightness), "value_changed", G_CALLBACK(brightness_callback), idledata);
-    g_signal_connect(G_OBJECT(adv_contrast), "value_changed", G_CALLBACK(contrast_callback), idledata);
-    g_signal_connect(G_OBJECT(adv_gamma), "value_changed", G_CALLBACK(gamma_callback), idledata);
-    g_signal_connect(G_OBJECT(adv_hue), "value_changed", G_CALLBACK(hue_callback), idledata);
-    g_signal_connect(G_OBJECT(adv_saturation), "value_changed", G_CALLBACK(saturation_callback), idledata);
+    g_signal_connect (G_OBJECT (vpa_scale_brightness), "value_changed",
+                      G_CALLBACK (on_gtk_scale_ValueChanged_brightness_cb), idledata);
+    g_signal_connect (G_OBJECT (vpa_scale_contrast), "value_changed",
+                      G_CALLBACK (on_gtk_scale_ValueChanged_contrast_cb), idledata);
+    g_signal_connect (G_OBJECT (vpa_scale_gamma), "value_changed",
+                      G_CALLBACK (on_gtk_scale_ValueChanged_gamma_cb), idledata);
+    g_signal_connect (G_OBJECT (vpa_scale_hue), "value_changed",
+                      G_CALLBACK (on_gtk_scale_ValueChanged_hue_cb), idledata);
+    g_signal_connect (G_OBJECT (vpa_scale_saturation), "value_changed",
+                      G_CALLBACK (on_gtk_scale_ValueChanged_saturation_cb), idledata);
 
-    adv_reset = gtk_button_new_with_mnemonic(_("_Reset"));
-    g_signal_connect(G_OBJECT(adv_reset), "clicked", G_CALLBACK(adv_reset_values), NULL);
-    gtk_container_add(GTK_CONTAINER(adv_hbutton_box), adv_reset);
+    // vbox -> hbox
+    hbutton_box = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
+    gtk_button_box_set_layout (GTK_BUTTON_BOX (hbutton_box), GTK_BUTTONBOX_END);
+    gtk_box_set_spacing (GTK_BOX (hbutton_box), 10);
+    gtk_container_add (GTK_CONTAINER (main_vbox), hbutton_box);
 
-    adv_close = gtk_button_new_from_stock("gtk-close");
-    g_signal_connect_swapped(G_OBJECT(adv_close), "clicked", G_CALLBACK(config_close), adv_window);
+    button_reset = gtk_button_new_with_mnemonic(_("_Reset"));
+    g_signal_connect (G_OBJECT (button_reset), "clicked",
+                      G_CALLBACK (vpa_reset_values), NULL);
+    gtk_container_add (GTK_CONTAINER (hbutton_box), button_reset);
 
-    gtk_container_add(GTK_CONTAINER(adv_hbutton_box), adv_close);
-    gtk_widget_show_all(adv_window);
-    gtk_window_set_transient_for(GTK_WINDOW(adv_window), GTK_WINDOW(window));
-    gtk_window_set_keep_above(GTK_WINDOW(adv_window), keep_on_top);
-    gtk_window_present(GTK_WINDOW(adv_window));
+    GtkWidget * img = gtk_image_new_from_icon_name ("gtk-close", GTK_ICON_SIZE_BUTTON);
+    button_close = gtk_button_new_with_mnemonic (_("_Close"));
+    gtk_button_set_image (GTK_BUTTON (button_close), img);
+    g_signal_connect_swapped (G_OBJECT (button_close), "clicked",
+                              G_CALLBACK (gtk_widget_destroy), dlg_window);
+    gtk_container_add (GTK_CONTAINER (hbutton_box), button_close);
+
+    gtk_widget_show_all (dlg_window);
 }
 
 void menuitem_view_angle_callback(GtkMenuItem * menuitem, gpointer data)
@@ -6601,7 +6597,7 @@ GtkWidget *create_window()
                      "activate", G_CALLBACK(menuitem_view_increase_subtitle_delay_callback), NULL);
     g_signal_connect(G_OBJECT(menuitem_view_angle), "activate", G_CALLBACK(menuitem_view_angle_callback), NULL);
     g_signal_connect(G_OBJECT(menuitem_view_controls), "toggled", G_CALLBACK(menuitem_showcontrols_callback), NULL);
-    g_signal_connect(G_OBJECT(menuitem_view_advanced), "activate", G_CALLBACK(menuitem_advanced_callback), idledata);
+    g_signal_connect(G_OBJECT(menuitem_view_advanced), "activate", G_CALLBACK(menuitem_video_adjustments_dlg), idledata);
     // Help Menu
     menuitem_help = GTK_MENU_ITEM(gtk_menu_item_new_with_mnemonic(_("_Help")));
     menu_help = GTK_MENU(gtk_menu_new());
