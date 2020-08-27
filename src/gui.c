@@ -4399,7 +4399,7 @@ void menuitem_config_dialog_cb(GtkMenuItem * menuitem, void *data)
     GtkWidget *conf_ok;
     GtkWidget *conf_cancel;
     GtkWidget *conf_table;
-    GtkWidget *conf_label;
+    GtkWidget *conf_label, * entry;
     GtkWidget *conf_page_vbox[5], * page_label[5], * page_table[6];
     GtkWidget *notebook;
     GdkColor sub_color;
@@ -4427,12 +4427,12 @@ void menuitem_config_dialog_cb(GtkMenuItem * menuitem, void *data)
     notebook = gtk_notebook_new();
     for (i = 0; i < 5 ; i++)
     {
-       // create and append page to notebook
+       /* create and append page to notebook */
        conf_page_vbox[i] = gtk_box_new (GTK_ORIENTATION_VERTICAL, 10);
        page_label[i]     = gtk_label_new ("lbl");
        gtk_notebook_append_page (GTK_NOTEBOOK (notebook), conf_page_vbox[i], page_label[i]);
        gtk_container_set_border_width (GTK_CONTAINER (conf_page_vbox[i]), 6);
-       // page table: 20 rows, 2 columns - add to conf_page_vbox[i]
+       /* page table: 20 rows, 2 columns - add to conf_page_vbox[i] */
        page_table[i] = gtk_table_new(20, 2, FALSE);
        gtk_table_set_col_spacings (GTK_TABLE (page_table[i]), 5);
        gtk_container_add (GTK_CONTAINER (conf_page_vbox[i]), page_table[i]);
@@ -4461,36 +4461,19 @@ void menuitem_config_dialog_cb(GtkMenuItem * menuitem, void *data)
                                 _("mplayer video output device\nx11 should always work, try xv, gl or vdpau for better performance and enhanced features"));
 
     if (config_vo != NULL) {
-        gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_vo), "gl");
-        gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_vo), "gl2");
-        gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_vo), "gl3");
-        gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_vo), "x11");
-        gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_vo), "xv");
-        gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_vo), "xvmc");
-        gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_vo), "vaapi");
-        gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_vo), "vdpau");
-        if (vo != NULL) {
-            if (strcmp(vo, "gl") == 0)
-                gtk_combo_box_set_active(GTK_COMBO_BOX(config_vo), 0);
-            if (strcmp(vo, "gl2") == 0)
-                gtk_combo_box_set_active(GTK_COMBO_BOX(config_vo), 1);
-            if (strcmp(vo, "gl3") == 0)
-                gtk_combo_box_set_active(GTK_COMBO_BOX(config_vo), 2);
-            if (strcmp(vo, "x11") == 0)
-                gtk_combo_box_set_active(GTK_COMBO_BOX(config_vo), 3);
-            if (strcmp(vo, "xv") == 0)
-                gtk_combo_box_set_active(GTK_COMBO_BOX(config_vo), 4);
-            if (strcmp(vo, "xvmc") == 0)
-                gtk_combo_box_set_active(GTK_COMBO_BOX(config_vo), 5);
-            if (strcmp(vo, "vaapi") == 0)
-                gtk_combo_box_set_active(GTK_COMBO_BOX(config_vo), 6);
-            if (strcmp(vo, "vdpau") == 0)
-                gtk_combo_box_set_active(GTK_COMBO_BOX(config_vo), 7);
-            if (gtk_combo_box_get_active(GTK_COMBO_BOX(config_vo))
-                == -1) {
-                gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_vo), vo);
-                gtk_combo_box_set_active(GTK_COMBO_BOX(config_vo), 8);
-            }
+        static const char * vo_str[] = { "gl", "gl2", "gl3", "x11", "xv", "xvmc", "vaapi", "vdpau", NULL, };
+        gboolean add_vo_to_combo = TRUE;
+        for (i = 0 ; vo_str[i] ; i++) {
+           gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (config_vo), vo_str[i]);
+           if (vo && strcmp (vo, vo_str[i]) == 0)
+               add_vo_to_combo = FALSE;
+        }
+        if (vo) {
+           entry = gtk_bin_get_child (GTK_BIN (config_vo));
+           gtk_entry_set_text (GTK_ENTRY (entry), vo);
+           if (add_vo_to_combo == TRUE) {
+              gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (config_vo), vo);
+           }
         }
     }
 
