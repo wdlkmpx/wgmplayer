@@ -4055,6 +4055,7 @@ void menuitem_video_adjustments_dlg (GtkMenuItem * menuitem, void *data)
     gtk_container_add (GTK_CONTAINER (hbutton_box), button_close);
 
     gtk_widget_show_all (dlg_window);
+    gtk_window_present (GTK_WINDOW(dlg_window));
 }
 
 void menuitem_view_angle_callback(GtkMenuItem * menuitem, gpointer data)
@@ -4390,7 +4391,7 @@ void output_combobox_changed_callback(GtkComboBox * config_ao, gpointer data)
 
 }
 
-void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
+void menuitem_config_dialog_cb(GtkMenuItem * menuitem, void *data)
 {
     GtkWidget *config_window;
     GtkWidget *conf_vbox;
@@ -4399,12 +4400,7 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     GtkWidget *conf_cancel;
     GtkWidget *conf_table;
     GtkWidget *conf_label;
-    GtkWidget *conf_page1;
-    GtkWidget *conf_page3;
-    GtkWidget *conf_page4;
-    GtkWidget *conf_page5;
-    GtkWidget *conf_page6;
-    GtkWidget *conf_page7;
+    GtkWidget *conf_page_vbox[5], * page_label[5], * page_table[6];
     GtkWidget *notebook;
     GdkColor sub_color;
     gint i = 0;
@@ -4421,39 +4417,31 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     gtk_window_set_transient_for(GTK_WINDOW(config_window), GTK_WINDOW(window));
     gtk_window_set_position(GTK_WINDOW(config_window), GTK_WIN_POS_CENTER_ON_PARENT);
     gtk_window_set_icon(GTK_WINDOW(config_window), pb_icon);
-
     gtk_window_set_resizable(GTK_WINDOW(config_window), FALSE);
+
     conf_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-    conf_page1 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-    conf_page3 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-    conf_page4 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-    conf_page5 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-    conf_page6 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-    conf_page7 = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+
     conf_hbutton_box = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
     gtk_button_box_set_layout(GTK_BUTTON_BOX(conf_hbutton_box), GTK_BUTTONBOX_END);
-    conf_table = gtk_table_new(20, 2, FALSE);
-    gtk_table_set_col_spacings (GTK_TABLE (conf_table), 5);
 
     notebook = gtk_notebook_new();
-    conf_label = gtk_label_new(_("Player"));
-    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), conf_page1, conf_label);
-    gtk_container_set_border_width (GTK_CONTAINER (conf_page1), 6);
-    conf_label = gtk_label_new(_("Language Settings"));
-    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), conf_page3, conf_label);
-    gtk_container_set_border_width (GTK_CONTAINER (conf_page3), 6);
-    conf_label = gtk_label_new(_("Subtitles"));
-    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), conf_page4, conf_label);
-    gtk_container_set_border_width (GTK_CONTAINER (conf_page4), 6);
-    conf_label = gtk_label_new(_("Interface"));
-    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), conf_page5, conf_label);
-    gtk_container_set_border_width (GTK_CONTAINER (conf_page5), 6);
-    conf_label = gtk_label_new(_("Keyboard Shortcuts"));
-    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), conf_page7, conf_label);
-    gtk_container_set_border_width (GTK_CONTAINER (conf_page7), 6);
-    conf_label = gtk_label_new(_("MPlayer"));
-    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), conf_page6, conf_label);
-    gtk_container_set_border_width (GTK_CONTAINER (conf_page6), 6);
+    for (i = 0; i < 5 ; i++)
+    {
+       // create and append page to notebook
+       conf_page_vbox[i] = gtk_box_new (GTK_ORIENTATION_VERTICAL, 10);
+       page_label[i]     = gtk_label_new ("lbl");
+       gtk_notebook_append_page (GTK_NOTEBOOK (notebook), conf_page_vbox[i], page_label[i]);
+       gtk_container_set_border_width (GTK_CONTAINER (conf_page_vbox[i]), 6);
+       // page table: 20 rows, 2 columns - add to conf_page_vbox[i]
+       page_table[i] = gtk_table_new(20, 2, FALSE);
+       gtk_table_set_col_spacings (GTK_TABLE (page_table[i]), 5);
+       gtk_container_add (GTK_CONTAINER (conf_page_vbox[i]), page_table[i]);
+    }
+    gtk_label_set_text (GTK_LABEL (page_label[0]), _("Player"));
+    gtk_label_set_text (GTK_LABEL (page_label[1]), _("Subtitles"));
+    gtk_label_set_text (GTK_LABEL (page_label[2]), _("Interface"));
+    gtk_label_set_text (GTK_LABEL (page_label[3]), _("Keyboard Shortcuts"));
+    gtk_label_set_text (GTK_LABEL (page_label[4]), _("MPlayer"));
 
     gtk_container_add(GTK_CONTAINER(conf_vbox), notebook);
     gtk_container_add(GTK_CONTAINER(config_window), conf_vbox);
@@ -4693,6 +4681,51 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     }
 
 
+    /// page 0
+    conf_table = page_table[0];
+    i = 0;
+
+    conf_label = gtk_label_new(_("<span weight=\"bold\">Language Settings</span>"));
+    gtk_label_set_use_markup(GTK_LABEL(conf_label), TRUE);
+    gtk_widget_set_halign (conf_label, GTK_ALIGN_START);
+    gtk_table_attach(GTK_TABLE(conf_table), conf_label, 0, 1, i, i + 1, GTK_FILL | GTK_EXPAND, GTK_SHRINK, 0, 0);
+    i++;
+
+    conf_label = gtk_label_new(_("Default Audio Language"));
+    gtk_widget_set_halign (conf_label, GTK_ALIGN_END);
+    gtk_table_attach(GTK_TABLE(conf_table), conf_label, 0, 1, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
+    gtk_widget_show(conf_label);
+    gtk_widget_set_size_request(GTK_WIDGET(config_alang), 200, -1);
+    gtk_table_attach(GTK_TABLE(conf_table), config_alang, 1, 2, i, i + 1, GTK_FILL | GTK_EXPAND, GTK_SHRINK, 0, 0);
+    gtk_widget_set_tooltip_text(conf_label,
+                                _("Choose one of the languages or type in your own comma-separated selection"));
+    i++;
+
+    conf_label = gtk_label_new(_("Default Subtitle Language:"));
+    gtk_widget_set_halign (conf_label, GTK_ALIGN_END);
+    gtk_table_attach(GTK_TABLE(conf_table), conf_label, 0, 1, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);;
+    gtk_widget_show(conf_label);
+    gtk_widget_set_size_request(GTK_WIDGET(config_slang), 200, -1);
+    gtk_table_attach(GTK_TABLE(conf_table), config_slang, 1, 2, i, i + 1, GTK_FILL | GTK_EXPAND, GTK_SHRINK, 0, 0);
+    gtk_widget_set_tooltip_text(conf_label,
+                                _("Choose one of the languages or type in your own comma-separated selection"));
+    i++;
+
+    conf_label = gtk_label_new(_("File Metadata Encoding:"));
+    gtk_widget_set_halign (conf_label, GTK_ALIGN_END);
+    gtk_table_attach(GTK_TABLE(conf_table), conf_label, 0, 1, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
+    gtk_widget_show(conf_label);
+    gtk_widget_set_size_request(GTK_WIDGET(config_metadata_codepage), 200, -1);
+
+    gtk_table_attach(GTK_TABLE(conf_table), config_metadata_codepage, 1, 2, i, i + 1,
+                     GTK_FILL | GTK_EXPAND, GTK_SHRINK, 0, 0);
+    i++;
+
+    conf_label = gtk_label_new("");
+    gtk_table_attach(GTK_TABLE(conf_table), conf_label, 0, 1, i, i + 1, GTK_EXPAND, GTK_SHRINK, 0, 0);
+    gtk_widget_show(conf_label);
+    i++;
+
     conf_label = gtk_label_new(_("<span weight=\"bold\">Output Settings</span>"));
     gtk_label_set_use_markup(GTK_LABEL(conf_label), TRUE);
     gtk_widget_set_halign (conf_label, GTK_ALIGN_START);
@@ -4768,8 +4801,6 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     gtk_widget_show(conf_label);
     i++;
 
-    gtk_container_add(GTK_CONTAINER(conf_page1), conf_table);
-
     conf_label = gtk_label_new(_("<span weight=\"bold\">Configuration Settings</span>"));
     gtk_label_set_use_markup(GTK_LABEL(conf_label), TRUE);
     gtk_widget_set_halign (conf_label, GTK_ALIGN_START);
@@ -4816,52 +4847,11 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     gtk_table_attach(GTK_TABLE(conf_table), config_pplevel, 1, 2, i, i + 1, GTK_FILL | GTK_EXPAND, GTK_SHRINK, 0, 0);
     i++;
 
-    // Language 
-    conf_table = gtk_table_new(20, 2, FALSE);
-    gtk_table_set_col_spacings (GTK_TABLE (conf_table), 5);
-    gtk_container_add(GTK_CONTAINER(conf_page3), conf_table);
+
+    /// Page 1
+    conf_table = page_table[1];
     i = 0;
-    conf_label = gtk_label_new(_("<span weight=\"bold\">Language Settings</span>"));
-    gtk_label_set_use_markup(GTK_LABEL(conf_label), TRUE);
-    gtk_widget_set_halign (conf_label, GTK_ALIGN_START);
-    gtk_table_attach(GTK_TABLE(conf_table), conf_label, 0, 1, i, i + 1, GTK_FILL | GTK_EXPAND, GTK_SHRINK, 0, 0);
-    i++;
 
-    conf_label = gtk_label_new(_("Default Audio Language"));
-    gtk_widget_set_halign (conf_label, GTK_ALIGN_END);
-    gtk_table_attach(GTK_TABLE(conf_table), conf_label, 0, 1, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
-    gtk_widget_show(conf_label);
-    gtk_widget_set_size_request(GTK_WIDGET(config_alang), 200, -1);
-    gtk_table_attach(GTK_TABLE(conf_table), config_alang, 1, 2, i, i + 1, GTK_FILL | GTK_EXPAND, GTK_SHRINK, 0, 0);
-    gtk_widget_set_tooltip_text(conf_label,
-                                _("Choose one of the languages or type in your own comma-separated selection"));
-    i++;
-
-    conf_label = gtk_label_new(_("Default Subtitle Language:"));
-    gtk_widget_set_halign (conf_label, GTK_ALIGN_END);
-    gtk_table_attach(GTK_TABLE(conf_table), conf_label, 0, 1, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);;
-    gtk_widget_show(conf_label);
-    gtk_widget_set_size_request(GTK_WIDGET(config_slang), 200, -1);
-    gtk_table_attach(GTK_TABLE(conf_table), config_slang, 1, 2, i, i + 1, GTK_FILL | GTK_EXPAND, GTK_SHRINK, 0, 0);
-    gtk_widget_set_tooltip_text(conf_label,
-                                _("Choose one of the languages or type in your own comma-separated selection"));
-    i++;
-
-    conf_label = gtk_label_new(_("File Metadata Encoding:"));
-    gtk_widget_set_halign (conf_label, GTK_ALIGN_END);
-    gtk_table_attach(GTK_TABLE(conf_table), conf_label, 0, 1, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
-    gtk_widget_show(conf_label);
-    gtk_widget_set_size_request(GTK_WIDGET(config_metadata_codepage), 200, -1);
-
-    gtk_table_attach(GTK_TABLE(conf_table), config_metadata_codepage, 1, 2, i, i + 1,
-                     GTK_FILL | GTK_EXPAND, GTK_SHRINK, 0, 0);
-    i++;
-
-    // Page 4
-    conf_table = gtk_table_new(20, 2, FALSE);
-    gtk_table_set_col_spacings (GTK_TABLE (conf_table), 5);
-    gtk_container_add(GTK_CONTAINER(conf_page4), conf_table);
-    i = 0;
     conf_label = gtk_label_new(_("<span weight=\"bold\">Subtitle Settings</span>"));
     gtk_label_set_use_markup(GTK_LABEL(conf_label), TRUE);
     gtk_widget_set_halign (conf_label, GTK_ALIGN_START);
@@ -4990,11 +4980,10 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     i++;
 
 
-    // Page 5
-    conf_table = gtk_table_new(20, 2, FALSE);
-    gtk_table_set_col_spacings (GTK_TABLE (conf_table), 5);
-    gtk_container_add(GTK_CONTAINER(conf_page5), conf_table);
+    /// Page 2
+    conf_table = page_table[2];
     i = 0;
+
     conf_label = gtk_label_new(_("<span weight=\"bold\">Application Preferences</span>"));
     gtk_label_set_use_markup(GTK_LABEL(conf_label), TRUE);
     gtk_widget_set_halign (conf_label, GTK_ALIGN_START);
@@ -5035,8 +5024,7 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     gtk_table_attach(GTK_TABLE(conf_table), config_show_status_icon, 0, 2, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
     i++;
 
-    config_vertical_layout =
-        gtk_check_button_new_with_label(_("Place playlist below media (requires application restart)"));
+    config_vertical_layout = gtk_check_button_new_with_label(_("Place playlist below media (requires application restart)"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_vertical_layout), vertical_layout);
     gtk_table_attach(GTK_TABLE(conf_table), config_vertical_layout, 0, 2, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
     i++;
@@ -5110,11 +5098,50 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     gtk_table_attach(GTK_TABLE(conf_table), config_verbose, 0, 2, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
     i++;
 
-    // Page 6
-    conf_table = gtk_table_new(20, 2, FALSE);
-    gtk_table_set_col_spacings (GTK_TABLE (conf_table), 5);
-    gtk_container_add(GTK_CONTAINER(conf_page6), conf_table);
+    /// page 3
+    conf_table = page_table[3];
     i = 0;
+
+    conf_label = gtk_label_new(_("<span weight=\"bold\">Keyboard Shortcuts</span>\n\n"
+                                 "Place the cursor in the box next to the shortcut you want to modify\n"
+                                 "Then press the keys you would like for the shortcut"));
+    gtk_label_set_use_markup(GTK_LABEL(conf_label), TRUE);
+    gtk_widget_set_halign (conf_label, GTK_ALIGN_START);
+    gtk_table_attach(GTK_TABLE(conf_table), conf_label, 0, 3, i, i + 1, GTK_FILL | GTK_EXPAND, GTK_SHRINK, 0, 0);
+    i++;
+
+    for (j = 0; j < KEY_COUNT; j++) {
+        conf_label = gtk_label_new(accel_keys_description[j]);
+        gtk_widget_set_halign (conf_label, GTK_ALIGN_END);
+        gtk_table_attach(GTK_TABLE(conf_table), conf_label, 0, 1, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
+        gtk_widget_show(conf_label);
+
+        config_accel_keys[j] = gtk_entry_new();
+
+        if (get_key_and_modifier(accel_keys[j], &key, &modifier)) {
+            gtk_entry_set_text(GTK_ENTRY(config_accel_keys[j]),
+                               g_strdup_printf("%s%s%s%s", (modifier & GDK_CONTROL_MASK) ? "Control-" : "",
+                                               (modifier & GDK_MOD1_MASK) ? "Alt-" : "",
+                                               (modifier & GDK_SHIFT_MASK) ? "Shift-" : "", gdk_keyval_name(key)));
+        }
+        g_signal_connect(G_OBJECT(config_accel_keys[j]), "key_press_event", G_CALLBACK(accel_key_key_press_event),
+                         GINT_TO_POINTER(j));
+        gtk_widget_set_size_request(GTK_WIDGET(config_accel_keys[j]), 150, -1);
+        gtk_table_attach(GTK_TABLE(conf_table), config_accel_keys[j], 1, 2, i, i + 1, GTK_FILL | GTK_EXPAND, GTK_SHRINK,
+                         0, 0);
+
+        i++;
+    }
+    conf_label = gtk_button_new_with_label(_("Reset Keys"));
+    g_signal_connect(G_OBJECT(conf_label), "clicked", G_CALLBACK(reset_keys_callback), NULL);
+    gtk_table_attach(GTK_TABLE(conf_table), conf_label, 0, 1, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
+    i++;
+
+
+    /// page 4
+    conf_table = page_table[4];
+    i = 0;
+
     conf_label = gtk_label_new(_("<span weight=\"bold\">Advanced Settings for MPlayer</span>"));
     gtk_label_set_use_markup(GTK_LABEL(conf_label), TRUE);
     gtk_widget_set_halign (conf_label, GTK_ALIGN_START);
@@ -5229,46 +5256,7 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     gtk_table_attach(GTK_TABLE(conf_table), config_extraopts, 0, 3, i, i + 1, GTK_FILL | GTK_EXPAND, GTK_SHRINK, 0, 0);
     i++;
 
-    // Page 7 - Keyboard Shortcuts
-    conf_table = gtk_table_new(KEY_COUNT + 5, 3, FALSE);
-    gtk_table_set_col_spacings (GTK_TABLE (conf_table), 5);
-    gtk_container_add(GTK_CONTAINER(conf_page7), conf_table);
-    i = 0;
-    conf_label = gtk_label_new(_("<span weight=\"bold\">Keyboard Shortcuts</span>\n\n"
-                                 "Place the cursor in the box next to the shortcut you want to modify\n"
-                                 "Then press the keys you would like for the shortcut"));
-    gtk_label_set_use_markup(GTK_LABEL(conf_label), TRUE);
-    gtk_widget_set_halign (conf_label, GTK_ALIGN_START);
-    gtk_table_attach(GTK_TABLE(conf_table), conf_label, 0, 3, i, i + 1, GTK_FILL | GTK_EXPAND, GTK_SHRINK, 0, 0);
-    i++;
-
-    for (j = 0; j < KEY_COUNT; j++) {
-        conf_label = gtk_label_new(accel_keys_description[j]);
-        gtk_widget_set_halign (conf_label, GTK_ALIGN_END);
-        gtk_table_attach(GTK_TABLE(conf_table), conf_label, 0, 1, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
-        gtk_widget_show(conf_label);
-
-        config_accel_keys[j] = gtk_entry_new();
-
-        if (get_key_and_modifier(accel_keys[j], &key, &modifier)) {
-            gtk_entry_set_text(GTK_ENTRY(config_accel_keys[j]),
-                               g_strdup_printf("%s%s%s%s", (modifier & GDK_CONTROL_MASK) ? "Control-" : "",
-                                               (modifier & GDK_MOD1_MASK) ? "Alt-" : "",
-                                               (modifier & GDK_SHIFT_MASK) ? "Shift-" : "", gdk_keyval_name(key)));
-        }
-        g_signal_connect(G_OBJECT(config_accel_keys[j]), "key_press_event", G_CALLBACK(accel_key_key_press_event),
-                         GINT_TO_POINTER(j));
-        gtk_widget_set_size_request(GTK_WIDGET(config_accel_keys[j]), 150, -1);
-        gtk_table_attach(GTK_TABLE(conf_table), config_accel_keys[j], 1, 2, i, i + 1, GTK_FILL | GTK_EXPAND, GTK_SHRINK,
-                         0, 0);
-
-        i++;
-    }
-    conf_label = gtk_button_new_with_label(_("Reset Keys"));
-    g_signal_connect(G_OBJECT(conf_label), "clicked", G_CALLBACK(reset_keys_callback), NULL);
-    gtk_table_attach(GTK_TABLE(conf_table), conf_label, 0, 1, i, i + 1, GTK_FILL, GTK_SHRINK, 0, 0);
-    i++;
-
+    // --
     gtk_container_add(GTK_CONTAINER(conf_hbutton_box), conf_cancel);
     gtk_container_add(GTK_CONTAINER(conf_vbox), conf_hbutton_box);
 
@@ -5276,7 +5264,6 @@ void menuitem_config_callback(GtkMenuItem * menuitem, void *data)
     gtk_window_set_transient_for(GTK_WINDOW(config_window), GTK_WINDOW(window));
     gtk_window_set_keep_above(GTK_WINDOW(config_window), keep_on_top);
     gtk_window_present(GTK_WINDOW(config_window));
-
 }
 
 void reset_keys_callback(GtkButton * button, gpointer data)
@@ -6329,7 +6316,7 @@ GtkWidget *create_window()
     g_signal_connect(G_OBJECT(menuitem_showcontrols), "toggled", G_CALLBACK(menuitem_showcontrols_callback), NULL);
     g_signal_connect(G_OBJECT(menuitem_fullscreen), "toggled", G_CALLBACK(menuitem_fs_callback), NULL);
     g_signal_connect(G_OBJECT(menuitem_copyurl), "activate", G_CALLBACK(menuitem_copyurl_callback), NULL);
-    g_signal_connect(G_OBJECT(menuitem_config), "activate", G_CALLBACK(menuitem_config_callback), NULL);
+    g_signal_connect(G_OBJECT(menuitem_config), "activate", G_CALLBACK(menuitem_config_dialog_cb), NULL);
     g_signal_connect(G_OBJECT(menuitem_quit), "activate", G_CALLBACK(menuitem_quit_callback), NULL);
     g_signal_connect_swapped(G_OBJECT(window), "button_release_event", G_CALLBACK(popup_handler), G_OBJECT(popup_menu));
     g_signal_connect_swapped(G_OBJECT(window), "enter_notify_event", G_CALLBACK(notification_handler), NULL);
@@ -6477,7 +6464,7 @@ GtkWidget *create_window()
                      G_CALLBACK(menuitem_edit_set_subtitle_callback), NULL);
     g_signal_connect(G_OBJECT(menuitem_edit_take_screenshot),
                      "activate", G_CALLBACK(menuitem_edit_take_screenshot_callback), NULL);
-    g_signal_connect(G_OBJECT(menuitem_edit_config), "activate", G_CALLBACK(menuitem_config_callback), NULL);
+    g_signal_connect(G_OBJECT(menuitem_edit_config), "activate", G_CALLBACK(menuitem_config_dialog_cb), NULL);
 
     // View Menu
     menuitem_view = GTK_MENU_ITEM(gtk_menu_item_new_with_mnemonic(_("_View")));
