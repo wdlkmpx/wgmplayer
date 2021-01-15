@@ -174,7 +174,7 @@ gtk_widget_set_margin_left  (GtkWidget *widget, gint margin)
 		requisition->width -= misc->xpad * 2;
 		misc->xpad = xpad;
 		requisition->width += misc->xpad * 2;
-		if (GTK_WIDGET_DRAWABLE (misc))
+		if (gtk_widget_is_drawable (widget))
 			gtk_widget_queue_resize (GTK_WIDGET (misc));
 		g_object_thaw_notify (G_OBJECT (misc));
 	}
@@ -203,7 +203,7 @@ gtk_widget_set_margin_top (GtkWidget *widget, gint margin)
 		requisition->height -= misc->ypad * 2;
 		misc->ypad = ypad;
 		requisition->height += misc->ypad * 2;
-		if (GTK_WIDGET_DRAWABLE (misc))
+		if (gtk_widget_is_drawable (widget))
 			gtk_widget_queue_resize (GTK_WIDGET (misc));
 		g_object_thaw_notify (G_OBJECT (misc));
 	}
