@@ -31,7 +31,7 @@
 #include <unistd.h>
 
 #ifdef HAVE_ASOUNDLIB
-#include <asoundlib.h>
+#include <alsa/asoundlib.h>
 #endif
 
 #include <gio/gio.h>

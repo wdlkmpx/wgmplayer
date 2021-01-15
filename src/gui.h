@@ -41,7 +41,7 @@
 #include <glib/gi18n.h>
 #include <math.h>
 #ifdef HAVE_ASOUNDLIB
-#include <asoundlib.h>
+#include <alsa/asoundlib.h>
 #endif
 
 #include "playlist.h"

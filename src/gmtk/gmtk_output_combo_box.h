@@ -29,7 +29,7 @@
 #include <glib/gi18n.h>
 
 #ifdef HAVE_ASOUNDLIB
-#include <asoundlib.h>
+#include <alsa/asoundlib.h>
 #endif
 #ifdef HAVE_PULSEAUDIO
 #include <pulse/pulseaudio.h>
