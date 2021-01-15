@@ -2816,6 +2816,7 @@ gpointer launch_mplayer(gpointer data)
                 argv[argn++] = g_strdup_printf("%s", filename);
                 break;
             }
+            break;
         case TYPE_CD:
             argv[argn++] = g_strdup_printf("-cache");
             argv[argn++] = g_strdup_printf("%i", (gint) player->cache_size);
