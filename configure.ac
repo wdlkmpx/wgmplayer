@@ -137,6 +137,6 @@ icons/32x32/Makefile
 icons/48x48/Makefile
 icons/scalable/Makefile
 src/Makefile
-po/Makefile.in
+po/Makefile
 ])
 AC_OUTPUT

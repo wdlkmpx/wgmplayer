@@ -17,6 +17,7 @@ libtool
 ltmain.sh
 Makefile
 Makefile.in
+!po/Makefile.in
 m4
 missing
 stamp-h1
@@ -27,6 +28,7 @@ po/POTFILES
 g-mplayer
 INSTALL
 *.gmo
+*.mo
 *.valid
 config.rpath
 ar-lib

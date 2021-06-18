@@ -24,12 +24,8 @@ if test "$1" =  "po" ; then
 fi
 
 if test "$1" =  "linguas" ; then
-	test -d "po/" || exit
-	pot_in=$(grep '_(' $(find . -type f -name '*.h' -or -name '*.c') | sed -e 's%^\./%%' -e 's%:.*%%' | sort -u)
-	echo "${pot_in}" > po/POTFILES.in
-	linguas=$(find po -name '*.po' | sed -e 's%.*/%%' -e 's%\.po%%' | sort)
-	echo ${linguas} > po/LINGUAS
-	exit
+	./po/Makefile.in.gen
+	exit $?
 fi
 
 #===========================================================================
