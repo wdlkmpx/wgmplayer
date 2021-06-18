@@ -30,7 +30,6 @@ INSTALL
 *.valid
 config.rpath
 ar-lib
-po/Makefile.in.in
 stamp-it
 .dirstamp
 *.log

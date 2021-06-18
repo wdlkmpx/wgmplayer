@@ -1,38 +1,25 @@
 dnl Process this file with autoconf to produce a configure script.
 
 AC_INIT([g-mplayer],[1.2])
+AC_CONFIG_AUX_DIR([autoconf])
+AC_CONFIG_MACRO_DIR([autoconf-m4])
 AM_INIT_AUTOMAKE([-Wall subdir-objects foreign])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 m4_ifdef([AM_MAINTAINER_MODE], [AM_MAINTAINER_MODE])
 
 AM_CONFIG_HEADER(config.h)
-AC_CONFIG_MACRO_DIR([m4])
 AM_GNU_GETTEXT([external])
 
-m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
-LT_INIT
-
-# Init intltool
-IT_PROG_INTLTOOL
+#m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
+#L#T_INIT
 
 AC_SEARCH_LIBS([strerror],[cposix])
 AC_PROG_CC
-AM_PROG_CC_STDC
-AC_HEADER_STDC
-
-AC_PROG_CPP
-AC_PROG_CXX
-AM_PROG_CC_C_O
 
 dnl Set gettext package name
 GETTEXT_PACKAGE=g-mplayer
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [GETTEXT package name])
-
-dnl Add the languages which your application supports here.
-ALL_LINGUAS="ar bg ca cs da de el es et eu fi fo fr fy gl he hr hu id it ja kk ko lt nl pl pt pt_BR ro ru si sr sr@latin sv th tr ug uk vi zh_CN zh_HK zh_TW"
-AC_SUBST(ALL_LINGUAS)
-AM_GLIB_GNU_GETTEXT
 
 PKG_CHECK_MODULES([X11], [x11],[AC_DEFINE([X11_ENABLED],[1],[Define to 1 if X11 support is needed])],[AC_MSG_NOTICE([Compiling without X11 support])])
 AC_SUBST(X11_LIBS)
