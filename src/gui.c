@@ -1257,9 +1257,6 @@ gboolean resize_window(void *data)
             gtk_widget_set_sensitive(GTK_WIDGET(menuitem_edit_set_subtitle), TRUE);
             gtk_widget_set_sensitive(GTK_WIDGET(menuitem_edit_set_audiofile), TRUE);
             gtk_window_set_resizable(GTK_WINDOW(window), TRUE);
-#ifdef GTK3_ENABLED
-            gtk_window_set_has_resize_grip(GTK_WINDOW(window), idledata->videopresent);
-#endif
             gtk_widget_show_all(GTK_WIDGET(media));
             gm_log(verbose, G_LOG_LEVEL_DEBUG, "waiting for all events to drain");
             while (gtk_events_pending())
@@ -5445,9 +5442,6 @@ void player_attribute_changed_callback(GmtkMediaTracker * tracker, GmtkMediaPlay
         gtk_widget_set_sensitive(GTK_WIDGET(fs_event_box), idledata->videopresent);
         gtk_widget_set_sensitive(GTK_WIDGET(menuitem_edit_set_subtitle), idledata->videopresent);
         gtk_widget_set_sensitive(GTK_WIDGET(menuitem_edit_set_audiofile), idledata->videopresent);
-#ifdef GTK3_ENABLED
-        gtk_window_set_has_resize_grip(GTK_WINDOW(window), idledata->videopresent);
-#endif
         gtk_widget_set_sensitive(GTK_WIDGET(menuitem_edit_take_screenshot), idledata->videopresent);
         gtk_widget_set_sensitive(GTK_WIDGET(menuitem_view_fullscreen), idledata->videopresent);
         gtk_widget_set_sensitive(GTK_WIDGET(menuitem_view_onetoone), idledata->videopresent);
@@ -7072,11 +7066,7 @@ void show_fs_controls()
             g_object_unref(hbox);
         }
         gtk_widget_show(fs_controls);
-#ifdef GTK3_ENABLED
-        gtk_widget_set_opacity(GTK_WIDGET(fs_controls), 0.75);
-#else
-        gtk_window_set_opacity(GTK_WINDOW(fs_controls), 0.75);
-#endif
+        gtk_widget_set_opacity (GTK_WIDGET(fs_controls), 0.75);
 
         screen = gtk_window_get_screen(GTK_WINDOW(window));
         gtk_window_set_screen(GTK_WINDOW(fs_controls), screen);

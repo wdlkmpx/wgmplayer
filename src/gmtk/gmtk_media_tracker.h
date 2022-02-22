@@ -59,14 +59,13 @@ typedef struct _GmtkMediaTracker GmtkMediaTracker;
 typedef struct _GmtkMediaTrackerClass GmtkMediaTrackerClass;
 
 struct _GmtkMediaTracker {
-    GtkVBox parent;
+    GtkBox parent;
 
     /*
        GtkWidget *GSEAL(scale);
        GtkWidget *GSEAL(hbox);
        GtkWidget *GSEAL(message);
        GtkWidget *GSEAL(timer);
-       GtkTooltips *GSEAL(progress_tip);
      */
     GtkWidget *scale;
     GtkWidget *hbox;
@@ -82,13 +81,10 @@ struct _GmtkMediaTracker {
     gfloat length;
     gboolean mouse_down;
     gboolean allow_expand;
-#if GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION < 12
-    GtkTooltips *progress_tip;
-#endif
 };
 
 struct _GmtkMediaTrackerClass {
-    GtkVBoxClass parent_class;
+    GtkBoxClass parent_class;
     void (*value_changed) (GmtkMediaTracker * tracker);
     void (*difference_changed) (GmtkMediaTracker * tracker);
 };

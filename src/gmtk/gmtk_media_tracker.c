@@ -26,7 +26,7 @@
 #include "gmtk_common.h"
 #include "gm_log.h"
 
-G_DEFINE_TYPE(GmtkMediaTracker, gmtk_media_tracker, GTK_TYPE_VBOX);
+G_DEFINE_TYPE(GmtkMediaTracker, gmtk_media_tracker, GTK_TYPE_BOX);
 static GObjectClass *parent_class = NULL;
 
 static gboolean gmtk_media_tracker_button_press(GtkWidget * tracker, GdkEventButton * event);

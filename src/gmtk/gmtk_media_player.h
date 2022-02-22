@@ -263,7 +263,6 @@ struct _GmtkMediaPlayer {
        GtkWidget *GSEAL(hbox);
        GtkWidget *GSEAL(message);
        GtkWidget *GSEAL(timer);
-       GtkTooltips *GSEAL(progress_tip);
      */
     GtkWidget *alignment;
     GtkWidget *socket;
