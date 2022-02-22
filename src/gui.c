@@ -3066,53 +3066,44 @@ void menuitem_next_callback(GtkMenuItem * menuitem, void *data)
     next_callback(NULL, NULL, NULL);
 }
 
-void about_url_hook(GtkAboutDialog * about, const char *link, gpointer data)
-{
-    GError *error = NULL;
-    if (!gtk_show_uri(gtk_widget_get_screen(GTK_WIDGET(about)), link, gtk_get_current_event_time(), &error)) {
-        g_error_free(error);
-    }
-}
-
 void menuitem_about_callback(GtkMenuItem * menuitem, void *data)
 {
-    gchar *authors[] = {
+    GtkWidget *w;
+    const gchar * authors[] =
+    {
         "Kevin DeKorte - main author",
         "James Carthew",
         "Diogo Franco",
         "Icons provided by Victor Castillejo",
         NULL
     };
-    gtk_show_about_dialog(GTK_WINDOW(window),
-                          "authors", authors,
-                          "copyright", "Copyright © 2007-2020",
-                          "comments", "GTK front-end for MPlayer",
-                          "version", VERSION,
-                          "license", "This program is free software; you can redistribute it and/or\nmodify it under the terms of the GNU General Public License\nas published by the Free Software Foundation; either version 2\nof the License, or (at your option) any later version.\n\nThis program is distributed in the hope that it will be useful,\nbut WITHOUT ANY WARRANTY; without even the implied warranty of\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\nGNU General Public License for more details.\n\nYou should have received a copy of the GNU General Public License\nalong with this program; if not, write to the Free Software\nFoundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.",
-                          "website", "https://github.com/wdlkmpx/gtk-mplayer",
-                          "translator-credits",
-                          "Bulgarian - Adrian Dimitrov\n"
-                          "Czech - Petr Pisar\n"
-                          "Chinese (simplified) - Wenzheng Hu\n"
-                          "Chinese (Hong Kong) - Hialan Liu\n"
-                          "Chinese (Taiwan) - Hailan Liu\n"
-                          "Dutch - Mark Huijgen\n"
-                          "Finnish - Kristian Polso &amp; Tuomas Lähteenmäki\n"
-                          "French - Alexandre Bedot\n"
-                          "German - Tim Buening\n"
-                          "Greek - Γεώργιος Γεωργάς\n"
-                          "Hungarian - Kulcsár Kázmér\n"
-                          "Italian - Cesare Tirabassi\n"
-                          "Japanese - Munehiro Yamamoto\n"
-                          "Korean - ByeongSik Jeon\n"
-                          "Lithuanian - Mindaugas B.\n"
-                          "Polish - Julian Sikorski\n"
-                          "Portugese - LL and Sérgio Marques\n"
-                          "Russian - Dmitry Stropaloff and Denis Koryavov\n"
-                          "Serbian - Милош Поповић\n"
-                          "Spanish - Festor Wailon Dacoba\n"
-                          "Swedish - Daniel Nylander\n" "Turkish - Onur Küçük",
-                          NULL);
+    /* TRANSLATORS: Replace this string with your names, one name per line. */
+    gchar * translators = _("Translated by");
+
+    GdkPixbuf * logo = NULL;
+    if (pb_icon)
+       logo = pb_icon;
+
+    /* Create and initialize the dialog. */
+    w = g_object_new (GTK_TYPE_ABOUT_DIALOG,
+                      "version",      VERSION,
+                      "program-name", PACKAGE,
+                      "copyright",    "Copyright (C) 2007-2022",
+                      "comments",     "GTK frontend for mplayer",
+                      "license",      "GPL2 - see COPYING file.",
+                      "website",      PACKAGE_URL,
+                      "authors",      authors,
+                      "translator-credits", translators,
+                      "logo",         logo,
+                      NULL);
+    gtk_container_set_border_width (GTK_CONTAINER (w), 2);
+    gtk_window_set_transient_for (GTK_WINDOW (w), GTK_WINDOW (window));
+    gtk_window_set_modal (GTK_WINDOW (w), TRUE);
+    gtk_window_set_position (GTK_WINDOW (w), GTK_WIN_POS_CENTER_ON_PARENT);
+
+    g_signal_connect_swapped (w, "response",
+                              G_CALLBACK (gtk_widget_destroy), w);
+    gtk_widget_show_all (GTK_WIDGET (w));
 }
 
 void menuitem_play_callback(GtkMenuItem * menuitem, void *data)
