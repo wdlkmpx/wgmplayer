@@ -35,29 +35,19 @@ AC_ARG_ENABLE(gtk3,
 
 AS_IF([test "x$ENABLE_GTK3" = xcheck],        
         [ENABLE_GTK3=no
-        PKG_CHECK_MODULES(GTK,[gtk+-3.0 >= 3.8.0 glib-2.0 >= 2.24.0 gthread-2.0],[ENABLE_GTK3=yes],[ENABLE_GTK3=no])
+        PKG_CHECK_MODULES(GTK,[gtk+-3.0 >= 3.14.0 glib-2.0 >= 2.24.0 gthread-2.0],[ENABLE_GTK3=yes],[ENABLE_GTK3=no])
         ])    
     
 AS_IF([test "x$ENABLE_GTK3" = "xyes"],   
     [
-    
     PKG_CHECK_MODULES(GTK, [gtk+-3.0 glib-2.0 gthread-2.0],[AC_MSG_NOTICE([Using GTK3])]) 
     AC_DEFINE([GTK3_ENABLED],[1],[Define to 1 if you have GTK 3 or higher])
-    
     ])
 
 AS_IF([test "x$ENABLE_GTK3" != "xyes"],   
     [
-
     PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.14.0 glib-2.0 >= 2.18.0 gthread-2.0],[AC_MSG_NOTICE([Using GTK2])])
-    AC_SUBST(GTK_CFLAGS)
-    AC_SUBST(GTK_LIBS)
-
-    PKG_CHECK_MODULES(GLIB, [glib-2.0])
-    AC_SUBST(GLIB_CFLAGS)
-    AC_SUBST(GLIB_LIBS)
-
-])
+    ])
 
 AC_ARG_WITH([gio],
     [AS_HELP_STRING([--with-gio],
@@ -65,11 +55,7 @@ AC_ARG_WITH([gio],
         [],
         [with_gio=check])
 AS_IF([test "x$with_gio" != xno], 
-    [PKG_CHECK_MODULES(GIO,[gio-2.0],[GIO_DEFINES="-DGIO_ENABLED" AC_DEFINE([GIO_ENABLED],[1],[Define to 1 if you have GIO support])],AC_MSG_NOTICE([Compiling without gio support]))
-    AC_SUBST(GIO_DEFINES)
-    AC_SUBST(GIO_CFLAGS)
-    AC_SUBST(GIO_LIBS)
-    ])
+    [PKG_CHECK_MODULES(GIO,[gio-2.0],[GIO_DEFINES="-DGIO_ENABLED" AC_DEFINE([GIO_ENABLED],[1],[Define to 1 if you have GIO support])],AC_MSG_NOTICE([Compiling without gio support]))])
     
 PKG_CHECK_MODULES(XSCRNSAVER,[xscrnsaver],[AC_DEFINE([XSCRNSAVER_ENABLED],[1],[When defined we have direct XScrnSaver control])], AC_MSG_NOTICE([Compiling without xscrnsaver support]))
 AC_SUBST(XSCRNSAVER_CFLAGS)
@@ -82,9 +68,6 @@ AC_ARG_WITH([alsa],
         [with_alsa=check])
 AS_IF([test "x$with_alsa" != xno], 
     [PKG_CHECK_MODULES(ALSA, [alsa], [ALSA_DEFINES="-DHAVE_ASOUNDLIB" AC_DEFINE([HAVE_ASOUNDLIB],[1],[Define to 1 if you have asoundlib development packages])],AC_MSG_NOTICE([Compiling without asound support]))
-    AC_SUBST(ALSA_DEFINES)
-    AC_SUBST(ALSA_CFLAGS)
-    AC_SUBST(ALSA_LIBS)
     ])
     
 AC_ARG_WITH([pulseaudio],
@@ -93,11 +76,7 @@ AC_ARG_WITH([pulseaudio],
         [],
         [with_pulseaudio=check])
 AS_IF([test "x$with_pulseaudio" != xno], 
-	[PKG_CHECK_MODULES(PULSE, [libpulse >= 2.0 libpulse-mainloop-glib >= 2.0],[AC_DEFINE([HAVE_PULSEAUDIO],[1],[Define to 1 if you have PulseAudio development packages])],AC_MSG_NOTICE([Compiling without PulseAudio support]))
-	AC_SUBST(PULSE_DEFINES)
-	AC_SUBST(PULSE_CFLAGS)
-	AC_SUBST(PULSE_LIBS)
-	])
+	[PKG_CHECK_MODULES(PULSE, [libpulse >= 2.0 libpulse-mainloop-glib >= 2.0],[AC_DEFINE([HAVE_PULSEAUDIO],[1],[Define to 1 if you have PulseAudio development packages])],AC_MSG_NOTICE([Compiling without PulseAudio support]))])
 
 AC_ARG_ENABLE(gseal,
 		AS_HELP_STRING([--enable-gseal],[Enable flag for testing]),
@@ -113,12 +92,12 @@ if test x$ENABLE_GSEAL = "xyes"; then
    AC_SUBST(GTK_CFLAGS)
 fi
 
-if test x$ENABLE_GTK2 = "xyes"; then
-   CPPFLAGS="$CPPFLAGS -DGDK_DISABLE_DEPRECATED -DGDK_PIXBUF_DISABLE_SINGLE_INCLUDES -DGTK_DISABLE_DEPRECATED -DGTK_DISABLE_SINGLE_INCLUDES"
-fi
+#if test x$ENABLE_GTK2 = "xyes"; then
+#   CPPFLAGS="$CPPFLAGS -DGDK_DISABLE_DEPRECATED -DGDK_PIXBUF_DISABLE_SINGLE_INCLUDES -DGTK_DISABLE_DEPRECATED -DGTK_DISABLE_SINGLE_INCLUDES"
+#fi
 
 case "$CC" in
-  gcc*) CPPFLAGS="$CPPFLAGS -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers" ;;
+  gcc*) CPPFLAGS="$CPPFLAGS -Wall -Wno-unused-parameter -Wno-missing-field-initializers" ;;
   *) ;;
 esac
 
