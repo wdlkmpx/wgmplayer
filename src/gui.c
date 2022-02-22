@@ -138,8 +138,6 @@ static GtkWidget *details_audio_samplerate;
 static GdkPixbuf *pb_icon;
 static GdkPixbuf *pb_button;
 
-static GList *icon_list;
-
 static GtkWidget *button_event_box;
 static GtkWidget *image_button;
 
@@ -6621,33 +6619,15 @@ GtkWidget *create_window()
         image_fs = gtk_image_new_from_stock("gtk-fullscreen", button_size);
     }
 
-    icon_list = NULL;
     if (gtk_icon_theme_has_icon(icon_theme, "g-mplayer")) {
-        pb_icon = gtk_icon_theme_load_icon(icon_theme, "g-mplayer", 128, 0, NULL);
-        if (pb_icon)
-            icon_list = g_list_prepend(icon_list, pb_icon);
-        pb_icon = gtk_icon_theme_load_icon(icon_theme, "g-mplayer", 64, 0, NULL);
-        if (pb_icon)
-            icon_list = g_list_prepend(icon_list, pb_icon);
-        pb_icon = gtk_icon_theme_load_icon(icon_theme, "g-mplayer", 48, 0, NULL);
-        if (pb_icon)
-            icon_list = g_list_prepend(icon_list, pb_icon);
-        pb_icon = gtk_icon_theme_load_icon(icon_theme, "g-mplayer", 24, 0, NULL);
-        if (pb_icon)
-            icon_list = g_list_prepend(icon_list, pb_icon);
-        pb_icon = gtk_icon_theme_load_icon(icon_theme, "g-mplayer", 22, 0, NULL);
-        if (pb_icon)
-            icon_list = g_list_prepend(icon_list, pb_icon);
-        pb_icon = gtk_icon_theme_load_icon(icon_theme, "g-mplayer", 16, 0, NULL);
-        if (pb_icon)
-            icon_list = g_list_prepend(icon_list, pb_icon);
+        gtk_window_set_default_icon_name ("g-mplayer");
+        pb_icon = gtk_icon_theme_load_icon (icon_theme, "g-mplayer", 64, 0, NULL);
     } else {
         pb_icon = gdk_pixbuf_new_from_xpm_data((const char **) g_mplayer_xpm);
-        if (pb_icon)
-            icon_list = g_list_prepend(icon_list, pb_icon);
+        if (pb_icon) {
+            gtk_window_set_default_icon (pb_icon);
+        }
     }
-    gtk_window_set_default_icon_list(icon_list);
-    gtk_window_set_icon_list(GTK_WINDOW(window), icon_list);
 
     if (show_status_icon) {
         if (gtk_icon_theme_has_icon(icon_theme, "g-mplayer-panel")) {
