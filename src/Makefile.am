@@ -52,8 +52,7 @@ g_mplayer_SOURCES = \
 	support.c \
 	support.h \
 	main.c \
-	common.h \
-	../icons/g_mplayer.xpm
+	common.h
 
 g_mplayer_LDADD = \
     -lm \

@@ -29,7 +29,7 @@
 #include "gui.h"
 #include "support.h"
 #include "common.h"
-#include "../icons/g_mplayer.xpm"
+#include "../data/player.xpm"
 #include "langlist.h"
 
 static GtkWidget *fs_window;

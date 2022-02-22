@@ -129,7 +129,7 @@ AC_CHECK_HEADERS([fstab.h])
 AC_CHECK_HEADERS([signal.h])
 AC_CONFIG_FILES([
 Makefile
-icons/Makefile
+data/Makefile
 src/Makefile
 po/Makefile
 ])
