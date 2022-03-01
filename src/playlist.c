@@ -1035,7 +1035,7 @@ void create_playlist_widget()
 
     accel_group = gtk_accel_group_new();
     gtk_window_add_accel_group(GTK_WINDOW(window), accel_group);
-    gtk_widget_add_accelerator(GTK_WIDGET(remove), "clicked", accel_group, GDK_Delete, 0, GTK_ACCEL_VISIBLE);
+    gtk_widget_add_accelerator(GTK_WIDGET(remove), "clicked", accel_group, GDK_KEY(Delete), 0, GTK_ACCEL_VISIBLE);
 
     repeat = gtk_button_new();
     gtk_widget_set_tooltip_text(repeat, _("Loop Playlist"));

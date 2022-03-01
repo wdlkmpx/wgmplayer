@@ -705,40 +705,40 @@ static gboolean player_key_press_event_callback(GtkWidget * widget, GdkEventKey 
 
     if ((event->state & GDK_CONTROL_MASK) == 0 && (event->state & GDK_MOD1_MASK) == 0) {
         switch (event->keyval) {
-        case GDK_Right:
+        case GDK_KEY(Right):
             if (player->title_is_menu) {
                 write_to_mplayer(player, "dvdnav 4\n");
             }
             break;
-        case GDK_Left:
+        case GDK_KEY(Left):
             if (player->title_is_menu) {
                 write_to_mplayer(player, "dvdnav 3\n");
             }
             break;
-        case GDK_Up:
+        case GDK_KEY(Up):
             if (player->title_is_menu) {
                 write_to_mplayer(player, "dvdnav 1\n");
             }
             break;
-        case GDK_Down:
+        case GDK_KEY(Down):
             if (player->title_is_menu) {
                 write_to_mplayer(player, "dvdnav 2\n");
             }
             break;
-        case GDK_Return:
+        case GDK_KEY(Return):
             if (player->title_is_menu) {
                 write_to_mplayer(player, "dvdnav 6\n");
             }
             return TRUE;
             break;
-        case GDK_Home:
+        case GDK_KEY(Home):
             if (!player->title_is_menu) {
                 write_to_mplayer(player, "dvdnav menu\n");
             }
             return TRUE;
             break;
-        case GDK_space:
-        case GDK_p:
+        case GDK_KEY(space):
+        case GDK_KEY(p):
             switch (player->media_state) {
             case MEDIA_STATE_PAUSE:
                 gmtk_media_player_set_state(player, MEDIA_STATE_PLAY);
@@ -750,65 +750,65 @@ static gboolean player_key_press_event_callback(GtkWidget * widget, GdkEventKey 
                 break;
             }
             break;
-        case GDK_1:
+        case GDK_KEY(1):
             gmtk_media_player_set_attribute_integer_delta(player, ATTRIBUTE_CONTRAST, -5);
             break;
-        case GDK_2:
+        case GDK_KEY(2):
             gmtk_media_player_set_attribute_integer_delta(player, ATTRIBUTE_CONTRAST, 5);
             break;
-        case GDK_3:
+        case GDK_KEY(3):
             gmtk_media_player_set_attribute_integer_delta(player, ATTRIBUTE_BRIGHTNESS, -5);
             break;
-        case GDK_4:
+        case GDK_KEY(4):
             gmtk_media_player_set_attribute_integer_delta(player, ATTRIBUTE_BRIGHTNESS, 5);
             break;
-        case GDK_5:
+        case GDK_KEY(5):
             gmtk_media_player_set_attribute_integer_delta(player, ATTRIBUTE_HUE, -5);
             break;
-        case GDK_6:
+        case GDK_KEY(6):
             gmtk_media_player_set_attribute_integer_delta(player, ATTRIBUTE_HUE, 5);
             break;
-        case GDK_7:
+        case GDK_KEY(7):
             gmtk_media_player_set_attribute_integer_delta(player, ATTRIBUTE_SATURATION, -5);
             break;
-        case GDK_8:
+        case GDK_KEY(8):
             gmtk_media_player_set_attribute_integer_delta(player, ATTRIBUTE_SATURATION, 5);
             break;
-        case GDK_plus:
+        case GDK_KEY(plus):
             write_to_mplayer(player, "audio_delay 0.1 0\n");
             break;
-        case GDK_minus:
+        case GDK_KEY(minus):
             write_to_mplayer(player, "audio_delay -0.1 0\n");
             break;
-        case GDK_numbersign:
+        case GDK_KEY(numbersign):
             write_to_mplayer(player, "switch_audio -1\n");
             return TRUE;
             break;
-        case GDK_period:
+        case GDK_KEY(period):
             if (player->media_state == MEDIA_STATE_PAUSE)
                 write_to_mplayer(player, "frame_step\n");
             break;
-        case GDK_KP_Add:
+        case GDK_KEY(KP_Add):
             player->zoom += 0.10;
             player->zoom = CLAMP(player->zoom, 0.1, 10.0);
             gtk_widget_get_allocation(GTK_WIDGET(player), &alloc);
             gmtk_media_player_size_allocate(GTK_WIDGET(player), &alloc);
             break;
-        case GDK_KP_Subtract:
+        case GDK_KEY(KP_Subtract):
             player->zoom -= 0.10;
             player->zoom = CLAMP(player->zoom, 0.1, 10.0);
             gtk_widget_get_allocation(GTK_WIDGET(player), &alloc);
             gmtk_media_player_size_allocate(GTK_WIDGET(player), &alloc);
             break;
-        case GDK_KP_Enter:
+        case GDK_KEY(KP_Enter):
             player->zoom = 1.0;
             gtk_widget_get_allocation(GTK_WIDGET(player), &alloc);
             gmtk_media_player_size_allocate(GTK_WIDGET(player), &alloc);
             break;
-        case GDK_j:
+        case GDK_KEY(j):
             gmtk_media_player_cycle_subtitles(player);
             break;
-        case GDK_d:
+        case GDK_KEY(d):
             write_to_mplayer(player, "frame_drop\n");
             cmd =
                 g_strdup_printf("osd_show_property_text \"%s: ${framedropping}\" 1000 1\n",
@@ -816,13 +816,13 @@ static gboolean player_key_press_event_callback(GtkWidget * widget, GdkEventKey 
             write_to_mplayer(player, cmd);
             g_free(cmd);
             break;
-        case GDK_b:
+        case GDK_KEY(b):
             write_to_mplayer(player, "sub_pos -1 0\n");
             break;
-        case GDK_B:
+        case GDK_KEY(B):
             write_to_mplayer(player, "sub_pos 1 0\n");
             break;
-        case GDK_D:
+        case GDK_KEY(D):
             write_to_mplayer(player, "step_property deinterlace\n");
             cmd =
                 g_strdup_printf("osd_show_property_text \"%s: ${deinterlace}\" 1000 1\n",
@@ -830,23 +830,23 @@ static gboolean player_key_press_event_callback(GtkWidget * widget, GdkEventKey 
             write_to_mplayer(player, cmd);
             g_free(cmd);
             break;
-        case GDK_s:
-        case GDK_S:
+        case GDK_KEY(s):
+        case GDK_KEY(S):
             write_to_mplayer(player, "screenshot 0\n");
             break;
-        case GDK_x:
+        case GDK_KEY(x):
             write_to_mplayer(player, "sub_delay 0.1\n");
             break;
-        case GDK_z:
+        case GDK_KEY(z):
             write_to_mplayer(player, "sub_delay -0.1\n");
             break;
-        case GDK_o:
+        case GDK_KEY(o):
             write_to_mplayer(player, "osd\n");
             break;
-		case GDK_h:
+		case GDK_KEY(h):
 			write_to_mplayer(player, "tv_step_channel -1\n");
 			break;
-		case GDK_k:
+		case GDK_KEY(k):
 			write_to_mplayer(player, "tv_step_channel 1\n");
 			break;
         default:

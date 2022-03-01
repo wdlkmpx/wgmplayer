@@ -1859,10 +1859,10 @@ gboolean window_key_callback(GtkWidget * widget, GdkEventKey * event, gpointer u
 
         g_idle_add(make_panel_and_mouse_visible, NULL);
         switch (event->keyval) {
-        case GDK_ISO_Next_Group:
+        case GDK_KEY(ISO_Next_Group):
             setup_accelerators();
             return FALSE;
-        case GDK_Right:
+        case GDK_KEY(Right):
             if (title_is_menu) {
                 return gmtk_media_player_send_key_press_event(GMTK_MEDIA_PLAYER(media), event, data);
             } else {
@@ -1871,7 +1871,7 @@ gboolean window_key_callback(GtkWidget * widget, GdkEventKey * event, gpointer u
                     return ff_callback(NULL, NULL, NULL);
             }
             break;
-        case GDK_Left:
+        case GDK_KEY(Left):
             if (title_is_menu) {
                 return gmtk_media_player_send_key_press_event(GMTK_MEDIA_PLAYER(media), event, data);
             } else {
@@ -1880,7 +1880,7 @@ gboolean window_key_callback(GtkWidget * widget, GdkEventKey * event, gpointer u
                     return rew_callback(NULL, NULL, NULL);
             }
             break;
-        case GDK_Page_Up:
+        case GDK_KEY(Page_Up):
             if (gmtk_media_player_get_media_state(GMTK_MEDIA_PLAYER(media)) != MEDIA_STATE_STOP
                 && !gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menuitem_view_playlist)))
                 gmtk_media_player_seek(GMTK_MEDIA_PLAYER(media), 600.0, SEEK_RELATIVE);
@@ -1893,7 +1893,7 @@ gboolean window_key_callback(GtkWidget * widget, GdkEventKey * event, gpointer u
                 gmtk_media_tracker_set_percentage(tracker, idledata->position / idledata->length);
             }
             return FALSE;
-        case GDK_Page_Down:
+        case GDK_KEY(Page_Down):
             if (gmtk_media_player_get_media_state(GMTK_MEDIA_PLAYER(media)) != MEDIA_STATE_STOP
                 && !gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menuitem_view_playlist)))
                 gmtk_media_player_seek(GMTK_MEDIA_PLAYER(media), -600.0, SEEK_RELATIVE);
@@ -1905,7 +1905,7 @@ gboolean window_key_callback(GtkWidget * widget, GdkEventKey * event, gpointer u
                 gmtk_media_tracker_set_percentage(tracker, idledata->position / idledata->length);
             }
             return FALSE;
-        case GDK_Up:
+        case GDK_KEY(Up):
             if (title_is_menu) {
                 return gmtk_media_player_send_key_press_event(GMTK_MEDIA_PLAYER(media), event, data);
             } else {
@@ -1922,7 +1922,7 @@ gboolean window_key_callback(GtkWidget * widget, GdkEventKey * event, gpointer u
             }
 
             return FALSE;
-        case GDK_Down:
+        case GDK_KEY(Down):
             if (title_is_menu) {
                 return gmtk_media_player_send_key_press_event(GMTK_MEDIA_PLAYER(media), event, data);
             } else {
@@ -1938,25 +1938,25 @@ gboolean window_key_callback(GtkWidget * widget, GdkEventKey * event, gpointer u
                 }
             }
             return FALSE;
-        case GDK_Return:
-        case GDK_KP_Enter:
+        case GDK_KEY(Return):
+        case GDK_KEY(KP_Enter):
             if (title_is_menu) {
                 return gmtk_media_player_send_key_press_event(GMTK_MEDIA_PLAYER(media), event, data);
             } else if (idledata->videopresent) {
                 gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_fullscreen), !fullscreen);
             }
             return FALSE;
-        case GDK_less:
+        case GDK_KEY(less):
             prev_callback(NULL, NULL, NULL);
             return FALSE;
-        case GDK_greater:
+        case GDK_KEY(greater):
             next_callback(NULL, NULL, NULL);
             return FALSE;
-        case GDK_space:
-        case GDK_p:
+        case GDK_KEY(space):
+        case GDK_KEY(p):
             return play_callback(NULL, NULL, NULL);
             break;
-        case GDK_m:
+        case GDK_KEY(m):
             if (gmtk_media_player_get_attribute_boolean(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_MUTED)) {
                 gmtk_media_player_set_attribute_boolean(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_MUTED, FALSE);
                 gtk_scale_button_set_value(GTK_SCALE_BUTTON(vol_slider), audio_device.volume);
@@ -1966,65 +1966,65 @@ gboolean window_key_callback(GtkWidget * widget, GdkEventKey * event, gpointer u
             }
             return FALSE;
 
-        case GDK_1:
+        case GDK_KEY(1):
             gmtk_media_player_set_attribute_integer_delta(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_CONTRAST, -5);
             return FALSE;
-        case GDK_2:
+        case GDK_KEY(2):
             gmtk_media_player_set_attribute_integer_delta(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_CONTRAST, 5);
             return FALSE;
-        case GDK_3:
+        case GDK_KEY(3):
             gmtk_media_player_set_attribute_integer_delta(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_BRIGHTNESS, -5);
             return FALSE;
-        case GDK_4:
+        case GDK_KEY(4):
             gmtk_media_player_set_attribute_integer_delta(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_BRIGHTNESS, 5);
             return FALSE;
-        case GDK_5:
+        case GDK_KEY(5):
             gmtk_media_player_set_attribute_integer_delta(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_HUE, -5);
             return FALSE;
-        case GDK_6:
+        case GDK_KEY(6):
             gmtk_media_player_set_attribute_integer_delta(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_HUE, 5);
             return FALSE;
-        case GDK_7:
+        case GDK_KEY(7):
             gmtk_media_player_set_attribute_integer_delta(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_SATURATION, -5);
             return FALSE;
-        case GDK_8:
+        case GDK_KEY(8):
             gmtk_media_player_set_attribute_integer_delta(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_SATURATION, 5);
             return FALSE;
-        case GDK_bracketleft:
+        case GDK_KEY(bracketleft):
             gmtk_media_player_set_attribute_double(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_SPEED_MULTIPLIER, 0.9091);
             return FALSE;
-        case GDK_bracketright:
+        case GDK_KEY(bracketright):
             gmtk_media_player_set_attribute_double(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_SPEED_MULTIPLIER, 1.10);
             return FALSE;
-        case GDK_BackSpace:
+        case GDK_KEY(BackSpace):
             gmtk_media_player_set_attribute_double(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_SPEED_SET, 1.0);
             return FALSE;
-        case GDK_9:
+        case GDK_KEY(9):
             gtk_scale_button_set_value(GTK_SCALE_BUTTON(vol_slider),
                                        gtk_scale_button_get_value(GTK_SCALE_BUTTON(vol_slider)) - 0.01);
             return FALSE;
-        case GDK_0:
+        case GDK_KEY(0):
             gtk_scale_button_set_value(GTK_SCALE_BUTTON(vol_slider),
                                        gtk_scale_button_get_value(GTK_SCALE_BUTTON(vol_slider)) + 0.01);
             return FALSE;
-        case GDK_period:
+        case GDK_KEY(period):
             if (gmtk_media_player_get_media_state(GMTK_MEDIA_PLAYER(media)) == MEDIA_STATE_PAUSE)
                 gmtk_media_player_send_command(GMTK_MEDIA_PLAYER(media), COMMAND_FRAME_STEP);
             return FALSE;
-        case GDK_j:
+        case GDK_KEY(j):
             gmtk_media_player_send_command(GMTK_MEDIA_PLAYER(media), COMMAND_SUBTITLE_SELECT);
             return FALSE;
-        case GDK_y:
+        case GDK_KEY(y):
             gmtk_media_player_send_command(GMTK_MEDIA_PLAYER(media), COMMAND_SUBTITLE_STEP_FORWARD);
             return FALSE;
-        case GDK_g:
+        case GDK_KEY(g):
             gmtk_media_player_send_command(GMTK_MEDIA_PLAYER(media), COMMAND_SUBTITLE_STEP_BACKWARD);
             return FALSE;
-        case GDK_q:
+        case GDK_KEY(q):
             delete_callback(NULL, NULL, NULL);
             g_idle_add(set_destroy, NULL);
             return FALSE;
-        case GDK_v:
+        case GDK_KEY(v):
             /*
                if (fullscreen) {
                gmtk_media_player_set_attribute_boolean(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_SUB_VISIBLE,
@@ -2034,29 +2034,29 @@ gboolean window_key_callback(GtkWidget * widget, GdkEventKey * event, gpointer u
                }
              */
             return FALSE;
-        case GDK_KP_Add:
+        case GDK_KEY(KP_Add):
             gmtk_media_player_set_attribute_double(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_AUDIO_DELAY,
                                                    gmtk_media_player_get_attribute_double(GMTK_MEDIA_PLAYER(media),
                                                                                           ATTRIBUTE_AUDIO_DELAY) + 0.1);
 
             return FALSE;
-        case GDK_minus:
-        case GDK_KP_Subtract:
+        case GDK_KEY(minus):
+        case GDK_KEY(KP_Subtract):
             gmtk_media_player_set_attribute_double(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_AUDIO_DELAY,
                                                    gmtk_media_player_get_attribute_double(GMTK_MEDIA_PLAYER(media),
                                                                                           ATTRIBUTE_AUDIO_DELAY) - 0.1);
             return FALSE;
-            //case GDK_z:
+            //case GDK_KEY(z):
             //    menuitem_view_decrease_subtitle_delay_callback(NULL, NULL);
             //    return FALSE;
-            //case GDK_x:
+            //case GDK_KEY(x):
             //    menuitem_view_increase_subtitle_delay_callback(NULL, NULL);
             //    return FALSE;
-        case GDK_F11:
+        case GDK_KEY(F11):
             if (idledata->videopresent)
                 gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_fullscreen), !fullscreen);
             return FALSE;
-        case GDK_Escape:
+        case GDK_KEY(Escape):
             if (fullscreen) {
                 if (idledata->videopresent)
                     gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_fullscreen), !fullscreen);
@@ -2065,11 +2065,11 @@ gboolean window_key_callback(GtkWidget * widget, GdkEventKey * event, gpointer u
                 g_idle_add(set_destroy, NULL);
             }
             return FALSE;
-        case GDK_f:
+        case GDK_KEY(f):
             if (idledata->videopresent)
                 gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_fullscreen), !fullscreen);
             return FALSE;
-        case GDK_a:
+        case GDK_KEY(a):
             /*
                if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menuitem_view_aspect_follow_window))) {
                gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_view_aspect_default), TRUE);
@@ -2085,23 +2085,23 @@ gboolean window_key_callback(GtkWidget * widget, GdkEventKey * event, gpointer u
                gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuitem_view_aspect_four_three), TRUE);
              */
             return FALSE;
-        case GDK_d:
+        case GDK_KEY(d):
             gmtk_media_player_send_command(GMTK_MEDIA_PLAYER(media), COMMAND_SWITCH_FRAME_DROP);
             return FALSE;
-        case GDK_i:
+        case GDK_KEY(i):
             if (fullscreen) {
                 //cmd = g_strdup_printf("osd_show_text '%s' 1500 0\n", idledata->display_name);
                 //send_command(cmd, TRUE);
                 //g_free(cmd);
             }
             return FALSE;
-        case GDK_b:
+        case GDK_KEY(b):
             gmtk_media_player_set_attribute_integer(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_SUBTITLE_POSITION,
                                                     gmtk_media_player_get_attribute_integer(GMTK_MEDIA_PLAYER(media),
                                                                                             ATTRIBUTE_SUBTITLE_POSITION)
                                                     - 1);
             return FALSE;
-        case GDK_s:
+        case GDK_KEY(s):
             // gmtk_media_player_send_command(GMTK_MEDIA_PLAYER(media), COMMAND_TAKE_SCREENSHOT);
             return FALSE;
         default:
@@ -2119,30 +2119,30 @@ gboolean window_key_callback(GtkWidget * widget, GdkEventKey * event, gpointer u
 
         g_idle_add(make_panel_and_mouse_visible, NULL);
         switch (event->keyval) {
-        case GDK_B:
+        case GDK_KEY(B):
             gmtk_media_player_set_attribute_integer(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_SUBTITLE_POSITION,
                                                     gmtk_media_player_get_attribute_integer(GMTK_MEDIA_PLAYER(media),
                                                                                             ATTRIBUTE_SUBTITLE_POSITION)
                                                     + 1);
             return FALSE;
-        case GDK_S:
+        case GDK_KEY(S):
             gmtk_media_player_send_command(GMTK_MEDIA_PLAYER(media), COMMAND_TAKE_SCREENSHOT);
             return FALSE;
-        case GDK_J:
+        case GDK_KEY(J):
             gmtk_media_player_send_command(GMTK_MEDIA_PLAYER(media), COMMAND_SUBTITLE_SELECT);
             return FALSE;
-        case GDK_numbersign:
+        case GDK_KEY(numbersign):
             gmtk_media_player_send_command(GMTK_MEDIA_PLAYER(media), COMMAND_SWITCH_AUDIO);
             return FALSE;
-        case GDK_plus:
+        case GDK_KEY(plus):
             gmtk_media_player_set_attribute_double(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_AUDIO_DELAY,
                                                    gmtk_media_player_get_attribute_double(GMTK_MEDIA_PLAYER(media),
                                                                                           ATTRIBUTE_AUDIO_DELAY) + 0.1);
             return FALSE;
-        case GDK_braceleft:
+        case GDK_KEY(braceleft):
             gmtk_media_player_set_attribute_double(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_SPEED_MULTIPLIER, 0.50);
             return FALSE;
-        case GDK_braceright:
+        case GDK_KEY(braceright):
             gmtk_media_player_set_attribute_double(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_SPEED_MULTIPLIER, 2.0);
             return FALSE;
         default:
@@ -2156,7 +2156,7 @@ gboolean window_key_callback(GtkWidget * widget, GdkEventKey * event, gpointer u
         && (!event->is_modifier && (event->state & GDK_SHIFT_MASK) == 0 && (event->state & GDK_CONTROL_MASK) == 0
             && (event->state & GDK_MOD1_MASK) == 0)) {
         switch (event->keyval) {
-        case GDK_f:
+        case GDK_KEY(f):
             idledata->fullscreen = FALSE;
             set_fullscreen(idledata);
             return TRUE;
@@ -6115,8 +6115,8 @@ void setup_accelerators()
     if (get_key_and_modifier(accel_keys[VIEW_CONTROLS], &key, &modifier))
         gtk_accel_map_change_entry(ACCEL_PATH_VIEW_CONTROLS, key, modifier, TRUE);
 
-    gtk_accel_map_change_entry(ACCEL_PATH_VIEW_NORMAL, GDK_1, GDK_CONTROL_MASK, TRUE);
-    gtk_accel_map_change_entry(ACCEL_PATH_VIEW_DOUBLE, GDK_2, GDK_CONTROL_MASK, TRUE);
+    gtk_accel_map_change_entry(ACCEL_PATH_VIEW_NORMAL, GDK_KEY(1), GDK_CONTROL_MASK, TRUE);
+    gtk_accel_map_change_entry(ACCEL_PATH_VIEW_DOUBLE, GDK_KEY(2), GDK_CONTROL_MASK, TRUE);
 }
 
 GtkWidget *create_window()
