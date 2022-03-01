@@ -2741,13 +2741,12 @@ void menuitem_open_location_callback(GtkMenuItem * menuitem, void *data)
 {
     GtkWidget *open_window;
     GtkWidget *vbox;
-    GtkWidget *item_box;
+    GtkWidget *hbox;
     GtkWidget *label;
-    GtkWidget *button_box;
     GtkWidget *cancel_button;
     GtkWidget *open_button;
 
-    open_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    open_window = gtk_dialog_new ();
     gtk_window_set_type_hint(GTK_WINDOW(open_window), GDK_WINDOW_TYPE_HINT_UTILITY);
     gtk_window_set_resizable(GTK_WINDOW(open_window), FALSE);
     gtk_window_set_transient_for(GTK_WINDOW(open_window), GTK_WINDOW(window));
@@ -2757,31 +2756,26 @@ void menuitem_open_location_callback(GtkMenuItem * menuitem, void *data)
     gtk_window_set_resizable(GTK_WINDOW(open_window), FALSE);
     gtk_window_set_title(GTK_WINDOW(open_window), _("Open Location"));
 
-    vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 6);
+    vbox = gtk_dialog_get_content_area (GTK_DIALOG (open_window));
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 5);
+    gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+
     label = gtk_label_new(_("Location:"));
     open_location = gtk_entry_new();
     gtk_entry_set_width_chars(GTK_ENTRY(open_location), 50);
     gtk_entry_set_activates_default(GTK_ENTRY(open_location), TRUE);
 
-    item_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 6);
-    gtk_box_pack_start(GTK_BOX(item_box), label, FALSE, FALSE, 12);
-    gtk_box_pack_end(GTK_BOX(item_box), open_location, TRUE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX(hbox), label, FALSE, FALSE, 12);
+    gtk_box_pack_start (GTK_BOX(vbox), open_location, TRUE, TRUE, 0);
+    gtkcompat_widget_set_halign_left (GTK_WIDGET (label));
 
-    button_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 6);
-    cancel_button = gtk_button_new_from_stock("gtk-cancel");
-    open_button = gtk_button_new_from_stock("gtk-open");
-    gtk_widget_set_can_default(open_button, TRUE);
-    gtk_box_pack_end(GTK_BOX(button_box), open_button, FALSE, FALSE, 0);
-    gtk_box_pack_end(GTK_BOX(button_box), cancel_button, FALSE, FALSE, 0);
+    cancel_button = gtk_dialog_add_button (GTK_DIALOG (open_window), "gtk-cancel", GTK_RESPONSE_CANCEL);
+    open_button = gtk_dialog_add_button (GTK_DIALOG (open_window), "gtk-open", GTK_RESPONSE_OK);
 
     g_signal_connect_swapped(G_OBJECT(cancel_button), "clicked", G_CALLBACK(config_close), open_window);
     g_signal_connect_swapped(G_OBJECT(open_button), "clicked", G_CALLBACK(open_location_callback), open_window);
 
-    gtk_container_add(GTK_CONTAINER(vbox), item_box);
-    gtk_container_add(GTK_CONTAINER(vbox), button_box);
-    gtk_container_add(GTK_CONTAINER(open_window), vbox);
     gtk_widget_show_all(open_window);
-    gtk_window_set_transient_for(GTK_WINDOW(open_window), GTK_WINDOW(window));
     gtk_window_set_keep_above(GTK_WINDOW(open_window), keep_on_top);
     gtk_window_present(GTK_WINDOW(open_window));
     gtk_widget_grab_default(open_button);
