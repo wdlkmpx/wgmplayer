@@ -4775,61 +4775,55 @@ void menuitem_config_dialog_cb(GtkMenuItem * menuitem, void *data)
     conf_label = gtk_label_new(_("<span weight=\"bold\">Subtitle Settings</span>"));
     gtk_label_set_use_markup(GTK_LABEL(conf_label), TRUE);
     gtk_widget_set_halign (conf_label, GTK_ALIGN_START);
-    gtkcompat_grid_attach (GTK_GRID(conf_table), conf_label, 0, 1, i, i + 1);
+    gtk_grid_attach (GTK_GRID(conf_table), conf_label, 0, i, 1, 1);
     i++;
 
     config_ass = gtk_check_button_new_with_mnemonic(_("Enable _Advanced Substation Alpha (ASS) Subtitle Support"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_ass), !disable_ass);
     g_signal_connect(G_OBJECT(config_ass), "toggled", G_CALLBACK(ass_toggle_callback), NULL);
-    gtkcompat_grid_attach (GTK_GRID(conf_table), config_ass, 0, 2, i, i + 1);
+    gtk_grid_attach (GTK_GRID(conf_table), config_ass, 0, i, 2, 1);
     gtk_widget_show(config_ass);
     i++;
 
     config_embeddedfonts = gtk_check_button_new_with_mnemonic(_("Use _Embedded Fonts (MKV only)"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_embeddedfonts), !disable_embeddedfonts);
     gtk_widget_set_sensitive(config_embeddedfonts, !disable_ass);
-    gtkcompat_grid_attach (GTK_GRID(conf_table), config_embeddedfonts, 0, 2, i, i + 1);
+    gtk_grid_attach (GTK_GRID(conf_table), config_embeddedfonts, 0, i, 2, 1);
     gtk_widget_show(config_embeddedfonts);
     i++;
 
     config_subtitle_outline = gtk_check_button_new_with_label(_("Outline Subtitle Font"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_subtitle_outline), subtitle_outline);
-    gtkcompat_grid_attach (GTK_GRID(conf_table), config_subtitle_outline, 0, 2, i, i + 1);
+    gtk_grid_attach (GTK_GRID(conf_table), config_subtitle_outline, 0, i, 2, 1);
     i++;
 
     config_subtitle_shadow = gtk_check_button_new_with_label(_("Shadow Subtitle Font"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_subtitle_shadow), subtitle_shadow);
-    gtkcompat_grid_attach (GTK_GRID(conf_table), config_subtitle_shadow, 0, 2, i, i + 1);
+    gtk_grid_attach (GTK_GRID(conf_table), config_subtitle_shadow, 0, i, 2, 1);
     i++;
 
     config_show_subtitles = gtk_check_button_new_with_label(_("Show Subtitles by Default"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_show_subtitles), showsubtitles);
-    gtkcompat_grid_attach (GTK_GRID(conf_table), config_show_subtitles, 0, 2, i, i + 1);
+    gtk_grid_attach (GTK_GRID(conf_table), config_show_subtitles, 0, i, 2, 1);
     i++;
 
     conf_label = gtk_label_new(_("Subtitle Font:"));
     gtk_widget_set_halign (conf_label, GTK_ALIGN_END);
-    gtkcompat_grid_attach (GTK_GRID(conf_table), conf_label, 0, 1, i, i + 1);
-    gtk_widget_show(conf_label);
-
     config_subtitle_font = gtk_font_button_new();
     if (subtitlefont != NULL) {
         gtk_font_button_set_font_name(GTK_FONT_BUTTON(config_subtitle_font), subtitlefont);
     }
     gtk_font_button_set_show_size(GTK_FONT_BUTTON(config_subtitle_font), TRUE);
     gtk_font_button_set_show_style(GTK_FONT_BUTTON(config_subtitle_font), TRUE);
-
     gtk_font_button_set_use_size(GTK_FONT_BUTTON(config_subtitle_font), FALSE);
     gtk_font_button_set_use_font(GTK_FONT_BUTTON(config_subtitle_font), TRUE);
-
     gtk_font_button_set_title(GTK_FONT_BUTTON(config_subtitle_font), _("Subtitle Font Selection"));
-    gtkcompat_grid_attach (GTK_GRID(conf_table), config_subtitle_font, 1, 2, i, i + 1);
+    gtk_grid_attach (GTK_GRID(conf_table), conf_label,           0, i, 1, 1);
+    gtk_grid_attach (GTK_GRID(conf_table), config_subtitle_font, 1, i, 1, 1);
     i++;
 
     conf_label = gtk_label_new(_("Subtitle Color:"));
     gtk_widget_set_halign (conf_label, GTK_ALIGN_END);
-    gtkcompat_grid_attach (GTK_GRID(conf_table), conf_label, 0, 1, i, i + 1);
-    gtk_widget_show(conf_label);
     config_subtitle_color = gtk_color_button_new();
     if (subtitle_color != NULL && strlen(subtitle_color) > 5) {
         sub_color.red = g_ascii_xdigit_value(subtitle_color[0]) << 4;
@@ -4850,36 +4844,33 @@ void menuitem_config_dialog_cb(GtkMenuItem * menuitem, void *data)
     }
     gtk_color_button_set_title(GTK_COLOR_BUTTON(config_subtitle_color), _("Subtitle Color Selection"));
     gtk_widget_set_sensitive(config_subtitle_color, !disable_ass);
-    gtkcompat_grid_attach (GTK_GRID(conf_table), config_subtitle_color, 1, 2, i, i + 1);
+    gtk_grid_attach (GTK_GRID(conf_table), conf_label,            0, i, 1, 1);
+    gtk_grid_attach (GTK_GRID(conf_table), config_subtitle_color, 1, i, 1, 1);
     i++;
 
     conf_label = gtk_label_new(_("Subtitle Font Scaling:"));
     gtk_widget_set_halign (conf_label, GTK_ALIGN_END);
-    gtkcompat_grid_attach (GTK_GRID(conf_table), conf_label, 0, 1, i, i + 1);
-    gtk_widget_show(conf_label);
     config_subtitle_scale = gtk_spin_button_new_with_range(0.25, 10, 0.05);
     gtk_widget_set_size_request(config_subtitle_scale, -1, -1);
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(config_subtitle_scale), subtitle_scale);
-    gtkcompat_grid_attach (GTK_GRID(conf_table), config_subtitle_scale, 1, 2, i, i + 1);
+    gtk_grid_attach (GTK_GRID(conf_table), conf_label,            0, i, 1, 1);
+    gtk_grid_attach (GTK_GRID(conf_table), config_subtitle_scale, 1, i, 1, 1);
     i++;
 
     conf_label = gtk_label_new(_("Subtitle File Encoding:"));
     gtk_widget_set_halign (conf_label, GTK_ALIGN_END);
-    gtkcompat_grid_attach (GTK_GRID(conf_table), conf_label, 0, 1, i, i + 1);
-    gtk_widget_show(conf_label);
     gtk_widget_set_size_request(GTK_WIDGET(config_subtitle_codepage), 200, -1);
-
-    gtkcompat_grid_attach (GTK_GRID(conf_table), config_subtitle_codepage, 1, 2, i, i + 1);
+    gtk_grid_attach (GTK_GRID(conf_table), conf_label,               0, i, 1, 1);
+    gtk_grid_attach (GTK_GRID(conf_table), config_subtitle_codepage, 1, i, 1, 1);
     i++;
 
     conf_label = gtk_label_new(_("Subtitle Lower Margin (X11/XV Only):"));
     gtk_widget_set_halign (conf_label, GTK_ALIGN_END);
-    gtkcompat_grid_attach (GTK_GRID(conf_table), conf_label, 0, 1, i, i + 1);
-    gtk_widget_show(conf_label);
     config_subtitle_margin = gtk_spin_button_new_with_range(0, 200, 1);
     gtk_widget_set_size_request(config_subtitle_scale, -1, -1);
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(config_subtitle_margin), subtitle_margin);
-    gtkcompat_grid_attach (GTK_GRID(conf_table), config_subtitle_margin, 1, 2, i, i + 1);
+    gtk_grid_attach (GTK_GRID(conf_table), conf_label,             0, i, 1, 1);
+    gtk_grid_attach (GTK_GRID(conf_table), config_subtitle_margin, 1, i, 1, 1);
     i++;
 
     conf_label = gtk_label_new(_("Subtitle Load Fuzziness:"));
@@ -4889,8 +4880,8 @@ void menuitem_config_dialog_cb(GtkMenuItem * menuitem, void *data)
     gtk_widget_set_size_request(config_subtitle_fuzziness, 150, -1);
     gtk_range_set_value(GTK_RANGE(config_subtitle_fuzziness), subtitle_fuzziness);
     gtk_widget_set_halign (conf_label, GTK_ALIGN_END);
-    gtkcompat_grid_attach (GTK_GRID(conf_table), conf_label, 0, 1, i, i + 1);
-    gtkcompat_grid_attach (GTK_GRID(conf_table), config_subtitle_fuzziness, 1, 2, i, i + 1);
+    gtk_grid_attach (GTK_GRID(conf_table), conf_label,                0, i, 1, 1);
+    gtk_grid_attach (GTK_GRID(conf_table), config_subtitle_fuzziness, 1, i, 1, 1);
     i++;
 
 
