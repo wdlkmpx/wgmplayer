@@ -4,7 +4,7 @@
  * For more information, please refer to <https://unlicense.org>
  */
 
-/** 2022-03-01 **/
+/** 2022-03-02 **/
 
 /*
  * gtkcompat.h, GTK2+ compatibility layer
@@ -169,9 +169,12 @@ extern "C"
 #define gtkcompat_widget_set_halign_left(w)   gtk_widget_set_halign(GTK_WIDGET(w), GTK_ALIGN_START)
 #define gtkcompat_widget_set_halign_center(w) gtk_widget_set_halign(GTK_WIDGET(w), GTK_ALIGN_CENTER)
 #define gtkcompat_widget_set_halign_right(w)  gtk_widget_set_halign(GTK_WIDGET(w), GTK_ALIGN_END)
+// using GtkTable format, translate to to GtkGrid
+#define gtkcompat_grid_attach(table,child,left,right,top,bottom) \
+    gtk_grid_attach((table),(child), (left), (top), (right)-(left), (bottom)-(top))
+#define gtkcompat_grid_new(rows,cols) (gtk_grid_new())
 #endif
 
-// GTK < 3.14
 /*
 // GTK < 3.12
 #if ! GTK_CHECK_VERSION (3, 12, 0)
@@ -196,8 +199,8 @@ extern "C"
 #define gtk_widget_get_opacity(w)  (gtk_window_get_opacity(GTK_WINDOW(w))
 // < 3.4
 #define gtk_application_window_new(app) gtk_window_new(GTK_WINDOW_TOPLEVEL)
-// 3.0
 
+/*** = 3.0 ***/
 #define GTKCOMPAT_DRAW_SIGNAL "expose_event"
 #define gtk_box_new(ori,spacing) \
   ((ori == GTK_ORIENTATION_HORIZONTAL) ? gtk_hbox_new(FALSE,spacing) \
@@ -237,6 +240,22 @@ extern "C"
 #define gtkcompat_widget_set_halign_left(w)   gtk_misc_set_alignment(GTK_MISC(w), 0.0, 0.5)
 #define gtkcompat_widget_set_halign_center(w) gtk_misc_set_alignment(GTK_MISC(w), 0.5, 0.5)
 #define gtkcompat_widget_set_halign_right(w)  gtk_misc_set_alignment(GTK_MISC(w), 1.0, 0.5)
+//-
+#define GTK_GRID GTK_TABLE
+#define GtkGrid  GtkTable
+#define gtk_grid_attach(grid,child,left,top,width,height) \
+    gtk_table_attach_defaults((grid),(child), (left), (left)+(width), (top), (top)+(height))
+#define gtkcompat_grid_new(rows,cols) (gtk_table_new((rows),(cols),FALSE))
+#define gtkcompat_grid_attach       gtk_table_attach_defaults
+#define gtk_grid_set_column_spacing gtk_table_set_col_spacings
+#define gtk_grid_set_row_spacing    gtk_table_set_row_spacings
+#define gtk_grid_get_column_spacing gtk_table_get_default_col_spacing
+#define gtk_grid_get_row_spacing    gtk_table_get_default_row_spacing
+#define gtk_grid_set_row_homogeneous    gtk_table_set_homogeneous
+#define gtk_grid_set_column_homogeneous gtk_table_set_homogeneous
+#define gtk_grid_get_row_homogeneous    gtk_table_get_homogeneous
+#define gtk_grid_get_column_homogeneous gtk_table_gset_homogeneous
+//-
 typedef enum /* GtkAlign */
 {
   GTK_ALIGN_FILL,
