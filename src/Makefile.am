@@ -27,7 +27,8 @@ bin_PROGRAMS = g-mplayer
 
 g_mplayer_SOURCES = \
 	../config.h \
-	../wgtk/gtkcompat.c \
+	../wgtk/w_gtk.c \
+	../wgtk/w_gtk_menu.c \
 	gtkcompat.h \
 	gmtk/gmlib.h \
 	gmtk/gm_audio.c \
