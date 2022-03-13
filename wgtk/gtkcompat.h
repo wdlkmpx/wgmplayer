@@ -175,32 +175,32 @@ extern "C"
 #define gtkcompat_grid_new(rows,cols) (gtk_grid_new())
 #endif
 
-/*
-// GTK < 3.12
+/* GTK < 3.12
 #if ! GTK_CHECK_VERSION (3, 12, 0)
 #define gtk_application_set_accels_for_action(app,name,accels) \
           gtk_application_add_accelerator(app,accels[0],name,NULL)
 #define gtk_widget_set_margin_start(widget,margin) gtk_widget_set_margin_left(widget,margin)
 #define gtk_widget_set_margin_end(widget,margin)   gtk_widget_set_margin_right(widget,margin)
-#endif
-*/
+#endif */
+
 
 /* ================================================== */
 /*                       GTK 2                        */
 /* ================================================== */
 
+#if GTK_MAJOR_VERSION == 2
+
 // define some GTK3.14+ functions
-#if GTK_MAJOR_VERSION <= 2
-// < 3.10
+// GTK < 3.10
 // gdk_window_create_similar_image_surface() was removed in gtk4
 //                  only use gdk_window_create_similar_surface()
-// < 3.8
+// GTK < 3.8
 #define gtk_widget_set_opacity(w,o) gtk_window_set_opacity(GTK_WINDOW(w),o)
 #define gtk_widget_get_opacity(w)  (gtk_window_get_opacity(GTK_WINDOW(w))
-// < 3.4
+// GTK < 3.4
 #define gtk_application_window_new(app) gtk_window_new(GTK_WINDOW_TOPLEVEL)
 
-/*** = 3.0 ***/
+/*** GTK 3.0 ***/
 #define GTKCOMPAT_DRAW_SIGNAL "expose_event"
 #define gtk_box_new(ori,spacing) \
   ((ori == GTK_ORIENTATION_HORIZONTAL) ? gtk_hbox_new(FALSE,spacing) \
@@ -270,11 +270,10 @@ typedef enum /* GtkAlign */
 #define G_APPLICATION(app) ((void *) (app))
 //-
 #define gdk_error_trap_pop_ignored gdk_error_trap_pop
-#endif
 
 
 // GTK < 2.24
-#if ! GTK_CHECK_VERSION (2, 24, 0)
+#if GTK_MINOR_VERSION < 24
 typedef struct _GtkComboBox        GtkComboBoxText;
 typedef struct _GtkComboBoxClass   GtkComboBoxTextClass;
 typedef struct _GtkComboBoxPrivate GtkComboBoxTextPrivate;
@@ -304,8 +303,8 @@ typedef struct _GtkComboBoxPrivate GtkComboBoxTextPrivate;
 
 
 // GTK < 2.22
-#if ! GTK_CHECK_VERSION (2, 22, 0)
-#define gtk_accessible_get_widget(a) ((a	)->widget)
+#if GTK_MINOR_VERSION < 22
+#define gtk_accessible_get_widget(a) ((a)->widget)
 #define gtk_window_has_group(w) (GTK_WINDOW(w)->group != NULL)
 #define gtk_window_group_get_current_grab(wg) \
   ((GTK_WINDOW_GROUP(wg)->grabs) ? GTK_WIDGET(GTK_WINDOW_GROUP(wg)->grabs->data) : NULL)
@@ -331,7 +330,7 @@ typedef struct _GtkComboBoxPrivate GtkComboBoxTextPrivate;
 
 
 // GTK < 2.20
-#if ! GTK_CHECK_VERSION (2, 20, 0)
+#if GTK_MINOR_VERSION < 20
 #define gtk_widget_get_mapped(wid) ((GTK_WIDGET_FLAGS (wid) & GTK_MAPPED) != 0)
 #define gtk_widget_get_realized(wid) ((GTK_WIDGET_FLAGS (wid) & GTK_REALIZED) != 0)
 #define gtk_window_get_window_type(window) (GTK_WINDOW(window)->type)
@@ -351,7 +350,7 @@ typedef struct _GtkComboBoxPrivate GtkComboBoxTextPrivate;
 
 
 // GTK < 2.18
-#if ! GTK_CHECK_VERSION (2, 18, 0)
+#if GTK_MINOR_VERSION < 18
 #define gtk_widget_get_state(wid) (GTK_WIDGET (wid)->state)
 #define gtk_widget_is_toplevel(wid) ((GTK_WIDGET_FLAGS (wid) & GTK_TOPLEVEL) != 0)
 #define gtk_widget_get_has_window(wid) !((GTK_WIDGET_FLAGS (wid) & GTK_NO_WINDOW) != 0)
@@ -390,16 +389,16 @@ typedef struct _GtkComboBoxPrivate GtkComboBoxTextPrivate;
 
 
 // GTK < 2.16
-#if ! GTK_CHECK_VERSION (2, 16, 0)
+#if GTK_MINOR_VERSION < 16
 #define gtk_menu_item_get_label(i) (gtk_label_get_label (GTK_LABEL (GTK_BIN (i)->child)))
 #define gtk_menu_item_set_label(i,label) gtk_label_set_label(GTK_LABEL(GTK_BIN(i)->child), (label) ? label : "")
 #define gtk_menu_item_get_use_underline(i) (gtk_label_get_use_underline (GTK_LABEL (GTK_BIN (i)->child)))
 #define gtk_status_icon_set_tooltip_text gtk_status_icon_set_tooltip
 #endif
 
-/*
+
 // GTK < 2.14
-#if !GTK_CHECK_VERSION(2, 14, 0)
+#if GTK_MINOR_VERSION < 14
 #define gtk_dialog_get_action_area(dialog)    (GTK_DIALOG(dialog)->action_area)
 #define gtk_dialog_get_content_area(dialog)   (GTK_DIALOG(dialog)->vbox)
 #define gtk_widget_get_window(widget)         (GTK_WIDGET(widget)->window)
@@ -415,7 +414,9 @@ typedef struct _GtkComboBoxPrivate GtkComboBoxTextPrivate;
 #define gtk_adjustment_get_upper(a)           ((a)->upper) // GTK_ADJUSTMENT
 #define gtk_selection_data_get_length(data)   ((data)->length)
 #endif
-*/
+
+
+#endif /* ------- GTK2 ------- */
 
 // ===================================================
 

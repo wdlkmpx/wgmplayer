@@ -4,7 +4,7 @@
 SUBDIRS = 
 
 AM_CPPFLAGS = \
-	-I.. -Igmtk \
+	-I.. -I../wgtk -Igmtk \
 	-DPACKAGE_LOCALE_DIR=\""$(localedir)"\" \
 	-DPACKAGE_SRC_DIR=\""$(srcdir)"\" \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
@@ -27,7 +27,7 @@ bin_PROGRAMS = g-mplayer
 
 g_mplayer_SOURCES = \
 	../config.h \
-	../gtkcompat.c \
+	../wgtk/gtkcompat.c \
 	gtkcompat.h \
 	gmtk/gmlib.h \
 	gmtk/gm_audio.c \
