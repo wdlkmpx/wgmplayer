@@ -26,8 +26,9 @@
 #include "common.h"
 #include "gui.h"
 #include "support.h"
+#include "w_gtk_menu.h"
 
-static GtkMenu *playlist_popup_menu;
+static GtkWidget *playlist_popup_menu;
 static GtkMenuItem *playlist_set_subtitle;
 static GtkMenuItem *playlist_set_audiofile;
 static gint filecount;
@@ -843,6 +844,8 @@ void create_playlist_widget()
     gchar **split;
     gchar *joined;
 
+    struct WGtkMenuItemParams menuitem;
+
     plvbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 12);
     hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 12);
     ctrlbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
@@ -1076,18 +1079,23 @@ void create_playlist_widget()
     gtk_widget_style_get(pane, "handle-size", &handle_size, NULL);
     gtk_widget_set_size_request(plvbox, 350, 200);
 
-    playlist_popup_menu = GTK_MENU(gtk_menu_new());
-    playlist_set_subtitle = GTK_MENU_ITEM(gtk_image_menu_item_new_with_mnemonic(_("_Set Subtitle")));
-    g_signal_connect(G_OBJECT(playlist_set_subtitle), "activate", G_CALLBACK(playlist_set_subtitle_callback), list);
+    //-- popup menu
+    playlist_popup_menu = gtk_menu_new();
+    memset (&menuitem, 0, sizeof(menuitem));
 
-    gtk_menu_shell_append(GTK_MENU_SHELL(playlist_popup_menu), GTK_WIDGET(playlist_set_subtitle));
-    playlist_set_audiofile = GTK_MENU_ITEM(gtk_image_menu_item_new_with_mnemonic(_("Set Audi_o")));
-    g_signal_connect(G_OBJECT(playlist_set_audiofile), "activate", G_CALLBACK(playlist_set_audiofile_callback), list);
+    menuitem.parent_menu = playlist_popup_menu;
+    menuitem.label       = _("_Set Subtitle");
+    menuitem.activate_cb = playlist_set_subtitle_callback;
+    menuitem.cb_data     = list;
+    playlist_set_subtitle = w_gtk_menu_item_new (&menuitem);
 
-    gtk_menu_shell_append(GTK_MENU_SHELL(playlist_popup_menu), GTK_WIDGET(playlist_set_audiofile));
+    menuitem.label       = _("Set Audi_o");
+    menuitem.activate_cb = playlist_set_audiofile_callback;
+    menuitem.cb_data     = list;
+    playlist_set_audiofile = w_gtk_menu_item_new (&menuitem);
+    //-
+
     g_signal_connect_swapped(G_OBJECT(list),
                              "button_press_event", G_CALLBACK(playlist_popup_handler), G_OBJECT(playlist_popup_menu));
     gtk_widget_show_all(GTK_WIDGET(playlist_popup_menu));
-
-
 }
