@@ -71,14 +71,11 @@ static GtkWidget *rew_event_box;
 static gboolean in_button;
 
 static GtkWidget *image_play;
-static GtkWidget *image_pause;
-static GtkWidget *image_stop;
-static GtkWidget *image_ff;
-static GtkWidget *image_rew;
-static GtkWidget *image_next;
-static GtkWidget *image_prev;
-static GtkWidget *image_menu;
 static GtkWidget *image_fs;
+static const char *icon_play;
+static const char *icon_pause;
+static const char *icon_fs;
+static const char *icon_nofs;
 
 static GtkStatusIcon *status_icon;
 static GtkWidget *config_show_status_icon;
@@ -915,23 +912,11 @@ static const gchar *PLAYSTATE_to_string(const PLAYSTATE pstate)
 gboolean set_gui_state(void *data)
 {
     gchar *tip_text = NULL;
-    GtkIconTheme *icon_theme = gtk_icon_theme_get_default();
-    const gchar *icon_start;
-    if (gtk_widget_get_default_direction() == GTK_TEXT_DIR_RTL)
-        icon_start = "media-playback-start-rtl-symbolic";
-    else
-        icon_start = "media-playback-start-symbolic";
-
     gm_log(verbose, G_LOG_LEVEL_MESSAGE, "setting gui state to %s", PLAYSTATE_to_string(guistate));
 
     if (lastguistate != guistate) {
         if (guistate == PLAYING) {
-            if (gtk_icon_theme_has_icon(icon_theme, "media-playback-pause-symbolic")) {
-                gtk_image_set_from_icon_name(GTK_IMAGE(image_play), "media-playback-pause-symbolic", button_size);
-            } else {
-                gtk_image_set_from_stock(GTK_IMAGE(image_play), "gtk-media-pause", button_size);
-            }
-
+            w_gtk_image_set_from_icon_name (GTK_IMAGE(image_play), icon_pause, GTK_ICON_SIZE_BUTTON);
             tip_text = gtk_widget_get_tooltip_text(play_event_box);
             if (tip_text == NULL || g_ascii_strcasecmp(tip_text, _("Pause")) != 0)
                 gtk_widget_set_tooltip_text(play_event_box, _("Pause"));
@@ -943,11 +928,7 @@ gboolean set_gui_state(void *data)
         }
 
         if (guistate == PAUSED) {
-            if (gtk_icon_theme_has_icon(icon_theme, icon_start)) {
-                gtk_image_set_from_icon_name(GTK_IMAGE(image_play), icon_start, button_size);
-            } else {
-                gtk_image_set_from_stock(GTK_IMAGE(image_play), "gtk-media-play", button_size);
-            }
+            w_gtk_image_set_from_icon_name (GTK_IMAGE(image_play), icon_play, GTK_ICON_SIZE_BUTTON);
             tip_text = gtk_widget_get_tooltip_text(play_event_box);
             if (tip_text == NULL || g_ascii_strcasecmp(tip_text, _("Play")) != 0)
                 gtk_widget_set_tooltip_text(play_event_box, _("Play"));
@@ -959,11 +940,7 @@ gboolean set_gui_state(void *data)
         }
 
         if (guistate == STOPPED) {
-            if (gtk_icon_theme_has_icon(icon_theme, icon_start)) {
-                gtk_image_set_from_icon_name(GTK_IMAGE(image_play), icon_start, button_size);
-            } else {
-                gtk_image_set_from_stock(GTK_IMAGE(image_play), "gtk-media-play", button_size);
-            }
+            w_gtk_image_set_from_icon_name (GTK_IMAGE(image_play), icon_play, GTK_ICON_SIZE_BUTTON);
             tip_text = gtk_widget_get_tooltip_text(play_event_box);
             if (tip_text == NULL || g_ascii_strcasecmp(tip_text, _("Play")) != 0)
                 gtk_widget_set_tooltip_text(play_event_box, _("Play"));
@@ -1056,8 +1033,7 @@ void create_folder_progress_window()
     folder_progress_label = gtk_label_new("");
     gtk_label_set_ellipsize(GTK_LABEL(folder_progress_label), PANGO_ELLIPSIZE_MIDDLE);
 
-    cancel = gtk_button_new_from_stock("gtk-cancel");
-    g_signal_connect(G_OBJECT(cancel), "clicked", G_CALLBACK(cancel_clicked), NULL);
+    cancel = w_gtk_button_new (_("_Cancel"), "gtk-cancel", cancel_clicked, NULL);
 
     hbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
     gtk_button_box_set_layout(GTK_BUTTON_BOX(hbox), GTK_BUTTONBOX_END);
@@ -2180,13 +2156,6 @@ gboolean play_callback(GtkWidget * widget, GdkEventExpose * event, void *data)
 
 gboolean stop_callback(GtkWidget * widget, GdkEventExpose * event, void *data)
 {
-    GtkIconTheme *icon_theme = gtk_icon_theme_get_default();
-    const gchar *icon_start;
-    if (gtk_widget_get_default_direction() == GTK_TEXT_DIR_RTL)
-        icon_start = "media-playback-start-rtl-symbolic";
-    else
-        icon_start = "media-playback-start-symbolic";
-
     if (gmtk_media_player_get_media_state(GMTK_MEDIA_PLAYER(media)) == MEDIA_STATE_PLAY ||
         gmtk_media_player_get_media_state(GMTK_MEDIA_PLAYER(media)) == MEDIA_STATE_PAUSE) {
         gmtk_media_player_set_state(GMTK_MEDIA_PLAYER(media), MEDIA_STATE_STOP);
@@ -2195,21 +2164,13 @@ gboolean stop_callback(GtkWidget * widget, GdkEventExpose * event, void *data)
             dontplaynext = TRUE;
         gmtk_media_tracker_set_percentage(tracker, 0.0);
         gtk_widget_set_sensitive(play_event_box, TRUE);
-        if (gtk_icon_theme_has_icon(icon_theme, icon_start)) {
-            gtk_image_set_from_icon_name(GTK_IMAGE(image_play), icon_start, button_size);
-        } else {
-            gtk_image_set_from_stock(GTK_IMAGE(image_play), "gtk-media-play", button_size);
-        }
+        w_gtk_image_set_from_icon_name (GTK_IMAGE(image_play), icon_play, GTK_ICON_SIZE_BUTTON);
         gtk_widget_set_tooltip_text(play_event_box, _("Play"));
     }
 
     if (gmtk_media_player_get_media_state(GMTK_MEDIA_PLAYER(media)) == MEDIA_STATE_QUIT) {
         gmtk_media_tracker_set_percentage(tracker, 0.0);
-        if (gtk_icon_theme_has_icon(icon_theme, icon_start)) {
-            gtk_image_set_from_icon_name(GTK_IMAGE(image_play), icon_start, button_size);
-        } else {
-            gtk_image_set_from_stock(GTK_IMAGE(image_play), "gtk-media-play", button_size);
-        }
+        w_gtk_image_set_from_icon_name (GTK_IMAGE(image_play), icon_play, GTK_ICON_SIZE_BUTTON);
         gtk_widget_set_tooltip_text(play_event_box, _("Play"));
     }
 
@@ -2259,12 +2220,6 @@ gboolean prev_callback(GtkWidget * widget, GdkEventExpose * event, void *data)
     GtkTreePath *path;
     GtkTreeIter previter;
     GtkTreeIter localiter;
-    GtkIconTheme *icon_theme = gtk_icon_theme_get_default();
-    const gchar *icon_start;
-    if (gtk_widget_get_default_direction() == GTK_TEXT_DIR_RTL)
-        icon_start = "media-playback-start-rtl-symbolic";
-    else
-        icon_start = "media-playback-start-symbolic";
 
     if (gtk_list_store_iter_is_valid(playliststore, &iter)) {
         if (gmtk_media_player_get_attribute_boolean(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_HAS_CHAPTERS)) {
@@ -2298,11 +2253,7 @@ gboolean prev_callback(GtkWidget * widget, GdkEventExpose * event, void *data)
         if (autopause) {
             autopause = FALSE;
             gtk_widget_set_sensitive(play_event_box, TRUE);
-            if (gtk_icon_theme_has_icon(icon_theme, icon_start)) {
-                gtk_image_set_from_icon_name(GTK_IMAGE(image_play), icon_start, button_size);
-            } else {
-                gtk_image_set_from_stock(GTK_IMAGE(image_play), "gtk-media-play", button_size);
-            }
+            w_gtk_image_set_from_icon_name (GTK_IMAGE(image_play), icon_play, GTK_ICON_SIZE_BUTTON);
         }
         gtk_widget_set_sensitive(ff_event_box, TRUE);
         gtk_widget_set_sensitive(rew_event_box, TRUE);
@@ -2326,13 +2277,6 @@ gboolean next_callback(GtkWidget * widget, GdkEventExpose * event, void *data)
 {
     gboolean valid = FALSE;
     GtkTreePath *path;
-    GtkIconTheme *icon_theme = gtk_icon_theme_get_default();
-    const gchar *icon_start;
-
-    if (gtk_widget_get_default_direction() == GTK_TEXT_DIR_RTL)
-        icon_start = "media-playback-start-rtl-symbolic";
-    else
-        icon_start = "media-playback-start-symbolic";
 
     if (gtk_list_store_iter_is_valid(playliststore, &iter)) {
         if (gmtk_media_player_get_attribute_boolean(GMTK_MEDIA_PLAYER(media), ATTRIBUTE_HAS_CHAPTERS)) {
@@ -2355,11 +2299,7 @@ gboolean next_callback(GtkWidget * widget, GdkEventExpose * event, void *data)
         if (autopause) {
             autopause = FALSE;
             gtk_widget_set_sensitive(play_event_box, TRUE);
-            if (gtk_icon_theme_has_icon(icon_theme, icon_start)) {
-                gtk_image_set_from_icon_name(GTK_IMAGE(image_play), icon_start, button_size);
-            } else {
-                gtk_image_set_from_stock(GTK_IMAGE(image_play), "gtk-media-play", button_size);
-            }
+            w_gtk_image_set_from_icon_name (GTK_IMAGE(image_play), icon_play, GTK_ICON_SIZE_BUTTON);
         }
         gtk_widget_set_sensitive(ff_event_box, TRUE);
         gtk_widget_set_sensitive(rew_event_box, TRUE);
@@ -4233,10 +4173,11 @@ void menuitem_config_dialog_cb(GtkMenuItem * menuitem, void *data)
     gtk_window_set_title(GTK_WINDOW(config_window), _("G-MPlayer Configuration"));
     gtk_container_set_border_width(GTK_CONTAINER(config_window), 5);
     //gtk_window_set_default_size(GTK_WINDOW(config_window), 300, 300);
-    conf_ok = gtk_button_new_from_stock("gtk-ok");
+
+    conf_ok = w_gtk_button_new (_("_OK"), "gtk-ok", NULL, NULL);
     g_signal_connect_swapped(G_OBJECT(conf_ok), "clicked", G_CALLBACK(config_apply), config_window);
 
-    conf_cancel = gtk_button_new_from_stock("gtk-close");
+    conf_cancel = w_gtk_button_new (_("_Close"), "gtk-close", NULL, NULL);
     g_signal_connect_swapped(G_OBJECT(conf_cancel), "clicked", G_CALLBACK(config_apply), config_window);
 
     config_vo = gtk_combo_box_text_new_with_entry();
@@ -5471,14 +5412,6 @@ void player_media_state_changed_callback(GtkButton * button, GmtkMediaPlayerMedi
 {
     gchar *tip_text = NULL;
     gchar *short_filename = NULL;
-    GtkIconTheme *icon_theme = gtk_icon_theme_get_default();
-    const gchar *icon_start;
-
-    if (gtk_widget_get_default_direction() == GTK_TEXT_DIR_RTL)
-        icon_start = "media-playback-start-rtl-symbolic";
-    else
-        icon_start = "media-playback-start-symbolic";
-
     gm_log(verbose, G_LOG_LEVEL_DEBUG, "in media state change with state = %s dontplaynext = %i",
            gmtk_media_state_to_string(media_state), dontplaynext);
     switch (media_state) {
@@ -5516,11 +5449,7 @@ void player_media_state_changed_callback(GtkButton * button, GmtkMediaPlayerMedi
         dontplaynext = FALSE;
         // break purposely not put here, so gui is properly updated
     case MEDIA_STATE_STOP:
-        if (gtk_icon_theme_has_icon(icon_theme, icon_start)) {
-            gtk_image_set_from_icon_name(GTK_IMAGE(image_play), icon_start, button_size);
-        } else {
-            gtk_image_set_from_stock(GTK_IMAGE(image_play), "gtk-media-play", button_size);
-        }
+        w_gtk_image_set_from_icon_name (GTK_IMAGE(image_play), icon_play, GTK_ICON_SIZE_BUTTON);
         gmtk_media_tracker_set_position(GMTK_MEDIA_TRACKER(tracker), 0.0);
         tip_text = gtk_widget_get_tooltip_text(play_event_box);
         if (tip_text == NULL || g_ascii_strcasecmp(tip_text, _("Play")) != 0)
@@ -5541,11 +5470,7 @@ void player_media_state_changed_callback(GtkButton * button, GmtkMediaPlayerMedi
     case MEDIA_STATE_PLAY:
         if (idledata->mapped_af_export == NULL)
             map_af_export_file(idledata);
-        if (gtk_icon_theme_has_icon(icon_theme, "media-playback-pause-symbolic")) {
-            gtk_image_set_from_icon_name(GTK_IMAGE(image_play), "media-playback-pause-symbolic", button_size);
-        } else {
-            gtk_image_set_from_stock(GTK_IMAGE(image_play), "gtk-media-pause", button_size);
-        }
+        w_gtk_image_set_from_icon_name (GTK_IMAGE(image_play), icon_pause, GTK_ICON_SIZE_BUTTON);
         tip_text = gtk_widget_get_tooltip_text(play_event_box);
         if (tip_text == NULL || g_ascii_strcasecmp(tip_text, _("Pause")) != 0)
             gtk_widget_set_tooltip_text(play_event_box, _("Pause"));
@@ -5577,11 +5502,7 @@ void player_media_state_changed_callback(GtkButton * button, GmtkMediaPlayerMedi
         g_idle_add(set_title_bar, idledata);
         break;
     case MEDIA_STATE_PAUSE:
-        if (gtk_icon_theme_has_icon(icon_theme, icon_start)) {
-            gtk_image_set_from_icon_name(GTK_IMAGE(image_play), icon_start, button_size);
-        } else {
-            gtk_image_set_from_stock(GTK_IMAGE(image_play), "gtk-media-play", button_size);
-        }
+        w_gtk_image_set_from_icon_name (GTK_IMAGE(image_play), icon_play, GTK_ICON_SIZE_BUTTON);
         tip_text = gtk_widget_get_tooltip_text(play_event_box);
         if (tip_text == NULL || g_ascii_strcasecmp(tip_text, _("Play")) != 0)
             gtk_widget_set_tooltip_text(play_event_box, _("Play"));
@@ -5930,6 +5851,12 @@ GtkWidget *create_window()
     gint i = 0;
     GtkAdjustment *adj;
     const char *icon_start, *icon_seek_forward, *icon_seek_backward, *icon_skip_forward, *icon_skip_backward;
+    static const char *icon_stop;
+    static const char *icon_ff;
+    static const char *icon_rew;
+    static const char *icon_next;
+    static const char *icon_prev;
+    static const char *icon_menu;
 
     if (gtk_widget_get_default_direction() == GTK_TEXT_DIR_RTL) {
         icon_start = "media-playback-start-rtl-symbolic";
@@ -6141,27 +6068,33 @@ GtkWidget *create_window()
         gtk_icon_theme_has_icon(icon_theme, icon_seek_forward) &&
         gtk_icon_theme_has_icon(icon_theme, icon_seek_backward) &&
         gtk_icon_theme_has_icon(icon_theme, "view-sidebar-symbolic") &&
-        gtk_icon_theme_has_icon(icon_theme, "view-fullscreen-symbolic")) {
-        image_play = gtk_image_new_from_icon_name(icon_start, button_size);
-        image_stop = gtk_image_new_from_icon_name("media-playback-stop-symbolic", button_size);
-        image_pause = gtk_image_new_from_icon_name("media-playback-pause-symbolic", button_size);
-        image_ff = gtk_image_new_from_icon_name(icon_seek_forward, button_size);
-        image_rew = gtk_image_new_from_icon_name(icon_seek_backward, button_size);
-        image_prev = gtk_image_new_from_icon_name(icon_skip_backward, button_size);
-        image_next = gtk_image_new_from_icon_name(icon_skip_forward, button_size);
-        image_menu = gtk_image_new_from_icon_name("view-sidebar-symbolic", button_size);
-        image_fs = gtk_image_new_from_icon_name("view-fullscreen-symbolic", button_size);
+        gtk_icon_theme_has_icon(icon_theme, "view-fullscreen-symbolic"))
+    {
+        icon_play   = icon_start;
+        icon_stop   = "media-playback-stop-symbolic";
+        icon_pause  = "media-playback-pause-symbolic";
+        icon_ff     = icon_seek_forward;
+        icon_rew    = icon_seek_backward;
+        icon_prev   = icon_skip_backward;
+        icon_next   = icon_skip_forward;
+        icon_menu   = "view-sidebar-symbolic";
+        icon_fs     = "view-fullscreen-symbolic";
+        icon_nofs   = "view-restore-symbolic";
     } else {
-        image_play = gtk_image_new_from_stock("gtk-media-play", button_size);
-        image_stop = gtk_image_new_from_stock("gtk-media-stop", button_size);
-        image_pause = gtk_image_new_from_stock("gtk-media-pause", button_size);
-        image_ff = gtk_image_new_from_stock("gtk-media-forward", button_size);
-        image_rew = gtk_image_new_from_stock("gtk-media-rewind", button_size);
-        image_prev = gtk_image_new_from_stock("gtk-media-previous", button_size);
-        image_next = gtk_image_new_from_stock("gtk-media-next", button_size);
-        image_menu = gtk_image_new_from_stock("gtk-index", button_size);
-        image_fs = gtk_image_new_from_stock("gtk-fullscreen", button_size);
+        icon_play   = "gtk-media-play";
+        icon_stop   = "gtk-media-stop";
+        icon_pause  = "gtk-media-pause";
+        icon_ff     = "gtk-media-forward";
+        icon_rew    = "gtk-media-rewind";
+        icon_prev   = "gtk-media-previous";
+        icon_next   = "gtk-media-next";
+        icon_menu   = "gtk-index";
+        icon_fs     = "gtk-fullscreen";
+        icon_nofs   = "gtk-leave-fullscreen";
     }
+
+    image_play = w_gtk_image_new_from_icon_name (icon_play, GTK_ICON_SIZE_BUTTON);
+    image_fs   = w_gtk_image_new_from_icon_name (icon_fs,   GTK_ICON_SIZE_BUTTON);
 
     if (gtk_icon_theme_has_icon(icon_theme, "g-mplayer")) {
         gtk_window_set_default_icon_name ("g-mplayer");
@@ -6186,86 +6119,58 @@ GtkWidget *create_window()
         g_signal_connect(status_icon, "popup_menu", G_CALLBACK(status_icon_context_callback), NULL);
     }
 
-    menu_event_box = gtk_button_new();
-    gtk_button_set_image(GTK_BUTTON(menu_event_box), image_menu);
+    menu_event_box = w_gtk_button_new (NULL, icon_menu, menu_callback, NULL);
     gtk_button_set_relief(GTK_BUTTON(menu_event_box), GTK_RELIEF_NONE);
-
     gtk_widget_set_tooltip_text(menu_event_box, _("Menu"));
     gtk_widget_set_can_focus(menu_event_box, FALSE);
-    gtk_widget_set_events(menu_event_box, GDK_BUTTON_PRESS_MASK);
-    g_signal_connect(G_OBJECT(menu_event_box), "button_press_event", G_CALLBACK(menu_callback), NULL);
     gtk_box_pack_start(GTK_BOX(hbox), menu_event_box, FALSE, FALSE, 0);
-    gtk_widget_show(image_menu);
     gtk_widget_show(menu_event_box);
 
-    prev_event_box = gtk_button_new();
-    gtk_button_set_image(GTK_BUTTON(prev_event_box), image_prev);
+    prev_event_box = w_gtk_button_new (NULL, icon_prev, prev_callback, NULL);
     gtk_button_set_relief(GTK_BUTTON(prev_event_box), GTK_RELIEF_NONE);
     gtk_widget_set_tooltip_text(prev_event_box, _("Previous"));
     gtk_widget_set_can_focus(prev_event_box, FALSE);
-    gtk_widget_set_events(prev_event_box, GDK_BUTTON_PRESS_MASK);
-    g_signal_connect(G_OBJECT(prev_event_box), "button_press_event", G_CALLBACK(prev_callback), NULL);
     gtk_box_pack_start(GTK_BOX(hbox), prev_event_box, FALSE, FALSE, 0);
-    gtk_widget_show(image_prev);
     gtk_widget_show(prev_event_box);
     gtk_widget_set_sensitive(prev_event_box, FALSE);
 
-    rew_event_box = gtk_button_new();
-    gtk_button_set_image(GTK_BUTTON(rew_event_box), image_rew);
+    rew_event_box = w_gtk_button_new (NULL, icon_rew, rew_callback, NULL);
     gtk_button_set_relief(GTK_BUTTON(rew_event_box), GTK_RELIEF_NONE);
     gtk_widget_set_tooltip_text(rew_event_box, _("Rewind"));
     gtk_widget_set_can_focus(rew_event_box, FALSE);
-    gtk_widget_set_events(rew_event_box, GDK_BUTTON_PRESS_MASK);
-    g_signal_connect(G_OBJECT(rew_event_box), "button_press_event", G_CALLBACK(rew_callback), NULL);
     gtk_box_pack_start(GTK_BOX(hbox), rew_event_box, FALSE, FALSE, 0);
-    gtk_widget_show(image_rew);
     gtk_widget_show(rew_event_box);
     gtk_widget_set_sensitive(rew_event_box, FALSE);
 
-    play_event_box = gtk_button_new();
-    gtk_button_set_image(GTK_BUTTON(play_event_box), image_play);
+    play_event_box = w_gtk_button_new (NULL, NULL, play_callback, NULL);
+    gtk_button_set_image (GTK_BUTTON(play_event_box), image_play);
     gtk_button_set_relief(GTK_BUTTON(play_event_box), GTK_RELIEF_NONE);
     gtk_widget_set_tooltip_text(play_event_box, _("Play"));
     gtk_widget_set_can_focus(play_event_box, FALSE);
-    gtk_widget_set_events(play_event_box, GDK_BUTTON_PRESS_MASK);
-    g_signal_connect(G_OBJECT(play_event_box), "button_press_event", G_CALLBACK(play_callback), NULL);
     gtk_box_pack_start(GTK_BOX(hbox), play_event_box, FALSE, FALSE, 0);
-    gtk_widget_show(image_play);
     gtk_widget_show(play_event_box);
 
-    stop_event_box = gtk_button_new();
-    gtk_button_set_image(GTK_BUTTON(stop_event_box), image_stop);
+    stop_event_box = w_gtk_button_new (NULL, icon_stop, stop_callback, NULL);
     gtk_button_set_relief(GTK_BUTTON(stop_event_box), GTK_RELIEF_NONE);
     gtk_widget_set_tooltip_text(stop_event_box, _("Stop"));
     gtk_widget_set_can_focus(stop_event_box, FALSE);
-    gtk_widget_set_events(stop_event_box, GDK_BUTTON_PRESS_MASK);
-    g_signal_connect(G_OBJECT(stop_event_box), "button_press_event", G_CALLBACK(stop_callback), NULL);
     gtk_box_pack_start(GTK_BOX(hbox), stop_event_box, FALSE, FALSE, 0);
-    gtk_widget_show(image_stop);
     gtk_widget_show(stop_event_box);
     gtk_widget_set_sensitive(stop_event_box, FALSE);
 
-    ff_event_box = gtk_button_new();
-    gtk_button_set_image(GTK_BUTTON(ff_event_box), image_ff);
+    ff_event_box = w_gtk_button_new (NULL, icon_ff, ff_callback, NULL);
     gtk_button_set_relief(GTK_BUTTON(ff_event_box), GTK_RELIEF_NONE);
     gtk_widget_set_tooltip_text(ff_event_box, _("Fast Forward"));
     gtk_widget_set_can_focus(ff_event_box, FALSE);
-    gtk_widget_set_events(ff_event_box, GDK_BUTTON_PRESS_MASK);
-    g_signal_connect(G_OBJECT(ff_event_box), "button_press_event", G_CALLBACK(ff_callback), NULL);
     gtk_box_pack_start(GTK_BOX(hbox), ff_event_box, FALSE, FALSE, 0);
-    gtk_widget_show(image_ff);
     gtk_widget_show(ff_event_box);
     gtk_widget_set_sensitive(ff_event_box, FALSE);
 
-    next_event_box = gtk_button_new();
-    gtk_button_set_image(GTK_BUTTON(next_event_box), image_next);
+    next_event_box = w_gtk_button_new (NULL, icon_next, next_callback, NULL);
     gtk_button_set_relief(GTK_BUTTON(next_event_box), GTK_RELIEF_NONE);
     gtk_widget_set_tooltip_text(next_event_box, _("Next"));
     gtk_widget_set_can_focus(next_event_box, FALSE);
-    gtk_widget_set_events(next_event_box, GDK_BUTTON_PRESS_MASK);
-    g_signal_connect(G_OBJECT(next_event_box), "button_press_event", G_CALLBACK(next_callback), NULL);
     gtk_box_pack_start(GTK_BOX(hbox), next_event_box, FALSE, FALSE, 0);
-    gtk_widget_show(image_next);
     gtk_widget_show(next_event_box);
     gtk_widget_set_sensitive(next_event_box, FALSE);
 
@@ -6284,15 +6189,12 @@ GtkWidget *create_window()
     gtk_widget_show(GTK_WIDGET(tracker));
 
     // fullscreen button, pack from end for this button and the vol slider
-    fs_event_box = gtk_button_new();
+    fs_event_box = w_gtk_button_new (NULL, NULL, fs_callback, NULL);
     gtk_button_set_image(GTK_BUTTON(fs_event_box), image_fs);
     gtk_button_set_relief(GTK_BUTTON(fs_event_box), GTK_RELIEF_NONE);
     gtk_widget_set_tooltip_text(fs_event_box, _("Full Screen"));
     gtk_widget_set_can_focus(fs_event_box, FALSE);
-    gtk_widget_set_events(fs_event_box, GDK_BUTTON_PRESS_MASK);
-    g_signal_connect(G_OBJECT(fs_event_box), "button_press_event", G_CALLBACK(fs_callback), NULL);
     gtk_box_pack_end(GTK_BOX(hbox), fs_event_box, FALSE, FALSE, 0);
-    gtk_widget_show(image_fs);
     gtk_widget_show(fs_event_box);
     // volume control
     if ((window_y > window_x)
@@ -6494,7 +6396,6 @@ void show_fs_controls()
     GdkScreen *screen;
     GdkRectangle rect;
     GtkAllocation alloc;
-    GtkIconTheme *icon_theme = gtk_icon_theme_get_default();
 
     Wg_mutex_lock(&fs_controls_lock);
     if (fs_controls == NULL && fullscreen) {
@@ -6506,11 +6407,7 @@ void show_fs_controls()
         gtk_window_set_transient_for(GTK_WINDOW(fs_controls), GTK_WINDOW(fs_window));
     }
     if (fs_controls != NULL && fullscreen) {
-        if (gtk_icon_theme_has_icon(icon_theme, "view-restore-symbolic")) {
-            gtk_image_set_from_icon_name(GTK_IMAGE(image_fs), "view-restore-symbolic", button_size);
-        } else {
-            gtk_image_set_from_stock(GTK_IMAGE(image_fs), "gtk-leave-fullscreen", button_size);
-        }
+        w_gtk_image_set_from_icon_name (GTK_IMAGE(image_fs), icon_nofs, button_size);
         if (gtk_widget_get_parent(GTK_WIDGET(hbox)) == controls_box) {
             g_object_ref(hbox);
             gtk_container_remove(GTK_CONTAINER(controls_box), hbox);
@@ -6536,14 +6433,9 @@ void show_fs_controls()
 
 void hide_fs_controls()
 {
-    GtkIconTheme *icon_theme = gtk_icon_theme_get_default();
     Wg_mutex_lock(&fs_controls_lock);
     if (fs_controls != NULL) {
-        if (gtk_icon_theme_has_icon(icon_theme, "view-fullscreen-symbolic")) {
-            gtk_image_set_from_icon_name(GTK_IMAGE(image_fs), "view-fullscreen-symbolic", button_size);
-        } else {
-            gtk_image_set_from_stock(GTK_IMAGE(image_fs), "gtk-fullscreen", button_size);
-        }
+        w_gtk_image_set_from_icon_name (GTK_IMAGE(image_fs), icon_fs, button_size);
         if (gtk_widget_get_parent(GTK_WIDGET(hbox)) == fs_controls) {
             g_object_ref(hbox);
             gtk_container_remove(GTK_CONTAINER(fs_controls), hbox);
