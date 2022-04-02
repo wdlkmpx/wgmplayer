@@ -31,7 +31,7 @@
 
 #ifdef X11_ENABLED
 #include <gdk/gdkx.h>
-#ifdef GTK3_ENABLED
+#if GTK_MAJOR_VERSION >= 3
 #include <gtk/gtkx.h>
 #include <cairo.h>
 #endif

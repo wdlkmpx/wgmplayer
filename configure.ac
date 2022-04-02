@@ -25,29 +25,20 @@ PKG_CHECK_MODULES([X11], [x11],[AC_DEFINE([X11_ENABLED],[1],[Define to 1 if X11 
 AC_SUBST(X11_LIBS)
 
 AC_ARG_ENABLE(gtk3,
-    AS_HELP_STRING([--enable-gtk3],[compile using GTK3]),
-    [case "${enableval}" in
-    yes) ENABLE_GTK3=yes ;;
-    no) ENABLE_GTK3=no ;;
-    *) AC_MSG_ERROR(bad value ${enableval} for --enable-gtk3) ;;
-    esac], 
-    [ENABLE_GTK3=check])
+AS_HELP_STRING([--enable-gtk3],[enable to use gtk-3.0 instead of gtk-2.0]),
+[case "${enableval}" in
+  yes)  enable_gtk3=yes ;;
+  no)   enable_gtk3=no ;;
+esac],[])
 
-AS_IF([test "x$ENABLE_GTK3" = xcheck],        
-        [ENABLE_GTK3=no
-        PKG_CHECK_MODULES(GTK,[gtk+-3.0 >= 3.14.0 glib-2.0 >= 2.24.0 gthread-2.0],[ENABLE_GTK3=yes],[ENABLE_GTK3=no])
-        ])    
-    
-AS_IF([test "x$ENABLE_GTK3" = "xyes"],   
-    [
-    PKG_CHECK_MODULES(GTK, [gtk+-3.0 glib-2.0 gthread-2.0],[AC_MSG_NOTICE([Using GTK3])]) 
-    AC_DEFINE([GTK3_ENABLED],[1],[Define to 1 if you have GTK 3 or higher])
-    ])
-
-AS_IF([test "x$ENABLE_GTK3" != "xyes"],   
-    [
-    PKG_CHECK_MODULES(GTK, [gtk+-2.0 >= 2.14.0 glib-2.0 >= 2.18.0 gthread-2.0],[AC_MSG_NOTICE([Using GTK2])])
-    ])
+if test "x$enable_gtk3" = "xyes" ; then
+  gtk_modules="gtk+-3.0 >= 3.0.0"
+else
+  gtk_modules="gtk+-2.0 >= 2.14.0"
+fi
+PKG_CHECK_MODULES(GTK, [$gtk_modules glib-2.0 >= 2.18.0 gthread-2.0])
+AC_SUBST(GTK_CFLAGS)
+AC_SUBST(GTK_LIBS)
 
 AC_ARG_WITH([gio],
     [AS_HELP_STRING([--with-gio],

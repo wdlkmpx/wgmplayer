@@ -409,7 +409,7 @@ static void gmtk_media_player_init(GmtkMediaPlayer * player)
                           GDK_KEY_PRESS_MASK | GDK_KEY_RELEASE_MASK |
                           GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
                           GDK_POINTER_MOTION_MASK | GDK_LEAVE_NOTIFY_MASK | GDK_ENTER_NOTIFY_MASK | GDK_SCROLL_MASK);
-#ifdef GTK3_ENABLED
+#if GTK_MAJOR_VERSION >= 3
     gtk_widget_set_app_paintable(GTK_WIDGET(player), TRUE);
 #endif
 

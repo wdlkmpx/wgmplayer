@@ -579,7 +579,7 @@ int main(int argc, char *argv[])
     gdouble volume = 100.0;
     gchar *accelerator_keys;
     gchar **parse;
-#ifdef GTK3_ENABLED
+#if GTK_MAJOR_VERSION >= 3
     GtkSettings *gtk_settings;
 #endif
     int stat_result;
@@ -927,7 +927,7 @@ int main(int argc, char *argv[])
                            G_TYPE_STRING, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT, G_TYPE_INT,
                            G_TYPE_FLOAT, G_TYPE_FLOAT, G_TYPE_BOOLEAN);
     // only use dark theme if not embedded, otherwise use the default theme  
-#ifdef GTK3_ENABLED
+#if GTK_MAJOR_VERSION >= 3
     gtk_settings = gtk_settings_get_default();
     g_object_set(G_OBJECT(gtk_settings), "gtk-application-prefer-dark-theme", TRUE, NULL);
 #endif

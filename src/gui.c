@@ -6184,7 +6184,7 @@ GtkWidget *create_window()
         gtk_range_set_inverted(GTK_RANGE(vol_slider), TRUE);
     } else {
         vol_slider = gtk_volume_button_new();
-#ifdef GTK3_ENABLED
+#if GTK_MAJOR_VERSION >= 3
         g_object_set(G_OBJECT(vol_slider), "use-symbolic", TRUE, NULL);
 #endif
         adj = gtk_scale_button_get_adjustment(GTK_SCALE_BUTTON(vol_slider));
