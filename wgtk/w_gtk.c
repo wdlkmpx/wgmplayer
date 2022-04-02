@@ -10,6 +10,10 @@
 #   pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #endif
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "w_gtk.h"
 #include <stdio.h>
 #include <string.h>
@@ -172,6 +176,33 @@ GtkWidget * w_gtk_button_new (const char * label,
 }
 
 
+GtkWidget * w_gtk_notebook_add_tab (GtkWidget * notebook, char * label_str, int rows, int cols)
+{
+    // returns GtkGrid / GtkTable
+    GtkWidget *vbox;
+    GtkWidget *label;
+    GtkWidget *table = NULL;
+    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 5);
+    label = gtk_label_new_with_mnemonic (label_str);
+    gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, label);
+    gtk_container_set_border_width (GTK_CONTAINER (vbox), 5);
+    if (rows && cols) {
+        //table = gtkcompat_grid_new (rows, cols);
+#if GTK_MAJOR_VERSION >= 3
+        table = gtk_grid_new ();
+        gtk_grid_set_column_spacing (GTK_GRID(table), 5);
+        gtk_grid_set_row_spacing (GTK_GRID(table), 3);
+#else
+        table = gtk_table_new (rows, cols, FALSE);
+        gtk_table_set_col_spacings (GTK_TABLE(table), 5);
+        gtk_table_set_row_spacings (GTK_TABLE(table), 3);
+#endif
+        gtk_box_pack_start (GTK_BOX(vbox), table, FALSE, FALSE, 0);
+    }
+    return table;
+}
+
+
 void w_gtk_widget_change_tooltip (GtkWidget *widget, const char *new_text)
 { /* changes widget tooltip only if the new_text is different */
     char *tip;
@@ -323,6 +354,7 @@ void w_gtk_combo_box_find_and_select (GtkComboBox *combo, char *str)
         valid = gtk_tree_model_iter_next (model, &iter);
     }
 }
+
 
 /* ================================================== */
 /*                   GTK < 3.0                        */

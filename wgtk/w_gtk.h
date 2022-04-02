@@ -42,6 +42,7 @@ GtkWidget * w_gtk_image_new_from_icon_name (const char *icon_name, GtkIconSize s
 void w_gtk_image_set_from_icon_name (GtkImage *img, const char *icon_name, GtkIconSize size);
 void w_gtk_button_set_icon_name (GtkButton *button, const char *icon_name);
 
+GtkWidget * w_gtk_notebook_add_tab (GtkWidget * notebook, char * label_str, int rows, int cols);
 void w_gtk_widget_change_tooltip (GtkWidget *widget, const char *new_text);
 
 int  w_gtk_tree_view_get_num_selected (GtkWidget *tv);

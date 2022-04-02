@@ -844,7 +844,7 @@ void create_playlist_widget()
     gchar **split;
     gchar *joined;
 
-    struct WGtkMenuItemParams menuitem;
+    WGtkMenuItemParams menuitem;
 
     plvbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 12);
     hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 12);

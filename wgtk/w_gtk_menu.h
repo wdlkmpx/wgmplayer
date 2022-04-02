@@ -19,15 +19,16 @@
 #define w_gtk_menu_bar_new g_menu_new
 #define w_gtk_menu_new     g_menu_new
 
-struct WGtkMenuItemParams
+typedef struct _WGtkMenuItemParams
 {
     /* GSimpleAction */
     const char * action_name;
     const char * radio_id;
     GtkApplication * gtk_app;
     const char * accel_str;
-    gpointer activate_cb;
-    gpointer cb_data;
+    void * activate_cb;
+    void * cb_data;
+    void * cb_data_all;
     //--
     gboolean checkbox;
     gboolean check_state;
@@ -37,12 +38,13 @@ struct WGtkMenuItemParams
     const char * label;
     const char * radio_group;
     const char * icon_name;
+    const char * icon_alt;
     // unused
     void *accel_group;
     const char *accel_path;
-};
+} WGtkMenuItemParams;
 
-GSimpleAction * w_gtk_menu_item_new (struct WGtkMenuItemParams * params);
+GSimpleAction * w_gtk_menu_item_new (WGtkMenuItemParams * params);
 
 #else /*===== GtkMenu =====*/
 
@@ -51,17 +53,19 @@ GSimpleAction * w_gtk_menu_item_new (struct WGtkMenuItemParams * params);
 #define w_gtk_menu_bar_new gtk_menu_bar_new
 #define w_gtk_menu_new     gtk_menu_new
 
-struct WGtkMenuItemParams
+typedef struct _WGtkMenuItemParams
 {
     GtkWidget * parent_menu;
     GtkWidget * submenu;
-    char * label;           /* empty = separator  */
-    char * icon_name;
+    const char * label;           /* empty = separator  */
+    const char * icon_name;
+    const char * icon_alt;
     void * activate_cb;     /* callback func for the activate signal */
     void * cb_data;         /* callback data      */
-    char * accel_str;       /* i.e: "<Control>n"  */
+    void * cb_data_all;     /* callback for all signals */
+    const char * accel_str;       /* i.e: "<Control>n"  */
     GtkAccelGroup * accel_group;
-    char * accel_path;
+    const char * accel_path;
     gboolean checkbox;
     gboolean check_state;
     const char *radio_group;
@@ -71,10 +75,10 @@ struct WGtkMenuItemParams
     GtkActionGroup * gtk_app;
     const char * action_name;
 //#endif
-};
+} WGtkMenuItemParams;
 
 GtkWidget * w_gtk_recent_menu_new (const char * application, gpointer activated_cb);
-GtkMenuItem * w_gtk_menu_item_new (struct WGtkMenuItemParams * params);
+GtkMenuItem * w_gtk_menu_item_new (WGtkMenuItemParams * params);
 void w_gtk_action_group_destroy_action (GtkActionGroup *action_group,
                                         const char *action_name);
 

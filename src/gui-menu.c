@@ -100,7 +100,7 @@ static GtkMenuItem *menuitem_help_about;
 
 static void create_popup_menu (GtkAccelGroup * accel_group)
 {
-    struct WGtkMenuItemParams menuitem;
+    WGtkMenuItemParams menuitem;
     memset (&menuitem, 0, sizeof(menuitem));
 
     popup_menu = gtk_menu_new();
@@ -176,7 +176,7 @@ static void create_popup_menu (GtkAccelGroup * accel_group)
 
 void create_menubar (GtkAccelGroup * accel_group)
 {
-    struct WGtkMenuItemParams menuitem;
+    WGtkMenuItemParams menuitem;
     memset (&menuitem, 0, sizeof(menuitem));
 
     menubar = gtk_menu_bar_new();

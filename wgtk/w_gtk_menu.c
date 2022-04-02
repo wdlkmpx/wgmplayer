@@ -10,9 +10,35 @@
 #   pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #endif
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <string.h>
 #include "w_gtk.h"
 #include "w_gtk_menu.h"
+
+
+static const char * get_valid_icon_name (const char *icon1, const char *icon2)
+{
+    GtkIconTheme *icon_theme = gtk_icon_theme_get_default ();
+    if (gtk_icon_theme_has_icon (icon_theme, icon1)) {
+        return icon1;
+    } else if (strncmp (icon1, "gtk-", 4) == 0) {
+        return icon1;
+    } else if (icon2 && *icon2) {
+        if (gtk_icon_theme_has_icon (icon_theme, icon2)) {
+            return icon2;
+        } else if (strncmp (icon2, "gtk-", 4) == 0) {
+            return icon2;
+        }
+        fprintf (stderr, "%s was not found in icon theme", icon2);
+    } else {
+        fprintf (stderr, "%s was not found in icon theme", icon1);
+    }
+    return NULL;
+}
+
 
 #if defined(USE_GTK_APPLICATION)
 
@@ -100,7 +126,7 @@ static GMenuItem * new_menuitem (GMenu * menuitem_parent,
     if (menuitem_target) {
         g_menu_item_set_attribute (mitem, "target", "s", menuitem_target);
     }
-    if (menuitem_icon) {
+    if (menuitem_icon && *menuitem_icon) {
         ///g_menu_item_set_attribute (mitem, "icon", "s", menuitem_icon);
         GIcon * icon = g_themed_icon_new (menuitem_icon);
         g_menu_item_set_icon (mitem, icon);
@@ -124,11 +150,12 @@ static GMenuItem * new_menuitem (GMenu * menuitem_parent,
 
 //--
 
-GSimpleAction * w_gtk_menu_item_new (struct WGtkMenuItemParams * params)
+GSimpleAction * w_gtk_menu_item_new (WGtkMenuItemParams * params)
 {
     GSimpleAction * action = NULL;
     GtkApplication * gtk_app = params->gtk_app;
     GMenu * parent_menu      = params->parent_menu;
+    void * cb_data_all       = params->cb_data_all;
     // the action is added to GtkApplication * app (GActionMap)
     // if action is a menu, then this returns the GMenu:
     //                      g_object_get_data (action, "menu");
@@ -142,7 +169,7 @@ GSimpleAction * w_gtk_menu_item_new (struct WGtkMenuItemParams * params)
                              params->checkbox,
                              params->check_state,
                              params->activate_cb,
-                             params->cb_data);
+                             params->cb_data ? params->cb_data : params->cb_data_all);
     }
     new_menuitem (params->parent_menu,
                   params->submenu,
@@ -162,6 +189,7 @@ GSimpleAction * w_gtk_menu_item_new (struct WGtkMenuItemParams * params)
     // but keep some values until they are overridden again...
     params->gtk_app     = gtk_app;
     params->parent_menu = parent_menu;
+    params->cb_data_all = cb_data_all;
 
     return action;
 }
@@ -171,13 +199,14 @@ GSimpleAction * w_gtk_menu_item_new (struct WGtkMenuItemParams * params)
 // --------------------------------------------------------------------
 // GtkAction
 
-GtkMenuItem * w_gtk_menu_item_new (struct WGtkMenuItemParams * params)
+GtkMenuItem * w_gtk_menu_item_new (WGtkMenuItemParams * params)
 {
     GtkWidget * item = NULL;
     GtkAction * action = NULL;
     GtkAccelGroup * accel_group = params->accel_group;
     GtkWidget * parent_menu     = params->parent_menu;
     GtkActionGroup *action_group = params->gtk_app;
+    void * cb_data_all          = params->cb_data_all;
     void *tmp;
     GSList * list = NULL;
     const char *radio_group = params->radio_group;
@@ -187,7 +216,8 @@ GtkMenuItem * w_gtk_menu_item_new (struct WGtkMenuItemParams * params)
 
     /* 0=normal 1=image 2=check 3=separator 4=radio*/
     int type = 0;
-    if (params->icon_name)     type = 1;
+    if (params->icon_name
+        && *params->icon_name) type = 1;
     if (params->checkbox)      type = 2;
     if (params->label == NULL) type = 3;
     if (radio_group)           type = 4;
@@ -200,7 +230,12 @@ GtkMenuItem * w_gtk_menu_item_new (struct WGtkMenuItemParams * params)
             break;
         case 1: /* image */
             action = gtk_action_new (params->action_name, params->label, params->tooltip, NULL);
-            gtk_action_set_icon_name (action, params->icon_name);
+            tmp = (void*) get_valid_icon_name (params->icon_name, params->icon_alt);
+            if (tmp) {
+                gtk_action_set_icon_name (action, (char*)tmp);
+            } else {
+                gtk_action_set_icon_name (action, params->icon_name);
+            }
             item = gtk_action_create_menu_item (action);
             break;
         case 2: /* check */
@@ -245,7 +280,8 @@ GtkMenuItem * w_gtk_menu_item_new (struct WGtkMenuItemParams * params)
 
     if (params->activate_cb) {
         g_signal_connect (action, params->checkbox ? "toggled" : "activate",
-                          G_CALLBACK (params->activate_cb), params->cb_data);
+                          G_CALLBACK (params->activate_cb),
+                          params->cb_data ? params->cb_data : params->cb_data_all);
     }
 
     if (params->accel_str && params->accel_group)
@@ -275,6 +311,7 @@ GtkMenuItem * w_gtk_menu_item_new (struct WGtkMenuItemParams * params)
     if (accel_group)  params->accel_group = accel_group;
     if (parent_menu)  params->parent_menu = parent_menu;
     if (action_group) params->gtk_app     = action_group;
+    if (cb_data_all)  params->cb_data_all = cb_data_all;
 
     // popup menus require this
     gtk_widget_show (item);
@@ -286,11 +323,13 @@ GtkMenuItem * w_gtk_menu_item_new (struct WGtkMenuItemParams * params)
 // --------------------------------------------------------------------
 // GtkMenu
 
-GtkMenuItem * w_gtk_menu_item_new (struct WGtkMenuItemParams * params)
+GtkMenuItem * w_gtk_menu_item_new (WGtkMenuItemParams * params)
 {
     GtkWidget * item = NULL;
     GtkAccelGroup * accel_group = params->accel_group;
     GtkWidget * parent_menu     = params->parent_menu;
+    void * cb_data_all          = params->cb_data_all;
+    GtkWidget *img;
     void *tmp;
     GSList * list = NULL;
     const char *radio_group = params->radio_group;
@@ -300,7 +339,8 @@ GtkMenuItem * w_gtk_menu_item_new (struct WGtkMenuItemParams * params)
 
     /* 0=normal 1=image 2=check 3=separator 4=radio*/
     int type = 0;
-    if (params->icon_name)     type = 1;
+    if (params->icon_name
+        && *params->icon_name) type = 1;
     if (params->checkbox)      type = 2;
     if (params->label == NULL) type = 3;
     if (radio_group)           type = 4;
@@ -312,7 +352,12 @@ GtkMenuItem * w_gtk_menu_item_new (struct WGtkMenuItemParams * params)
             break;
         case 1: /* image */
             item = gtk_image_menu_item_new_with_mnemonic (params->label);
-            GtkWidget *img = w_gtk_image_new_from_icon_name (params->icon_name, GTK_ICON_SIZE_MENU);
+            tmp = (void*) get_valid_icon_name (params->icon_name, params->icon_alt);
+            if (tmp) {
+                img = w_gtk_image_new_from_icon_name ((char*)tmp, GTK_ICON_SIZE_MENU);
+            } else {
+                img = w_gtk_image_new_from_icon_name (params->icon_name, GTK_ICON_SIZE_MENU);
+            }
             gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item), img);
             break;
         case 2: /* check */
@@ -351,11 +396,16 @@ GtkMenuItem * w_gtk_menu_item_new (struct WGtkMenuItemParams * params)
     }
     if (params->parent_menu) {
         gtk_menu_shell_append (GTK_MENU_SHELL (params->parent_menu), item);
+        // store pointer to menuitem in parent menu (key: params->action_name)
+        if (params->action_name) {
+            g_object_set_data (G_OBJECT(parent_menu), params->action_name, (void*)item);
+        }
     }
 
     if (params->activate_cb) {
         g_signal_connect (item, params->checkbox ? "toggled" : "activate",
-                          G_CALLBACK (params->activate_cb), params->cb_data);
+                          G_CALLBACK (params->activate_cb),
+                          params->cb_data ? params->cb_data : params->cb_data_all);
     }
 
     if (params->accel_str && params->accel_group)
@@ -380,6 +430,7 @@ GtkMenuItem * w_gtk_menu_item_new (struct WGtkMenuItemParams * params)
     // but keep some values until they are overridden again...
     if (accel_group)  params->accel_group = accel_group;
     if (parent_menu)  params->parent_menu = parent_menu;
+    if (cb_data_all)  params->cb_data_all = cb_data_all;
 
     // popup menus require this
     gtk_widget_show (item);
