@@ -911,16 +911,12 @@ static const gchar *PLAYSTATE_to_string(const PLAYSTATE pstate)
 
 gboolean set_gui_state(void *data)
 {
-    gchar *tip_text = NULL;
     gm_log(verbose, G_LOG_LEVEL_MESSAGE, "setting gui state to %s", PLAYSTATE_to_string(guistate));
 
     if (lastguistate != guistate) {
         if (guistate == PLAYING) {
             w_gtk_image_set_from_icon_name (GTK_IMAGE(image_play), icon_pause, GTK_ICON_SIZE_BUTTON);
-            tip_text = gtk_widget_get_tooltip_text(play_event_box);
-            if (tip_text == NULL || g_ascii_strcasecmp(tip_text, _("Pause")) != 0)
-                gtk_widget_set_tooltip_text(play_event_box, _("Pause"));
-            g_free(tip_text);
+            w_gtk_widget_change_tooltip (play_event_box, _("Pause"));
             gtk_widget_set_sensitive(ff_event_box, TRUE);
             gtk_widget_set_sensitive(rew_event_box, TRUE);
             gtk_widget_hide (GTK_WIDGET (menuitem_play));
@@ -929,10 +925,7 @@ gboolean set_gui_state(void *data)
 
         if (guistate == PAUSED) {
             w_gtk_image_set_from_icon_name (GTK_IMAGE(image_play), icon_play, GTK_ICON_SIZE_BUTTON);
-            tip_text = gtk_widget_get_tooltip_text(play_event_box);
-            if (tip_text == NULL || g_ascii_strcasecmp(tip_text, _("Play")) != 0)
-                gtk_widget_set_tooltip_text(play_event_box, _("Play"));
-            g_free(tip_text);
+            w_gtk_widget_change_tooltip (play_event_box, _("Play"));
             gtk_widget_set_sensitive(ff_event_box, FALSE);
             gtk_widget_set_sensitive(rew_event_box, FALSE);
             gtk_widget_hide (GTK_WIDGET (menuitem_pause));
@@ -941,10 +934,7 @@ gboolean set_gui_state(void *data)
 
         if (guistate == STOPPED) {
             w_gtk_image_set_from_icon_name (GTK_IMAGE(image_play), icon_play, GTK_ICON_SIZE_BUTTON);
-            tip_text = gtk_widget_get_tooltip_text(play_event_box);
-            if (tip_text == NULL || g_ascii_strcasecmp(tip_text, _("Play")) != 0)
-                gtk_widget_set_tooltip_text(play_event_box, _("Play"));
-            g_free(tip_text);
+            w_gtk_widget_change_tooltip (play_event_box, _("Play"));
             gtk_widget_set_sensitive(ff_event_box, FALSE);
             gtk_widget_set_sensitive(rew_event_box, FALSE);
             gtk_widget_hide (GTK_WIDGET (menuitem_pause));
@@ -5410,7 +5400,6 @@ void player_attribute_changed_callback(GmtkMediaTracker * tracker, GmtkMediaPlay
 
 void player_media_state_changed_callback(GtkButton * button, GmtkMediaPlayerMediaState media_state, gpointer data)
 {
-    gchar *tip_text = NULL;
     gchar *short_filename = NULL;
     gm_log(verbose, G_LOG_LEVEL_DEBUG, "in media state change with state = %s dontplaynext = %i",
            gmtk_media_state_to_string(media_state), dontplaynext);
@@ -5450,11 +5439,8 @@ void player_media_state_changed_callback(GtkButton * button, GmtkMediaPlayerMedi
         // break purposely not put here, so gui is properly updated
     case MEDIA_STATE_STOP:
         w_gtk_image_set_from_icon_name (GTK_IMAGE(image_play), icon_play, GTK_ICON_SIZE_BUTTON);
+        w_gtk_widget_change_tooltip (play_event_box, _("Play"));
         gmtk_media_tracker_set_position(GMTK_MEDIA_TRACKER(tracker), 0.0);
-        tip_text = gtk_widget_get_tooltip_text(play_event_box);
-        if (tip_text == NULL || g_ascii_strcasecmp(tip_text, _("Play")) != 0)
-            gtk_widget_set_tooltip_text(play_event_box, _("Play"));
-        g_free(tip_text);
         gtk_widget_set_sensitive(ff_event_box, FALSE);
         gtk_widget_set_sensitive(rew_event_box, FALSE);
         gtk_widget_set_sensitive(prev_event_box, FALSE);
@@ -5471,10 +5457,7 @@ void player_media_state_changed_callback(GtkButton * button, GmtkMediaPlayerMedi
         if (idledata->mapped_af_export == NULL)
             map_af_export_file(idledata);
         w_gtk_image_set_from_icon_name (GTK_IMAGE(image_play), icon_pause, GTK_ICON_SIZE_BUTTON);
-        tip_text = gtk_widget_get_tooltip_text(play_event_box);
-        if (tip_text == NULL || g_ascii_strcasecmp(tip_text, _("Pause")) != 0)
-            gtk_widget_set_tooltip_text(play_event_box, _("Pause"));
-        g_free(tip_text);
+        w_gtk_widget_change_tooltip (play_event_box, _("Play"));
         gtk_widget_set_sensitive(ff_event_box, TRUE);
         gtk_widget_set_sensitive(rew_event_box, TRUE);
         gtk_widget_set_sensitive(prev_event_box, TRUE);
@@ -5503,10 +5486,7 @@ void player_media_state_changed_callback(GtkButton * button, GmtkMediaPlayerMedi
         break;
     case MEDIA_STATE_PAUSE:
         w_gtk_image_set_from_icon_name (GTK_IMAGE(image_play), icon_play, GTK_ICON_SIZE_BUTTON);
-        tip_text = gtk_widget_get_tooltip_text(play_event_box);
-        if (tip_text == NULL || g_ascii_strcasecmp(tip_text, _("Play")) != 0)
-            gtk_widget_set_tooltip_text(play_event_box, _("Play"));
-        g_free(tip_text);
+        w_gtk_widget_change_tooltip (play_event_box, _("Play"));
         gtk_widget_set_sensitive(ff_event_box, FALSE);
         gtk_widget_set_sensitive(rew_event_box, FALSE);
         gtk_widget_set_sensitive(prev_event_box, FALSE);

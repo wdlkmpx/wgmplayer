@@ -42,8 +42,19 @@ GtkWidget * w_gtk_image_new_from_icon_name (const char *icon_name, GtkIconSize s
 void w_gtk_image_set_from_icon_name (GtkImage *img, const char *icon_name, GtkIconSize size);
 void w_gtk_button_set_icon_name (GtkButton *button, const char *icon_name);
 
+void w_gtk_widget_change_tooltip (GtkWidget *widget, const char *new_text);
+
+int  w_gtk_tree_view_get_num_selected (GtkWidget *tv);
+void w_gtk_tree_view_clear_list (GtkWidget *tv);
+void w_gtk_tree_view_clear_tree (GtkWidget *tv);
+void w_gtk_tree_view_select_all (GtkWidget *tv);
+void w_gtk_tree_view_deselect_all (GtkWidget *tv);
+void w_gtk_tree_view_select_row (GtkWidget *tv, int n);
+
 void w_gtk_glist_to_combo (GtkComboBox *combo, GList *strings, int default_index);
 void w_gtk_strv_to_combo (GtkComboBox *combo, char **strv, int default_index);
+int w_gtk_combo_box_get_count (GtkComboBox *combo);
+void w_gtk_combo_box_find_and_select (GtkComboBox *combo, char *str);
 
 #if ! GTK_CHECK_VERSION (3, 0, 0)
 void gtk_widget_set_halign (GtkWidget *widget, GtkAlign align);

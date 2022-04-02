@@ -171,7 +171,76 @@ GtkWidget * w_gtk_button_new (const char * label,
     return button;
 }
 
-// =============================================================
+
+void w_gtk_widget_change_tooltip (GtkWidget *widget, const char *new_text)
+{ /* changes widget tooltip only if the new_text is different */
+    char *tip;
+    tip = gtk_widget_get_tooltip_text (widget);
+    if (!tip || g_strcmp0(tip,new_text) != 0) {
+        gtk_widget_set_tooltip_text (widget, new_text);
+    }
+    g_free (tip);
+}
+
+
+/* ================================================== */
+/*                  TREE VIEW                         */
+/* ================================================== */
+
+int w_gtk_tree_view_get_num_selected (GtkWidget *tv)
+{
+    GtkTreeView      *tree = GTK_TREE_VIEW (tv);
+    GtkTreeSelection *tsel = gtk_tree_view_get_selection (tree);
+    int              count = gtk_tree_selection_count_selected_rows (tsel);
+    return count;
+}
+
+
+void w_gtk_tree_view_clear_list (GtkWidget *tv)
+{
+    GtkTreeView  *tree  = GTK_TREE_VIEW (tv);
+    GtkListStore *store = GTK_LIST_STORE (gtk_tree_view_get_model (tree));
+    gtk_list_store_clear (store);
+}
+
+
+void w_gtk_tree_view_clear_tree (GtkWidget *tv)
+{
+    GtkTreeView  *tree  = GTK_TREE_VIEW (tv);
+    GtkTreeStore *store = GTK_TREE_STORE (gtk_tree_view_get_model (tree));
+    gtk_tree_store_clear (store);
+}
+
+
+void w_gtk_tree_view_select_all (GtkWidget *tv)
+{
+    GtkTreeView      *tree = GTK_TREE_VIEW (tv);
+    GtkTreeSelection *tsel = gtk_tree_view_get_selection (tree);
+    gtk_tree_selection_select_all (tsel);
+}
+
+
+void w_gtk_tree_view_deselect_all (GtkWidget *tv)
+{
+    GtkTreeView      *tree = GTK_TREE_VIEW (tv);
+    GtkTreeSelection *tsel = gtk_tree_view_get_selection (tree);
+    gtk_tree_selection_unselect_all (tsel);
+}
+
+
+void w_gtk_tree_view_select_row (GtkWidget *tv, int n)
+{
+    GtkTreeView      *tree  = GTK_TREE_VIEW (tv);
+    GtkTreeSelection *tsel  = gtk_tree_view_get_selection (tree);
+    GtkTreePath      *tpath = gtk_tree_path_new_from_indices (n, -1);
+    gtk_tree_selection_select_path (tsel, tpath);
+    gtk_tree_path_free (tpath);
+}
+
+/* ================================================== */
+/*                  COMBO BOX                         */
+/* ================================================== */
+
 
 void w_gtk_glist_to_combo (GtkComboBox *combo, GList *strings, int default_index)
 {
@@ -215,6 +284,44 @@ void w_gtk_strv_to_combo (GtkComboBox *combo, char **strv, int default_index)
         default_index = 0;
     }
     gtk_combo_box_set_active (GTK_COMBO_BOX (combo), default_index);
+}
+
+
+int w_gtk_combo_box_get_count (GtkComboBox *combo)
+{
+    GtkTreeModel * model;
+    GtkTreeIter iter;
+    gboolean valid;
+    int count = 0;
+    model = gtk_combo_box_get_model (combo);
+    valid = gtk_tree_model_get_iter_first (model, &iter);
+    while (valid) {
+        count++;
+        valid = gtk_tree_model_iter_next (model, &iter);
+    }
+    return count;
+}
+
+
+void w_gtk_combo_box_find_and_select (GtkComboBox *combo, char *str)
+{
+    GtkTreeModel * model;
+    GtkTreeIter iter;
+    gboolean valid;
+    char *value;
+    if (!str) {
+        return;
+    }
+    model = gtk_combo_box_get_model (combo);
+    valid = gtk_tree_model_get_iter_first (model, &iter);
+    while (valid) {
+        gtk_tree_model_get (model, &iter, 0, &value, -1);
+        if (g_strcmp0 (value, str) == 0) {
+            gtk_combo_box_set_active_iter (combo, &iter);
+            break;
+        }
+        valid = gtk_tree_model_iter_next (model, &iter);
+    }
 }
 
 /* ================================================== */

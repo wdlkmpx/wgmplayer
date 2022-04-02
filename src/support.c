@@ -1084,37 +1084,18 @@ MetaData *get_basic_metadata(gchar * uri)
 
 void free_metadata(MetaData * data)
 {
-
-    if (data == NULL)
+    if (data == NULL) {
         return;
-
-    if (data->uri)
-        g_free(data->uri);
-
-    if (data->title)
-        g_free(data->title);
-
-    if (data->artist)
-        g_free(data->artist);
-
-    if (data->album)
-        g_free(data->album);
-
-    if (data->length)
-        g_free(data->length);
-
-    if (data->subtitle)
-        g_free(data->subtitle);
-
-    if (data->audio_codec)
-        g_free(data->audio_codec);
-
-    if (data->video_codec)
-        g_free(data->video_codec);
-
-    if (data->demuxer)
-        g_free(data->demuxer);
-
+    }
+    if (data->uri)      g_free(data->uri);
+    if (data->title)    g_free(data->title);
+    if (data->artist)   g_free(data->artist);
+    if (data->album)    g_free(data->album);
+    if (data->length)   g_free(data->length);
+    if (data->subtitle) g_free(data->subtitle);
+    if (data->audio_codec) g_free(data->audio_codec);
+    if (data->video_codec) g_free(data->video_codec);
+    if (data->demuxer) g_free(data->demuxer);
     g_free(data);
 
 }
