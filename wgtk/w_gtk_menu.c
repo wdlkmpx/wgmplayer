@@ -32,9 +32,9 @@ static const char * get_valid_icon_name (const char *icon1, const char *icon2)
         } else if (strncmp (icon2, "gtk-", 4) == 0) {
             return icon2;
         }
-        fprintf (stderr, "%s was not found in icon theme", icon2);
+        fprintf (stderr, "(menu) %s was not found in icon theme\n", icon2);
     } else {
-        fprintf (stderr, "%s was not found in icon theme", icon1);
+        fprintf (stderr, "(menu) %s was not found in icon theme\n", icon1);
     }
     return NULL;
 }

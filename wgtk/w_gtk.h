@@ -61,9 +61,12 @@ void w_gtk_combo_box_find_and_select (GtkComboBox *combo, char *str);
 void gtk_widget_set_halign (GtkWidget *widget, GtkAlign align);
 void gtk_widget_set_valign (GtkWidget *widget, GtkAlign align);
 void gtk_widget_set_margin_start  (GtkWidget *widget, gint margin);
-#define gtk_widget_set_margin_end(widget,margin) 
+#define gtk_widget_set_margin_end(widget,margin)    /* not implemented */
+#define gtk_widget_set_margin_left gtk_widget_set_margin_start
+// deprecated since 3.12+: gtk_widget_set_margin_left() / gtk_widget_set_margin_right()
+#define gtk_widget_set_margin_right(widget,margin)  /* not implemented */
 void gtk_widget_set_margin_top (GtkWidget *widget, gint margin);
-#define gtk_widget_set_margin_bottom(widget,margin)
+#define gtk_widget_set_margin_bottom(widget,margin) /* not implemented */
 #endif
 
 #ifdef __cplusplus

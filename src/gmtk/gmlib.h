@@ -26,4 +26,4 @@
 #include "gm_log.h"
 #include "gm_pref_store.h"
 #include "gm_strfuncs.h"
-#include "gtkcompat.h"
+#include "w_gtk.h"

@@ -120,7 +120,7 @@ GtkWidget * w_gtk_image_new_from_icon_name (const char *icon_name, GtkIconSize s
         img = gtk_image_new_from_stock (icon_name, size);
     } else {
         // get blank/invalid image
-        fprintf (stderr, "%s was not found in icon theme", icon_name);
+        fprintf (stderr, "(GtkImage) %s was not found in icon theme\n", icon_name);
         img = gtk_image_new_from_icon_name (icon_name, size);
     }
     return img;
@@ -139,7 +139,7 @@ void w_gtk_image_set_from_icon_name (GtkImage *img, const char *icon_name, GtkIc
         gtk_image_set_from_stock (img, icon_name, size);
     } else {
         // set blank/invalid image
-        fprintf (stderr, "%s was not found in icon theme", icon_name);
+        fprintf (stderr, "%s was not found in icon theme\n", icon_name);
         gtk_image_set_from_icon_name (img, icon_name, size);
     }
 }
@@ -191,11 +191,11 @@ GtkWidget * w_gtk_notebook_add_tab (GtkWidget * notebook, char * label_str, int 
 #if GTK_MAJOR_VERSION >= 3
         table = gtk_grid_new ();
         gtk_grid_set_column_spacing (GTK_GRID(table), 5);
-        gtk_grid_set_row_spacing (GTK_GRID(table), 3);
+        //gtk_grid_set_row_spacing (GTK_GRID(table), 3);
 #else
         table = gtk_table_new (rows, cols, FALSE);
         gtk_table_set_col_spacings (GTK_TABLE(table), 5);
-        gtk_table_set_row_spacings (GTK_TABLE(table), 3);
+        //gtk_table_set_row_spacings (GTK_TABLE(table), 3);
 #endif
         gtk_box_pack_start (GTK_BOX(vbox), table, FALSE, FALSE, 0);
     }
@@ -362,87 +362,65 @@ void w_gtk_combo_box_find_and_select (GtkComboBox *combo, char *str)
 
 #if ! GTK_CHECK_VERSION (3, 0, 0)
 
-void gtk_widget_set_halign (GtkWidget *widget, GtkAlign align)
+static void set_alignment (GtkWidget *widget, GtkAlign align, gboolean horizontal)
 {
-    // from gtk_misc_set_alignment ()
-    GtkMisc * misc = GTK_MISC (widget);
-    gfloat xalign = 0.0;
-    if   (xalign == GTK_ALIGN_CENTER) xalign = 0.5;
-    else if (xalign == GTK_ALIGN_END) xalign = 1.0;
-    if (xalign != misc->xalign)
-    {
+    if (!GTK_IS_MISC(widget)) {
+        // only GtkLabel/GtkArrow/GtkImage/GtkPixmap support this feature
+        return;
+    }
+    GtkMisc *misc = GTK_MISC (widget);
+    gfloat *misc_align = horizontal ? &(misc->xalign) : &(misc->yalign);
+    char *align_str    = horizontal ? "xalign" : "yalign";
+    //--
+    gfloat walign = 0.0;
+    if   (align == GTK_ALIGN_CENTER) walign = 0.5;
+    else if (align == GTK_ALIGN_END) walign = 1.0;
+    if (walign != *misc_align) {
         g_object_freeze_notify (G_OBJECT (misc));
-        g_object_notify (G_OBJECT (misc), "xalign");
-        misc->xalign = xalign;
-        if (gtk_widget_is_drawable (widget))
+        g_object_notify (G_OBJECT (misc), align_str);
+        *misc_align = walign;
+        if (gtk_widget_is_drawable (widget)) {
             gtk_widget_queue_draw (widget);
+        }
         g_object_thaw_notify (G_OBJECT (misc));
     }
 }
 
-void gtk_widget_set_valign (GtkWidget *widget, GtkAlign align)
+static void set_padding (GtkWidget *widget, gint margin, gboolean horizontal)
 {
-    // from gtk_misc_set_alignment ()
-    GtkMisc * misc = GTK_MISC (widget);
-    gfloat yalign = 0.0;
-    if   (yalign == GTK_ALIGN_CENTER) yalign = 0.5;
-    else if (yalign == GTK_ALIGN_END) yalign = 1.0;
-    if (yalign != misc->yalign)
-    {
-        g_object_freeze_notify (G_OBJECT (misc));
-        g_object_notify (G_OBJECT (misc), "yalign");
-        misc->yalign = yalign;
-        if (gtk_widget_is_drawable (widget))
-            gtk_widget_queue_draw (widget);
-        g_object_thaw_notify (G_OBJECT (misc));
+    if (!GTK_IS_MISC(widget)) {
+        // only GtkLabel/GtkArrow/GtkImage/GtkPixmap support this feature
+        return;
     }
-}
-
-void gtk_widget_set_margin_start  (GtkWidget *widget, gint margin)
-{
-    // from gtk_misc_set_padding ()
-    // deprecated since 3.12+: gtk_widget_set_margin_left
-    // deprecated since 3.12+: gtk_widget_set_margin_right
-    GtkRequisition *requisition;
-    int xpad = margin;
-    GtkMisc * misc = GTK_MISC (widget);
-    if (xpad < 0) xpad = 0;
-    if (xpad != misc->xpad)
-    {
+    GtkMisc *misc = GTK_MISC (widget);
+    guint16 *misc_pad = horizontal ? &(misc->xpad) : &(misc->ypad);
+    char *pad_str = horizontal ? "xpad" : "ypad";
+    if (margin < 0) margin = 0;
+    if (margin != *misc_pad) {
         g_object_freeze_notify (G_OBJECT (misc));
-        if (xpad != misc->xpad)
-            g_object_notify (G_OBJECT (misc), "xpad");
-        requisition = &(GTK_WIDGET (misc)->requisition);
-        requisition->width -= misc->xpad * 2;
-        misc->xpad = xpad;
-        requisition->width += misc->xpad * 2;
-        if (gtk_widget_is_drawable (widget))
+        g_object_notify (G_OBJECT (misc), pad_str);
+        *misc_pad = margin;
+        if (gtk_widget_is_drawable (widget)) {
             gtk_widget_queue_resize (GTK_WIDGET (misc));
+        }
         g_object_thaw_notify (G_OBJECT (misc));
     }
 }
 
-void gtk_widget_set_margin_top (GtkWidget *widget, gint margin)
-{
-    // from gtk_misc_set_padding ()
-    GtkRequisition *requisition;
-    int ypad = margin;
-    GtkMisc * misc = GTK_MISC (widget);
-    if (ypad < 0) ypad = 0;
-    if (ypad != misc->ypad)
-    {
-        g_object_freeze_notify (G_OBJECT (misc));
-        if (ypad != misc->ypad)
-            g_object_notify (G_OBJECT (misc), "ypad");
-        requisition = &(GTK_WIDGET (misc)->requisition);
-        requisition->height -= misc->ypad * 2;
-        misc->ypad = ypad;
-        requisition->height += misc->ypad * 2;
-        if (gtk_widget_is_drawable (widget))
-            gtk_widget_queue_resize (GTK_WIDGET (misc));
-        g_object_thaw_notify (G_OBJECT (misc));
-    }
+void gtk_widget_set_halign (GtkWidget *widget, GtkAlign align) {
+    set_alignment (widget, align, TRUE);
+}
+void gtk_widget_set_valign (GtkWidget *widget, GtkAlign align) {
+    set_alignment (widget, align, FALSE);
+}
+
+void gtk_widget_set_margin_start  (GtkWidget *widget, gint margin) {
+    set_padding (widget, margin, TRUE);
+}
+void gtk_widget_set_margin_top (GtkWidget *widget, gint margin) {
+    set_padding (widget, margin, FALSE);
 }
 
 #endif
+
 
