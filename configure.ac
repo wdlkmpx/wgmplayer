@@ -69,20 +69,6 @@ AC_ARG_WITH([pulseaudio],
 AS_IF([test "x$with_pulseaudio" != xno], 
 	[PKG_CHECK_MODULES(PULSE, [libpulse >= 2.0 libpulse-mainloop-glib >= 2.0],[AC_DEFINE([HAVE_PULSEAUDIO],[1],[Define to 1 if you have PulseAudio development packages])],AC_MSG_NOTICE([Compiling without PulseAudio support]))])
 
-AC_ARG_ENABLE(gseal,
-		AS_HELP_STRING([--enable-gseal],[Enable flag for testing]),
-        [case "${enableval}" in
-        yes) ENABLE_GSEAL=yes ;;
-        no) ENABLE_GSEAL=no ;;
-        *) AC_MSG_ERROR(bad value ${enableval} for --enable-gseal) ;;
-        esac],
-        [ENABLE_GSEAL=no]) dnl Default value
-
-if test x$ENABLE_GSEAL = "xyes"; then
-   GTK_CFLAGS="$GTK_CFLAGS -DGSEAL_ENABLE"
-   AC_SUBST(GTK_CFLAGS)
-fi
-
 #if test x$ENABLE_GTK2 = "xyes"; then
 #   CPPFLAGS="$CPPFLAGS -DGDK_DISABLE_DEPRECATED -DGDK_PIXBUF_DISABLE_SINGLE_INCLUDES -DGTK_DISABLE_DEPRECATED -DGTK_DISABLE_SINGLE_INCLUDES"
 #fi

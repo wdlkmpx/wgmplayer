@@ -47,14 +47,6 @@
 #ifndef __GMTK_MEDIA_PLAYER_H__
 #define __GMTK_MEDIA_PLAYER_H__
 
-#ifndef GSEAL
-#ifdef GSEAL_ENABLE
-#define GSEAL(ident)      _g_sealed__ ## ident
-#else
-#define GSEAL(ident)      ident
-#endif
-#endif
-
 G_BEGIN_DECLS
 #define GMTK_TYPE_MEDIA_PLAYER		(gmtk_media_player_get_type ())
 #define GMTK_MEDIA_PLAYER(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), GMTK_TYPE_MEDIA_PLAYER, GmtkMediaPlayer))
@@ -258,12 +250,6 @@ typedef struct _GmtkMediaPlayerEvent {
 struct _GmtkMediaPlayer {
     GtkEventBox parent;
 
-    /*
-       GtkWidget *GSEAL(scale);
-       GtkWidget *GSEAL(hbox);
-       GtkWidget *GSEAL(message);
-       GtkWidget *GSEAL(timer);
-     */
     GtkWidget *alignment;
     GtkWidget *socket;
     gint socket_id;
