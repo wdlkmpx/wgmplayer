@@ -42,8 +42,6 @@
 #include <math.h>
 #include <unistd.h>
 
-#include "gtkcompat.h"
-
 #ifndef __GMTK_MEDIA_PLAYER_H__
 #define __GMTK_MEDIA_PLAYER_H__
 

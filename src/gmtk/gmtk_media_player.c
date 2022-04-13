@@ -22,9 +22,9 @@
  * 	Boston, MA  02110-1301, USA.
  */
 
-#include "gmtk_media_player.h"
-#include "gmlib.h"
 #include "gmtk_common.h"
+#include "gmlib.h"
+#include "gmtk_media_player.h"
 
 G_DEFINE_TYPE(GmtkMediaPlayer, gmtk_media_player, GTK_TYPE_EVENT_BOX);
 static GObjectClass *parent_class = NULL;

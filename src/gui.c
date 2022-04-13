@@ -3571,84 +3571,73 @@ void menuitem_details_callback(GtkMenuItem * menuitem, void *data)
 }
 
 
-static void add2table_details (GtkWidget * table, GtkWidget *w1, GtkWidget *w2, int *row)
+static void create_details_table (GtkWidget *vbox)
 {
-    // 2 columns: both are labels
-    if (w1 && w2) {
-        gtk_grid_attach (GTK_GRID(table), w1, 0, *row, 1, 1);
-        gtk_grid_attach (GTK_GRID(table), w2, 1, *row, 1, 1);
-        gtk_widget_set_halign (w1, GTK_ALIGN_END);
-        gtk_widget_set_halign (w2, GTK_ALIGN_START);
-    } else if (w1 && !w2) {
-        gtk_grid_attach (GTK_GRID(table), w1, 0, *row, 2, 1); // 2 columns
-        gtk_widget_set_halign (w1, GTK_ALIGN_CENTER);
-    }
-    *row = *row + 1;
-}
+    WGtkGridParams grid;
+    memset (&grid, 0, sizeof(grid));
+    grid.cols = 2;
+    grid.c1.align = GTK_ALIGN_END;
+    grid.c2.align = GTK_ALIGN_START;
 
-void create_details_table()
-{
-    GtkWidget *label;
-    int i = 0;
+    grid.table = details_table = w_gtk_grid_new (vbox);
 
-    details_table = gtkcompat_grid_new (15, 2);
-    gtk_grid_set_column_spacing (GTK_GRID (details_table), 5);
-    gtk_grid_set_row_spacing    (GTK_GRID (details_table), 3);
+    grid.c1.w = gtk_label_new(_("<span weight=\"bold\">Video Details</span>"));
+    grid.c1.align = GTK_ALIGN_CENTER;
+    gtk_label_set_use_markup(GTK_LABEL(grid.c1.w), TRUE);
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new(_("<span weight=\"bold\">Video Details</span>"));
-    gtk_label_set_use_markup(GTK_LABEL(label), TRUE);
-    add2table_details (details_table, label, NULL, &i);
+    grid.c1.w = gtk_label_new(_("Video Size:"));
+    grid.c2.w = details_video_size = gtk_label_new (_("Unknown"));
+    grid.c1.align = GTK_ALIGN_END;
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new(_("Video Size:"));
-    details_video_size = gtk_label_new (_("Unknown"));
-    add2table_details (details_table, label, details_video_size, &i);
+    grid.c1.w = gtk_label_new(_("Video Format:"));
+    grid.c2.w = details_video_format = gtk_label_new (_("Unknown"));
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new(_("Video Format:"));
-    details_video_format = gtk_label_new (_("Unknown"));
-    add2table_details (details_table, label, details_video_format, &i);
+    grid.c1.w = gtk_label_new(_("Video Codec:"));
+    grid.c2.w = details_video_codec = gtk_label_new(_("Unknown"));
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new(_("Video Codec:"));
-    details_video_codec = gtk_label_new(_("Unknown"));
-    add2table_details (details_table, label, details_video_codec, &i);
+    grid.c1.w = gtk_label_new(_("Video FPS:"));
+    grid.c2.w = details_video_fps = gtk_label_new("");
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new(_("Video FPS:"));
-    details_video_fps = gtk_label_new("");
-    add2table_details (details_table, label, details_video_fps, &i);
+    grid.c1.w = gtk_label_new(_("Video Bitrate:"));
+    grid.c2.w = details_video_bitrate = gtk_label_new ("0 Kb/s");
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new(_("Video Bitrate:"));
-    details_video_bitrate = gtk_label_new ("0 Kb/s");
-    add2table_details (details_table, label, details_video_bitrate, &i);
+    grid.c1.w = gtk_label_new(_("Video Chapters:"));
+    grid.c2.w = details_video_chapters = gtk_label_new (_("Unknown"));
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new(_("Video Chapters:"));
-    details_video_chapters = gtk_label_new (_("Unknown"));
-    add2table_details (details_table, label, details_video_chapters, &i);
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new("");
-    add2table_details (details_table, label, NULL, &i);
+    grid.c1.w = gtk_label_new(_("<span weight=\"bold\">Audio Details</span>"));
+    grid.c1.align = GTK_ALIGN_CENTER;
+    gtk_label_set_use_markup(GTK_LABEL(grid.c1.w), TRUE);
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new(_("<span weight=\"bold\">Audio Details</span>"));
-    gtk_label_set_use_markup(GTK_LABEL(label), TRUE);
-    add2table_details (details_table, label, NULL, &i);
+    grid.c1.w = gtk_label_new(_("Audio Format:"));
+    grid.c1.align = GTK_ALIGN_END;
+    grid.c2.w = details_audio_format = gtk_label_new (_("Unknown"));
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new(_("Audio Format:"));
-    details_audio_format = gtk_label_new (_("Unknown"));
-    add2table_details (details_table, label, details_audio_format, &i);
+    grid.c1.w = gtk_label_new(_("Audio Codec:"));
+    grid.c2.w = details_audio_codec = gtk_label_new (_("Unknown"));
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new(_("Audio Codec:"));
-    details_audio_codec = gtk_label_new (_("Unknown"));
-    add2table_details (details_table, label, details_audio_codec, &i);
+    grid.c1.w = gtk_label_new(_("Audio Channels:"));
+    grid.c2.w = details_audio_channels = gtk_label_new (_("Unknown"));
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new(_("Audio Channels:"));
-    details_audio_channels = gtk_label_new (_("Unknown"));
-    add2table_details (details_table, label, details_audio_channels, &i);
+    grid.c1.w = gtk_label_new(_("Audio Bitrate:"));
+    grid.c2.w = details_audio_bitrate = gtk_label_new ("0 Kb/s");
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new(_("Audio Bitrate:"));
-    details_audio_bitrate = gtk_label_new ("0 Kb/s");
-    add2table_details (details_table, label, details_audio_bitrate, &i);
-
-    label = gtk_label_new(_("Audio Sample Rate:"));
-    details_audio_samplerate = gtk_label_new ("0 KHz");
-    add2table_details (details_table, label, details_audio_samplerate, &i);
+    grid.c1.w = gtk_label_new(_("Audio Sample Rate:"));
+    grid.c2.w = details_audio_samplerate = gtk_label_new ("0 KHz");
+    w_gtk_grid_append_row (&grid);
 }
 
 
@@ -4044,22 +4033,6 @@ void output_combobox_changed_callback(GtkComboBox * config_ao, gpointer data)
 }
 
 
-static void add2table_config (GtkWidget * table, GtkWidget *w1, GtkWidget *w2, int *row)
-{
-    // 2 columns
-    if (w1 && w2) {
-        // 1st column is a label
-        gtk_grid_attach (GTK_GRID(table), w1, 0, *row, 1, 1);
-        gtk_grid_attach (GTK_GRID(table), w2, 1, *row, 1, 1);
-        gtkcompat_widget_set_halign_right (w1);
-    } else if (w1 && !w2) {
-        gtk_grid_attach (GTK_GRID(table), w1, 0, *row, 2, 1);
-    } else if (w2) { // only 2nd column
-        gtk_grid_attach (GTK_GRID(table), w2, 1, *row, 1, 1);
-    }
-    *row = *row + 1;
-}
-
 void menuitem_config_dialog_cb(GtkMenuItem * menuitem, void *data)
 {
     GtkWidget *config_window;
@@ -4067,8 +4040,7 @@ void menuitem_config_dialog_cb(GtkMenuItem * menuitem, void *data)
     GtkWidget *conf_hbutton_box;
     GtkWidget *conf_ok;
     GtkWidget *conf_cancel;
-    GtkWidget *conf_table;
-    GtkWidget *label, * entry;
+    GtkWidget *entry;
     GtkWidget *page_table[5];
     GtkWidget *notebook;
     GdkColor sub_color;
@@ -4079,6 +4051,12 @@ void menuitem_config_dialog_cb(GtkMenuItem * menuitem, void *data)
     gchar *desc;
     guint key;
     GdkModifierType modifier;
+
+    WGtkGridParams grid;
+    memset (&grid, 0, sizeof(grid));
+    grid.cols = 2;
+    grid.c1.align = GTK_ALIGN_END;
+    grid.c2.align = GTK_ALIGN_FILL;
 
     config_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_type_hint(GTK_WINDOW(config_window), GDK_WINDOW_TYPE_HINT_UTILITY);
@@ -4104,7 +4082,7 @@ void menuitem_config_dialog_cb(GtkMenuItem * menuitem, void *data)
     notebook = gtk_notebook_new();
     for (i = 0; i < 5 ; i++)
     {
-        page_table[i] = w_gtk_notebook_add_tab (notebook, gettext(tab_labels[i]), 20, 2);
+        page_table[i] = w_gtk_notebook_add_tab (notebook, gettext(tab_labels[i]));
     }
 
     gtk_container_add(GTK_CONTAINER(conf_vbox), notebook);
@@ -4284,6 +4262,7 @@ void menuitem_config_dialog_cb(GtkMenuItem * menuitem, void *data)
         gtk_combo_box_set_active(GTK_COMBO_BOX(config_resume_mode), resume_mode);
     }
 
+
     i = 0;
     j = -1;
 
@@ -4330,83 +4309,95 @@ void menuitem_config_dialog_cb(GtkMenuItem * menuitem, void *data)
 
 
     /// page 0
-    conf_table = page_table[0];
-    i = 0;
+    grid.table = page_table[0];
+    grid.row = 0;
 
-    label = gtk_label_new(_("<span weight=\"bold\">Language Settings</span>"));
-    gtk_label_set_use_markup(GTK_LABEL(label), TRUE);
-    add2table_config (conf_table, label, NULL, &i);
-    gtk_widget_set_halign (label, GTK_ALIGN_START);
+    grid.c1.w = gtk_label_new(_("<span weight=\"bold\">Language Settings</span>"));
+    grid.c1.align = GTK_ALIGN_START;
+    gtk_label_set_use_markup(GTK_LABEL(grid.c1.w), TRUE);
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new(_("Default Audio Language"));
+    grid.c1.w = gtk_label_new(_("Default Audio Language"));
+    grid.c2.w = config_alang;
+    grid.c1.align = GTK_ALIGN_END;
     gtk_widget_set_size_request(GTK_WIDGET(config_alang), 200, -1);
-    gtk_widget_set_tooltip_text(label, _("Choose one of the languages or type in your own comma-separated selection"));
-    add2table_config (conf_table, label, config_alang, &i);
+    gtk_widget_set_tooltip_text(grid.c1.w, _("Choose one of the languages or type in your own comma-separated selection"));
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new(_("Default Subtitle Language:"));
+    grid.c1.w = gtk_label_new(_("Default Subtitle Language:"));
+    grid.c2.w = config_slang;
     gtk_widget_set_size_request(GTK_WIDGET(config_slang), 200, -1);
-    gtk_widget_set_tooltip_text (label,_("Choose one of the languages or type in your own comma-separated selection"));
-    add2table_config (conf_table, label, config_slang, &i);
+    gtk_widget_set_tooltip_text (grid.c1.w,_("Choose one of the languages or type in your own comma-separated selection"));
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new(_("File Metadata Encoding:"));
+    grid.c1.w = gtk_label_new(_("File Metadata Encoding:"));
+    grid.c2.w = config_metadata_codepage;
     gtk_widget_set_size_request(GTK_WIDGET(config_metadata_codepage), 200, -1);
-    add2table_config (conf_table, label, config_metadata_codepage, &i);
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new("");
-    add2table_config (conf_table, label, NULL, &i);
+    w_gtk_grid_append_row (&grid); /* space */
 
-    label = gtk_label_new(_("<span weight=\"bold\">Output Settings</span>"));
-    gtk_label_set_use_markup(GTK_LABEL(label), TRUE);
-    add2table_config (conf_table, label, NULL, &i);
-    gtk_widget_set_halign (label, GTK_ALIGN_START);
+    grid.c1.w = gtk_label_new(_("<span weight=\"bold\">Output Settings</span>"));
+    grid.c1.align = GTK_ALIGN_START;
+    gtk_label_set_use_markup(GTK_LABEL(grid.c1.w), TRUE);
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new(_("Video Output:"));
+    grid.c1.w = gtk_label_new(_("Video Output:"));
+    grid.c2.w = config_vo;
+    grid.c1.align = GTK_ALIGN_END;
     gtk_widget_set_size_request(GTK_WIDGET(config_vo), 200, -1);
-    add2table_config (conf_table, label, config_vo, &i);
+    w_gtk_grid_append_row (&grid);
 
-    config_hardware_codecs = gtk_check_button_new_with_label(_("Enable Video Hardware Support"));
+    grid.c2.w = gtk_check_button_new_with_label(_("Enable Video Hardware Support"));
+    config_hardware_codecs = grid.c2.w;
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_hardware_codecs), use_hardware_codecs);
     gtk_widget_set_tooltip_text(config_hardware_codecs, _("When this option is enabled, codecs or options will be enabled to accelerate video processing. These options may cause playback to fail in some cases."));
-    gtk_widget_set_size_request(GTK_WIDGET(config_hardware_codecs), 200, -1);
-    add2table_config (conf_table, NULL, config_hardware_codecs, &i);
+    w_gtk_grid_append_row (&grid);
 
-    config_crystalhd_codecs = gtk_check_button_new_with_label(_("Enable CrystalHD Hardware Support"));
+    grid.c2.w = gtk_check_button_new_with_label(_("Enable CrystalHD Hardware Support"));
+    config_crystalhd_codecs = grid.c2.w;
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_crystalhd_codecs), use_crystalhd_codecs);
-    gtk_widget_set_size_request(GTK_WIDGET(config_crystalhd_codecs), 200, -1);
-    add2table_config (conf_table, NULL, config_crystalhd_codecs, &i);
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new(_("Audio Output:"));
+    grid.c1.w = gtk_label_new(_("Audio Output:"));
+    grid.c2.w = config_ao;
     gtk_widget_set_size_request(GTK_WIDGET(config_ao), 200, -1);
-    add2table_config (conf_table, label, config_ao, &i);
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new(_("Audio Volume Type:"));
-    add2table_config (conf_table, label, conf_volume_label, &i);
-    gtk_widget_set_halign (conf_volume_label, GTK_ALIGN_START);
+    grid.c1.w = gtk_label_new(_("Audio Volume Type:"));
+    grid.c2.w = conf_volume_label;
+    grid.c2.align = GTK_ALIGN_START;
+    w_gtk_grid_append_row (&grid);
 
+    grid.c2.align = GTK_ALIGN_FILL;
 #ifdef HAVE_ASOUNDLIB
-    label = gtk_label_new(_("Default Mixer:"));
+    grid.c1.w = gtk_label_new(_("Default Mixer:"));
+    grid.c2.w = config_mixer;
     gtk_widget_set_size_request(GTK_WIDGET(config_mixer), 200, -1);
-    add2table_config (conf_table, label, config_mixer, &i);
+    w_gtk_grid_append_row (&grid);
 #endif
 
-    label = gtk_label_new(_("Audio Channels to Output:"));
+    grid.c1.w = gtk_label_new(_("Audio Channels to Output:"));
+    grid.c2.w = config_audio_channels;
     gtk_widget_set_size_request(GTK_WIDGET(config_audio_channels), 200, -1);
-    add2table_config (conf_table, label, config_audio_channels, &i);
+    w_gtk_grid_append_row (&grid);
 
+    grid.c2.w = config_use_hw_audio;
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_use_hw_audio), use_hw_audio);
-    add2table_config (conf_table, NULL, config_use_hw_audio, &i);
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new("");
-    add2table_config (conf_table, label, NULL, &i);
+    w_gtk_grid_append_row (&grid); /* space */
 
-    label = gtk_label_new(_("<span weight=\"bold\">Configuration Settings</span>"));
-    gtk_label_set_use_markup(GTK_LABEL(label), TRUE);
-    add2table_config (conf_table, label, NULL, &i);
-    gtk_widget_set_halign (label, GTK_ALIGN_START);
+    grid.c1.w = gtk_label_new(_("<span weight=\"bold\">Configuration Settings</span>"));
+    grid.c1.align = GTK_ALIGN_START;
+    gtk_label_set_use_markup(GTK_LABEL(grid.c1.w), TRUE);
+    w_gtk_grid_append_row (&grid);
 
 #ifndef HAVE_ASOUNDLIB
-f    label = gtk_label_new(_("Default Volume Level:"));
-    config_volume = gtk_spin_button_new_with_range(0, 100, 1);
+    grid.c1.w = gtk_label_new(_("Default Volume Level:"));
+    grid.c2.w = gtk_spin_button_new_with_range(0, 100, 1);
+    grid.c1.align = GTK_ALIGN_END;
+    config_volume = grid.c2.w;
     gtk_widget_set_tooltip_text(config_volume, _("Default volume for playback"));
     gtk_widget_set_size_request(config_volume, 100, -1);
     gm_store = gm_pref_store_new("g-mplayer");
@@ -4415,58 +4406,69 @@ f    label = gtk_label_new(_("Default Volume Level:"));
     gtk_entry_set_width_chars(GTK_ENTRY(config_volume), 6);
     gtk_editable_set_editable(GTK_EDITABLE(config_volume), TRUE);
     gtk_entry_set_alignment(GTK_ENTRY(config_volume), 1);
-    add2table_config (conf_table, label, config_volume, &i);
+    w_gtk_grid_append_row (&grid);
 #endif
 
-    label = gtk_label_new(_("On Screen Display Level:"));
-    config_osdlevel = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, 0.0, 3.0, 1.0);
+    grid.c1.w = gtk_label_new(_("On Screen Display Level:"));
+    grid.c2.w = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, 0.0, 3.0, 1.0);
+    grid.c1.align = GTK_ALIGN_END;
+    config_osdlevel = grid.c2.w;
     gtk_range_set_value(GTK_RANGE(config_osdlevel), osdlevel);
     g_signal_connect(G_OBJECT(config_osdlevel), "format-value", G_CALLBACK(osdlevel_format_callback), NULL);
     g_signal_connect(G_OBJECT(config_osdlevel), "value-changed", G_CALLBACK(osdlevel_change_callback), NULL);
     gtk_widget_set_size_request(config_osdlevel, 150, -1);
-    add2table_config (conf_table, label, config_osdlevel, &i);
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new(_("Post-processing level:"));
-    config_pplevel = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, 0.0, 6.0, 1.0);
+    grid.c1.w = gtk_label_new(_("Post-processing level:"));
+    grid.c2.w = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, 0.0, 6.0, 1.0);
+    config_pplevel = grid.c2.w;
     g_signal_connect(G_OBJECT(config_pplevel), "format-value", G_CALLBACK(pplevel_format_callback), NULL);
     gtk_widget_set_size_request(config_pplevel, 150, -1);
     gtk_range_set_value(GTK_RANGE(config_pplevel), pplevel);
-    add2table_config (conf_table, label, config_pplevel, &i);
+    w_gtk_grid_append_row (&grid);
 
 
     /// Page 1 - SUBTITLES
-    conf_table = page_table[1];
-    i = 0;
+    grid.table = page_table[1];
+    grid.row = 0;
 
-    label = gtk_label_new(_("<span weight=\"bold\">Subtitle Settings</span>"));
-    gtk_label_set_use_markup(GTK_LABEL(label), TRUE);
-    add2table_config (conf_table, label, NULL, &i);
-    gtk_widget_set_halign (label, GTK_ALIGN_START);
+    grid.c1.w = gtk_label_new(_("<span weight=\"bold\">Subtitle Settings</span>"));
+    grid.c1.align = GTK_ALIGN_START;
+    gtk_label_set_use_markup(GTK_LABEL(grid.c1.w), TRUE);
+    w_gtk_grid_append_row (&grid);
 
-    config_ass = gtk_check_button_new_with_mnemonic(_("Enable _Advanced Substation Alpha (ASS) Subtitle Support"));
+    grid.c1.w = gtk_check_button_new_with_mnemonic(_("Enable _Advanced Substation Alpha (ASS) Subtitle Support"));
+    grid.c1.align = GTK_ALIGN_START;
+    config_ass = grid.c1.w;
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_ass), !disable_ass);
     g_signal_connect(G_OBJECT(config_ass), "toggled", G_CALLBACK(ass_toggle_callback), NULL);
-    add2table_config (conf_table, config_ass, NULL, &i);
+    w_gtk_grid_append_row (&grid);
 
-    config_embeddedfonts = gtk_check_button_new_with_mnemonic(_("Use _Embedded Fonts (MKV only)"));
+    grid.c1.w = gtk_check_button_new_with_mnemonic(_("Use _Embedded Fonts (MKV only)"));
+    config_embeddedfonts = grid.c1.w;
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_embeddedfonts), !disable_embeddedfonts);
     gtk_widget_set_sensitive(config_embeddedfonts, !disable_ass);
-    add2table_config (conf_table, config_embeddedfonts, NULL, &i);
+    w_gtk_grid_append_row (&grid);
 
-    config_subtitle_outline = gtk_check_button_new_with_label(_("Outline Subtitle Font"));
+    grid.c1.w = gtk_check_button_new_with_label(_("Outline Subtitle Font"));
+    config_subtitle_outline = grid.c1.w;
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_subtitle_outline), subtitle_outline);
-    add2table_config (conf_table, config_subtitle_outline, NULL, &i);
+    w_gtk_grid_append_row (&grid);
 
-    config_subtitle_shadow = gtk_check_button_new_with_label(_("Shadow Subtitle Font"));
+    grid.c1.w = gtk_check_button_new_with_label(_("Shadow Subtitle Font"));
+    config_subtitle_shadow = grid.c1.w;
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_subtitle_shadow), subtitle_shadow);
-    add2table_config (conf_table, config_subtitle_shadow, NULL, &i);
+    w_gtk_grid_append_row (&grid);
 
-    config_show_subtitles = gtk_check_button_new_with_label(_("Show Subtitles by Default"));
+    grid.c1.w = gtk_check_button_new_with_label(_("Show Subtitles by Default"));
+    config_show_subtitles = grid.c1.w;
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_show_subtitles), showsubtitles);
-    add2table_config (conf_table, config_show_subtitles, NULL, &i);
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new(_("Subtitle Font:"));
-    config_subtitle_font = gtk_font_button_new();
+    grid.c1.w = gtk_label_new(_("Subtitle Font:"));
+    grid.c2.w = gtk_font_button_new();
+    grid.c1.align = GTK_ALIGN_END;
+    config_subtitle_font = grid.c2.w;
     if (subtitlefont != NULL) {
         gtk_font_button_set_font_name(GTK_FONT_BUTTON(config_subtitle_font), subtitlefont);
     }
@@ -4475,10 +4477,11 @@ f    label = gtk_label_new(_("Default Volume Level:"));
     gtk_font_button_set_use_size(GTK_FONT_BUTTON(config_subtitle_font), FALSE);
     gtk_font_button_set_use_font(GTK_FONT_BUTTON(config_subtitle_font), TRUE);
     gtk_font_button_set_title(GTK_FONT_BUTTON(config_subtitle_font), _("Subtitle Font Selection"));
-    add2table_config (conf_table, label, config_subtitle_font, &i);
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new(_("Subtitle Color:"));
-    config_subtitle_color = gtk_color_button_new();
+    grid.c1.w = gtk_label_new(_("Subtitle Color:"));
+    grid.c2.w = gtk_color_button_new();
+    config_subtitle_color = grid.c2.w;
     if (subtitle_color != NULL && strlen(subtitle_color) > 5) {
         sub_color.red = g_ascii_xdigit_value(subtitle_color[0]) << 4;
         sub_color.red += g_ascii_xdigit_value(subtitle_color[1]);
@@ -4498,138 +4501,164 @@ f    label = gtk_label_new(_("Default Volume Level:"));
     }
     gtk_color_button_set_title(GTK_COLOR_BUTTON(config_subtitle_color), _("Subtitle Color Selection"));
     gtk_widget_set_sensitive(config_subtitle_color, !disable_ass);
-    add2table_config (conf_table, label, config_subtitle_color, &i);
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new(_("Subtitle Font Scaling:"));
-    config_subtitle_scale = gtk_spin_button_new_with_range(0.25, 10, 0.05);
+    grid.c1.w = gtk_label_new(_("Subtitle Font Scaling:"));
+    grid.c2.w = gtk_spin_button_new_with_range(0.25, 10, 0.05);
+    config_subtitle_scale = grid.c2.w;
     gtk_widget_set_size_request(config_subtitle_scale, -1, -1);
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(config_subtitle_scale), subtitle_scale);
-    add2table_config (conf_table, label, config_subtitle_scale, &i);
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new(_("Subtitle File Encoding:"));
+    grid.c1.w = gtk_label_new(_("Subtitle File Encoding:"));
+    grid.c2.w = config_subtitle_codepage;
     gtk_widget_set_size_request(GTK_WIDGET(config_subtitle_codepage), 200, -1);
-    add2table_config (conf_table, label, config_subtitle_codepage, &i);
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new(_("Subtitle Lower Margin (X11/XV Only):"));
-    config_subtitle_margin = gtk_spin_button_new_with_range(0, 200, 1);
+    grid.c1.w = gtk_label_new(_("Subtitle Lower Margin (X11/XV Only):"));
+    grid.c2.w = gtk_spin_button_new_with_range(0, 200, 1);
+    config_subtitle_margin = grid.c2.w;
     gtk_widget_set_size_request(config_subtitle_scale, -1, -1);
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(config_subtitle_margin), subtitle_margin);
-    add2table_config (conf_table, label, config_subtitle_margin, &i);
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new(_("Subtitle Load Fuzziness:"));
-    config_subtitle_fuzziness = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, 0.0, 2.0, 1.0);
+    grid.c1.w = gtk_label_new(_("Subtitle Load Fuzziness:"));
+    grid.c2.w = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, 0.0, 2.0, 1.0);
+    config_subtitle_fuzziness = grid.c2.w;
     g_signal_connect(G_OBJECT(config_subtitle_fuzziness), "format-value",
                      G_CALLBACK(subtitle_fuzziness_format_callback), NULL);
     gtk_widget_set_size_request(config_subtitle_fuzziness, 150, -1);
     gtk_range_set_value(GTK_RANGE(config_subtitle_fuzziness), subtitle_fuzziness);
-    add2table_config (conf_table, label, config_subtitle_fuzziness, &i);
+    w_gtk_grid_append_row (&grid);
 
 
     /// Page 2
-    conf_table = page_table[2];
-    i = 0;
+    grid.table = page_table[2];
+    grid.row = 0;
 
-    label = gtk_label_new(_("<span weight=\"bold\">Application Preferences</span>"));
-    gtk_label_set_use_markup(GTK_LABEL(label), TRUE);
-    add2table_config (conf_table, label, NULL, &i);
-    gtk_widget_set_halign (label, GTK_ALIGN_START);
+    grid.c1.w = gtk_label_new(_("<span weight=\"bold\">Application Preferences</span>"));
+    grid.c1.align = GTK_ALIGN_START;
+    gtk_label_set_use_markup(GTK_LABEL(grid.c1.w), TRUE);
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new(_("Media Resume:"));
-    gtk_widget_show(label);
-    add2table_config (conf_table, label, config_resume_mode, &i);
+    grid.c1.w = gtk_label_new(_("Media Resume:"));
+    grid.c2.w = config_resume_mode;
+    grid.c1.align = GTK_ALIGN_END;
+    w_gtk_grid_append_row (&grid);
 
-    config_playlist_visible = gtk_check_button_new_with_label(_("Start with playlist visible"));
+    grid.c1.w = gtk_check_button_new_with_label(_("Start with playlist visible"));
+    grid.c1.align = GTK_ALIGN_START;
+    config_playlist_visible = grid.c1.w;
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_playlist_visible), playlist_visible);
-    add2table_config (conf_table, config_playlist_visible, NULL, &i);
+    w_gtk_grid_append_row (&grid);
 
-    config_details_visible = gtk_check_button_new_with_label(_("Start with details visible"));
+    grid.c1.w = gtk_check_button_new_with_label(_("Start with details visible"));
+    config_details_visible = grid.c1.w;
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_details_visible), details_visible);
-    add2table_config (conf_table, config_details_visible, NULL, &i);
+    w_gtk_grid_append_row (&grid);
 
-    config_use_mediakeys = gtk_check_button_new_with_label(_("Respond to Keyboard Media Keys"));
+    grid.c1.w = gtk_check_button_new_with_label(_("Respond to Keyboard Media Keys"));
+    config_use_mediakeys = grid.c1.w;
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_use_mediakeys), use_mediakeys);
-    add2table_config (conf_table, config_use_mediakeys, NULL, &i);
+    w_gtk_grid_append_row (&grid);
 
-    config_use_defaultpl = gtk_check_button_new_with_label(_("Use default playlist"));
+    grid.c1.w = gtk_check_button_new_with_label(_("Use default playlist"));
+    config_use_defaultpl = grid.c1.w;
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_use_defaultpl), use_defaultpl);
-    add2table_config (conf_table, config_use_defaultpl, NULL, &i);
+    w_gtk_grid_append_row (&grid);
 
-    config_show_status_icon = gtk_check_button_new_with_label(_("Show status icon"));
+    grid.c1.w = gtk_check_button_new_with_label(_("Show status icon"));
+    config_show_status_icon = grid.c1.w;
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_show_status_icon), show_status_icon);
-    add2table_config (conf_table, config_show_status_icon, NULL, &i);
+    w_gtk_grid_append_row (&grid);
 
-    config_vertical_layout = gtk_check_button_new_with_label(_("Place playlist below media (requires application restart)"));
+    grid.c1.w = gtk_check_button_new_with_label(_("Place playlist below media (requires application restart)"));
+    config_vertical_layout = grid.c1.w;
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_vertical_layout), vertical_layout);
-    add2table_config (conf_table, config_vertical_layout, NULL, &i);
+    w_gtk_grid_append_row (&grid);
 
-    config_single_instance = gtk_check_button_new_with_label(_("Only allow one instance of G-MPlayer"));
+    grid.c1.w = gtk_check_button_new_with_label(_("Only allow one instance of G-MPlayer"));
+    config_single_instance = grid.c1.w;
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_single_instance), single_instance);
     g_signal_connect(G_OBJECT(config_single_instance), "toggled", G_CALLBACK(config_single_instance_callback), NULL);
-    add2table_config (conf_table, config_single_instance, NULL, &i);
+    w_gtk_grid_append_row (&grid);
 
-    config_replace_and_play = gtk_check_button_new_with_label(_("When opening in single instance mode, replace existing file"));
+    grid.c1.w = gtk_check_button_new_with_label(_("When opening in single instance mode, replace existing file"));
+    grid.c1.margin_start = 12;
+    config_replace_and_play = grid.c1.w;
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_replace_and_play), replace_and_play);
     gtk_widget_set_sensitive(config_replace_and_play,
                              gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(config_single_instance)));
-    gtk_widget_set_margin_start (config_replace_and_play, 12);
-    add2table_config (conf_table, config_replace_and_play, NULL, &i);
+    w_gtk_grid_append_row (&grid);
 
-    config_bring_to_front = gtk_check_button_new_with_label(_("When opening file, bring main window to front"));
+    grid.c1.w = gtk_check_button_new_with_label(_("When opening file, bring main window to front"));
+    grid.c1.margin_start = 12;
+    config_bring_to_front = grid.c1.w;
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_bring_to_front), bring_to_front);
     gtk_widget_set_sensitive(config_bring_to_front,
                              gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(config_single_instance)));
     gtk_widget_set_margin_start (config_bring_to_front, 12);
-    add2table_config (conf_table, config_bring_to_front, NULL, &i);
+    w_gtk_grid_append_row (&grid);
 
-    config_remember_loc = gtk_check_button_new_with_label(_("Remember Window Location and Size"));
+    grid.c1.w = gtk_check_button_new_with_label(_("Remember Window Location and Size"));
+    config_remember_loc = grid.c1.w;
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_remember_loc), remember_loc);
-    add2table_config (conf_table, config_remember_loc, NULL, &i);
+    w_gtk_grid_append_row (&grid);
 
-    config_resize_on_new_media = gtk_check_button_new_with_label(_("Resize window when new video is loaded"));
+    grid.c1.w = gtk_check_button_new_with_label(_("Resize window when new video is loaded"));
+    config_resize_on_new_media = grid.c1.w;
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_resize_on_new_media), resize_on_new_media);
-    add2table_config (conf_table, config_resize_on_new_media, NULL, &i);
+    w_gtk_grid_append_row (&grid);
 
-    config_keep_on_top = gtk_check_button_new_with_label(_("Keep window above other windows"));
+    grid.c1.w = gtk_check_button_new_with_label(_("Keep window above other windows"));
+    config_keep_on_top = grid.c1.w;
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_keep_on_top), keep_on_top);
-    add2table_config (conf_table, config_keep_on_top, NULL, &i);
+    w_gtk_grid_append_row (&grid);
 
-    config_pause_on_click = gtk_check_button_new_with_label(_("Pause playback on mouse click"));
+    grid.c1.w = gtk_check_button_new_with_label(_("Pause playback on mouse click"));
+    config_pause_on_click = grid.c1.w;
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_pause_on_click), !disable_pause_on_click);
-    add2table_config (conf_table, config_pause_on_click, NULL, &i);
+    w_gtk_grid_append_row (&grid);
 
-    config_disable_animation = gtk_check_button_new_with_label(_("Disable Fullscreen Control Bar Animation"));
+    grid.c1.w = gtk_check_button_new_with_label(_("Disable Fullscreen Control Bar Animation"));
+    config_disable_animation = grid.c1.w;
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_disable_animation), disable_animation);
-    add2table_config (conf_table, config_disable_animation, NULL, &i);
+    w_gtk_grid_append_row (&grid);
 
-    config_disable_cover_art_fetch = gtk_check_button_new_with_label(_("Disable Cover Art Fetch"));
+    grid.c1.w = gtk_check_button_new_with_label(_("Disable Cover Art Fetch"));
+    config_disable_cover_art_fetch = grid.c1.w;
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_disable_cover_art_fetch), disable_cover_art_fetch);
-    add2table_config (conf_table, config_disable_cover_art_fetch, NULL, &i);
+    w_gtk_grid_append_row (&grid);
 
-    config_mouse_wheel = gtk_check_button_new_with_label(_("Use Mouse Wheel to change volume, instead of seeking"));
+    grid.c1.w = gtk_check_button_new_with_label(_("Use Mouse Wheel to change volume, instead of seeking"));
+    config_mouse_wheel = grid.c1.w;
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_mouse_wheel), mouse_wheel_changes_volume);
-    add2table_config (conf_table, config_mouse_wheel, NULL, &i);
+    w_gtk_grid_append_row (&grid);
 
-    config_verbose = gtk_check_button_new_with_label(_("Verbose Debug Enabled"));
+    grid.c1.w = gtk_check_button_new_with_label(_("Verbose Debug Enabled"));
+    config_verbose = grid.c1.w;
     gtk_widget_set_tooltip_text(config_verbose, _("When this option is set, extra debug information is sent to the terminal or into ~/.xsession-errors"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_verbose), verbose);
-    add2table_config (conf_table, config_verbose, NULL, &i);
+    w_gtk_grid_append_row (&grid);
 
     /// page 3
-    conf_table = page_table[3];
-    i = 0;
+    grid.table = page_table[3];
+    grid.row = 0;
 
-    label = gtk_label_new(_("<span weight=\"bold\">Keyboard Shortcuts</span>\n\n"
+    grid.c1.w = gtk_label_new(_("<span weight=\"bold\">Keyboard Shortcuts</span>\n\n"
                                  "Place the cursor in the box next to the shortcut you want to modify\n"
                                  "Then press the keys you would like for the shortcut"));
-    gtk_label_set_use_markup(GTK_LABEL(label), TRUE);
-    add2table_config (conf_table, label, NULL, &i);
-    gtk_widget_set_halign (label, GTK_ALIGN_START);
+    grid.c1.align = GTK_ALIGN_START;
+    gtk_label_set_use_markup(GTK_LABEL(grid.c1.w), TRUE);
+    w_gtk_grid_append_row (&grid);
+
+    grid.c1.align = GTK_ALIGN_END;
 
     for (j = 0; j < KEY_COUNT; j++)
     {
-        label = gtk_label_new(accel_keys_description[j]);
-        config_accel_keys[j] = gtk_entry_new();
-
+        grid.c1.w = gtk_label_new(accel_keys_description[j]);
+        grid.c2.w = gtk_entry_new();
+        config_accel_keys[j] = grid.c2.w;
         if (get_key_and_modifier(accel_keys[j], &key, &modifier)) {
             gtk_entry_set_text(GTK_ENTRY(config_accel_keys[j]),
                                g_strdup_printf("%s%s%s%s", (modifier & GDK_CONTROL_MASK) ? "Control-" : "",
@@ -4639,59 +4668,67 @@ f    label = gtk_label_new(_("Default Volume Level:"));
         g_signal_connect(G_OBJECT(config_accel_keys[j]), "key_press_event", G_CALLBACK(accel_key_key_press_event),
                          GINT_TO_POINTER(j));
         gtk_widget_set_size_request(GTK_WIDGET(config_accel_keys[j]), 150, -1);
-        add2table_config (conf_table, label, config_accel_keys[j], &i);
+        w_gtk_grid_append_row (&grid);
     }
-    label = gtk_button_new_with_label(_("Reset Keys"));
-    g_signal_connect(G_OBJECT(label), "clicked", G_CALLBACK(reset_keys_callback), NULL);
-    gtk_widget_set_size_request(label, 100, -1);
-    add2table_config (conf_table, label, NULL, &i);
+
+    grid.c1.w = gtk_button_new_with_label(_("Reset Keys"));
+    grid.c1.width = 1;
+    g_signal_connect(G_OBJECT(grid.c1.w), "clicked", G_CALLBACK(reset_keys_callback), NULL);
+    gtk_widget_set_size_request(grid.c1.w, 100, -1);
+    w_gtk_grid_append_row (&grid);
 
 
     /// page 4
-    conf_table = page_table[4];
-    i = 0;
+    grid.table = page_table[4];
+    grid.row = 0;
 
-    label = gtk_label_new(_("<span weight=\"bold\">Advanced Settings for MPlayer</span>"));
-    gtk_label_set_use_markup(GTK_LABEL(label), TRUE);
-    add2table_config (conf_table, label, NULL, &i);
-    gtk_widget_set_halign (label, GTK_ALIGN_START);
+    grid.c1.w = gtk_label_new(_("<span weight=\"bold\">Advanced Settings for MPlayer</span>"));
+    grid.c1.align = GTK_ALIGN_START;
+    gtk_label_set_use_markup(GTK_LABEL(grid.c1.w), TRUE);
+    w_gtk_grid_append_row (&grid);
 
+    grid.c1.w = config_softvol;
     gtk_widget_set_tooltip_text (config_softvol, _("Set this option if changing the volume in G-MPlayer changes the master volume"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_softvol), softvol);
-    gtkcompat_grid_attach (GTK_GRID(conf_table), config_softvol, 0, 2, i, i + 1);
     g_signal_connect(G_OBJECT(config_softvol), "toggled", G_CALLBACK(config_softvol_callback), NULL);
-    i++;
+    w_gtk_grid_append_row (&grid);
 
-    config_remember_softvol = gtk_check_button_new_with_label(_("Remember last software volume level"));
+    grid.c1.w = gtk_check_button_new_with_label(_("Remember last software volume level"));
+    config_remember_softvol = grid.c1.w;
     gtk_widget_set_tooltip_text (config_remember_softvol, _("Set this option if you want the software volume level to be remembered"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_remember_softvol), remember_softvol);
     gtk_widget_set_sensitive(config_remember_softvol, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(config_softvol)));
-    add2table_config (conf_table, config_remember_softvol, NULL, &i);
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new(_("Volume Gain (-200dB to +60dB)"));
-    config_volume_gain = gtk_spin_button_new_with_range(-200, 60, 1);
+    grid.c1.w = gtk_label_new(_("Volume Gain (-200dB to +60dB)"));
+    grid.c2.w = gtk_spin_button_new_with_range(-200, 60, 1);
+    config_volume_gain = grid.c2.w;
     gtk_widget_set_size_request(config_volume_gain, -1, -1);
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(config_volume_gain), volume_gain);
     gtk_widget_set_sensitive(config_volume_gain, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(config_softvol)));
-    add2table_config (conf_table, label, config_volume_gain, &i);
+    w_gtk_grid_append_row (&grid);
 
-    config_deinterlace = gtk_check_button_new_with_mnemonic(_("De_interlace Video"));
+    grid.c1.w = gtk_check_button_new_with_mnemonic(_("De_interlace Video"));
+    config_deinterlace = grid.c1.w;
     gtk_widget_set_tooltip_text(config_deinterlace, _("Set this option if video looks striped"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_deinterlace), !disable_deinterlace);
-    add2table_config (conf_table, config_deinterlace, NULL, &i);
+    w_gtk_grid_append_row (&grid);
 
-    config_framedrop = gtk_check_button_new_with_mnemonic(_("_Drop frames"));
+    grid.c1.w = gtk_check_button_new_with_mnemonic(_("_Drop frames"));
+    config_framedrop = grid.c1.w;
     gtk_widget_set_tooltip_text(config_framedrop, _("Set this option if video is well behind the audio"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_framedrop), !disable_framedrop);
-    add2table_config (conf_table, config_framedrop, NULL, &i);
+    w_gtk_grid_append_row (&grid);
 
-    config_forcecache = gtk_check_button_new_with_label(_("Enable mplayer cache"));
+    grid.c1.w = gtk_check_button_new_with_label(_("Enable mplayer cache"));
+    config_forcecache = grid.c1.w;
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_forcecache), forcecache);
     g_signal_connect(G_OBJECT(config_forcecache), "toggled", G_CALLBACK(config_forcecache_callback), NULL);
-    add2table_config (conf_table, config_forcecache, NULL, &i);
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new(_("Cache Size (KB):"));
-    config_cachesize = gtk_spin_button_new_with_range(32, 256 * 1024, 512);
+    grid.c1.w = gtk_label_new(_("Cache Size (KB):"));
+    grid.c2.w = gtk_spin_button_new_with_range(32, 256 * 1024, 512);
+    config_cachesize = grid.c2.w;
     gtk_widget_set_tooltip_text(config_cachesize, _
                                 ("Amount of data to cache when playing media, use higher values for slow devices and sites."));
     gtk_widget_set_size_request(config_cachesize, 100, -1);
@@ -4699,37 +4736,39 @@ f    label = gtk_label_new(_("Default Volume Level:"));
     gtk_entry_set_width_chars(GTK_ENTRY(config_cachesize), 6);
     gtk_entry_set_alignment(GTK_ENTRY(config_cachesize), 1);
     gtk_widget_set_sensitive(config_cachesize, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(config_forcecache)));
-    add2table_config (conf_table, label, config_cachesize, &i);
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new("");
-    add2table_config (conf_table, label, NULL, &i);
+    w_gtk_grid_append_row (&grid); /* space */
 
-    label = gtk_label_new(_("MPlayer Executable:"));
-    config_mplayer_bin = gtk_file_chooser_button_new("Select", GTK_FILE_CHOOSER_ACTION_OPEN);
+    grid.c1.w = gtk_label_new(_("MPlayer Executable:"));
+    grid.c2.w = gtk_file_chooser_button_new("Select", GTK_FILE_CHOOSER_ACTION_OPEN);
+    config_mplayer_bin = grid.c2.w;
     gtk_widget_set_tooltip_text(config_mplayer_bin, _("Use this option to specify a mplayer application that is not in the path"));
     if (mplayer_bin != NULL) {
         gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(config_mplayer_bin), mplayer_bin);
     }
-    add2table_config (conf_table, label, config_mplayer_bin, &i);
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new("");
-    add2table_config (conf_table, label, NULL, &i);
+    w_gtk_grid_append_row (&grid); /* space */
 
-    label = gtk_label_new(_("MPlayer Default Optical Device"));
+    grid.c1.w = gtk_label_new(_("MPlayer Default Optical Device"));
+    grid.c2.w  = config_mplayer_dvd_device;
     gtk_widget_set_size_request(GTK_WIDGET(config_mplayer_dvd_device), 200, -1);
-    add2table_config (conf_table, label, config_mplayer_dvd_device, &i);
+    w_gtk_grid_append_row (&grid);
 
-    label = gtk_label_new("");
-    add2table_config (conf_table, label, NULL, &i);
+    w_gtk_grid_append_row (&grid); /* space */
 
-    label = gtk_label_new(_("Extra Options to MPlayer:"));
+    grid.c1.w = gtk_label_new(_("Extra Options to MPlayer:"));
+    grid.c1.align = GTK_ALIGN_START;
+    w_gtk_grid_append_row (&grid);
+
     config_extraopts = gtk_entry_new();
+    grid.c1.w = config_extraopts;
+    grid.c1.align = GTK_ALIGN_FILL;
     gtk_widget_set_tooltip_text(config_extraopts, _("Add any extra mplayer options here (filters etc)"));
     gtk_entry_set_text(GTK_ENTRY(config_extraopts), ((extraopts) ? extraopts : ""));
     gtk_entry_set_width_chars(GTK_ENTRY(config_extraopts), 40);
-    add2table_config (conf_table, label, NULL, &i);
-    add2table_config (conf_table, config_extraopts, NULL, &i);
-    gtk_widget_set_halign (label, GTK_ALIGN_START);
+    w_gtk_grid_append_row (&grid);
 
     // --
     gtk_container_add(GTK_CONTAINER(conf_hbutton_box), conf_cancel);
@@ -5809,12 +5848,11 @@ GtkWidget *create_window()
     g_signal_connect(media_hbox, "size_allocate", G_CALLBACK(view_option_size_allocate_callback), NULL);
 
     details_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-    //=====================
-    create_details_table();
-    //=====================
+    //==================================
+    create_details_table (details_vbox);
+    //==================================
     g_signal_connect(details_vbox, "show", G_CALLBACK(view_option_show_callback), NULL);
     g_signal_connect(details_vbox, "size_allocate", G_CALLBACK(view_option_size_allocate_callback), NULL);
-    gtk_container_add(GTK_CONTAINER(details_vbox), details_table);
 
     gtk_widget_set_halign (media_label, GTK_ALIGN_START);
     gtk_box_pack_start(GTK_BOX(vbox), media, TRUE, TRUE, 0);

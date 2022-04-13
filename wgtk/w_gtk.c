@@ -176,30 +176,128 @@ GtkWidget * w_gtk_button_new (const char * label,
 }
 
 
-GtkWidget * w_gtk_notebook_add_tab (GtkWidget * notebook, char * label_str, int rows, int cols)
+GtkWidget * w_gtk_notebook_add_tab (GtkWidget * notebook, char * label_str)
 {
     // returns GtkGrid / GtkTable
     GtkWidget *vbox;
     GtkWidget *label;
-    GtkWidget *table = NULL;
-    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 5);
+    GtkWidget *table;
+    vbox  = gtk_box_new (GTK_ORIENTATION_VERTICAL, 5);
     label = gtk_label_new_with_mnemonic (label_str);
+    table = w_gtk_grid_new (vbox);
     gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, label);
-    gtk_container_set_border_width (GTK_CONTAINER (vbox), 5);
-    if (rows && cols) {
-        //table = gtkcompat_grid_new (rows, cols);
+    return table;
+}
+
+/* ================================================== */
+/*               GtkTable / GtkGrid                   */
+/* ================================================== */
+
+GtkWidget * w_gtk_grid_new (GtkWidget *box)
+{
+    // new GtkGrid or a GtkTable that must be resized
+    GtkWidget * table;
+    //table = gtkcompat_grid_new (1, 1);
 #if GTK_MAJOR_VERSION >= 3
-        table = gtk_grid_new ();
-        gtk_grid_set_column_spacing (GTK_GRID(table), 5);
-        //gtk_grid_set_row_spacing (GTK_GRID(table), 3);
+    table = gtk_grid_new ();
+    gtk_grid_set_column_spacing (GTK_GRID(table), 5);
+    //gtk_grid_set_row_spacing (GTK_GRID(table), 3);
 #else
-        table = gtk_table_new (rows, cols, FALSE);
-        gtk_table_set_col_spacings (GTK_TABLE(table), 5);
-        //gtk_table_set_row_spacings (GTK_TABLE(table), 3);
+    table = gtk_table_new (1, 1, FALSE);
+    gtk_table_set_col_spacings (GTK_TABLE(table), 5);
+    //gtk_table_set_row_spacings (GTK_TABLE(table), 3);
 #endif
-        gtk_box_pack_start (GTK_BOX(vbox), table, FALSE, FALSE, 0);
+    if (box) {
+        //gtk_box_set_homogeneous (GTK_BOX(box), TRUE);
+        gtk_container_set_border_width (GTK_CONTAINER (box), 5);
+        // FALSE, FALSE is required for GtkTable, otherwise
+        // the widgets height may be incorrect
+        gtk_box_pack_start (GTK_BOX(box), table, FALSE, FALSE, 0);
     }
     return table;
+}
+
+
+static void set_walignment (WGtkAlignmentParams *col)
+{
+    GtkAlign align = col->align;
+    if (!col->w) {
+        return;
+    }
+#if GTK_MAJOR_VERSION >= 3
+    // GtkGrid: columns don't have a proper width, this doesn't happen with GtkTable
+    //   specially noticeable in GtkNotebook tabs
+    gtk_widget_set_hexpand (col->w, TRUE);
+#endif
+    gtk_widget_set_halign (col->w, col->align);
+    if (col->margin_start)  gtk_widget_set_margin_start (col->w, col->margin_start);
+    if (col->margin_end)    gtk_widget_set_margin_end   (col->w, col->margin_end);
+    if (col->margin_top)    gtk_widget_set_margin_top   (col->w, col->margin_top);
+    if (col->margin_bottom) gtk_widget_set_margin_bottom(col->w, col->margin_bottom);
+    memset (col, 0, sizeof(*col));
+    // keep align
+    col->align = align;
+}
+
+void w_gtk_grid_append_row (WGtkTableParams *t)
+{
+    int ncols;
+#if GTK_MAJOR_VERSION <= 2
+    // resize GtkTable, it should be created with 1_row 1_col
+    gtk_table_resize (GTK_TABLE(t->table), t->row+1, t->cols);
+    // use GtkAlignment to emulate some gtk3 functions (gtk_widget_set_halign)
+    t->c1.w = w_gtk_widget_add_alignment (t->c1.w);
+    t->c2.w = w_gtk_widget_add_alignment (t->c2.w);
+    t->c3.w = w_gtk_widget_add_alignment (t->c3.w);
+    t->c4.w = w_gtk_widget_add_alignment (t->c4.w);
+#endif
+    if (!t->c1.w && !t->c2.w && !t->c3.w && !t->c4.w) {
+        t->c1.w = gtk_label_new ("");
+    }
+    if (t->cols == 1)
+    {
+        gtk_grid_attach (GTK_GRID(t->table), t->c1.w, 0, t->row, 1, 1);
+    }
+    else if (t->cols == 2)
+    {
+        if (t->c1.w && t->c2.w) {
+            gtk_grid_attach (GTK_GRID(t->table), t->c1.w, 0, t->row, 1, 1);
+            gtk_grid_attach (GTK_GRID(t->table), t->c2.w, 1, t->row, 1, 1);
+        } else if (t->c1.w && !t->c2.w) {
+            ncols = t->c1.width ? t->c1.width : 2;
+            gtk_grid_attach (GTK_GRID(t->table), t->c1.w, 0, t->row, ncols, 1);
+        } else if (t->c2.w) {
+            // only 2nd column
+            gtk_grid_attach (GTK_GRID(t->table), t->c2.w, 1, t->row, 1, 1);
+        }
+    }
+    else if (t->cols == 3 || t->cols == 4)
+    {
+        if (t->c1.w) {
+            gtk_grid_attach (GTK_GRID(t->table), t->c1.w, 0, t->row, 1, 1);
+        }
+        if (t->c2.w) {
+            gtk_grid_attach (GTK_GRID(t->table), t->c2.w, 1, t->row, 1, 1);
+        }
+        if (t->c3.w) {
+            gtk_grid_attach (GTK_GRID(t->table), t->c3.w, 2, t->row, 1, 1);
+        }
+        if (t->cols == 4) {
+            if (t->c4.w) {
+                gtk_grid_attach (GTK_GRID(t->table), t->c4.w, 3, t->row, 1, 1);
+            }
+        }
+    }
+    else
+    {
+        fprintf (stderr, "w_gtk_grid_append_row(): no more than 4 rows are supported");
+    }
+    set_walignment (&(t->c1));
+    set_walignment (&(t->c2));
+    set_walignment (&(t->c3));
+    set_walignment (&(t->c4));
+    // increase current row
+    t->row = t->row + 1;
 }
 
 
@@ -362,12 +460,24 @@ void w_gtk_combo_box_find_and_select (GtkComboBox *combo, char *str)
 
 #if ! GTK_CHECK_VERSION (3, 0, 0)
 
-static void set_alignment (GtkWidget *widget, GtkAlign align, gboolean horizontal)
+GtkWidget * w_gtk_widget_add_alignment (GtkWidget *widget)
 {
-    if (!GTK_IS_MISC(widget)) {
-        // only GtkLabel/GtkArrow/GtkImage/GtkPixmap support this feature
-        return;
+    // this will be handy to emulate some gtk3 functions (gtk_widget_set_halign, etc)
+    // use g_object_get_data(widget,"alignment") to get the alignment to apply properties
+    if (!widget) {
+        return NULL;
     }
+    GtkWidget *alignment; /* GtkAlignment */
+    alignment = gtk_alignment_new (0.5, 0.5, 0, 0);
+    gtk_container_add (GTK_CONTAINER(alignment), widget);
+    g_object_set_data (G_OBJECT(widget), "alignment", alignment);
+    return alignment;
+}
+
+
+static void misc_set_alignment (GtkWidget *widget, GtkAlign align, gboolean horizontal)
+{
+    // only GtkLabel/GtkArrow/GtkImage/GtkPixmap support this feature
     GtkMisc *misc = GTK_MISC (widget);
     gfloat *misc_align = horizontal ? &(misc->xalign) : &(misc->yalign);
     char *align_str    = horizontal ? "xalign" : "yalign";
@@ -386,12 +496,9 @@ static void set_alignment (GtkWidget *widget, GtkAlign align, gboolean horizonta
     }
 }
 
-static void set_padding (GtkWidget *widget, gint margin, gboolean horizontal)
+static void misc_set_padding (GtkWidget *widget, gint margin, gboolean horizontal)
 {
-    if (!GTK_IS_MISC(widget)) {
-        // only GtkLabel/GtkArrow/GtkImage/GtkPixmap support this feature
-        return;
-    }
+    // only GtkLabel/GtkArrow/GtkImage/GtkPixmap support this feature
     GtkMisc *misc = GTK_MISC (widget);
     guint16 *misc_pad = horizontal ? &(misc->xpad) : &(misc->ypad);
     char *pad_str = horizontal ? "xpad" : "ypad";
@@ -407,18 +514,114 @@ static void set_padding (GtkWidget *widget, gint margin, gboolean horizontal)
     }
 }
 
-void gtk_widget_set_halign (GtkWidget *widget, GtkAlign align) {
-    set_alignment (widget, align, TRUE);
-}
-void gtk_widget_set_valign (GtkWidget *widget, GtkAlign align) {
-    set_alignment (widget, align, FALSE);
+
+static int alignment_set_align (GtkWidget *widget, GtkAlign align, char *property)
+{
+    GtkWidget *alignment = NULL;
+    char *p2;
+    if (GTK_IS_ALIGNMENT(widget)) {
+        alignment = widget;
+    } else {
+        alignment = g_object_get_data (G_OBJECT(widget), "alignment");
+    }
+    if (!alignment) {
+        return -1;
+    }
+    if (*property == 'x') {
+        p2 = "xscale";
+    } else {
+        p2 = "yscale";
+    }
+    gfloat walign = 0.0;
+    if   (align == GTK_ALIGN_CENTER) walign = 0.5;
+    else if (align == GTK_ALIGN_END) walign = 1.0;
+    if (align == GTK_ALIGN_FILL) {
+        /* fill GtkAlignment widget */
+        g_object_set (G_OBJECT(alignment), p2, 1.0, NULL);
+    } else {
+        g_object_set (G_OBJECT(alignment), property, walign, NULL);
+    }
+    return 0;
 }
 
-void gtk_widget_set_margin_start  (GtkWidget *widget, gint margin) {
-    set_padding (widget, margin, TRUE);
+static int alignment_set_padding (GtkWidget *widget, int margin, char *property)
+{
+    GtkWidget *alignment = NULL;
+    if (GTK_IS_ALIGNMENT(widget)) {
+        alignment = widget;
+    } else {
+        alignment = g_object_get_data (G_OBJECT(widget), "alignment");
+    }
+    if (!alignment) {
+        return -1;
+    }
+    g_object_set (G_OBJECT(alignment), property, margin, NULL);
+    return 0;
 }
-void gtk_widget_set_margin_top (GtkWidget *widget, gint margin) {
-    set_padding (widget, margin, FALSE);
+
+
+void gtk_widget_set_halign (GtkWidget *widget, GtkAlign align)
+{
+    if (alignment_set_align (widget, align, "xalign") != -1) {
+        return;
+    }
+    if (GTK_IS_MISC(widget)) {
+        misc_set_alignment (widget, align, TRUE);
+        return;
+    }
+}
+
+void gtk_widget_set_valign (GtkWidget *widget, GtkAlign align)
+{
+    if (alignment_set_align (widget, align, "yalign") != -1) {
+        return;
+    }
+    if (GTK_IS_MISC(widget)) {
+        misc_set_alignment (widget, align, FALSE);
+        return;
+    }
+}
+
+void gtk_widget_set_margin_start  (GtkWidget *widget, gint margin)
+{
+    if (alignment_set_padding (widget, margin, "left-padding") != -1) {
+        return;
+    }
+    if (GTK_IS_MISC(widget)) {
+        misc_set_padding (widget, margin, TRUE);
+        return;
+    }
+}
+
+void gtk_widget_set_margin_end (GtkWidget *widget, gint margin)
+{
+    alignment_set_padding (widget, margin, "right-padding");
+}
+
+void gtk_widget_set_margin_bottom (GtkWidget *widget, gint margin)
+{
+    alignment_set_padding (widget, margin, "bottom-padding");
+}
+
+void gtk_widget_set_margin_top (GtkWidget *widget, gint margin)
+{
+    if (alignment_set_padding (widget, margin, "top-padding") != -1) {
+        return;
+    }
+    if (GTK_IS_MISC(widget)) {
+        misc_set_padding (widget, margin, FALSE);
+        return;
+    }
+}
+
+void gtk_grid_attach (GtkGrid *grid, GtkWidget *child, gint left, gint top, gint width, gint height)
+{
+    if (GTK_IS_ALIGNMENT(child)) {
+        gtk_table_attach (grid, child, left, left+width, top, top+height,
+                          GTK_EXPAND|GTK_FILL, GTK_EXPAND|GTK_FILL, 0, 0);
+    } else {
+        gtk_table_attach_defaults (grid, child, left, left+width, top, top+height);
+    }
 }
 
 #endif

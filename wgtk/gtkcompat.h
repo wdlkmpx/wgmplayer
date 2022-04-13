@@ -4,7 +4,7 @@
  * For more information, please refer to <https://unlicense.org>
  */
 
-/** 2022-03-02 **/
+/** 2022-04-12 **/
 
 /*
  * gtkcompat.h, GTK2+ compatibility layer
@@ -18,31 +18,6 @@
  * Apps should support gtk2 >= 2.14 / gtk3 >= 3.14
  * 
  */
-
-/* 
-special defines:
-	gtkcompat_widget_set_halign_left   (w)
-	gtkcompat_widget_set_halign_center (w)
-	gtkcompat_widget_set_halign_right  (w)
-*/
-
-/*
-GTKCOMPAT_DRAW_SIGNAL (gtk3="draw", gtk2="expose_event")
----------------------
- g_signal_connect (w, GTKCOMPAT_DRAW_SIGNAL, G_CALLBACK (w_draw_cb), NULL);
- gboolean w_draw_cb (GtkWidget *w, gpointer compat, gpointer user_data)
- {
- #if GTK_CHECK_VERSION (3, 0, 0)
-    cairo_t * cr = (cairo_t *) compat;
- #else // gtk2
-    //GdkEventExpose * event = (GdkEventExpose *) compat;
-    cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (w));
- #endif
- #if GTK_MAJOR_VERSION == 2
-    cairo_destroy (cr);
- #endif
- }
-*/
 
 #ifndef __GTKCOMPAT_H
 #define __GTKCOMPAT_H
@@ -243,8 +218,7 @@ extern "C"
 //-
 #define GTK_GRID GTK_TABLE
 #define GtkGrid  GtkTable
-#define gtk_grid_attach(grid,child,left,top,width,height) \
-    gtk_table_attach_defaults((grid),(child), (left), (left)+(width), (top), (top)+(height))
+//#define gtk_grid_attach(grid,child,left,top,width,height) gtk_table_attach_defaults(grid,child,left,left+width,top,top+height)
 #define gtkcompat_grid_new(rows,cols) (gtk_table_new((rows),(cols),FALSE))
 #define gtkcompat_grid_attach       gtk_table_attach_defaults
 #define gtk_grid_set_column_spacing gtk_table_set_col_spacings
