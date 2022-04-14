@@ -330,9 +330,3 @@ gint gmtk_output_combo_box_get_active_index(GmtkOutputComboBox * output)
     }
     return index;
 }
-
-
-GtkTreeModel *gmtk_output_combo_box_get_tree_model(GmtkOutputComboBox * output)
-{
-    return GTK_TREE_MODEL(output->list);
-}

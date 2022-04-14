@@ -86,7 +86,6 @@ const gchar *gmtk_output_combo_box_get_active_description(GmtkOutputComboBox * o
 GmtkOutputType gmtk_output_combo_box_get_active_type(GmtkOutputComboBox * output);
 gint gmtk_output_combo_box_get_active_card(GmtkOutputComboBox * output);
 gint gmtk_output_combo_box_get_active_index(GmtkOutputComboBox * output);
-GtkTreeModel *gmtk_output_combo_box_get_tree_model(GmtkOutputComboBox * output);
 
 G_END_DECLS
 #endif

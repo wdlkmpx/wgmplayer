@@ -4048,6 +4048,8 @@ void menuitem_config_dialog_cb(GtkMenuItem * menuitem, void *data)
     gint j = -1;
     gint k = -1;
     GtkTreeIter ao_iter;
+    GtkTreeModel *model;
+    gboolean valid;
     gchar *desc;
     guint key;
     GdkModifierType modifier;
@@ -4129,34 +4131,23 @@ void menuitem_config_dialog_cb(GtkMenuItem * menuitem, void *data)
     conf_volume_label = gtk_label_new("");
 
     config_ao = gmtk_output_combo_box_new();
+    model = gtk_combo_box_get_model (GTK_COMBO_BOX(config_ao));
     g_signal_connect(GTK_WIDGET(config_ao), "changed", G_CALLBACK(output_combobox_changed_callback), config_mixer);
 
-    if (gtk_tree_model_get_iter_first(gmtk_output_combo_box_get_tree_model(GMTK_OUTPUT_COMBO_BOX(config_ao)), &ao_iter)) {
-        do {
-            if (gtk_list_store_iter_is_valid
-                (GTK_LIST_STORE(gmtk_output_combo_box_get_tree_model(GMTK_OUTPUT_COMBO_BOX(config_ao))), &ao_iter)) {
-                gtk_tree_model_get(gmtk_output_combo_box_get_tree_model
-                                   (GMTK_OUTPUT_COMBO_BOX(config_ao)), &ao_iter, OUTPUT_DESCRIPTION_COLUMN, &desc, -1);
-
-                gm_log(verbose, G_LOG_LEVEL_DEBUG, "audio_device_name = %s, desc = %s", audio_device_name, desc);
-                if (audio_device_name != NULL && strcmp(audio_device_name, desc) == 0) {
-                    gtk_combo_box_set_active_iter(GTK_COMBO_BOX(config_ao), &ao_iter);
-                    g_free(desc);
-                    break;
-                }
-
-                if ((audio_device_name == NULL || strcmp(audio_device_name, "") == 0)
-                    && strcmp(desc, _("Default")) == 0) {
-                    gtk_combo_box_set_active_iter(GTK_COMBO_BOX(config_ao), &ao_iter);
-                    g_free(desc);
-                    break;
-                }
-                g_free(desc);
-
-            }
-        } while (gtk_tree_model_iter_next
-                 (gmtk_output_combo_box_get_tree_model(GMTK_OUTPUT_COMBO_BOX(config_ao)), &ao_iter));
+    valid = gtk_tree_model_get_iter_first (model, &ao_iter);
+    while (valid)
+    {
+        gtk_tree_model_get (model, &ao_iter, OUTPUT_DESCRIPTION_COLUMN, &desc, -1);
+        gm_log(verbose, G_LOG_LEVEL_DEBUG, "audio_device_name = %s, desc = %s", audio_device_name, desc);
+        if (strcmp(desc, audio_device_name ? audio_device_name : _("Default")) == 0) {
+            gtk_combo_box_set_active_iter(GTK_COMBO_BOX(config_ao), &ao_iter);
+            g_free(desc);
+            break;
+        }
+        g_free(desc);
+        valid = gtk_tree_model_iter_next (model, &ao_iter);
     }
+
     config_alang = gtk_combo_box_text_new_with_entry();
     if (config_alang != NULL) {
         i = 0;
