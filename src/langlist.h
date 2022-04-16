@@ -24,7 +24,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  */
 
-gchar const *const langlist[] = { "Abkhazian,abk,ab",
+const char *langlist[] = 
+{
+    "Abkhazian,abk,ab",
     "Achinese,ace",
     "Acoli,ach",
     "Adangme,ada",
@@ -491,7 +493,10 @@ gchar const *const langlist[] = { "Abkhazian,abk,ab",
     NULL
 };
 
-gchar const *const codepagelist[] = { "",
+
+const char *codepagelist[] =
+{
+    "",
     "UNICODE",
     "UTF-8",
     "BIG5",
@@ -521,3 +526,4 @@ gchar const *const codepagelist[] = { "",
     "enca",
     NULL
 };
+

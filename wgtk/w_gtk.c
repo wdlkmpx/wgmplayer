@@ -17,6 +17,10 @@
 #include "w_gtk.h"
 #include <stdio.h>
 #include <string.h>
+#ifdef ENABLE_NLS
+#include <locale.h>
+#include <libintl.h>
+#endif
 
 GtkWidget * w_gtk_window_new (const char * title,
                               GtkWindow * parent,
@@ -325,19 +329,17 @@ int w_gtk_tree_view_get_num_selected (GtkWidget *tv)
 }
 
 
-void w_gtk_tree_view_clear_list (GtkWidget *tv)
+void w_gtk_tree_view_clear (GtkWidget *tv)
 {
     GtkTreeView  *tree  = GTK_TREE_VIEW (tv);
-    GtkListStore *store = GTK_LIST_STORE (gtk_tree_view_get_model (tree));
-    gtk_list_store_clear (store);
-}
-
-
-void w_gtk_tree_view_clear_tree (GtkWidget *tv)
-{
-    GtkTreeView  *tree  = GTK_TREE_VIEW (tv);
-    GtkTreeStore *store = GTK_TREE_STORE (gtk_tree_view_get_model (tree));
-    gtk_tree_store_clear (store);
+    GtkTreeModel *model = gtk_tree_view_get_model (tree);
+    if (GTK_IS_LIST_STORE(model)) {
+        gtk_list_store_clear (GTK_LIST_STORE(model));
+    } else if (GTK_IS_TREE_STORE(model)) {
+        gtk_tree_store_clear (GTK_TREE_STORE(model));
+    } else {
+        fprintf (stderr, "w_gtk_tree_view_clear: error\n");
+    }
 }
 
 
@@ -366,63 +368,84 @@ void w_gtk_tree_view_select_row (GtkWidget *tv, int n)
     gtk_tree_path_free (tpath);
 }
 
+
 /* ================================================== */
 /*                  COMBO BOX                         */
 /* ================================================== */
 
 
-void w_gtk_glist_to_combo (GtkComboBox *combo, GList *strings, int default_index)
+void w_gtk_combo_box_populate_from_glist (GtkWidget *combo, GList *strings, int default_index)
 {
+    GtkListStore *store;
+    GtkTreeIter iter;
     GList * list;
     char * text;
     int len = 0;
-    gtk_combo_box_text_remove_all (GTK_COMBO_BOX_TEXT (combo));
+
+    store = GTK_LIST_STORE (gtk_combo_box_get_model(GTK_COMBO_BOX(combo)));
+    gtk_list_store_clear (store);
+    //gtk_combo_box_text_remove_all (GTK_COMBO_BOX_TEXT (combo));
     if (!strings) {
         return; // nothing to add
     }
     for (list = strings;  list;  list = list->next)
     {
         text = (char *) list->data;
-        gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), text);
+        gtk_list_store_append (store, &iter);
+        gtk_list_store_set (store, &iter, 0, text, -1);
+        //gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), text);
         len++;
     }
-    if (default_index >= len || default_index < 0) {
+    if (default_index >= len) {
         default_index = 0;
     }
-    gtk_combo_box_set_active (GTK_COMBO_BOX (combo), default_index);
+    if (default_index >= 0) {
+        gtk_combo_box_set_active (GTK_COMBO_BOX (combo), default_index);
+    }
 }
 
 
-void w_gtk_strv_to_combo (GtkComboBox *combo, char **strv, int default_index)
+void w_gtk_combo_box_populate_from_strv (GtkWidget *combo,
+                                         const char **strv,
+                                         int default_index,
+                                         gboolean gettext)
 {
     int i;
     GtkListStore * store;
     GtkTreeIter iter;
-    store = GTK_LIST_STORE (gtk_combo_box_get_model (combo));
+    char *str;
+    store = GTK_LIST_STORE (gtk_combo_box_get_model (GTK_COMBO_BOX(combo)));
     gtk_list_store_clear (store);
     //gtk_combo_box_text_remove_all (GTK_COMBO_BOX_TEXT (combo));
     if (!strv || !*strv) {
         return; /* nothing to add */
     }
     for (i = 0; strv[i]; i++) {
+#ifdef ENABLE_NLS
+        str = gettext ? gettext(strv[i]) : (char*) strv[i];
+#else
+        str = (char*) strv[i];
+#endif
         gtk_list_store_append (store, &iter);
-        gtk_list_store_set (store, &iter, 0, strv[i], -1);
+        gtk_list_store_set (store, &iter, 0, str, -1);
         //gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), strv[i]);
     }
-    if (default_index >= i || default_index < 0) {
+    if (default_index >= i) {
         default_index = 0;
     }
-    gtk_combo_box_set_active (GTK_COMBO_BOX (combo), default_index);
+    if (default_index >= 0) {
+        gtk_combo_box_set_active (GTK_COMBO_BOX (combo), default_index);
+    }
 }
 
 
-int w_gtk_combo_box_get_count (GtkComboBox *combo)
+int w_gtk_combo_box_get_count (GtkWidget *combo)
 {
     GtkTreeModel * model;
     GtkTreeIter iter;
     gboolean valid;
     int count = 0;
-    model = gtk_combo_box_get_model (combo);
+    model = gtk_combo_box_get_model (GTK_COMBO_BOX(combo));
     valid = gtk_tree_model_get_iter_first (model, &iter);
     while (valid) {
         count++;
@@ -432,25 +455,87 @@ int w_gtk_combo_box_get_count (GtkComboBox *combo)
 }
 
 
-void w_gtk_combo_box_find_and_select (GtkComboBox *combo, char *str)
+gboolean w_gtk_combo_box_find_str (GtkWidget *combo, const char *str,
+                                   gboolean select,
+                                   GtkTreeIter *out_iter)
 {
-    GtkTreeModel * model;
-    GtkTreeIter iter;
+    GtkTreeModel *model;
+    GtkTreeIter local_iter;
+    GtkTreeIter *iter = out_iter ? out_iter : &local_iter;
     gboolean valid;
+    gboolean found = FALSE;
     char *value;
     if (!str) {
-        return;
+        return found;
     }
-    model = gtk_combo_box_get_model (combo);
-    valid = gtk_tree_model_get_iter_first (model, &iter);
+    model = gtk_combo_box_get_model (GTK_COMBO_BOX(combo));
+    valid = gtk_tree_model_get_iter_first (model, iter);
     while (valid) {
-        gtk_tree_model_get (model, &iter, 0, &value, -1);
+        gtk_tree_model_get (model, iter, 0, &value, -1);
         if (g_strcmp0 (value, str) == 0) {
-            gtk_combo_box_set_active_iter (combo, &iter);
+            found = TRUE;
             break;
         }
-        valid = gtk_tree_model_iter_next (model, &iter);
+        valid = gtk_tree_model_iter_next (model, iter);
     }
+    if (found && select) {
+        gtk_combo_box_set_active_iter (GTK_COMBO_BOX(combo), iter);
+    }
+    return found;
+}
+
+
+void w_gtk_combo_box_select_or_prepend (GtkWidget *combo, const char *str)
+{
+    if (!str || !*str) {
+        return;
+    }
+    if (!w_gtk_combo_box_find_str (combo, str, TRUE, NULL)) {
+        gtk_combo_box_text_prepend_text (GTK_COMBO_BOX_TEXT(combo), str);
+        gtk_combo_box_set_active (GTK_COMBO_BOX(combo), 0);
+    }
+}
+
+
+void w_gtk_combo_box_set_w_model (GtkWidget *combo, gboolean sort)
+{
+    // column 0: text
+    // column 1: pointer (hidden)
+    GtkCellRenderer * cell;
+    GtkListStore * store;
+    GtkTreeSortable * sortable;
+
+    if (combo)
+    {   // unset previous model
+#if GTK_MAJOR_VERSION >= 3
+        //Gtk-CRITICAL **: gtk_cell_layout_set_attributes: assertion 'GTK_IS_CELL_RENDERER (cell)' failed
+        if (gtk_combo_box_get_has_entry (GTK_COMBO_BOX(combo))) {
+            gtk_combo_box_set_entry_text_column (GTK_COMBO_BOX(combo), 0);
+        }
+#endif
+        gtk_combo_box_set_model (GTK_COMBO_BOX(combo), NULL);
+        gtk_cell_layout_clear (GTK_CELL_LAYOUT(combo));
+    }
+
+    store = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_POINTER);
+    gtk_combo_box_set_model (GTK_COMBO_BOX(combo), GTK_TREE_MODEL(store));
+    g_object_unref (store);
+
+    cell = gtk_cell_renderer_text_new ();
+    gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (combo), cell, TRUE);
+    gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (combo), cell,
+                                    "text", 0, NULL);
+    if (sort) {
+        sortable = GTK_TREE_SORTABLE(store);
+        gtk_tree_sortable_set_sort_column_id (sortable, 0, GTK_SORT_ASCENDING);
+    }
+#if GTK_CHECK_VERSION(2, 24, 0)
+    /* gtk 2.24 using gtk_combo_box_new_with_entry() */
+    //GLib-GObject-WARNING **: unable to set property 'text' of type 'gchararray' from value of type 'guchar'
+    if (gtk_combo_box_get_has_entry (GTK_COMBO_BOX(combo))) {
+        gtk_combo_box_set_entry_text_column (GTK_COMBO_BOX(combo), 0);
+    }
+#endif
 }
 
 
@@ -458,7 +543,7 @@ void w_gtk_combo_box_find_and_select (GtkComboBox *combo, char *str)
 /*                   GTK < 3.0                        */
 /* ================================================== */
 
-#if ! GTK_CHECK_VERSION (3, 0, 0)
+#if GTK_MAJOR_VERSION < 3
 
 GtkWidget * w_gtk_widget_add_alignment (GtkWidget *widget)
 {
@@ -627,3 +712,21 @@ void gtk_grid_attach (GtkGrid *grid, GtkWidget *child, gint left, gint top, gint
 #endif
 
 
+/* ================================================== */
+/*                   GTK < 2.24                       */
+/* ================================================== */
+
+#if !GTK_CHECK_VERSION(2, 24, 0)
+
+gboolean gtk_combo_box_get_has_entry (GtkComboBox *combo_box)
+{
+    GtkWidget *child;
+    child = gtk_bin_get_child (GTK_BIN(combo_box));
+    if (child && GTK_IS_ENTRY(child)) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
+}
+
+#endif

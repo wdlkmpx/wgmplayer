@@ -15,11 +15,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with gui.c.  If not, write to:
- * 	The Free Software Foundation, Inc.,
- * 	51 Franklin Street, Fifth Floor
- * 	Boston, MA  02110-1301, USA.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -3960,8 +3955,7 @@ void output_combobox_changed_callback(GtkComboBox * config_ao, gpointer data)
             device = g_strdup_printf("hw:%i", card);
         }
 
-        gtk_list_store_clear(GTK_LIST_STORE(gtk_combo_box_get_model(config_mixer)));
-        gtk_combo_box_set_active(config_mixer, -1);
+        gtk_combo_box_text_remove_all (GTK_COMBO_BOX_TEXT(config_mixer));
 
 #ifdef HAVE_ASOUNDLIB
         if (config_mixer != NULL) {
@@ -4040,17 +4034,11 @@ void menuitem_config_dialog_cb(GtkMenuItem * menuitem, void *data)
     GtkWidget *conf_hbutton_box;
     GtkWidget *conf_ok;
     GtkWidget *conf_cancel;
-    GtkWidget *entry;
     GtkWidget *page_table[5];
     GtkWidget *notebook;
     GdkColor sub_color;
     gint i = 0;
     gint j = -1;
-    gint k = -1;
-    GtkTreeIter ao_iter;
-    GtkTreeModel *model;
-    gboolean valid;
-    gchar *desc;
     guint key;
     GdkModifierType modifier;
 
@@ -4100,27 +4088,11 @@ void menuitem_config_dialog_cb(GtkMenuItem * menuitem, void *data)
     conf_cancel = w_gtk_button_new (_("_Close"), "gtk-close", NULL, NULL);
     g_signal_connect_swapped(G_OBJECT(conf_cancel), "clicked", G_CALLBACK(config_apply), config_window);
 
+    static const char *vo_strv[] = { "gl", "gl2", "gl3", "x11", "xv", "xvmc", "vaapi", "vdpau", NULL, };
     config_vo = gtk_combo_box_text_new_with_entry();
-
-    gtk_widget_set_tooltip_text(config_vo,
-                                _("mplayer video output device\nx11 should always work, try xv, gl or vdpau for better performance and enhanced features"));
-
-    if (config_vo != NULL) {
-        static const char * vo_str[] = { "gl", "gl2", "gl3", "x11", "xv", "xvmc", "vaapi", "vdpau", NULL, };
-        gboolean add_vo_to_combo = TRUE;
-        for (i = 0 ; vo_str[i] ; i++) {
-           gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (config_vo), vo_str[i]);
-           if (vo && strcmp (vo, vo_str[i]) == 0)
-               add_vo_to_combo = FALSE;
-        }
-        if (vo) {
-           entry = gtk_bin_get_child (GTK_BIN (config_vo));
-           gtk_entry_set_text (GTK_ENTRY (entry), vo);
-           if (add_vo_to_combo == TRUE) {
-              gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (config_vo), vo);
-           }
-        }
-    }
+    w_gtk_combo_box_populate_from_strv (config_vo, vo_strv, -1, FALSE);
+    w_gtk_combo_box_select_or_prepend (config_vo, vo);
+    gtk_widget_set_tooltip_text(config_vo, _("mplayer video output device\nx11 should always work, try xv, gl or vdpau for better performance and enhanced features"));
 
     config_use_hw_audio = gtk_check_button_new_with_mnemonic(_("Enable AC3/DTS pass-through to S/PDIF"));
     g_signal_connect(GTK_WIDGET(config_use_hw_audio), "toggled", G_CALLBACK(hw_audio_toggle_callback), NULL);
@@ -4131,127 +4103,41 @@ void menuitem_config_dialog_cb(GtkMenuItem * menuitem, void *data)
     conf_volume_label = gtk_label_new("");
 
     config_ao = gmtk_output_combo_box_new();
-    model = gtk_combo_box_get_model (GTK_COMBO_BOX(config_ao));
     g_signal_connect(GTK_WIDGET(config_ao), "changed", G_CALLBACK(output_combobox_changed_callback), config_mixer);
-
-    valid = gtk_tree_model_get_iter_first (model, &ao_iter);
-    while (valid)
-    {
-        gtk_tree_model_get (model, &ao_iter, OUTPUT_DESCRIPTION_COLUMN, &desc, -1);
-        gm_log(verbose, G_LOG_LEVEL_DEBUG, "audio_device_name = %s, desc = %s", audio_device_name, desc);
-        if (strcmp(desc, audio_device_name ? audio_device_name : _("Default")) == 0) {
-            gtk_combo_box_set_active_iter(GTK_COMBO_BOX(config_ao), &ao_iter);
-            g_free(desc);
-            break;
-        }
-        g_free(desc);
-        valid = gtk_tree_model_iter_next (model, &ao_iter);
-    }
+    w_gtk_combo_box_select_or_prepend (config_ao,
+            (audio_device_name && *audio_device_name) ? audio_device_name : _("Default"));
 
     config_alang = gtk_combo_box_text_new_with_entry();
-    if (config_alang != NULL) {
-        i = 0;
-        j = -1;
-        k = -1;
-        while (langlist[i] != NULL) {
-            if (alang != NULL && strlen(alang) > 0 && g_ascii_strncasecmp(alang, langlist[i], strlen(alang)) == 0)
-                j = i;
-            if (alang != NULL && strlen(alang) == 0
-                && g_ascii_strncasecmp("English,eng,en", langlist[i], strlen("English,eng,en")) == 0)
-                k = i;
-            gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_alang), langlist[i++]);
-            if (j != -1) {
-                gtk_combo_box_set_active(GTK_COMBO_BOX(config_alang), j);
-            }
-            if (k != -1) {
-                gtk_combo_box_set_active(GTK_COMBO_BOX(config_alang), k);
-            }
-        }
-        if (alang != NULL && strlen(alang) > 0 && j == -1) {
-            gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_alang), alang);
-            gtk_combo_box_set_active(GTK_COMBO_BOX(config_alang), i);
-        }
-        gtk_widget_set_tooltip_text(config_alang,
-                                    _("Choose one of the languages or type in your own comma-separated selection"));
-    }
+    w_gtk_combo_box_populate_from_strv (config_alang, langlist, -1, FALSE);
+    w_gtk_combo_box_select_or_prepend (config_alang,
+                                       (alang && *alang) ? alang : "English,eng,en");
+    gtk_widget_set_tooltip_text (config_alang, _("Choose one of the languages or type in your own comma-separated selection"));
+
     config_slang = gtk_combo_box_text_new_with_entry();
-    if (config_slang != NULL) {
-        i = 0;
-        j = -1;
-        k = -1;
-        while (langlist[i] != NULL) {
-            if (slang != NULL && strlen(slang) > 0 && g_ascii_strncasecmp(slang, langlist[i], strlen(slang)) == 0)
-                j = i;
-            if (slang != NULL && strlen(slang) == 0
-                && g_ascii_strncasecmp("English,eng,en", langlist[i], strlen("English,eng,en")) == 0)
-                k = i;
-            gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_slang), langlist[i++]);
-            if (j != -1) {
-                gtk_combo_box_set_active(GTK_COMBO_BOX(config_slang), j);
-            }
-            if (k != -1) {
-                gtk_combo_box_set_active(GTK_COMBO_BOX(config_slang), k);
-            }
-        }
-        if (slang != NULL && strlen(slang) > 0 && j == -1) {
-            gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_slang), slang);
-            gtk_combo_box_set_active(GTK_COMBO_BOX(config_slang), i);
-        }
-        gtk_widget_set_tooltip_text(config_slang,
-                                    _("Choose one of the languages or type in your own comma-separated selection"));
-    }
+    w_gtk_combo_box_populate_from_strv (config_slang, langlist, -1, FALSE);
+    w_gtk_combo_box_select_or_prepend (config_slang,
+                                       (slang && * slang) ? slang : "English,eng,en");
+    gtk_widget_set_tooltip_text (config_slang, _("Choose one of the languages or type in your own comma-separated selection"));
+
     config_metadata_codepage = gtk_combo_box_text_new_with_entry();
-    if (config_metadata_codepage != NULL) {
-        i = 0;
-        j = -1;
-        while (codepagelist[i] != NULL) {
-            if (metadata_codepage != NULL && strlen(metadata_codepage) > 1
-                && g_ascii_strncasecmp(metadata_codepage, codepagelist[i], strlen(metadata_codepage)) == 0)
-                j = i;
-            gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_metadata_codepage), codepagelist[i++]);
-            if (j != -1)
-                gtk_combo_box_set_active(GTK_COMBO_BOX(config_metadata_codepage), j);
-        }
-        if (metadata_codepage != NULL && j == -1) {
-            gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_metadata_codepage), metadata_codepage);
-            gtk_combo_box_set_active(GTK_COMBO_BOX(config_metadata_codepage), i);
-        }
-    }
+    w_gtk_combo_box_populate_from_strv (config_metadata_codepage, codepagelist, 0, FALSE);
+    w_gtk_combo_box_select_or_prepend (config_metadata_codepage, metadata_codepage);
+
     config_subtitle_codepage = gtk_combo_box_text_new_with_entry();
-    if (config_subtitle_codepage != NULL) {
-        i = 0;
-        j = -1;
-        while (codepagelist[i] != NULL) {
-            if (subtitle_codepage != NULL && strlen(subtitle_codepage) > 1
-                && g_ascii_strncasecmp(subtitle_codepage, codepagelist[i], strlen(subtitle_codepage)) == 0)
-                j = i;
-            gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_subtitle_codepage), codepagelist[i++]);
+    w_gtk_combo_box_populate_from_strv (config_subtitle_codepage, codepagelist, 0, FALSE);
+    w_gtk_combo_box_select_or_prepend (config_subtitle_codepage, subtitle_codepage);
 
-            if (j != -1)
-                gtk_combo_box_set_active(GTK_COMBO_BOX(config_subtitle_codepage), j);
-        }
-        if (subtitle_codepage != NULL && j == -1) {
-            gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_subtitle_codepage), subtitle_codepage);
-            gtk_combo_box_set_active(GTK_COMBO_BOX(config_subtitle_codepage), i);
-        }
-    }
     config_audio_channels = gtk_combo_box_text_new_with_entry();
-    if (config_audio_channels != NULL) {
-        gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_audio_channels), "Stereo");
-        gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_audio_channels), "Surround");
-        gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_audio_channels), "5.1 Surround");
-        gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_audio_channels), "7.1 Surround");
+    static const char *channels_strv[] = {
+        "Stereo", "Surround", "5.1 Surround", "7.1 Surround", NULL
+    };
+    w_gtk_combo_box_populate_from_strv (config_audio_channels, channels_strv, audio_channels, FALSE);
 
-        gtk_combo_box_set_active(GTK_COMBO_BOX(config_audio_channels), audio_channels);
-    }
     config_resume_mode = gtk_combo_box_text_new_with_entry();
-    if (config_resume_mode != NULL) {
-        gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_resume_mode), _("Always ask"));
-        gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_resume_mode), _("Always resume without asking"));
-        gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(config_resume_mode), _("Never resume"));
-
-        gtk_combo_box_set_active(GTK_COMBO_BOX(config_resume_mode), resume_mode);
-    }
+    static const char *resume_strv[] = {
+        N_("Always ask"), N_("Always resume without asking"), N_("Never resume"), NULL
+    };
+    w_gtk_combo_box_populate_from_strv (config_resume_mode, resume_strv, resume_mode, TRUE);
 
 
     i = 0;

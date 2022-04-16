@@ -4,7 +4,7 @@
  * For more information, please refer to <https://unlicense.org>
  */
 
-/** 2022-04-12 **/
+/** 2022-04-14 **/
 
 /*
  * gtkcompat.h, GTK2+ compatibility layer
@@ -264,7 +264,7 @@ typedef struct _GtkComboBoxPrivate GtkComboBoxTextPrivate;
 #define gtk_combo_box_text_prepend_text(combo,text)    gtk_combo_box_prepend_text(combo,text)
 #define gtk_combo_box_text_remove(combo,pos)           gtk_combo_box_remove_text(combo,pos)
 #define gtk_combo_box_text_get_active_text(combo)      (gtk_combo_box_get_active_text(combo))
-#define gtk_combo_box_get_has_entry(combo) (0)
+//#define gtk_combo_box_get_has_entry(combo) (0)
 #define gtk_combo_box_set_entry_text_column(combo,cl)
 #define gtk_combo_box_get_entry_text_column(combo) (0)
 #define gtk_range_get_round_digits(range) (GTK_RANGE(range)->round_digits)
