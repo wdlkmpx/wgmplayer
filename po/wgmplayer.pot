@@ -284,13 +284,13 @@ msgstr ""
 
 #: ../src/main.c:878
 #, c-format
-msgid "G-MPlayer v%s\n"
+msgid "WGmplayer v%s\n"
 msgstr ""
 
 #: ../src/main.c:916
 #, c-format
 msgid ""
-"Run 'g-mplayer --help' to see a full list of available command line "
+"Run 'wgmplayer --help' to see a full list of available command line "
 "options.\n"
 msgstr ""
 
@@ -577,7 +577,7 @@ msgid "MPlayer"
 msgstr ""
 
 #: ../src/gui.c:4479
-msgid "G-MPlayer Configuration"
+msgid "WGmplayer Configuration"
 msgstr ""
 
 #: ../src/gui.c:4492
@@ -775,7 +775,7 @@ msgid "Place playlist below media (requires application restart)"
 msgstr ""
 
 #: ../src/gui.c:5098
-msgid "Only allow one instance of G-MPlayer"
+msgid "Only allow one instance of WGmplayer"
 msgstr ""
 
 #: ../src/gui.c:5108
@@ -830,7 +830,7 @@ msgstr ""
 
 #: ../src/gui.c:5179
 msgid ""
-"Set this option if changing the volume in G-MPlayer changes the master volume"
+"Set this option if changing the volume in WGmplayer changes the master volume"
 msgstr ""
 
 #: ../src/gui.c:5188
@@ -909,7 +909,7 @@ msgid "Reset Keys"
 msgstr ""
 
 #: ../src/gui.c:5969 ../src/support.c:720 ../src/support.c:811
-msgid "G-MPlayer Error"
+msgid "WGmplayer Error"
 msgstr ""
 
 #: ../src/gui.c:6355

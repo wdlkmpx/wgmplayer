@@ -1,11 +1,11 @@
-# Ukrainian translation for g-mplayer
+# Ukrainian translation for wgmplayer
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
-# This file is distributed under the same license as the g-mplayer package.
+# This file is distributed under the same license as the wgmplayer package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: g-mplayer\n"
+"Project-Id-Version: wgmplayer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-25 12:49+0800\n"
 "PO-Revision-Date: 2011-05-29 14:57+0000\n"
@@ -297,16 +297,16 @@ msgstr "[FILES...] - Медіапрогравач на основі MPlayer"
 
 #: ../src/main.c:878
 #, c-format
-msgid "G-MPlayer v%s\n"
-msgstr "G-MPlayer v%s\n"
+msgid "WGmplayer v%s\n"
+msgstr "WGmplayer v%s\n"
 
 #: ../src/main.c:916
 #, c-format
 msgid ""
-"Run 'g-mplayer --help' to see a full list of available command line "
+"Run 'wgmplayer --help' to see a full list of available command line "
 "options.\n"
 msgstr ""
-"Виконайте команду 'g-mplayer --help', щоб отримати повний список опцій.\n"
+"Виконайте команду 'wgmplayer --help', щоб отримати повний список опцій.\n"
 
 #: ../src/gui.c:668
 #, c-format
@@ -593,8 +593,8 @@ msgid "MPlayer"
 msgstr "Mplayer"
 
 #: ../src/gui.c:4479
-msgid "G-MPlayer Configuration"
-msgstr "Налаштування G-MPlayer"
+msgid "WGmplayer Configuration"
+msgstr "Налаштування WGmplayer"
 
 #: ../src/gui.c:4492
 msgid ""
@@ -796,8 +796,8 @@ msgstr ""
 "програму)"
 
 #: ../src/gui.c:5098
-msgid "Only allow one instance of G-MPlayer"
-msgstr "Тільки одна копія G-MPlayer"
+msgid "Only allow one instance of WGmplayer"
+msgstr "Тільки одна копія WGmplayer"
 
 #: ../src/gui.c:5108
 msgid "When opening in single instance mode, replace existing file"
@@ -853,9 +853,9 @@ msgstr "<span weight=\"bold\">Розширені налаштування MPlaye
 
 #: ../src/gui.c:5179
 msgid ""
-"Set this option if changing the volume in G-MPlayer changes the master volume"
+"Set this option if changing the volume in WGmplayer changes the master volume"
 msgstr ""
-"Встановіть цю опцію, коли зміна гучності у G-MPlayer призводить до зміни на "
+"Встановіть цю опцію, коли зміна гучності у WGmplayer призводить до зміни на "
 "рівні цілого пристрою"
 
 #: ../src/gui.c:5188
@@ -938,8 +938,8 @@ msgid "Reset Keys"
 msgstr "Від_новити"
 
 #: ../src/gui.c:5969 ../src/support.c:720 ../src/support.c:811
-msgid "G-MPlayer Error"
-msgstr "Помилка G-MPlayer"
+msgid "WGmplayer Error"
+msgstr "Помилка WGmplayer"
 
 #: ../src/gui.c:6355
 msgid "S_how Controls"

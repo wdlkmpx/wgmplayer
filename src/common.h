@@ -229,22 +229,22 @@ typedef enum {
     DO_NOT_RESUME
 } ResumeMode;
 
-#define ACCEL_PATH_OPEN_LOCATION "<G-MPlayer>/File/Open Location"
-#define ACCEL_PATH_EDIT_SCREENSHOT "<G-MPlayer>/Edit/Screenshot"
-#define ACCEL_PATH_EDIT_PREFERENCES "<G-MPlayer>/Edit/Preferences"
-#define ACCEL_PATH_VIEW_PLAYLIST "<G-MPlayer>/View/Playlist"
-#define ACCEL_PATH_VIEW_INFO "<G-MPlayer>/View/Info"
-#define ACCEL_PATH_VIEW_DETAILS "<G-MPlayer>/View/Details"
-#define ACCEL_PATH_VIEW_METER "<G-MPlayer>/View/Meter"
-#define ACCEL_PATH_VIEW_FULLSCREEN "<G-MPlayer>/View/Fullscreen"
-#define ACCEL_PATH_VIEW_ASPECT "<G-MPlayer>/View/Aspect"
-#define ACCEL_PATH_VIEW_SUBTITLES "<G-MPlayer>/View/Subtitles"
-#define ACCEL_PATH_VIEW_DECREASE_SIZE "<G-MPlayer>/View/Decrease Size"
-#define ACCEL_PATH_VIEW_INCREASE_SIZE "<G-MPlayer>/View/Increase Size"
-#define ACCEL_PATH_VIEW_ANGLE "<G-MPlayer>/View/Angle"
-#define ACCEL_PATH_VIEW_CONTROLS "<G-MPlayer>/View/Controls"
-#define ACCEL_PATH_VIEW_NORMAL "<G-MPlayer>/View/Normal"
-#define ACCEL_PATH_VIEW_DOUBLE "<G-MPlayer>/View/Double"
+#define ACCEL_PATH_OPEN_LOCATION "<WGmplayer>/File/Open Location"
+#define ACCEL_PATH_EDIT_SCREENSHOT "<WGmplayer>/Edit/Screenshot"
+#define ACCEL_PATH_EDIT_PREFERENCES "<WGmplayer>/Edit/Preferences"
+#define ACCEL_PATH_VIEW_PLAYLIST "<WGmplayer>/View/Playlist"
+#define ACCEL_PATH_VIEW_INFO "<WGmplayer>/View/Info"
+#define ACCEL_PATH_VIEW_DETAILS "<WGmplayer>/View/Details"
+#define ACCEL_PATH_VIEW_METER "<WGmplayer>/View/Meter"
+#define ACCEL_PATH_VIEW_FULLSCREEN "<WGmplayer>/View/Fullscreen"
+#define ACCEL_PATH_VIEW_ASPECT "<WGmplayer>/View/Aspect"
+#define ACCEL_PATH_VIEW_SUBTITLES "<WGmplayer>/View/Subtitles"
+#define ACCEL_PATH_VIEW_DECREASE_SIZE "<WGmplayer>/View/Decrease Size"
+#define ACCEL_PATH_VIEW_INCREASE_SIZE "<WGmplayer>/View/Increase Size"
+#define ACCEL_PATH_VIEW_ANGLE "<WGmplayer>/View/Angle"
+#define ACCEL_PATH_VIEW_CONTROLS "<WGmplayer>/View/Controls"
+#define ACCEL_PATH_VIEW_NORMAL "<WGmplayer>/View/Normal"
+#define ACCEL_PATH_VIEW_DOUBLE "<WGmplayer>/View/Double"
 
 typedef struct _MetaData {
     gchar *uri;

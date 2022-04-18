@@ -1275,7 +1275,7 @@ gboolean set_raise_window(void *data)
 
 gboolean set_software_volume(gdouble * data)
 {
-    gm_store = gm_pref_store_new("g-mplayer");
+    gm_store = gm_pref_store_new("wgmplayer");
     gm_pref_store_set_float(gm_store, VOLUME_SOFTVOL, *data);
     gm_pref_store_free(gm_store);
     return FALSE;
@@ -1502,7 +1502,7 @@ gboolean delete_callback(GtkWidget * widget, GdkEvent * event, void *data)
     gm_audio_set_server_volume_update_callback(&audio_device, NULL);
 
     if (remember_loc && !fullscreen) {
-        gm_store = gm_pref_store_new("g-mplayer");
+        gm_store = gm_pref_store_new("wgmplayer");
         gtk_window_get_position(GTK_WINDOW(window), &loc_window_x, &loc_window_y);
         gtk_window_get_size(GTK_WINDOW(window), &loc_window_width, &loc_window_height);
         loc_panel_position = gtk_paned_get_position(GTK_PANED(pane));
@@ -2475,7 +2475,7 @@ void menuitem_open_callback(GtkMenuItem * menuitem, void *data)
     gtk_file_chooser_set_local_only(GTK_FILE_CHOOSER(dialog), FALSE);
 
     gtk_widget_show(dialog);
-    gm_store = gm_pref_store_new("g-mplayer");
+    gm_store = gm_pref_store_new("wgmplayer");
     last_dir = gm_pref_store_get_string(gm_store, LAST_DIR);
     if (last_dir != NULL && is_uri_dir(last_dir)) {
         gtk_file_chooser_set_current_folder_uri(GTK_FILE_CHOOSER(dialog), last_dir);
@@ -2487,7 +2487,7 @@ void menuitem_open_callback(GtkMenuItem * menuitem, void *data)
         filename = gtk_file_chooser_get_uris(GTK_FILE_CHOOSER(dialog));
         last_dir = gtk_file_chooser_get_current_folder_uri(GTK_FILE_CHOOSER(dialog));
         if (last_dir != NULL && is_uri_dir(last_dir)) {
-            gm_store = gm_pref_store_new("g-mplayer");
+            gm_store = gm_pref_store_new("wgmplayer");
             gm_pref_store_set_string(gm_store, LAST_DIR, last_dir);
             gm_pref_store_free(gm_store);
             g_free(last_dir);
@@ -2626,7 +2626,7 @@ void menuitem_open_dvdnav_folder_callback(GtkMenuItem * menuitem, void *data)
                                          "gtk-cancel", GTK_RESPONSE_CANCEL,
                                          "gtk-open",   GTK_RESPONSE_ACCEPT, NULL);
     gtk_widget_show(dialog);
-    gm_store = gm_pref_store_new("g-mplayer");
+    gm_store = gm_pref_store_new("wgmplayer");
     last_dir = gm_pref_store_get_string(gm_store, LAST_DIR);
     if (last_dir != NULL && is_uri_dir(last_dir)) {
         gtk_file_chooser_set_current_folder_uri(GTK_FILE_CHOOSER(dialog), last_dir);
@@ -2666,7 +2666,7 @@ void menuitem_open_dvdnav_iso_callback(GtkMenuItem * menuitem, void *data)
                                          "gtk-cancel", GTK_RESPONSE_CANCEL,
                                          "gtk-open",   GTK_RESPONSE_ACCEPT, NULL);
     gtk_widget_show(dialog);
-    gm_store = gm_pref_store_new("g-mplayer");
+    gm_store = gm_pref_store_new("wgmplayer");
     last_dir = gm_pref_store_get_string(gm_store, LAST_DIR);
     if (last_dir != NULL && is_uri_dir(last_dir)) {
         gtk_file_chooser_set_current_folder_uri(GTK_FILE_CHOOSER(dialog), last_dir);
@@ -3387,8 +3387,8 @@ void config_apply(GtkWidget * widget, void *data)
     } else {
         if (show_status_icon) {
             GtkIconTheme *icon_theme = gtk_icon_theme_get_default();
-            if (gtk_icon_theme_has_icon(icon_theme, "g-mplayer")) {
-                status_icon = gtk_status_icon_new_from_icon_name("g-mplayer");
+            if (gtk_icon_theme_has_icon(icon_theme, "wgmplayer")) {
+                status_icon = gtk_status_icon_new_from_icon_name("wgmplayer");
             } else {
                 status_icon = gtk_status_icon_new_from_pixbuf(pb_icon);
             }
@@ -3447,7 +3447,7 @@ void config_apply(GtkWidget * widget, void *data)
 
     set_media_player_attributes(media);
 
-    gm_store = gm_pref_store_new("g-mplayer");
+    gm_store = gm_pref_store_new("wgmplayer");
 
     gm_pref_store_set_string(gm_store, AUDIO_DEVICE_NAME, audio_device_name);
 
@@ -4078,7 +4078,7 @@ void menuitem_config_dialog_cb(GtkMenuItem * menuitem, void *data)
     gtk_container_add(GTK_CONTAINER(conf_vbox), notebook);
     gtk_container_add(GTK_CONTAINER(config_window), conf_vbox);
 
-    gtk_window_set_title(GTK_WINDOW(config_window), _("G-MPlayer Configuration"));
+    gtk_window_set_title(GTK_WINDOW(config_window), _("WGmplayer Configuration"));
     gtk_container_set_border_width(GTK_CONTAINER(config_window), 5);
     //gtk_window_set_default_size(GTK_WINDOW(config_window), 300, 300);
 
@@ -4277,7 +4277,7 @@ void menuitem_config_dialog_cb(GtkMenuItem * menuitem, void *data)
     config_volume = grid.c2.w;
     gtk_widget_set_tooltip_text(config_volume, _("Default volume for playback"));
     gtk_widget_set_size_request(config_volume, 100, -1);
-    gm_store = gm_pref_store_new("g-mplayer");
+    gm_store = gm_pref_store_new("wgmplayer");
     gtk_spin_button_set_value(GTK_SPIN_BUTTON(config_volume), gm_pref_store_get_int(gm_store, VOLUME));
     gm_pref_store_free(gm_store);
     gtk_entry_set_width_chars(GTK_ENTRY(config_volume), 6);
@@ -4454,7 +4454,7 @@ void menuitem_config_dialog_cb(GtkMenuItem * menuitem, void *data)
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_vertical_layout), vertical_layout);
     w_gtk_grid_append_row (&grid);
 
-    grid.c1.w = gtk_check_button_new_with_label(_("Only allow one instance of G-MPlayer"));
+    grid.c1.w = gtk_check_button_new_with_label(_("Only allow one instance of WGmplayer"));
     config_single_instance = grid.c1.w;
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_single_instance), single_instance);
     g_signal_connect(G_OBJECT(config_single_instance), "toggled", G_CALLBACK(config_single_instance_callback), NULL);
@@ -4565,7 +4565,7 @@ void menuitem_config_dialog_cb(GtkMenuItem * menuitem, void *data)
     w_gtk_grid_append_row (&grid);
 
     grid.c1.w = config_softvol;
-    gtk_widget_set_tooltip_text (config_softvol, _("Set this option if changing the volume in G-MPlayer changes the master volume"));
+    gtk_widget_set_tooltip_text (config_softvol, _("Set this option if changing the volume in WGmplayer changes the master volume"));
     gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(config_softvol), softvol);
     g_signal_connect(G_OBJECT(config_softvol), "toggled", G_CALLBACK(config_softvol_callback), NULL);
     w_gtk_grid_append_row (&grid);
@@ -5227,7 +5227,7 @@ void player_error_message_callback(GmtkMediaPlayer * media, gchar * message)
     // log messages to the screen
     dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR,
                                     GTK_BUTTONS_CLOSE, "%s", message);
-    gtk_window_set_title(GTK_WINDOW(dialog), g_dgettext(GETTEXT_PACKAGE, "G-MPlayer Error"));
+    gtk_window_set_title(GTK_WINDOW(dialog), g_dgettext(GETTEXT_PACKAGE, "WGmplayer Error"));
     gtk_dialog_run(GTK_DIALOG(dialog));
     gtk_widget_destroy(dialog);
 }
@@ -5375,8 +5375,8 @@ void make_button(gchar * src, gchar * hrefid)
     if (error != NULL) {
         g_error_free(error);
         error = NULL;
-        basepath = g_strdup_printf("%s/g-mplayer/plugin", g_get_user_cache_dir());
-        dirname = gm_tempname(basepath, "g-mplayerXXXXXX");
+        basepath = g_strdup_printf("%s/wgmplayer/plugin", g_get_user_cache_dir());
+        dirname = gm_tempname(basepath, "wgmplayerXXXXXX");
         filename = g_strdup_printf("%s/00000001.jpg", dirname);
         g_free(basepath);
         // run mplayer and try to get the first frame and convert it to a jpeg
@@ -5791,9 +5791,9 @@ GtkWidget *create_window()
     image_play = w_gtk_image_new_from_icon_name (icon_play, GTK_ICON_SIZE_BUTTON);
     image_fs   = w_gtk_image_new_from_icon_name (icon_fs,   GTK_ICON_SIZE_BUTTON);
 
-    if (gtk_icon_theme_has_icon(icon_theme, "g-mplayer")) {
-        gtk_window_set_default_icon_name ("g-mplayer");
-        pb_icon = gtk_icon_theme_load_icon (icon_theme, "g-mplayer", 64, 0, NULL);
+    if (gtk_icon_theme_has_icon(icon_theme, "wgmplayer")) {
+        gtk_window_set_default_icon_name ("wgmplayer");
+        pb_icon = gtk_icon_theme_load_icon (icon_theme, "wgmplayer", 64, 0, NULL);
     } else {
         pb_icon = gdk_pixbuf_new_from_xpm_data((const char **) g_mplayer_xpm);
         if (pb_icon) {
@@ -5802,10 +5802,10 @@ GtkWidget *create_window()
     }
 
     if (show_status_icon) {
-        if (gtk_icon_theme_has_icon(icon_theme, "g-mplayer-panel")) {
-            status_icon = gtk_status_icon_new_from_icon_name("g-mplayer-panel");
-        } else if (gtk_icon_theme_has_icon(icon_theme, "g-mplayer")) {
-            status_icon = gtk_status_icon_new_from_icon_name("g-mplayer");
+        if (gtk_icon_theme_has_icon(icon_theme, "wgmplayer-panel")) {
+            status_icon = gtk_status_icon_new_from_icon_name("wgmplayer-panel");
+        } else if (gtk_icon_theme_has_icon(icon_theme, "wgmplayer")) {
+            status_icon = gtk_status_icon_new_from_icon_name("wgmplayer");
         } else {
             status_icon = gtk_status_icon_new_from_pixbuf(pb_icon);
         }

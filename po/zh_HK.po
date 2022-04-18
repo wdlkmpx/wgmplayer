@@ -1,11 +1,11 @@
-# Chinese (Hong Kong) translation of G-MPlayer
+# Chinese (Hong Kong) translation of WGmplayer
 # Copyright (C) 2008 Kevin DeKorte <kdekorte@gmail.com>
-# This file is distributed under the same license as the g-mplayer package.
+# This file is distributed under the same license as the wgmplayer package.
 # Hialan Liu <hialan.liu@gmail.com>, 2008.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: g-mplayer\n"
+"Project-Id-Version: wgmplayer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-25 12:49+0800\n"
 "PO-Revision-Date: 2009-08-10 11:36+0000\n"
@@ -293,15 +293,15 @@ msgstr "[檔案...] - 基於 MPlayer 的 GEE 多媒體播放器"
 
 #: ../src/main.c:878
 #, c-format
-msgid "G-MPlayer v%s\n"
-msgstr "G-MPlayer v%s\n"
+msgid "WGmplayer v%s\n"
+msgstr "WGmplayer v%s\n"
 
 #: ../src/main.c:916
 #, c-format
 msgid ""
-"Run 'g-mplayer --help' to see a full list of available command line "
+"Run 'wgmplayer --help' to see a full list of available command line "
 "options.\n"
-msgstr "執行「g-mplayer --help」以取得可用命令列選項的完整列表。\n"
+msgstr "執行「wgmplayer --help」以取得可用命令列選項的完整列表。\n"
 
 #: ../src/gui.c:668
 #, c-format
@@ -586,8 +586,8 @@ msgid "MPlayer"
 msgstr ""
 
 #: ../src/gui.c:4479
-msgid "G-MPlayer Configuration"
-msgstr "G-MPlayer 設定"
+msgid "WGmplayer Configuration"
+msgstr "WGmplayer 設定"
 
 #: ../src/gui.c:4492
 msgid ""
@@ -787,7 +787,7 @@ msgid "Place playlist below media (requires application restart)"
 msgstr ""
 
 #: ../src/gui.c:5098
-msgid "Only allow one instance of G-MPlayer"
+msgid "Only allow one instance of WGmplayer"
 msgstr ""
 
 #: ../src/gui.c:5108
@@ -842,7 +842,7 @@ msgstr ""
 
 #: ../src/gui.c:5179
 msgid ""
-"Set this option if changing the volume in G-MPlayer changes the master volume"
+"Set this option if changing the volume in WGmplayer changes the master volume"
 msgstr ""
 
 #: ../src/gui.c:5188
@@ -921,8 +921,8 @@ msgid "Reset Keys"
 msgstr ""
 
 #: ../src/gui.c:5969 ../src/support.c:720 ../src/support.c:811
-msgid "G-MPlayer Error"
-msgstr "G-MPlayer 錯誤"
+msgid "WGmplayer Error"
+msgstr "WGmplayer 錯誤"
 
 #: ../src/gui.c:6355
 msgid "S_how Controls"

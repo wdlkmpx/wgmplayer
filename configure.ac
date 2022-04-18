@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([g-mplayer],[1.2])
+AC_INIT([wgmplayer],[1.2])
 AC_CONFIG_AUX_DIR([autoconf])
 AC_CONFIG_MACRO_DIR([autoconf-m4])
 AM_INIT_AUTOMAKE([-Wall subdir-objects foreign])
@@ -17,7 +17,7 @@ AC_SEARCH_LIBS([strerror],[cposix])
 AC_PROG_CC
 
 dnl Set gettext package name
-GETTEXT_PACKAGE=g-mplayer
+GETTEXT_PACKAGE=wgmplayer
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [GETTEXT package name])
 

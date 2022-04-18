@@ -1,11 +1,11 @@
-# Simplified Chinese translation for g-mplayer
+# Simplified Chinese translation for wgmplayer
 # Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
-# This file is distributed under the same license as the g-mplayer package.
+# This file is distributed under the same license as the wgmplayer package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: g-mplayer\n"
+"Project-Id-Version: wgmplayer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-25 12:49+0800\n"
 "PO-Revision-Date: 2011-03-30 14:32+0000\n"
@@ -295,15 +295,15 @@ msgstr "[FILES...] - 基于Mplayer的Gee媒体播放器"
 
 #: ../src/main.c:878
 #, c-format
-msgid "G-MPlayer v%s\n"
-msgstr "G-MPlayer v%s\n"
+msgid "WGmplayer v%s\n"
+msgstr "WGmplayer v%s\n"
 
 #: ../src/main.c:916
 #, c-format
 msgid ""
-"Run 'g-mplayer --help' to see a full list of available command line "
+"Run 'wgmplayer --help' to see a full list of available command line "
 "options.\n"
-msgstr "运行'g-mplayer --help'查看完整的可用命令参数。\n"
+msgstr "运行'wgmplayer --help'查看完整的可用命令参数。\n"
 
 #: ../src/gui.c:668
 #, c-format
@@ -588,8 +588,8 @@ msgid "MPlayer"
 msgstr "MPlayer"
 
 #: ../src/gui.c:4479
-msgid "G-MPlayer Configuration"
-msgstr "G-MPlayer 设置"
+msgid "WGmplayer Configuration"
+msgstr "WGmplayer 设置"
 
 #: ../src/gui.c:4492
 msgid ""
@@ -789,8 +789,8 @@ msgid "Place playlist below media (requires application restart)"
 msgstr "将播放列表放在下方(下次启动程序生效)"
 
 #: ../src/gui.c:5098
-msgid "Only allow one instance of G-MPlayer"
-msgstr "只允许运行一个G-MPlayer实例"
+msgid "Only allow one instance of WGmplayer"
+msgstr "只允许运行一个WGmplayer实例"
 
 #: ../src/gui.c:5108
 msgid "When opening in single instance mode, replace existing file"
@@ -845,7 +845,7 @@ msgstr "<span weight=\"bold\">MPlayer高级设置</span>"
 
 #: ../src/gui.c:5179
 msgid ""
-"Set this option if changing the volume in G-MPlayer changes the master volume"
+"Set this option if changing the volume in WGmplayer changes the master volume"
 msgstr "启用这个选项将会使用软件混音，改变音量大小不会改变全局音量"
 
 #: ../src/gui.c:5188
@@ -925,8 +925,8 @@ msgid "Reset Keys"
 msgstr "重置(_R)"
 
 #: ../src/gui.c:5969 ../src/support.c:720 ../src/support.c:811
-msgid "G-MPlayer Error"
-msgstr "G-MPlayer 错误"
+msgid "WGmplayer Error"
+msgstr "WGmplayer 错误"
 
 #: ../src/gui.c:6355
 msgid "S_how Controls"

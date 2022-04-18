@@ -320,7 +320,7 @@ void save_playlist(GtkWidget * widget, void *data)
     gtk_file_chooser_set_local_only(GTK_FILE_CHOOSER(dialog), FALSE);
 #endif
     gtk_widget_show(dialog);
-    gm_store = gm_pref_store_new("g-mplayer");
+    gm_store = gm_pref_store_new("wgmplayer");
     last_dir = gm_pref_store_get_string(gm_store, LAST_DIR);
     if (last_dir != NULL && is_uri_dir(last_dir))
         gtk_file_chooser_set_current_folder_uri(GTK_FILE_CHOOSER(dialog), last_dir);
@@ -375,7 +375,7 @@ void load_playlist(GtkWidget * widget, void *data)
                                          "gtk-cancel", GTK_RESPONSE_CANCEL,
                                          "gtk-open",   GTK_RESPONSE_ACCEPT, NULL);
     gtk_widget_show(dialog);
-    gm_store = gm_pref_store_new("g-mplayer");
+    gm_store = gm_pref_store_new("wgmplayer");
     last_dir = gm_pref_store_get_string(gm_store, LAST_DIR);
     if (last_dir != NULL && is_uri_dir(last_dir))
         gtk_file_chooser_set_current_folder_uri(GTK_FILE_CHOOSER(dialog), last_dir);
@@ -554,7 +554,7 @@ void add_to_playlist(GtkWidget * widget, void *data)
     gtk_file_chooser_set_local_only(GTK_FILE_CHOOSER(dialog), FALSE);
 #endif
 
-    gm_store = gm_pref_store_new("g-mplayer");
+    gm_store = gm_pref_store_new("wgmplayer");
     last_dir = gm_pref_store_get_string(gm_store, LAST_DIR);
     if (last_dir != NULL && is_uri_dir(last_dir)) {
         gtk_file_chooser_set_current_folder_uri(GTK_FILE_CHOOSER(dialog), last_dir);
@@ -616,7 +616,7 @@ void add_folder_to_playlist(GtkWidget * widget, void *data)
     gtk_file_chooser_set_local_only(GTK_FILE_CHOOSER(dialog), FALSE);
 #endif
 
-    gm_store = gm_pref_store_new("g-mplayer");
+    gm_store = gm_pref_store_new("wgmplayer");
     last_dir = gm_pref_store_get_string(gm_store, LAST_DIR);
     if (last_dir != NULL && is_uri_dir(last_dir)) {
         gtk_file_chooser_set_current_folder_uri(GTK_FILE_CHOOSER(dialog), last_dir);

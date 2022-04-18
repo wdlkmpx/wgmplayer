@@ -23,9 +23,9 @@ missing
 stamp-h1
 .deps
 .libs
-g-mplayer.spec
+wgmplayer.spec
 po/POTFILES
-g-mplayer
+wgmplayer
 INSTALL
 *.gmo
 *.mo

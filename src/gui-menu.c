@@ -257,7 +257,7 @@ void create_menubar (GtkAccelGroup * accel_group)
     menuitem_file_open_dtv = w_gtk_menu_item_new (&menuitem);
 
     // File -> Open Recent
-    menu_file_recent = w_gtk_recent_menu_new ("g-mplayer", NULL);
+    menu_file_recent = w_gtk_recent_menu_new ("wgmplayer", NULL);
     menuitem.parent_menu = menu_file;
     menuitem.submenu     = menu_file_recent ;
     menuitem.label       = _("Open _Recent")    ;

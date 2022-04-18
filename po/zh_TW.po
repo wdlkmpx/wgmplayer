@@ -1,11 +1,11 @@
-# Chinese (Taiwan) translation of G-MPlayer
+# Chinese (Taiwan) translation of WGmplayer
 # Copyright (C) 2008 Kevin DeKorte <kdekorte@gmail.com>
-# This file is distributed under the same license as the g-mplayer package.
+# This file is distributed under the same license as the wgmplayer package.
 #
 # Hialan Liu <hialan.liu@gmail.com>, 2008.
 msgid ""
 msgstr ""
-"Project-Id-Version: g-mplayer\n"
+"Project-Id-Version: wgmplayer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-25 12:49+0800\n"
 "PO-Revision-Date: 2011-06-06 12:13+0000\n"
@@ -295,15 +295,15 @@ msgstr "[檔案...] - 基於 MPlayer 的 GEE 多媒體播放器"
 
 #: ../src/main.c:878
 #, c-format
-msgid "G-MPlayer v%s\n"
-msgstr "G-MPlayer v%s\n"
+msgid "WGmplayer v%s\n"
+msgstr "WGmplayer v%s\n"
 
 #: ../src/main.c:916
 #, c-format
 msgid ""
-"Run 'g-mplayer --help' to see a full list of available command line "
+"Run 'wgmplayer --help' to see a full list of available command line "
 "options.\n"
-msgstr "執行‵g-mplayer --help′來列出所有命令列選項。\n"
+msgstr "執行‵wgmplayer --help′來列出所有命令列選項。\n"
 
 #: ../src/gui.c:668
 #, c-format
@@ -588,8 +588,8 @@ msgid "MPlayer"
 msgstr "MPlayer"
 
 #: ../src/gui.c:4479
-msgid "G-MPlayer Configuration"
-msgstr "G-MPlayer 設定"
+msgid "WGmplayer Configuration"
+msgstr "WGmplayer 設定"
 
 #: ../src/gui.c:4492
 msgid ""
@@ -789,8 +789,8 @@ msgid "Place playlist below media (requires application restart)"
 msgstr "將播放清單置於媒體下（程式須要重新啟動）"
 
 #: ../src/gui.c:5098
-msgid "Only allow one instance of G-MPlayer"
-msgstr "只允許執行 1 個 G-MPlayer"
+msgid "Only allow one instance of WGmplayer"
+msgstr "只允許執行 1 個 WGmplayer"
 
 #: ../src/gui.c:5108
 msgid "When opening in single instance mode, replace existing file"
@@ -844,8 +844,8 @@ msgstr "<span weight=\"bold\">MPlayer 進階設定</span>"
 
 #: ../src/gui.c:5179
 msgid ""
-"Set this option if changing the volume in G-MPlayer changes the master volume"
-msgstr "設定此項則調整 G-MPlayer 的音量會改更主音量"
+"Set this option if changing the volume in WGmplayer changes the master volume"
+msgstr "設定此項則調整 WGmplayer 的音量會改更主音量"
 
 #: ../src/gui.c:5188
 msgid "Remember last software volume level"
@@ -924,8 +924,8 @@ msgid "Reset Keys"
 msgstr "重設(_R)"
 
 #: ../src/gui.c:5969 ../src/support.c:720 ../src/support.c:811
-msgid "G-MPlayer Error"
-msgstr "G-MPlayer 錯誤"
+msgid "WGmplayer Error"
+msgstr "WGmplayer 錯誤"
 
 #: ../src/gui.c:6355
 msgid "S_how Controls"

@@ -1,10 +1,10 @@
-# Portuguese translation for g-mplayer
-# This file is distributed under the same license as the g-mplayer package.
+# Portuguese translation for wgmplayer
+# This file is distributed under the same license as the wgmplayer package.
 # Sérgio Marques <smarquespt@gmail.com>, 2012-2013
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: g-mplayer\n"
+"Project-Id-Version: wgmplayer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-25 12:49+0800\n"
 "PO-Revision-Date: 2013-09-17 14:01-0000\n"
@@ -289,16 +289,16 @@ msgstr "[FICHEIROS...] - G-Media player baseado no MPlayer"
 
 #: ../src/main.c:878
 #, c-format
-msgid "G-MPlayer v%s\n"
-msgstr "G-MPlayer v%s\n"
+msgid "WGmplayer v%s\n"
+msgstr "WGmplayer v%s\n"
 
 #: ../src/main.c:916
 #, c-format
 msgid ""
-"Run 'g-mplayer --help' to see a full list of available command line "
+"Run 'wgmplayer --help' to see a full list of available command line "
 "options.\n"
 msgstr ""
-"Execute \"g-mplayer --help\" para ver a lista de opções na linha de comando\n"
+"Execute \"wgmplayer --help\" para ver a lista de opções na linha de comando\n"
 
 #: ../src/gui.c:668
 #, c-format
@@ -583,8 +583,8 @@ msgid "MPlayer"
 msgstr "MPlayer"
 
 #: ../src/gui.c:4479
-msgid "G-MPlayer Configuration"
-msgstr "Configuração do G-MPlayer"
+msgid "WGmplayer Configuration"
+msgstr "Configuração do WGmplayer"
 
 #: ../src/gui.c:4492
 msgid ""
@@ -787,8 +787,8 @@ msgstr ""
 "Colocar lista de reprodução abaixo do ficheiro (requer reinicio da aplicação)"
 
 #: ../src/gui.c:5098
-msgid "Only allow one instance of G-MPlayer"
-msgstr "Permitir apenas uma instância do G-MPlayer"
+msgid "Only allow one instance of WGmplayer"
+msgstr "Permitir apenas uma instância do WGmplayer"
 
 #: ../src/gui.c:5108
 msgid "When opening in single instance mode, replace existing file"
@@ -844,9 +844,9 @@ msgstr "<span weight=\"bold\">Definições avançadas do MPlayer</span>"
 
 #: ../src/gui.c:5179
 msgid ""
-"Set this option if changing the volume in G-MPlayer changes the master volume"
+"Set this option if changing the volume in WGmplayer changes the master volume"
 msgstr ""
-"Se ativar esta opção, ao modificar o volume no G-MPlayer, o volume principal "
+"Se ativar esta opção, ao modificar o volume no WGmplayer, o volume principal "
 "será alterado"
 
 #: ../src/gui.c:5188
@@ -933,8 +933,8 @@ msgid "Reset Keys"
 msgstr "Repor teclas"
 
 #: ../src/gui.c:5969 ../src/support.c:720 ../src/support.c:811
-msgid "G-MPlayer Error"
-msgstr "Erro do G-MPlayer"
+msgid "WGmplayer Error"
+msgstr "Erro do WGmplayer"
 
 #: ../src/gui.c:6355
 msgid "S_how Controls"

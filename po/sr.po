@@ -1,12 +1,12 @@
 # Serbian translation of GEE Mplayer.
 # Copyright (C) Prevod.org team (http://prevod.org)
-# This file is distributed under the same license as the g-mplayer package.
+# This file is distributed under the same license as the wgmplayer package.
 #
 # Милош Поповић <gpopac@gmail.com>, 2008-2010.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: g-mplayer\n"
+"Project-Id-Version: wgmplayer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-25 12:49+0800\n"
 "PO-Revision-Date: 2011-04-11 08:42-0700\n"
@@ -301,16 +301,16 @@ msgstr "[ДАТОТЕКЕ...] - Гномов биоскоп и музичка к
 
 #: ../src/main.c:878
 #, c-format
-msgid "G-MPlayer v%s\n"
+msgid "WGmplayer v%s\n"
 msgstr "Гномов Мплејер v%s\n"
 
 #: ../src/main.c:916
 #, c-format
 msgid ""
-"Run 'g-mplayer --help' to see a full list of available command line "
+"Run 'wgmplayer --help' to see a full list of available command line "
 "options.\n"
 msgstr ""
-"Покрените „g-mplayer --help“ за комплетан списак доступних опција у "
+"Покрените „wgmplayer --help“ за комплетан списак доступних опција у "
 "командној линији.\n"
 
 #: ../src/gui.c:668
@@ -601,7 +601,7 @@ msgid "MPlayer"
 msgstr "МПлејер"
 
 #: ../src/gui.c:4479
-msgid "G-MPlayer Configuration"
+msgid "WGmplayer Configuration"
 msgstr "Поставке Гномовог Мплејера"
 
 #: ../src/gui.c:4492
@@ -803,7 +803,7 @@ msgid "Place playlist below media (requires application restart)"
 msgstr "Постави листу испод медијума (захтева поновно покретање)"
 
 #: ../src/gui.c:5098
-msgid "Only allow one instance of G-MPlayer"
+msgid "Only allow one instance of WGmplayer"
 msgstr "Дозволи само по један Гномов мплејер у исто време"
 
 #: ../src/gui.c:5108
@@ -860,7 +860,7 @@ msgstr "<span weight=\"bold\">Додатне поставке за Мплеје�
 
 #: ../src/gui.c:5179
 msgid ""
-"Set this option if changing the volume in G-MPlayer changes the master volume"
+"Set this option if changing the volume in WGmplayer changes the master volume"
 msgstr ""
 "Укључите уколико промена јачине звука у Гномовом Мплејеру мења јачину звука "
 "на главном каналу миксера"
@@ -946,7 +946,7 @@ msgid "Reset Keys"
 msgstr "_Врати"
 
 #: ../src/gui.c:5969 ../src/support.c:720 ../src/support.c:811
-msgid "G-MPlayer Error"
+msgid "WGmplayer Error"
 msgstr "Грешка у Гномовом Мплејеру"
 
 #: ../src/gui.c:6355

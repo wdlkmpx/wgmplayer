@@ -295,16 +295,16 @@ msgstr "[RINKMENOS...] - GEE grotuvas MPlayer pagrindu"
 
 #: ../src/main.c:878
 #, c-format
-msgid "G-MPlayer v%s\n"
-msgstr "G-MPlayer v%s\n"
+msgid "WGmplayer v%s\n"
+msgstr "WGmplayer v%s\n"
 
 #: ../src/main.c:916
 #, c-format
 msgid ""
-"Run 'g-mplayer --help' to see a full list of available command line "
+"Run 'wgmplayer --help' to see a full list of available command line "
 "options.\n"
 msgstr ""
-"Įvykdykite „g-mplayer --help“ norėdami matyti visas galimas parinktis "
+"Įvykdykite „wgmplayer --help“ norėdami matyti visas galimas parinktis "
 "komandinėje eilutėje.\n"
 
 #: ../src/gui.c:668
@@ -592,8 +592,8 @@ msgid "MPlayer"
 msgstr "MPlayer"
 
 #: ../src/gui.c:4479
-msgid "G-MPlayer Configuration"
-msgstr "G-MPlayer nuostatos"
+msgid "WGmplayer Configuration"
+msgstr "WGmplayer nuostatos"
 
 #: ../src/gui.c:4492
 msgid ""
@@ -793,8 +793,8 @@ msgid "Place playlist below media (requires application restart)"
 msgstr "Priešais kūrinį rodyti grojaraštį (reikia perkrauti programą)"
 
 #: ../src/gui.c:5098
-msgid "Only allow one instance of G-MPlayer"
-msgstr "Leisti veikti tik vienai G-MPlayer programai tuo pačiu metu"
+msgid "Only allow one instance of WGmplayer"
+msgstr "Leisti veikti tik vienai WGmplayer programai tuo pačiu metu"
 
 #: ../src/gui.c:5108
 msgid "When opening in single instance mode, replace existing file"
@@ -848,7 +848,7 @@ msgstr "<span weight=\"bold\"> Sudėtingesnės MPlayer nuostatos</span>"
 
 #: ../src/gui.c:5179
 msgid ""
-"Set this option if changing the volume in G-MPlayer changes the master volume"
+"Set this option if changing the volume in WGmplayer changes the master volume"
 msgstr ""
 
 #: ../src/gui.c:5188
@@ -928,8 +928,8 @@ msgid "Reset Keys"
 msgstr "_Atstatyti"
 
 #: ../src/gui.c:5969 ../src/support.c:720 ../src/support.c:811
-msgid "G-MPlayer Error"
-msgstr "G-MPlayer klaida"
+msgid "WGmplayer Error"
+msgstr "WGmplayer klaida"
 
 #: ../src/gui.c:6355
 msgid "S_how Controls"

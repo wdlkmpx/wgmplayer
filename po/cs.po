@@ -1,11 +1,11 @@
-# Czech translation of g-mplayer.
-# Copyright (C) 2009 g-mplayer authors
-# This file is distributed under the same license as the g-mplayer package.
+# Czech translation of wgmplayer.
+# Copyright (C) 2009 wgmplayer authors
+# This file is distributed under the same license as the wgmplayer package.
 # Petr Pisar <petr.pisar@atlas.cz>, 2009, 2010.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: g-mplayer 1.0.0\n"
+"Project-Id-Version: wgmplayer 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-25 12:49+0800\n"
 "PO-Revision-Date: 2012-09-24 22:17+0100\n"
@@ -300,26 +300,26 @@ msgstr "[SOUBORY…] – Přehrávač médií pro GEE založený na MPlayeru"
 
 #: ../src/main.c:878
 #, c-format
-msgid "G-MPlayer v%s\n"
-msgstr "G-MPlayer verze %s\n"
+msgid "WGmplayer v%s\n"
+msgstr "WGmplayer verze %s\n"
 
 #: ../src/main.c:916
 #, c-format
 msgid ""
-"Run 'g-mplayer --help' to see a full list of available command line "
+"Run 'wgmplayer --help' to see a full list of available command line "
 "options.\n"
 msgstr ""
-"Seznam všech přepínačů příkazové řádky získáte příkazem „g-mplayer --help“.\n"
+"Seznam všech přepínačů příkazové řádky získáte příkazem „wgmplayer --help“.\n"
 
 #: ../src/gui.c:668
 #, c-format
 msgid "(%i/%i) - Media Player"
-msgstr "(%i/%i) – G-MPlayer"
+msgstr "(%i/%i) – WGmplayer"
 
 #: ../src/gui.c:670
 #, c-format
 msgid "%s - (%i/%i) - Media Player"
-msgstr "%s – (%i/%i) – G-MPlayer"
+msgstr "%s – (%i/%i) – WGmplayer"
 
 #: ../src/gui.c:674 ../src/gui.c:6314
 #, c-format
@@ -329,7 +329,7 @@ msgstr "GEE MPlayer"
 #: ../src/gui.c:676 ../src/gui.c:5724
 #, c-format
 msgid "%s - Media Player"
-msgstr "%s – G-MPlayer"
+msgstr "%s – WGmplayer"
 
 #: ../src/gui.c:753
 #, c-format
@@ -596,8 +596,8 @@ msgid "MPlayer"
 msgstr "MPlayer"
 
 #: ../src/gui.c:4479
-msgid "G-MPlayer Configuration"
-msgstr "Nastavení G-MPlayeru"
+msgid "WGmplayer Configuration"
+msgstr "Nastavení WGmplayeru"
 
 #: ../src/gui.c:4492
 msgid ""
@@ -803,8 +803,8 @@ msgid "Place playlist below media (requires application restart)"
 msgstr "Umístit seznam skladeb pod média (vyžaduje nové spuštění aplikace)"
 
 #: ../src/gui.c:5098
-msgid "Only allow one instance of G-MPlayer"
-msgstr "Povolit jen jednu instanci G-MPlayeru"
+msgid "Only allow one instance of WGmplayer"
+msgstr "Povolit jen jednu instanci WGmplayeru"
 
 #: ../src/gui.c:5108
 msgid "When opening in single instance mode, replace existing file"
@@ -860,9 +860,9 @@ msgstr "<span weight=\"bold\">Pokročilé nastavení MPlayeru</span>"
 
 #: ../src/gui.c:5179
 msgid ""
-"Set this option if changing the volume in G-MPlayer changes the master volume"
+"Set this option if changing the volume in WGmplayer changes the master volume"
 msgstr ""
-"Použijte tuto volbu, pokud změna hlasitosti v G-MPlayeru mění hlavní "
+"Použijte tuto volbu, pokud změna hlasitosti v WGmplayeru mění hlavní "
 "hlasitost"
 
 #: ../src/gui.c:5188
@@ -950,8 +950,8 @@ msgid "Reset Keys"
 msgstr "_Vrátit"
 
 #: ../src/gui.c:5969 ../src/support.c:720 ../src/support.c:811
-msgid "G-MPlayer Error"
-msgstr "Chyba G-MPlayeru"
+msgid "WGmplayer Error"
+msgstr "Chyba WGmplayeru"
 
 #: ../src/gui.c:6355
 msgid "S_how Controls"

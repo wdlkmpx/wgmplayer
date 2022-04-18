@@ -1,6 +1,6 @@
-# Kazakh translation for g-mplayer.
-# Copyright (C) 2012 g-mplayer's COPYRIGHT HOLDER
-# This file is distributed under the same license as the g-mplayer package.
+# Kazakh translation for wgmplayer.
+# Copyright (C) 2012 wgmplayer's COPYRIGHT HOLDER
+# This file is distributed under the same license as the wgmplayer package.
 # Baurzhan Muftakhidinov <baurthefirst@gmail.com>, 2012.
 #
 msgid ""
@@ -286,16 +286,16 @@ msgstr "[ФАЙЛДАР...] - GEE үшін MPlayer негізіндегі мед
 
 #: ../src/main.c:878
 #, c-format
-msgid "G-MPlayer v%s\n"
-msgstr "G-MPlayer v%s\n"
+msgid "WGmplayer v%s\n"
+msgstr "WGmplayer v%s\n"
 
 #: ../src/main.c:916
 #, c-format
 msgid ""
-"Run 'g-mplayer --help' to see a full list of available command line "
+"Run 'wgmplayer --help' to see a full list of available command line "
 "options.\n"
 msgstr ""
-"Барлық қолжетерлік командалық жол опцияларын қарау үшін 'g-mplayer --help' "
+"Барлық қолжетерлік командалық жол опцияларын қарау үшін 'wgmplayer --help' "
 "орындаңыз.\n"
 
 #: ../src/gui.c:668
@@ -580,8 +580,8 @@ msgid "MPlayer"
 msgstr "MPlayer"
 
 #: ../src/gui.c:4479
-msgid "G-MPlayer Configuration"
-msgstr "G-MPlayer баптаулары"
+msgid "WGmplayer Configuration"
+msgstr "WGmplayer баптаулары"
 
 #: ../src/gui.c:4492
 msgid ""
@@ -780,8 +780,8 @@ msgid "Place playlist below media (requires application restart)"
 msgstr "Ойнату тізімін медианың астына қою (қолданба қайта іске қосылуы керек)"
 
 #: ../src/gui.c:5098
-msgid "Only allow one instance of G-MPlayer"
-msgstr "G-MPlayer үшін бір кезде тек бір экземплярға орындалуға рұқсат ету"
+msgid "Only allow one instance of WGmplayer"
+msgstr "WGmplayer үшін бір кезде тек бір экземплярға орындалуға рұқсат ету"
 
 #: ../src/gui.c:5108
 msgid "When opening in single instance mode, replace existing file"
@@ -835,7 +835,7 @@ msgstr "<span weight=\"bold\">MPlayer үшін кеңейтілген бапта
 
 #: ../src/gui.c:5179
 msgid ""
-"Set this option if changing the volume in G-MPlayer changes the master volume"
+"Set this option if changing the volume in WGmplayer changes the master volume"
 msgstr ""
 
 #: ../src/gui.c:5188
@@ -914,8 +914,8 @@ msgid "Reset Keys"
 msgstr "Тастау"
 
 #: ../src/gui.c:5969 ../src/support.c:720 ../src/support.c:811
-msgid "G-MPlayer Error"
-msgstr "G-MPlayer қатесі"
+msgid "WGmplayer Error"
+msgstr "WGmplayer қатесі"
 
 #: ../src/gui.c:6355
 msgid "S_how Controls"

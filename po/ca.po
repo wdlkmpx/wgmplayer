@@ -1,11 +1,11 @@
-# Catalan translation for g-mplayer
+# Catalan translation for wgmplayer
 # Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
-# This file is distributed under the same license as the g-mplayer package.
+# This file is distributed under the same license as the wgmplayer package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: g-mplayer\n"
+"Project-Id-Version: wgmplayer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-25 12:49+0800\n"
 "PO-Revision-Date: 2011-03-03 17:39+0000\n"
@@ -304,16 +304,16 @@ msgstr "[Arxius...] - GEE Reproductor multimèdia basat en MPlayer"
 
 #: ../src/main.c:878
 #, c-format
-msgid "G-MPlayer v%s\n"
-msgstr "G-MPlayer v%s\n"
+msgid "WGmplayer v%s\n"
+msgstr "WGmplayer v%s\n"
 
 #: ../src/main.c:916
 #, c-format
 msgid ""
-"Run 'g-mplayer --help' to see a full list of available command line "
+"Run 'wgmplayer --help' to see a full list of available command line "
 "options.\n"
 msgstr ""
-"Executa 'g-mplayer --help' per veure la llista completa d'opcions de línia "
+"Executa 'wgmplayer --help' per veure la llista completa d'opcions de línia "
 "d'ordres disponibles.\n"
 
 #: ../src/gui.c:668
@@ -600,8 +600,8 @@ msgid "MPlayer"
 msgstr "MPlayer"
 
 #: ../src/gui.c:4479
-msgid "G-MPlayer Configuration"
-msgstr "Configuració G-MPlayer"
+msgid "WGmplayer Configuration"
+msgstr "Configuració WGmplayer"
 
 #: ../src/gui.c:4492
 msgid ""
@@ -803,8 +803,8 @@ msgstr ""
 "de l'aplicació)"
 
 #: ../src/gui.c:5098
-msgid "Only allow one instance of G-MPlayer"
-msgstr "Permet només una instància del G-MPlayer"
+msgid "Only allow one instance of WGmplayer"
+msgstr "Permet només una instància del WGmplayer"
 
 #: ../src/gui.c:5108
 msgid "When opening in single instance mode, replace existing file"
@@ -860,9 +860,9 @@ msgstr "<span weight=\"bold\">Configuració avançada de MPlayer </span>"
 
 #: ../src/gui.c:5179
 msgid ""
-"Set this option if changing the volume in G-MPlayer changes the master volume"
+"Set this option if changing the volume in WGmplayer changes the master volume"
 msgstr ""
-"Ajusta aquesta opció si en canviar el volum al G-MPlayer canvia el volum "
+"Ajusta aquesta opció si en canviar el volum al WGmplayer canvia el volum "
 "principal"
 
 #: ../src/gui.c:5188
@@ -947,8 +947,8 @@ msgid "Reset Keys"
 msgstr "_Reinicia"
 
 #: ../src/gui.c:5969 ../src/support.c:720 ../src/support.c:811
-msgid "G-MPlayer Error"
-msgstr "S'ha produit un error al G-MPlayer"
+msgid "WGmplayer Error"
+msgstr "S'ha produit un error al WGmplayer"
 
 #: ../src/gui.c:6355
 msgid "S_how Controls"

@@ -1,6 +1,6 @@
-# translation of G-MPlayer to Russian
+# translation of WGmplayer to Russian
 # Copyright (C) 2008 Kevin DeKorte <kdekorte@gmail.com>
-# This file is distributed under the same license as the g-mplayer package.
+# This file is distributed under the same license as the wgmplayer package.
 #
 # Roman Kashtanov <staroberdansk@gmail.com>, 2009.
 # Denis Koryavov <dkoryavov@yandex.ru>, 2009-2010.
@@ -303,16 +303,16 @@ msgstr "[FILES...] - Медиапроигрыватель на основе MPla
 
 #: ../src/main.c:878
 #, c-format
-msgid "G-MPlayer v%s\n"
+msgid "WGmplayer v%s\n"
 msgstr "GEE·MPlayer·v%s\n"
 
 #: ../src/main.c:916
 #, c-format
 msgid ""
-"Run 'g-mplayer --help' to see a full list of available command line "
+"Run 'wgmplayer --help' to see a full list of available command line "
 "options.\n"
 msgstr ""
-"Запустите 'g-mplayer·--help' для получения полного списка настроек командной "
+"Запустите 'wgmplayer·--help' для получения полного списка настроек командной "
 "строки.\n"
 
 #: ../src/gui.c:668
@@ -600,8 +600,8 @@ msgid "MPlayer"
 msgstr "MPlayer"
 
 #: ../src/gui.c:4479
-msgid "G-MPlayer Configuration"
-msgstr "Настройка G-MPlayer"
+msgid "WGmplayer Configuration"
+msgstr "Настройка WGmplayer"
 
 #: ../src/gui.c:4492
 msgid ""
@@ -802,8 +802,8 @@ msgstr ""
 "Список воспроизведения под основным окном (требуется перезапуск приложения)"
 
 #: ../src/gui.c:5098
-msgid "Only allow one instance of G-MPlayer"
-msgstr "Запускать только один экземпляр G-MPlayer"
+msgid "Only allow one instance of WGmplayer"
+msgstr "Запускать только один экземпляр WGmplayer"
 
 #: ../src/gui.c:5108
 msgid "When opening in single instance mode, replace existing file"
@@ -859,9 +859,9 @@ msgstr "<span weight=\"bold\">Продвинутые настройки MPlayer<
 
 #: ../src/gui.c:5179
 msgid ""
-"Set this option if changing the volume in G-MPlayer changes the master volume"
+"Set this option if changing the volume in WGmplayer changes the master volume"
 msgstr ""
-"Включайте эту опцию, если изменение громкости в G-MPlayer изменяет громкость "
+"Включайте эту опцию, если изменение громкости в WGmplayer изменяет громкость "
 "в системе"
 
 #: ../src/gui.c:5188
@@ -945,8 +945,8 @@ msgid "Reset Keys"
 msgstr "_Сброс"
 
 #: ../src/gui.c:5969 ../src/support.c:720 ../src/support.c:811
-msgid "G-MPlayer Error"
-msgstr "Ошибка G-MPlayer"
+msgid "WGmplayer Error"
+msgstr "Ошибка WGmplayer"
 
 #: ../src/gui.c:6355
 msgid "S_how Controls"

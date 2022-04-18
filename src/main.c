@@ -434,8 +434,8 @@ gint play_iter(GtkTreeIter * playiter, gint restart_second)
             g_object_unref(file_info);
         }
         g_object_unref(file);
-        recent_data->app_name = g_strdup("g-mplayer");
-        recent_data->app_exec = g_strdup("g-mplayer %u");
+        recent_data->app_name = g_strdup("wgmplayer");
+        recent_data->app_exec = g_strdup("wgmplayer %u");
         if (recent_data->mime_type != NULL) {
             gtk_recent_manager_add_full(recent_manager, uri, recent_data);
             g_free(recent_data->mime_type);
@@ -468,7 +468,7 @@ gint play_iter(GtkTreeIter * playiter, gint restart_second)
 
     streaming = 0;
 
-    gm_store = gm_pref_store_new("g-mplayer");
+    gm_store = gm_pref_store_new("wgmplayer");
     forcecache = gm_pref_store_get_boolean(gm_store, FORCECACHE);
     gm_pref_store_free(gm_store);
 
@@ -732,23 +732,23 @@ int main(int argc, char *argv[])
         gm_log(verbose, G_LOG_LEVEL_MESSAGE, "SIGTERM signal handler not installed");
 #endif
 
-    uri = g_strdup_printf("%s/g-mplayer/cover_art", g_get_user_config_dir());
+    uri = g_strdup_printf("%s/wgmplayer/cover_art", g_get_user_config_dir());
     if (!g_file_test(uri, G_FILE_TEST_IS_DIR)) {
         g_mkdir_with_parents(uri, 0775);
     }
     g_free(uri);
 
-    uri = g_strdup_printf("%s/g-mplayer/plugin", g_get_user_config_dir());
+    uri = g_strdup_printf("%s/wgmplayer/plugin", g_get_user_config_dir());
     if (!g_file_test(uri, G_FILE_TEST_IS_DIR)) {
         g_mkdir_with_parents(uri, 0775);
     }
     g_free(uri);
     uri = NULL;
 
-    default_playlist = g_strdup_printf("file://%s/g-mplayer/default.pls", g_get_user_config_dir());
+    default_playlist = g_strdup_printf("file://%s/wgmplayer/default.pls", g_get_user_config_dir());
     safe_to_save_default_playlist = TRUE;
 
-    gm_store = gm_pref_store_new("g-mplayer");
+    gm_store = gm_pref_store_new("wgmplayer");
     vo = gm_pref_store_get_string(gm_store, VO);
     audio_device.alsa_mixer = gm_pref_store_get_string(gm_store, ALSA_MIXER);
     use_hardware_codecs = gm_pref_store_get_boolean_with_default (gm_store, USE_HARDWARE_CODECS, use_hardware_codecs);
@@ -875,7 +875,7 @@ int main(int argc, char *argv[])
     if (reallyverbose)
         verbose = 2;
     if (verbose) {
-        printf(_("G-MPlayer v%s\n"), VERSION);
+        printf(_("WGmplayer v%s\n"), VERSION);
         printf("GTK %i.%i.%i\n", GTK_MAJOR_VERSION, GTK_MINOR_VERSION, GTK_MICRO_VERSION);
         printf("GLIB %i.%i.%i\n", GLIB_MAJOR_VERSION, GLIB_MINOR_VERSION, GLIB_MICRO_VERSION);
         printf("GDA Enabled\n");
@@ -913,7 +913,7 @@ int main(int argc, char *argv[])
         button_size = GTK_ICON_SIZE_DIALOG;
     if (error != NULL) {
         printf("%s\n", error->message);
-        printf(_("Run 'g-mplayer --help' to see a full list of available command line options.\n"));
+        printf(_("Run 'wgmplayer --help' to see a full list of available command line options.\n"));
         return 1;
     }
     gm_log(verbose, G_LOG_LEVEL_DEBUG, "Threading support enabled = %s", gm_bool_to_string(g_thread_supported()));

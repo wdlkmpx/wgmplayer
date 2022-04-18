@@ -1,6 +1,6 @@
 # translation of tr.po to Turkish
-# Turkish translation of G-MPlayer.
-# This file is distributed under the same license as the g-mplayer package.
+# Turkish translation of WGmplayer.
+# This file is distributed under the same license as the wgmplayer package.
 # Copyright (C) Kevin DeKorte 2006-2008 <kdekorte@gmail.com>
 # Onur Küçük <onur@pardus.org.tr>, 2008, 2009, 2010, 2011.
 msgid ""
@@ -300,27 +300,27 @@ msgstr "[FILES...] - MPlayer tabanlı G-Medya Oynatıcı"
 
 #: ../src/main.c:878
 #, c-format
-msgid "G-MPlayer v%s\n"
-msgstr "G-MPlayer %s\n"
+msgid "WGmplayer v%s\n"
+msgstr "WGmplayer %s\n"
 
 #: ../src/main.c:916
 #, c-format
 msgid ""
-"Run 'g-mplayer --help' to see a full list of available command line "
+"Run 'wgmplayer --help' to see a full list of available command line "
 "options.\n"
 msgstr ""
-"Kullanılabilir komut satırı parametrelerini görmek için 'g-mplayer --help' "
+"Kullanılabilir komut satırı parametrelerini görmek için 'wgmplayer --help' "
 "komutunu kullanabilirsiniz.\n"
 
 #: ../src/gui.c:668
 #, c-format
 msgid "(%i/%i) - Media Player"
-msgstr "(%i/%i) G-MPlayer"
+msgstr "(%i/%i) WGmplayer"
 
 #: ../src/gui.c:670
 #, c-format
 msgid "%s - (%i/%i) - Media Player"
-msgstr "%s - (%i/%i) G-MPlayer"
+msgstr "%s - (%i/%i) WGmplayer"
 
 #: ../src/gui.c:674 ../src/gui.c:6314
 #, c-format
@@ -596,8 +596,8 @@ msgid "MPlayer"
 msgstr "MPlayer"
 
 #: ../src/gui.c:4479
-msgid "G-MPlayer Configuration"
-msgstr "G-MPlayer Yapılandırması"
+msgid "WGmplayer Configuration"
+msgstr "WGmplayer Yapılandırması"
 
 #: ../src/gui.c:4492
 msgid ""
@@ -803,8 +803,8 @@ msgid "Place playlist below media (requires application restart)"
 msgstr "Oynatma listesini aşağı yerleştir (program tekrar başlatılmalı)"
 
 #: ../src/gui.c:5098
-msgid "Only allow one instance of G-MPlayer"
-msgstr "Sadece bir G-MPlayer çalışsın"
+msgid "Only allow one instance of WGmplayer"
+msgstr "Sadece bir WGmplayer çalışsın"
 
 #: ../src/gui.c:5108
 msgid "When opening in single instance mode, replace existing file"
@@ -860,9 +860,9 @@ msgstr "<span weight=\"bold\">MPlayer İçin Gelişmiş Ayarlar</span>"
 
 #: ../src/gui.c:5179
 msgid ""
-"Set this option if changing the volume in G-MPlayer changes the master volume"
+"Set this option if changing the volume in WGmplayer changes the master volume"
 msgstr ""
-"G-MPlayer altında ses seviyesi değiştirilince ana ses seviyesinin "
+"WGmplayer altında ses seviyesi değiştirilince ana ses seviyesinin "
 "değişmesini istiyorsanız bu seçeneği işaretleyin"
 
 #: ../src/gui.c:5188
@@ -951,8 +951,8 @@ msgid "Reset Keys"
 msgstr "Sı_fırla"
 
 #: ../src/gui.c:5969 ../src/support.c:720 ../src/support.c:811
-msgid "G-MPlayer Error"
-msgstr "G-MPlayer Hatası"
+msgid "WGmplayer Error"
+msgstr "WGmplayer Hatası"
 
 #: ../src/gui.c:6355
 msgid "S_how Controls"

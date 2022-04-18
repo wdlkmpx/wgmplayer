@@ -23,9 +23,9 @@ AM_CFLAGS =\
      ## -DGTK_DISABLE_DEPRECATED 
      ## -DGSEAL_ENABLE
 
-bin_PROGRAMS = g-mplayer 
+bin_PROGRAMS = wgmplayer 
 
-g_mplayer_SOURCES = \
+wgmplayer_SOURCES = \
 	../config.h \
 	../wgtk/w_gtk.c \
 	../wgtk/w_gtk_menu.c \
@@ -56,7 +56,7 @@ g_mplayer_SOURCES = \
 	main.c \
 	common.h
 
-g_mplayer_LDADD = \
+wgmplayer_LDADD = \
     -lm \
     $(X11_LIBS) \
     $(GTK_LIBS) \
@@ -74,6 +74,6 @@ cppcheck:
 	cppcheck -q -a -v -f -j3 .
 	
 valgrind:
-	G_SLICE=always-malloc G_DEBUG=gc-friendly valgrind --tool=memcheck --leak-check=full --leak-resolution=high --num-callers=20 --log-file=vgdump ./g-mplayer 
+	G_SLICE=always-malloc G_DEBUG=gc-friendly valgrind --tool=memcheck --leak-check=full --leak-resolution=high --num-callers=20 --log-file=vgdump ./wgmplayer 
 valgrind-suppress:
-	G_SLICE=always-malloc G_DEBUG=gc-friendly valgrind --tool=memcheck --leak-check=full --leak-resolution=high --num-callers=20 --log-file=vgdump --suppressions=$(HOME)/gtk.suppression ./g-mplayer 
+	G_SLICE=always-malloc G_DEBUG=gc-friendly valgrind --tool=memcheck --leak-check=full --leak-resolution=high --num-callers=20 --log-file=vgdump --suppressions=$(HOME)/gtk.suppression ./wgmplayer 

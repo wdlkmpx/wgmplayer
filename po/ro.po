@@ -1,6 +1,6 @@
-# G-MPlayer
+# WGmplayer
 # Copyright (C) 2007 Kevin DeKorte
-# This file is distributed under the same license as the G-MPlayer package.
+# This file is distributed under the same license as the WGmplayer package.
 # Kevin DeKorte <kdekorte@gmail.com> 2007.
 #
 #
@@ -298,16 +298,16 @@ msgstr "[FIȘIERE...] - G-Media player bazat pe MPlayer"
 
 #: ../src/main.c:878
 #, c-format
-msgid "G-MPlayer v%s\n"
-msgstr "G-MPlayer v%s\n"
+msgid "WGmplayer v%s\n"
+msgstr "WGmplayer v%s\n"
 
 #: ../src/main.c:916
 #, c-format
 msgid ""
-"Run 'g-mplayer --help' to see a full list of available command line "
+"Run 'wgmplayer --help' to see a full list of available command line "
 "options.\n"
 msgstr ""
-"Rulați „g-mplayer --help” pentru a vedea o listă completă a opțiunilor din "
+"Rulați „wgmplayer --help” pentru a vedea o listă completă a opțiunilor din "
 "linia de comandă.\n"
 
 #: ../src/gui.c:668
@@ -595,8 +595,8 @@ msgid "MPlayer"
 msgstr "MPlayer"
 
 #: ../src/gui.c:4479
-msgid "G-MPlayer Configuration"
-msgstr "Configurare G-MPlayer"
+msgid "WGmplayer Configuration"
+msgstr "Configurare WGmplayer"
 
 #: ../src/gui.c:4492
 msgid ""
@@ -796,8 +796,8 @@ msgid "Place playlist below media (requires application restart)"
 msgstr ""
 
 #: ../src/gui.c:5098
-msgid "Only allow one instance of G-MPlayer"
-msgstr "Permite numai o singură instanță pentru G-MPlayer"
+msgid "Only allow one instance of WGmplayer"
+msgstr "Permite numai o singură instanță pentru WGmplayer"
 
 #: ../src/gui.c:5108
 msgid "When opening in single instance mode, replace existing file"
@@ -851,7 +851,7 @@ msgstr "<span weight=\"bold\">Opțiuni avansate pentru MPlayer</span>"
 
 #: ../src/gui.c:5179
 msgid ""
-"Set this option if changing the volume in G-MPlayer changes the master volume"
+"Set this option if changing the volume in WGmplayer changes the master volume"
 msgstr ""
 
 #: ../src/gui.c:5188
@@ -931,8 +931,8 @@ msgid "Reset Keys"
 msgstr "_Resetează"
 
 #: ../src/gui.c:5969 ../src/support.c:720 ../src/support.c:811
-msgid "G-MPlayer Error"
-msgstr "Eroare G-MPlayer"
+msgid "WGmplayer Error"
+msgstr "Eroare WGmplayer"
 
 #: ../src/gui.c:6355
 msgid "S_how Controls"

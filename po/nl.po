@@ -1,6 +1,6 @@
-# G-MPlayer
+# WGmplayer
 # Copyright (C) 2007 Kevin DeKorte
-# This file is distributed under the same license as the G-MPlayer package.
+# This file is distributed under the same license as the WGmplayer package.
 # Kevin DeKorte <kdekorte@gmail.com> 2007.
 #
 #
@@ -289,16 +289,16 @@ msgstr "[BESTANDEN...] - G-Media player, gebaseerd op MPlayer"
 
 #: ../src/main.c:878
 #, c-format
-msgid "G-MPlayer v%s\n"
-msgstr "G-MPlayer v%s\n"
+msgid "WGmplayer v%s\n"
+msgstr "WGmplayer v%s\n"
 
 #: ../src/main.c:916
 #, c-format
 msgid ""
-"Run 'g-mplayer --help' to see a full list of available command line "
+"Run 'wgmplayer --help' to see a full list of available command line "
 "options.\n"
 msgstr ""
-"Voer 'g-mplayer --help' uit om een volledige lijst met opdrachtregelopties "
+"Voer 'wgmplayer --help' uit om een volledige lijst met opdrachtregelopties "
 "te tonen\n"
 
 #: ../src/gui.c:668
@@ -584,8 +584,8 @@ msgid "MPlayer"
 msgstr "MPlayer"
 
 #: ../src/gui.c:4479
-msgid "G-MPlayer Configuration"
-msgstr "G-MPlayer-voorkeuren"
+msgid "WGmplayer Configuration"
+msgstr "WGmplayer-voorkeuren"
 
 #: ../src/gui.c:4492
 msgid ""
@@ -789,8 +789,8 @@ msgid "Place playlist below media (requires application restart)"
 msgstr "Afspeellijst onder media plaatsen (herstart vereist)"
 
 #: ../src/gui.c:5098
-msgid "Only allow one instance of G-MPlayer"
-msgstr "Slechts één proces van G-MPlayer toestaan"
+msgid "Only allow one instance of WGmplayer"
+msgstr "Slechts één proces van WGmplayer toestaan"
 
 #: ../src/gui.c:5108
 msgid "When opening in single instance mode, replace existing file"
@@ -846,9 +846,9 @@ msgstr "<span weight=\"bold\">Geavanceerde MPlayer-voorkeuren</span>"
 
 #: ../src/gui.c:5179
 msgid ""
-"Set this option if changing the volume in G-MPlayer changes the master volume"
+"Set this option if changing the volume in WGmplayer changes the master volume"
 msgstr ""
-"Gebruik deze optie als aanpassen van het volume in G-MPlayer ook het volume "
+"Gebruik deze optie als aanpassen van het volume in WGmplayer ook het volume "
 "van het systeem moet aanpassen"
 
 #: ../src/gui.c:5188
@@ -932,8 +932,8 @@ msgid "Reset Keys"
 msgstr "Standaardwaarden"
 
 #: ../src/gui.c:5969 ../src/support.c:720 ../src/support.c:811
-msgid "G-MPlayer Error"
-msgstr "G-MPlayer-fout"
+msgid "WGmplayer Error"
+msgstr "WGmplayer-fout"
 
 #: ../src/gui.c:6355
 msgid "S_how Controls"

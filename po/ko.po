@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: g-mplayer\n"
+"Project-Id-Version: wgmplayer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-25 12:49+0800\n"
 "PO-Revision-Date: 2013-06-19 00:35+0900\n"
@@ -282,15 +282,15 @@ msgstr "[파일...] - 엠플레이어를 기반으로 하는 그놈 미디어 �
 
 #: ../src/main.c:878
 #, c-format
-msgid "G-MPlayer v%s\n"
+msgid "WGmplayer v%s\n"
 msgstr "그놈 엠플레이어 v%s\n"
 
 #: ../src/main.c:916
 #, c-format
 msgid ""
-"Run 'g-mplayer --help' to see a full list of available command line "
+"Run 'wgmplayer --help' to see a full list of available command line "
 "options.\n"
-msgstr "명령줄 옵션의 전체 목록을 보려면 'g-mplayer --help'를 실행하십시오.\n"
+msgstr "명령줄 옵션의 전체 목록을 보려면 'wgmplayer --help'를 실행하십시오.\n"
 
 #: ../src/gui.c:668
 #, c-format
@@ -574,7 +574,7 @@ msgid "MPlayer"
 msgstr "엠플레이어"
 
 #: ../src/gui.c:4479
-msgid "G-MPlayer Configuration"
+msgid "WGmplayer Configuration"
 msgstr "그놈 엠플레이어 설정"
 
 #: ../src/gui.c:4492
@@ -777,7 +777,7 @@ msgid "Place playlist below media (requires application restart)"
 msgstr "미디어 영역 아래에 재생 목록 두기(프로그램 다시 시작 필요)"
 
 #: ../src/gui.c:5098
-msgid "Only allow one instance of G-MPlayer"
+msgid "Only allow one instance of WGmplayer"
 msgstr "그놈 엠플레이어를 하나만 실행합니다."
 
 #: ../src/gui.c:5108
@@ -834,7 +834,7 @@ msgstr "<span weight=\"bold\">자세한 엠플레이어 설정</span>"
 
 #: ../src/gui.c:5179
 msgid ""
-"Set this option if changing the volume in G-MPlayer changes the master volume"
+"Set this option if changing the volume in WGmplayer changes the master volume"
 msgstr ""
 "그놈 엠플레이어에서 시스템 볼륨을 수정하는 것을 피하고 싶다면, 이 옵션을 설정"
 "합니다."
@@ -922,7 +922,7 @@ msgid "Reset Keys"
 msgstr "키 다시 설정"
 
 #: ../src/gui.c:5969 ../src/support.c:720 ../src/support.c:811
-msgid "G-MPlayer Error"
+msgid "WGmplayer Error"
 msgstr "그놈 엠플레이어 오류"
 
 #: ../src/gui.c:6355
